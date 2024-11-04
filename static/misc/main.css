@@ -1,0 +1,148 @@
+:root {
+  --fg: #000; --bg: #fff;
+  --gray1: #666; /* soft but readable text: time, footers etc */
+  --gray2: #888; /* highlight gray: hover, should be distict from --fg */
+  --gray3: #aaa; /* faint but visible: non-significant separator lines */
+  --gray4: #ddd; /* background gray: behind text: inline codes etc */
+  --yellow: #fe8; --blue: #37a; --green: #ce7;
+  --red: #e98; --purple: #703; /* #69a #bef #048 */
+  --sans: Inter, sans-serif; --serif: Playfair, serif;
+  --monospace: 'JetBrains Mono', monospace;
+}
+/*
+@font-face {
+  font-family: 'Inter-stripped'; font-display: swap;
+  font-style: normal; font-weight: 100 900;
+  src: url(/fonts/InterVariable.stripped.woff2) format(woff2);
+}
+@font-face {
+  font-family: 'JetBrainsMono-stripped'; font-display: swap;
+  font-style: normal; font-weight: 100 800;
+  src: url(/fonts/JetBrainsMonoVariable.stripped.woff2) format(woff2);
+} */
+@font-face {
+  font-family: 'Playfair'; font-display: swap;
+  font-style: normal; font-weight: 400 900;
+  src: url(/fonts/PlayfairDisplayVariable.woff2) format(woff2);
+}
+@font-face {
+  font-family: 'Inter'; font-display: swap;
+  font-style: normal; font-weight: 100 900;
+  src: url(/fonts/InterVariable.woff2) format(woff2);
+}
+@font-face {
+  font-family: 'JetBrains Mono'; font-display: swap;
+  font-style: normal; font-weight: 100 800;
+  src: url(/fonts/JetBrainsMonoVariable.woff2) format(woff2);
+}
+
+/* body */
+body {
+  color: var(--fg); background-color: var(--bg);
+  font: 400 1rem var(--sans);
+  letter-spacing: -0.02em; line-height: 1.75em;
+  overflow-wrap: break-word;
+  padding: 0; margin: 4rem 1rem;
+  overflow-y: scroll; /* scrollbar-gutter: stable; */
+}
+::selection {background-color: var(--green); color: var(--fg);}
+
+/* links */
+a {
+  color: var(--fg);
+  text-decoration: underline; text-decoration-thickness: 0.0625rem;
+  text-underline-offset: 0.125rem; text-decoration-skip-ink: all;
+}
+a:hover {color: var(--gray2);}
+a:focus-visible {text-decoration: none; outline: 0.125rem solid var(--fg);}
+a[target="_blank"] {text-decoration-color: var(--blue);}
+a[target="_blank"]:hover {color: var(--blue);}
+
+/* nav, main */
+nav, main {max-width: 40rem; padding: 0; margin: 4rem auto;}
+nav h1, nav h2 {font-size: 1rem; line-height: 2rem; margin: 0 0 0.5rem;}
+nav ul {list-style: none; line-height: 2rem; padding: 0; margin: 0;}
+
+/* headers */
+h1, h2, h3, h4, h6 {font-weight: 600; margin: 2rem 0 1rem;}
+h1 {font-size: 2.5rem; line-height: 2.5rem; margin: 4rem 0 1.5rem;}
+h2 {font-size: 2rem;}
+h3 {font-size: 1.5rem;}
+h4, h5, h6 {font-size: 1.125rem;}
+/* footer */
+footer {color: var(--gray1); max-width: 40rem; padding: 1rem 0; margin: 4rem auto; border-top: 0.0625rem solid var(--gray3);}
+footer a, footer a[target="_blank"] {color: var(--gray1); text-decoration: none;}
+footer a:hover, footer a[target="_blank"]:hover {color: var(--fg);}
+
+/* text */
+p {margin: 1rem 0;} ul, ol {padding: 0 0 0 1em;} sup {vertical-align: top; font-size: 0.6em;}
+hr {margin: 2rem 0; border-bottom: 0.0625rem solid var(--fg); border-top: none;}
+strong {font-weight: 700;} em {font-style: italic;} mark {background-color: var(--yellow); color: var(--fg);}
+blockquote {font-style: italic; padding: 0.5rem 1rem; margin: 1rem 0rem; border-left: 0.0625rem solid var(--fg);}
+blockquote p:first-child {margin-top: 0;} blockquote p:last-child {margin-bottom: 0;}
+details {color: var(--gray1); font-size: 0.75rem; line-height: 1.25rem; padding: 0; margin: 1rem 0;}
+details summary {font-weight: 600; cursor: pointer;} details p {margin: 0.5rem 0;} details p:nth-child(2) {margin-top: 0;}
+
+/* media */
+img, canvas, svg {display: block; max-width: 100%; height: auto; margin: 1rem auto;}
+audio {width: 100%; margin: 1rem 0;} video {width: 100%; margin: 1rem 0;}
+
+/* tables */
+table {display: table; width: 100%; margin: 0 auto; border: none; border-collapse: collapse;}
+th, tr, td {text-align: left; line-height: 1.25rem; vertical-align: middle; padding: 0.3125rem; border: 0.0625rem solid var(--fg);}
+th {font-weight: 700;}
+
+/* code */
+code {font-family: var(--monospace); background-color: var(--gray4); padding: 0.0625rem 0.3125rem; border-radius: 0.125rem;}
+pre code {background-color: initial; padding: initial; border-radius: initial;}
+pre {
+  display: block; font: normal 0.875rem var(--monospace); line-height: 1.25rem; white-space: pre;
+  overflow: auto; padding: 1rem; margin: 1rem 0rem; border: 0.0625rem solid var(--fg);
+}
+
+/* inputs, buttons */
+input, button, select {font: 400 1rem var(--sans); padding: 0.5rem 1rem; margin: 0.125rem 0.125rem; border: 0.0625rem solid var(--fg);}
+input, select {color: var(--fg); background-color: var(--bg);}
+button {color: var(--bg); background-color: var(--fg);}
+button:active {color: var(--fg); background-color: var(--bg);}
+input::placeholder {color: var(--gray1); opacity: 1;} input[type="range"] {padding: 0; margin: 0.125rem 0.5rem; outline: none;}
+input[type='range'] {accent-color: var(--fg); vertical-align: middle;}
+
+/* log */
+.logs {display: grid; grid-gap: 0.5rem; grid-template-columns: 1fr min-content; align-items: center;}
+.logs a {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.logs time {color: var(--gray1); text-align: right; white-space: pre; font: 0.875rem var(--monospace);}
+/* labs */
+.labs {display: grid; grid-row-gap: 3rem; grid-column-gap: 1.25rem; grid-template-columns: 1fr 1fr 1fr;}
+.labs a {line-height: 1.5rem;}
+.labs a svg {display: block; width: 100%; height: auto; margin: 0 0 0.5rem;}
+
+/* print */
+.print {display: none}
+@media print {
+  a {text-decoration: none;} nav, footer {display:none;}
+  body, main {max-width: 100% !important; margin: 0 !important; padding: 0 !important;}
+  h1 {margin: 1rem 0 !important;} h2, h3, h4, h5, h6 {margin: 1.5rem 0 1rem !important;}
+  .print {display: block; font-weight: 600; margin: 0 0 1rem;}
+}
+
+/* responsive head, nav */
+@media screen and (max-width: 75rem) {
+  nav {padding: 0 0 4rem; border-bottom: 0.0625rem solid var(--gray3);}
+  h1 {margin: 4rem 0;}
+}
+@media screen and (min-width: 75rem) {
+  nav {position: absolute; top: 0; right: 50%; margin-right: 24rem;}
+  .fixednav {position: fixed;}
+}
+
+/* resoponsive index */
+@media screen and (max-width: 42rem) {
+  .logs {grid-row-gap: 0; grid-template-columns: 1fr;}
+  .logs a {white-space: normal;}
+  .logs time {text-align: left; margin: 0.5rem 0 2rem;}
+  .labs {grid-template-columns: 1fr 1fr;}
+}
+@media screen and (max-width: 28rem) {
+  .labs {grid-template-columns: 1fr;}
+}
