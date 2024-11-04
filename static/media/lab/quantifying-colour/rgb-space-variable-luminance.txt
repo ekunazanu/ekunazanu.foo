@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![greyed out sliced plane R+G+B=1 space on top; another greyed out plane for R+G+B=k; 2d sliced plane for R+G+B=1 (NOT R+G+B=k) as another figure on right of cube; sliders for RBG below; k values as a progress bar (non adjustable — determined by RGB values — max value 3 I guess) on right of sliders; rgb values (non-adjustable, determined by RGB values) as a stacked proportional horizontal bar chart type bar — https://media.geeksforgeeks.org/wp-content/uploads/20200923090400/1.PNG — but numerical values below; plot (R,G,B) on the R+G+B=k plane on the cube figure; plot (r,g,b) as points on the plane R+G+B=1 in the sliced plane cube figure, as well as the separate plane figure on the right; in the cube figure include a faint line joining (0,0,0) to (R,G,B) passing through (r,g,b) to signify projection;](interactive) -->

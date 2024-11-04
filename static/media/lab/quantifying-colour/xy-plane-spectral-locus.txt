@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![greyed out sliced plane X+Y+Z=1 space on top; another greyed out plane for X+Y+Z=k — k determined by wavelength parameter; 2d sliced plane for X+Y+Z=1 (NOT X+Y+Z=k) as another figure on right of cube — in the middle; rg plane on the right — right of separate sliced 2d plane figure — maybe make a smooth transition between xy-plane and X+Y+Z=1 plane; slider for wavelength of specteal colour; xyz values (non-adjustable, determined by wavalength parameter) as a stacked proportional horizontal bar chart type bar — https://media.geeksforgeeks.org/wp-content/uploads/20200923090400/1.PNG — but numerical values below; plot (X,Y,Z) on the X+Y+Z=k plane on the cube figure; plot (x,y,z) as points on the plane X+Y+Z=1 in the sliced plane cube figure, as well as the separate plane figure on the right — as well as the xy-plane diagram; in the cube figure include a faint line joining (0,0,0) to (X,Y,Z) passing through (x,y,z) to signify projection;](interactive) -->

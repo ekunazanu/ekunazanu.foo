@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![spd of single wavelength light on left above; response curve below; and product of both bottom; slider for wavelength but grayed out slider for intensity below bottom; grayed out sliders for 700nm and 546nm light may appear and disappear depending on wavelenght; the sliders have grayed out wavelenths (fixed at 700/546nm) and grayed out (but moveable) sliders for intensity; spd of three wavelengths on right above; response curve below; and product of both bottom; grayed out sliders for wavelenghts (grayed out and stays fixed as well) and intensity (grayed out moves) of light sources; separate cone responses for both graphs below respective graphs](/media/lab/quantifying-colours/samp.png) -->

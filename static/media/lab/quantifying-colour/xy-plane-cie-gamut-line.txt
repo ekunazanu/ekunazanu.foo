@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![similar diagram as the line joining xy plane with a point — line and point determined by sliders; make line endpoints un-draggable — instead determined by two sliders for wavelengths — endpoints would lie on spetral locus; two more sliders determines relative intensity of both primaries — increasing intensity of one decreases the other; stacked horizontal bar chart bar to show ratios of primaries;](interactive) -->

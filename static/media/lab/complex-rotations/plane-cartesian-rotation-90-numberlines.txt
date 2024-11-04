@@ -1,0 +1,11 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![real number line above and imaginary number line below; swap real and imaginary number lines when multiplied by i; labels and background lines stay in position;](interactive)
+Real: <input> <button>Add</button><br>
+Imag: <input> <button>Add</button><br>
+<button>Multiply by i</button>
+-->
