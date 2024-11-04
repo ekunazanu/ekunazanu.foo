@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![sliced plane RGB space on top on left; 2d plane for R+G+B=1 as another figure on right of cube; sliders for (R,G,B) below on left; L as a progress bar (non-adjustable; fixed to 1); stacked horizontal bar chart bars for (r,g,b) on right of RGB slider — but maybe include numerial values below too; increasing any one of the RGB values decreases the remaing two primaries (proportionally, such that the ratio bewteen the other primaries is maintained; maybe or maybe not emphasize that r=R, g=G, b=B); see below visualisation for more info — make both of them look similar — exceptions being the fixed luminance to one — and no chromaticity line projection thingy — and only one sliced plane; plot (R,G,B) and (r,g,b) as points on both the sliced plane in the cube figure and the 2d plane figure](interactive) -->

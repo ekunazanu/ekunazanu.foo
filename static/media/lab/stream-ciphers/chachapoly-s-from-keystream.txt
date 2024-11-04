@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+<!--
+![chacha-poly counter 0 block; new message — resets; new nonce; counter resets to 0; used for r,s; counter keeps incrmenting; initial block for keys; rest of blocks used for XORing plaintext — show as shown before (streams getting XORed);](interactive)
+ -->
