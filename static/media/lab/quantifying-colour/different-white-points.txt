@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![comparison reddish white vs bluish white — http://brainden.com/images/color-cube-big.jpg, or image similar to white-golden or blue-black dress image; https://upload.wikimedia.org/wikipedia/commons/a/a3/Wikipe-tan_wearing_The_Dress_reduced.svg](static) -->

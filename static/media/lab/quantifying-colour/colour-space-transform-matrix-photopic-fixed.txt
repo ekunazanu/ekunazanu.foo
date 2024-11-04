@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![colour space transform as above; matrix transform but with time with fixed middle rows; include transformation from https://en.wikipedia.org/wiki/File:CIE1931_RGBCMF.svg to https://en.wikipedia.org/wiki/File:CIE_1931_XYZ_Color_Matching_Functions.svg;](interactive) -->
