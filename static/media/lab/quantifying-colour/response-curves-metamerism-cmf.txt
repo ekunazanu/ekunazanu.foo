@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![spd on left above; spd on right above; identical response curves below on both left and right; separate products at the bottom on left and right; show cone response bars below bottom; make the spd drawable; if drawing is not feasible, make it such that the "different spd" link cycles through various metamer spds — every time it is clicked;](interactive) -->

@@ -1,0 +1,11 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![plane on top with bottom: x line above and y line below; swap real and imaginary number lines when rotated by a. labels and background lines stay in position; colour x and y axes differently — same colour scheme as real and imaginary number lines;](interactive)
+<input> <button>Set X</button><br>
+<input> <button>Set Y</button><br>
+<button>Rotate</button>
+-->

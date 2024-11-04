@@ -1,0 +1,15 @@
+<svg id="gridSVG" viewBox="0 0 200 150" fill="none" width="1200px" height="900px">
+<desc>A grid of purple-pink coloured squares.</desc>
+<defs>
+  <linearGradient id="gridGradPurple">
+    <stop offset="0" stop-color="#635" />
+    <stop offset="0.25" stop-color="#dbd" />
+    <stop offset="0.5" stop-color="#635" />
+    <stop offset="0.75" stop-color="#dbd" />
+    <stop offset="1" stop-color="#635" />
+  </linearGradient>
+</defs>
+<rect id="gridBG" fill="#000" x="0" y="0" width="200" height="150" />
+<path id="gridPathGradBG" fill="url(#gridGradPurple)" d="M0 0 V150H800V0 Z" />
+<path id="gridPathDivider" stroke="#fff" stroke-width="2" d="M7 0V150M15 0V150M23 0V150M31 0V150M39 0V150M47 0V150M55 0V150M63 0V150M71 0V150M79 0V150M87 0V150M95 0V150M103 0V150M111 0V150M119 0V150M127 0V150M135 0V150M143 0V150M151 0V150M159 0V150M167 0V150M175 0V150M183 0V150M191 0V150M199 0V150 M0 7 H200M0 15 H200M0 23 H200M0 31 H200M0 39 H200M0 47 H200M0 55 H200M0 63 H200M0 71 H200M0 79 H200M0 87 H200M0 95 H200M0 103 H200M0 111 H200M0 119 H200M0 127 H200M0 135 H200M0 143 H200M" />
+</svg>

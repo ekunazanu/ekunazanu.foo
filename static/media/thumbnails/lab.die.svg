@@ -1,0 +1,12 @@
+<svg id="dieSVG" viewBox="0 0 200 150" fill="none" width="1200px" height="900px">
+<desc>Die face showing five dots.</desc>
+<rect id="dieBG" fill="#000" x="0" y="0" width="200" height="150" />
+<rect id="dieRectFace" fill="#fff" x="50" y="25" width="100" height="100" rx="15" />
+<g id="dieGroupDots" fill="#000">
+<circle id="dieCircDot1" r="13" cx="75"  cy="50"  />
+<circle id="dieCircDot2" r="13" cx="125" cy="50"  />
+<circle id="dieCircDot3" r="13" cx="100" cy="75"  />
+<circle id="dieCircDot4" r="13" cx="75"  cy="100" />
+<circle id="dieCircDot5" r="13" cx="125" cy="100" />
+</g>
+</svg>
