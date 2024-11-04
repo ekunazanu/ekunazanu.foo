@@ -1,0 +1,10 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![two integer number lines; labels — "original number line" and "transformed number line" below number lines; numbers are on top of original number line — BUT below on the transformed number line; arrows pointing from numbers (integers) on original number line to numbers on the transformed number line; input box for multiplier; arrows pointing changes based on multiplier;](interactive)
+![third morphing number line with high contrasty black numbers below, (show original number line in the background with muted colors numbers above); highlight 1; input for multiplier; shift numline (and below numbers) by multiplier; disable multiplying by 0;](interactive)
+<input placeholder="Enter value to multiply"> <button>Multiply</button> <button>Reset</button>
+-->
