@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+    {{ section.content | safe }}
+    <div class="labs">
+        {% for page in section.pages | reverse %}
+        {% set data = load_data(path="/thumbnails/"~page.extra.thumbnail, required=true) %}
+        <a href="{{ page.permalink }}">{{ data | safe }}{{ page.title }}</a>
+        {% endfor %}
+    </div>
+</main>
+{% endblock content %}

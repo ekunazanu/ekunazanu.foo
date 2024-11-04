@@ -1,0 +1,64 @@
+{% set pagevar = section | default(value = page) %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="{{ config.author }}">
+        <meta name="description" content="{{ pagevar.description }}">
+
+        <meta property="og:title" content="{{ pagevar.title }}">
+        <meta property="og:type" content="{{ pagevar.extra.type }}">
+        <meta property="og:description" content="{{ pagevar.description }}">
+        <meta property="og:url" content="{{ pagevar.permalink }}">
+        <meta property="og:image" content="{{ config.base_url }}/media/thumbnails/{{ pagevar.extra.thumbnail }}.png">
+        <meta property="og:image:alt" content="{{ pagevar.extra.thumbnailalt }}">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="900">
+        <meta property="og:locale" content="en_US">
+        <meta property="og:site_name" content="{{ config.title }}">
+
+        <title>{{ pagevar.title }}</title>
+
+        <link rel="cannonical" href="{{ pagevar.permalink }}">
+        <link rel="alternate" type="application/atom+xml" href="{{ config.base_url }}/atom.xml">
+        <link rel="stylesheet" href="{{ config.base_url }}/misc/main.css">
+        <link rel="icon" href="{{ config.base_url }}/misc/favicon.png">
+
+        <meta name="generator" content="Zola" />
+
+    </head>
+    <body>
+        <nav{% if current_path == "/log/" or current_path == "/lab/" %} class="fixednav" {% endif %}><ul>
+
+            {% if current_path == "/" %}
+            <li><h1>ekunazanu.foo</h1></li>
+            {% elif current_path == "/log/" or current_path == "/lab/" or current_path == "/more/" %}
+            <li><h1><a href="{{ config.base_url }}">ekunazanu.foo</a></h1></li>
+            {% else %}
+            <li><h2><a href="{{ config.base_url }}">ekunazanu.foo</a></h2></li>
+            {% endif %}
+
+            {% if current_path == "/log/" %}
+            <li>Log &LongLeftArrow;</li>
+            {% elif current_path is matching("/log/") %}
+            <li><a href="{{ config.base_url }}/log">Log</a> &LongRightArrow;</li>
+            {% else %}
+            <li><a href="{{ config.base_url }}/log">Log</a></li>
+            {% endif %}
+
+            {% if current_path == "/lab/" %}
+            <li>Lab &LongLeftArrow;</li>
+            {% elif current_path is matching("/lab/") %}
+            <li><a href="{{ config.base_url }}/lab">Lab</a> &LongRightArrow;</li>
+            {% else %}
+            <li><a href="{{ config.base_url }}/lab">Lab</a></li>
+            {% endif %}
+
+        </ul></nav>
+        <div class="print">{{ config.base_url }}</div>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
