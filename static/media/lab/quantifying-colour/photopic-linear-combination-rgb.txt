@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![three color matching function curves side-by-side on left — with number values below them denoting weights — add symbol between them; equal symbol between input curves on left and output curve on right; output curve on right; output curve also has fixed luminosity function curve in gray;](interactive) -->
