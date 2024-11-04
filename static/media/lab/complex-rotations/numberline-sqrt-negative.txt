@@ -1,0 +1,9 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![morphing number line with numbers above, (show original number line in the background with numbers below); input for root; highlight negative a number to be squared to (maybe -1) and 1 — with different colours; stretch numline by root twice such that root tries to overlap with square but never overlap](interactive)
+<input placeholder="Enter value to square"> <button>Square</button>
+-->
