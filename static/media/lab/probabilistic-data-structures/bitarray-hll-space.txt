@@ -1,0 +1,6 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+<!-- level1 (top) -> five bits; level1.5 -> number n represented by level1; level2 (middle) -> string of n zeroes; level2.5 -> mumber represented by n zeroes; level3 -> roughly 2^n unique elements — static -->
+</svg>
+<!-- use log base2 in labels -->

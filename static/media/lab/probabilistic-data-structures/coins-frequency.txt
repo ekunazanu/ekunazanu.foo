@@ -1,0 +1,10 @@
+<!--
+<span style="font: 1rem var(--monospace);">
+<span style="color: #912; font-weight: 800; font-size: 1rem;">18</span> tosses to get <span style="color: #129; font-weight: 800; font-size: 1rem;">4</span> consecutive heads<br>
+Total tosses: 21<br>
+</span>
+<button>Toss</button> <button>Reset</button>
+
+Heads colored blue when counter updated
+{{ loadData(path="/static/media/lab/probabilistic-data-structures/coins2.html") }}
+-->

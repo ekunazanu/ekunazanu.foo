@@ -1,0 +1,9 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![complex plane — with faint unit circle; (x+yi) point on unit circle — draggable? — but restrcited to unit circle; (a+bi) point on complex plane — draggable?; m+ni point on plane — decided by other two points; (x+yi) first reset to (1/root2+i/root2); use three colours to distinguish points and relate points and numbers; use decimals instead of fractions to keep things simpler;](interactive) https://www.petercollingridge.co.uk/tutorials/svg/interactive/dragging/
+(a+bi)·(x+yi) = m+ni
+-->

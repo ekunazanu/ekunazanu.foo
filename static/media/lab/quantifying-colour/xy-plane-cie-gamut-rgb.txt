@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![xy plane with solid triangle outline — vertices fixed at CIE RGB primaries; three more sliders determines relative intensity of primaries — increasing intensity of one decreases the other two — such that the ratio between the other two is preserved; stacked horizontal bar chart bar to show ratios of primaries; two faint lines on xy plane and show point as point on a line — and the line is determined by a point on another line — similar to https://graphics.stanford.edu/courses/cs148-10-summer/docs/2010--kerr--cie_xyz.pdf PAGE 13 — but make the point and lines adjustable using sliders;](interactive) -->

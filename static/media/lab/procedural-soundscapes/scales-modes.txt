@@ -1,0 +1,6 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+<!-- all twelve notes - scrollable. on top interval name - fixed. clicking on the note horizontal scrolls twelve notes to get new base note. keys of scale are highlighted with colored background circle. dropdown menu to select scale/mode. in case of Modes, remove notes and only show background circle — to emphasize interval structure. Bottom -> "Scale of C/D#/etc or Mixolydian/Ionian Mode" and play button below. play individual notes in asc. order — interactive -->
+
