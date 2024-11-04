@@ -1,0 +1,78 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<script>
+
+// create web audio api context
+var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
+function playNote(frequency, duration) {
+  // create Oscillator node
+  var oscillator = audioCtx.createOscillator();
+  var oscillator2 = audioCtx.createOscillator();
+  var oscillator3 = audioCtx.createOscillator();
+
+  oscillator.type = 'sine';
+  oscillator.frequency.value = frequency * 0.5; // value in hertz
+  oscillator.connect(audioCtx.destination);
+  oscillator.start();
+
+  oscillator2.type = 'sine';
+  oscillator2.frequency.value = frequency * 0.625; // value in hertz
+  oscillator2.connect(audioCtx.destination);
+  oscillator2.start();
+  
+  oscillator3.type = 'sine';
+  oscillator3.frequency.value = frequency * 0.75; // value in hertz
+  oscillator3.connect(audioCtx.destination);
+  oscillator3.start();
+  
+  setTimeout(
+    function() {
+      oscillator.stop();
+      oscillator2.stop();
+      oscillator3.stop();
+      playMelody();
+    }, duration);
+}
+
+function playMelody() {
+  if (notes.length > 0) {
+    note = notes.pop();
+    playNote(note[0], 1000 * 256 / (note[1] * tempo));
+  }
+}
+
+notes = [
+  [659, 4],
+  [659, 4],
+  [659, 4],
+  [523, 8],
+  [0, 16],
+  [783, 16],
+  [659, 4],
+  [523, 8],
+  [0, 16],
+  [783, 16],
+  [659, 4],
+  [0, 4],
+  [987, 4],
+  [987, 4],
+  [987, 4],
+  [1046, 8],
+  [0, 16],
+  [783, 16],
+  [622, 4],
+  [523, 8],
+  [0, 16],
+  [783, 16],
+  [659, 4]
+];
+
+notes.reverse();
+tempo = 100;
+
+playMelody();
+</script>

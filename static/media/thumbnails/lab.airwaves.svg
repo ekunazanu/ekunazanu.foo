@@ -1,0 +1,30 @@
+<svg id="airwavesSVG" viewBox="0 0 200 150" fill="none" width="1200px" height="900px">
+<desc>Air particles as black dots on a yellow background.</desc>
+<rect id="airwavesBG" fill="#fb0" x="0" y="0" width="200" height="150" />
+<path id="airwavesPathWave" stroke="#a80" stroke-width="2" d="M-192 74C-176 90-160 106-144 106-128 106-112 90-96 74-80 58-64 42-48 42-32 42-16 58 0 74 16 90 32 106 48 106 64 106 80 90 96 74 112 58 128 42 144 42 160 42 176 58 192 74 208 90 224 106 240 106" />
+<g id="airwavesGroupParticles" stroke="#000" stroke-width="2" stroke-dasharray="2 4">
+<path id="airwavesPathParticle22" d="M -20 2V148" />
+<path id="airwavesPathParticle22" d="M -10 2V148" />
+<path id="airwavesPathParticle21" d="M   0 2V148" />
+<path id="airwavesPathParticle1"  d="M  10 2V148" />
+<path id="airwavesPathParticle2"  d="M  20 2V148" />
+<path id="airwavesPathParticle3"  d="M  30 2V148" />
+<path id="airwavesPathParticle4"  d="M  40 2V148" />
+<path id="airwavesPathParticle5"  d="M  50 2V148" />
+<path id="airwavesPathParticle6"  d="M  60 2V148" />
+<path id="airwavesPathParticle7"  d="M  70 2V148" />
+<path id="airwavesPathParticle8"  d="M  80 2V148" />
+<path id="airwavesPathParticle9"  d="M  90 2V148" />
+<path id="airwavesPathParticle10" d="M 100 2V148" />
+<path id="airwavesPathParticle11" d="M 110 2V148" />
+<path id="airwavesPathParticle12" d="M 120 2V148" />
+<path id="airwavesPathParticle13" d="M 130 2V148" />
+<path id="airwavesPathParticle14" d="M 140 2V148" />
+<path id="airwavesPathParticle15" d="M 150 2V148" />
+<path id="airwavesPathParticle16" d="M 160 2V148" />
+<path id="airwavesPathParticle17" d="M 170 2V148" />
+<path id="airwavesPathParticle18" d="M 180 2V148" />
+<path id="airwavesPathParticle19" d="M 190 2V148" />
+<path id="airwavesPathParticle20" d="M 200 2V148" />
+</g>
+</svg>

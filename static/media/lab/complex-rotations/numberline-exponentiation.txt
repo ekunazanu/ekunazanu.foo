@@ -1,0 +1,9 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![two integer number lines; labels — "original number line" and "transformed number line" below number lines; numbers are on top of original number line — BUT below on the transformed number line; arrows pointing from numbers (NOT just integers — maybe include rationals too) on original number line to numbers on the transformed number line; arrows pointing to squared numbers — including for negative inputs;](static)
+![third morphing number line with high contrasty black numbers below, (show original number line in the background with muted colors numbers above);](static)
+-->
