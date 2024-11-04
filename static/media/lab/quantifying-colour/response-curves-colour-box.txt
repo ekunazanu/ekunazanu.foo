@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![spd on top — single spike on spd at wavelength dependent on sliders; sensitivity curve graph of photoreceptor cells below; response curve of above two graphs below — shade the areas below with colour of photoreceptor type (rod=black,s=blue,m=greenish,l=yellowish-to-red); slider for wavelength & number of photons at bottom below all graphs; show amount of response of each type of receptors (rods and cones) as a sort of (progress/without sliding knob) bars on the right of the sliders for wavelength and intensity of photons; eg: https://jamie-wong.com/images/color/ConeExcitation1.png — combine all the three coloumns to one graph; keep rows separate; small colour box below or next to right to response (progress-like) bar, showing colors and colour names below the box at specific cone reponses (specific wavelengths and intensity); highlight response of cones progress bars and cones curves — by greying/reducing contrast of rods response progress bars, rods sensitivity curves, and rods response curves;](interactive) -->

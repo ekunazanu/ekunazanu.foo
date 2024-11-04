@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![colour space with spectral locus with bouding boxes drawing with dotted lines on left — also has three orthogonal lines to depict primaries; arrow with matrix below the arrow in middle; transformed space on the right — transforming space transforms primaries — use red, green, blue for old primaries that change with space transform — but also include gray orthogonal lines that stay in place regardless of transform; below inputs for matrix on left; on right of matrix inputs include views depicting top, side and front views — option to select which view — include transformed primaries and fixed orthogonal primaries; include transformation from https://en.wikipedia.org/wiki/File:CIE1931_RGBCMF.svg to https://en.wikipedia.org/wiki/File:CIE_1931_XYZ_Color_Matching_Functions.svg;](interactive) -->

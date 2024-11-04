@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![mostly same as above; but instead of triangle, a convex polygon — number of vertices (max 5, min 2) determined by checkboxes; same sliders as above, but five this time — unselecting the primary disables the slider and ratio bar (and sliders) gets accordingly reset;](interactive) -->

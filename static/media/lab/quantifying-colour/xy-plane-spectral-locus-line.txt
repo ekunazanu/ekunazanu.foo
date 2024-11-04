@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![horseshoe curve on xy plane; line crossing through x,y axes; two points for selecting line — draggable on the xy plane — maybe make it so the line always lies inside positive (triangle quadrant?); point on line — determined by the ratio slider; two sliders for ratio of two primaries — sum is one — increasing one decreases the other; stacked horizontal bar chart type bars on right of sliders showing ratio of two primaries — on left of bar char bar the (x,y,z) coordinates of one draggable point — on right of bar the (x,y,z) coordinates of the other draggable point;](interactive) -->
