@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![LMS colour cube on left — isomorphic projection; sliced plane of cube on right for specific value of L — plane has (M, S) as coordinates — show point on place corresponding to M S values; sliders for 'L, M, S response' below/at bottom; colour box on right of sliders; https://www.psy.ritsumei.ac.jp/akitaoka/LMS_color_space.html; show impossible colours](static/interactive-maybe3d) -->

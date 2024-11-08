@@ -1,0 +1,2 @@
+<input placeholder="Enter some input"> <button>Hash</button><br>
+hash("hello"): <code>0x2E</code>

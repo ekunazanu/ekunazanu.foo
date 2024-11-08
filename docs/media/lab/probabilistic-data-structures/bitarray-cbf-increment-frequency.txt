@@ -1,0 +1,11 @@
+<pre>
+.---+---+---+---+---+---+---+---.
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |   Existence
+'---+---+---+---+---+---+---+---'
+.-----+-----+-----+-----+-----+-----+-----+-----.
+| 000 | 000 | 000 | 000 | 000 | 000 | 000 | 000 |   Frequency
+'-----+-----+-----+-----+-----+-----+-----+-----'
+
+<input placeholder="Add element"> <button>Hash and add to set</button>
+<input placeholder="Search element"> <button>Hash and query frequency</button>
+</pre>

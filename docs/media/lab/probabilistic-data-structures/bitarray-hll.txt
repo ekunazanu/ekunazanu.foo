@@ -1,0 +1,6 @@
+<input placeholder="Enter some input"> <button>Hash</button> <button>Hash random element</button>
+hash(1) = 00000101
+<span style="color: #129; font-weight: 800; font-size: 1rem;">5</span> consecutive 0s suggests roughly <span style="color: #912; font-weight: 800; font-size: 1rem">32</span> elements hashed.
+Actual number of unique elements: 35
+<button>Reset</button>
+</pre>

@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![spd of pink, and gray, and (make it sketchable by user — BIG MAYBE) on top; response curves below. another curve multiplication of both curves. shade area under product of curves — display that as the value of response of cones; the example image has three sets of curves for each cone — try to combine all of them in one graph for each row — aka combine the top 3 curves as one spd graph; middle 3 as previous cone response graph; bottom 3 curves as a product response graph](interactive) -->
