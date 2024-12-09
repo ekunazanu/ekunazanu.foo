@@ -5,7 +5,7 @@ git branch --delete --force "public"
 git checkout -b "public"
 
 # Build site
-zola build
+zola build --drafts
 
 # Minify CSS
 python3 -m csscompressor -o "./deploy/misc/main.css" "./deploy/misc/main.css"

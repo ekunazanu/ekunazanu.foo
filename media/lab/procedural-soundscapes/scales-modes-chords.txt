@@ -1,0 +1,6 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+<!-- all twelve notes - scrollable. on top interval name - fixed. clicking on the note horizontal scrolls twelve notes to get new base note. keys of scale are highlighted with colored background circle. dropdown menu to select chord. First row same as above example - select scale. Second row for chords, using different color for background circle. Bottom -> "CMaj/D#Min/GMaj7 etc Chord" and play button below. play in unison once — interactive -->
+

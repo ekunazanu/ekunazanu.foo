@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![RGB colour space cube on left; slice of plane on right; similar to LMS color space; sliders should explicitly mention 'Xnm intensity' and not cone response; colour box on right of sliders;](interactive) -->

@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![moving photons from left to right onto an smaller fixed size power sensor; rate of number of photons slider for three/four/five/six wavelengths; spd graph below](interactive) -->

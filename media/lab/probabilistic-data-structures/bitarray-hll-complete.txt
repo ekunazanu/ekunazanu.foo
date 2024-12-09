@@ -1,0 +1,35 @@
+<pre>
+<input placeholder="Enter some input"> <button>Add</button> <button>Add random element</button>
+hash(1) = 11000001
++---------------------------------------------------------------+
+| <span style="color: #192; font-weight: 800; font-size: 1rem;">1</span> | <span style="color: #192; font-weight: 800; font-size: 1rem;">0</span> | <span style="color: #192; font-weight: 800; font-size: 1rem;">1</span> | <span style="color: #129; font-weight: 800; font-size: 16px;">0</span> | <span style="color: #129; font-weight: 800; font-size: 1rem;">0</span> | 1 | 1 | 0 | 1 | 0 | 0 | 1 | 0 | 1 | 1 | 0 |
++---------------------------------------------------------------+
+
+<span style="color: #129; font-weight: 800; font-size: 1rem;">2</span> consecutive 0s observed.
+Bucket <span style="color: #192; font-weight: 800">101</span> updated|not updated.
+
+Buckets:
++-------------------------------+
+| 4 | 2 | 4 | 4 | 3 | 2 | 1 | 5 |               (Blue color number if updated)
++-------------------------------+
+
+<button>Calculate cardinality</button>
+
+Cardinality estimate of bucket <span style="color: #192;">000</span>: <span style="color: #912; font-weight: 800;">16</span>
+Cardinality estimate of bucket <span style="color: #192;">001</span>: <span style="color: #912; font-weight: 800;">4</span>
+Cardinality estimate of bucket <span style="color: #192;">010</span>: <span style="color: #912; font-weight: 800;">16</span>
+Cardinality estimate of bucket <span style="color: #192;">011</span>: <span style="color: #912; font-weight: 800;">16</span>
+Cardinality estimate of bucket <span style="color: #192;">100</span>: <span style="color: #912; font-weight: 800;">8</span>
+Cardinality estimate of bucket <span style="color: #192;">101</span>: <span style="color: #912; font-weight: 800;">4</span>
+Cardinality estimate of bucket <span style="color: #192;">110</span>: <span style="color: #912; font-weight: 800;">2</span>
+Cardinality estimate of bucket <span style="color: #192;">111</span>: <span style="color: #912; font-weight: 800;">32</span>
+
+Harmonic mean of 70% of the smallest estimates: 6
+Estimate after being scaled by the correction factor: 5
+
+Final cardinality estimate: 5
+
+Actual number of unique elements: 6
+
+<button>Reset</button>
+</pre>
