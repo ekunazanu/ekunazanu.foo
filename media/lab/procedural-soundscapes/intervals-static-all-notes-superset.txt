@@ -1,0 +1,6 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+<!-- All notes (bigger superset from C1 to C7) with and note name below and ratio multiple/divisor above NO interval name zoomed out ABOVE and zoomed in on one octave A4 - G#4 (same as above) BELOW — static -->
+

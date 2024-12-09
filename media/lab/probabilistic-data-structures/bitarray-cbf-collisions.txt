@@ -1,0 +1,14 @@
+<pre>
+.-----+-----+-----+-----+-----+-----+-----+-----.
+| 000 | 000 | 000 | 000 | 000 | 000 | 000 | 000 |
+'-----+-----+-----+-----+-----+-----+-----+-----'
+
+Hash(A) = Hash(C)
+<button>Add A to set</button> <button>Query frequency of A</button>
+<button>Add B to set</button> <button>Query frequency of B</button>
+<button>Add C to set</button> <button>Query frequency of C</button>
+Actual frequency of A: 0
+Actual frequency of B: 0
+Actual frequency of C: 0
+</pre>
+<!-- restrctive interactive -->

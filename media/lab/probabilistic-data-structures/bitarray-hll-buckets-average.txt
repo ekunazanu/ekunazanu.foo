@@ -1,0 +1,17 @@
+<pre>
+Buckets:
++---------------+
+| 3 | 2 | 3 | 4 |
++---------------+
+
+<button>Calculate cardinality</button>
+
+Cardinality estimate of bucket <span style="color: #192;">00</span>: <span style="color: #912; font-weight: 800;">8</span>
+Cardinality estimate of bucket <span style="color: #192;">01</span>: <span style="color: #912; font-weight: 800;">4</span>
+Cardinality estimate of bucket <span style="color: #192;">10</span>: <span style="color: #912; font-weight: 800;">8</span>
+Cardinality estimate of bucket <span style="color: #192;">11</span>: <span style="color: #912; font-weight: 800;">16</span>
+
+Harmonic mean of all the estimates: 7
+Actual number of unique elements: 6
+<button>Reset</button>
+</pre>

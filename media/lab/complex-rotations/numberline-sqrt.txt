@@ -1,0 +1,10 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![morphing number line with numbers above, (show original number line in the background with numbers below); input for root; highlight square and 1; stretch numline by root twice such that root overlaps with square. when overlapping, it is the square root](interactive)
+<input placeholder="Enter value of number to find the square root of"> <button>Square</button><br>
+<input placeholder="Experiment with numbers to get the squared number to match up with the square"> <button>Square</button> <button>Reset</button>
+-->
