@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+
+<!-- ![spd above response curves; two response curve graphs of photoreceptor cells; one set sliders for wavelength & number of photons, another set of sliders for wavelength & number of photons; one vertical line overlaid on each of two response graphs to show wavelengths; show amount of response of each type of receptor cells as (unmovable/grayed out) bars on the right (vertical) or below (horizontal) on both graphs; emphasis on response of cones; others are lightened out (maybe low contrast); show interesection of wavelength vertical line indicator and response curve as small (but bigger than lines) dots; emphasis on intersection cones curve (others are grayed/low-contrast out); curve changes as intensity slider changes; menu to select protanomaly/deutanomly/tritanomaly/prot/achromatopsia/BCM/etc; change menu option changes response curves](interactive) -->

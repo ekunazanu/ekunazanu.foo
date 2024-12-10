@@ -1,0 +1,8 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![a,d sliders -> output value of imaginary component and projection of product of two complex (b,c are fixed, or separate single-same slider for both) numbers on imaginary axis. show two input numbers as well, but using muted colors](interactive)
+-->
