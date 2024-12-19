@@ -1,0 +1,10 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+
+<!--
+![two number lines — above original, transformed below; arrows connecting both; (show original number line in the background; use similar colours in this and below morphing number line ↓ to show similarity — highlight input and output with differen colours — in this number lines and also the below morhping number line ↓ to indicate position relationship;](interactive)
+![morphing number line with numbers above, (show original number line in the background with numbers below); input for base; highlight 1; stretch numline by base twice after some delay;](interactive)
+<input placeholder="Enter value to square"> <button>Square</button> <button>Reset</button>
+-->

@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+<!--
+![counter blocks all set to 0 at first — all black; pseudorandom number generation by chacha by incrementing counter; new blocks keep getting added to a stream of older blocks that keeping moving to the right to make space for the new blocks; xor operator in between below; plaintext below that; equal in between below; ciphertext below that;](interactive/animation)
+ -->
