@@ -1,0 +1,7 @@
+<svg id="bitarraySVG" viewBox="0 0 200 75" fill="none" width="1200px" height="450px">
+<desc>Bit array.</desc>
+<rect id="bitarrayBG" fill="#aaa" x="0" y="0" width="200" height="150" />
+</svg>
+<!--
+![00xx... = 01xx... = 10xx... = 11xx... on top for m1 and on bottom for m2 — on left; xx... on right — sigynifying actual 128-bit hash value;](static)
+ -->

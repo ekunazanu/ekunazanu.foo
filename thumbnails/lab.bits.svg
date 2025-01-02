@@ -1,0 +1,15 @@
+<svg id="bitsSVG" viewBox="0 0 200 150" fill="none" width="1200px" height="900px">
+<desc>Lines of dashes of variable width representing bits.</desc>
+<rect id="bitsBG" fill="#fff" x="0" y="0" width="200" height="150" />
+<g id="bitsGroupLines" stroke="#478" stroke-width="14">
+<path id="bitsPathL1" d="M0 7   H240" stroke-dasharray="2 1 3 2" />
+<path id="bitsPathL2" d="M0 24  H240" stroke-dasharray="3 2" />
+<path id="bitsPathL3" d="M0 41  H240" stroke-dasharray="2 1 1 1" />
+<path id="bitsPathL4" d="M0 58  H240" stroke-dasharray="3 1 2 1 2 1" />
+<path id="bitsPathL5" d="M0 75  H240" stroke-dasharray="3 1" />
+<path id="bitsPathL6" d="M0 92  H240" stroke-dasharray="2 2 3 1" />
+<path id="bitsPathL7" d="M0 109 H240" stroke-dasharray="4 1" />
+<path id="bitsPathL8" d="M0 126 H240" stroke-dasharray="2" />
+<path id="bitsPathL9" d="M0 143 H240" stroke-dasharray="4 1 2 1 1 1" />
+</g>
+</svg>

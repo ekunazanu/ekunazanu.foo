@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>ekunazanu</title>
+    <subtitle>A blogified version of xkcd, only worse, and more personal, and not really funny.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://ekunazanu.foo/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://ekunazanu.foo"/>
+    <updated>2025-01-05T00:00:00+00:00</updated>
+    <id>https://ekunazanu.foo/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Version Control</title>
+        <published>2025-01-05T00:00:00+00:00</published>
+        <updated>2025-01-05T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/1-vcs/"/>
+        <id>https://ekunazanu.foo/log/1-vcs/</id>
+        <summary type="html">Preparing a gameplan for medium success.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/1-vcs/">&lt;p&gt;I won’t beat around the bush. College feels like a giant waste of time and money; not that I am surprised. But to be completely fair I haven’t been productive myself either. I just wasted an entire year. And two years before that. Also two years before that. I have been slacking for way too long and it’s time to get serious.&lt;&#x2F;p&gt;
+&lt;p&gt;This is the goal: Speedrun the fundamentals of computer science.&lt;&#x2F;p&gt;
+&lt;p&gt;First things first, I need a plan. Fortunately I have one. Unfortunately I don’t have enough braincells to pull it off quickly enough. BUT fortunately my braincell count is exactly at the point where I &lt;em&gt;think&lt;&#x2F;em&gt; I can do it — right the top of the Dunning-Kruger curve.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;vcs&#x2F;dunning-kruger-curve.avif&quot; alt=&quot;cartoonish representation of a dunning kruger curve&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;&quot;&gt;The Plan™&lt;&#x2F;h2&gt;
+&lt;p&gt;Okay, so The Plan™ is ridiculously simple: Just study. Okay to be slightly more specific, it includes completing the first three chapters of &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;web.mit.edu&#x2F;6.001&#x2F;6.037&#x2F;sicp.pdf&quot;&gt;SICP&lt;&#x2F;a&gt;, and getting comfortable with &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cims.nyu.edu&#x2F;~regev&#x2F;teaching&#x2F;discrete_math_fall_2005&#x2F;dmbook.pdf&quot;&gt;discrete math&lt;&#x2F;a&gt; and &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ocw.mit.edu&#x2F;courses&#x2F;18-06sc-linear-algebra-fall-2011&#x2F;&quot;&gt;linear algebra&lt;&#x2F;a&gt;. I also want to focus a bit on &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www3.cs.stonybrook.edu&#x2F;~skiena&#x2F;373&#x2F;videos&#x2F;&quot;&gt;DSA&lt;&#x2F;a&gt;. All this hopefully by the end the of this first quarter of this year. And if I have a healthy amount of time left, do some &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;courses.csail.mit.edu&#x2F;6.042&#x2F;spring17&#x2F;mcs.pdf&quot;&gt;math for CS&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;If all those links seemed familiar, it is because it’s from &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;teachyourselfcs.com&#x2F;&quot;&gt;teachyourselfcs.com&lt;&#x2F;a&gt;. By the next quarter I am hoping to finish &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;teachyourselfcs.com&#x2F;#operating-systems&quot;&gt;operating systems&lt;&#x2F;a&gt; and &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;teachyourselfcs.com&#x2F;#networking&quot;&gt;networking&lt;&#x2F;a&gt; and a little bit about &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;teachyourselfcs.com&#x2F;#databases&quot;&gt;databases&lt;&#x2F;a&gt;. I probably don’t &lt;em&gt;need&lt;&#x2F;em&gt; to learn about compilers too, so it’s pretty far down the list of things I need to get done immediately — but it’s a nice topic I definitely I want to learn more about after graduation.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;vcs&#x2F;important.avif&quot; alt=&quot;text that says important followed by an arrow pointing down&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;And now, the most important part of The Plan™ — I know my ADHD brain will try its best to get distracted by the most random of things, so the aim here is to post a log every week about the things I learnt to keep me in check. Similar to how tracking expenses make people more deliberate about their spending, hopefully writing these logs will knock some sense into me and make me aware of how much time I waste every week. These will be short summaries; the acutal notes will on a &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;notes.ekunazanu.foo&quot;&gt;separate repository&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;That’s all. See you until next week — if this pet projects still exists by then. If it does, I don’t intend on wasting more than ten minutes writing these. So if anyone is reading this, do not expect any high quality posts at all.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;vcs&#x2F;doodle-cya.avif&quot; alt=&quot;doodle of a person waving goodbye&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;TL;DR&lt;&#x2F;strong&gt;: It’s time to start being productive. And hopefully to find gold. Or a job.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Test template to check if everything is working and that very long titles get truncated</title>
+        <published>2024-12-01T00:00:00+00:00</published>
+        <updated>2024-12-01T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/testtemplate/"/>
+        <id>https://ekunazanu.foo/log/testtemplate/</id>
+        <summary type="html">Testing and shit.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/testtemplate/">&lt;p&gt;Paragraph with an &lt;a href=&quot;https:&#x2F;&#x2F;ekunazanu.foo&#x2F;log&#x2F;testtemplate&#x2F;linkaddress&quot;&gt;internal link&lt;&#x2F;a&gt; and &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;foo.bar&quot;&gt;external link&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Huge fan of pastelle photos of &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.echevarria.io&#x2F;&quot;&gt;echevarrio.io&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;900&#x2F;600&quot; alt=&quot;First&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;
+&lt;img src=&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;900&#x2F;500&quot; alt=&quot;Second&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;
+&lt;img src=&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;900&#x2F;300&quot; alt=&quot;Third&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;
+&lt;img src=&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;900&#x2F;400&quot; alt=&quot;Fourth&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;But also for doodles, maybe a style similar to &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;xkcd.com&#x2F;&quot;&gt;xkcd&lt;&#x2F;a&gt; and this:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;d24ovhgu8s7341.cloudfront.net&#x2F;uploads&#x2F;editor&#x2F;posts&#x2F;3103&#x2F;optimized_Screenshot%202024-05-17%20at%209.11.00%20AM.png&quot; alt=&quot;water-colour-style&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;&quot;&gt;Header3&lt;&#x2F;h3&gt;
+&lt;p&gt;Another paragraph with &lt;em&gt;emphasis&lt;&#x2F;em&gt; or &lt;strong&gt;strong emphasis&lt;&#x2F;strong&gt;. Also &lt;code&gt;monospaced string or inline code&lt;&#x2F;code&gt;. Don’t use underline, to reduce confusion with links. &lt;del&gt;Strikethrough&lt;&#x2F;del&gt; is fine though. Also &lt;mark&gt;text can be marked&lt;&#x2F;mark&gt;. Not sure how it can be useful.&lt;&#x2F;p&gt;
+&lt;div style=&quot;overflow-x: auto; margin: 1rem 0;&quot;&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th style=&quot;text-align: left&quot;&gt;left&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;right&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: center&quot;&gt;center&lt;&#x2F;th&gt;&lt;th&gt;YYYYY&lt;&#x2F;th&gt;&lt;th&gt;gfdhcbfghrdcbvgfhdc&lt;&#x2F;th&gt;&lt;th&gt;dghyh&lt;&#x2F;th&gt;&lt;th&gt;ebhd&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;1&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;a&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;1&lt;&#x2F;td&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;ghelldfigffvbn&lt;&#x2F;td&gt;&lt;td&gt;er&lt;&#x2F;td&gt;&lt;td&gt;ww&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;2&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;a&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;1&lt;&#x2F;td&gt;&lt;td&gt;11987&lt;&#x2F;td&gt;&lt;td&gt;vgnbfhdrjcv b&lt;&#x2F;td&gt;&lt;td&gt;q&lt;&#x2F;td&gt;&lt;td&gt;222&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;3&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;a&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;1&lt;&#x2F;td&gt;&lt;td&gt;23e4r&lt;&#x2F;td&gt;&lt;td&gt;ftrhdejxncvbgfrhejs&lt;&#x2F;td&gt;&lt;td&gt;aa&lt;&#x2F;td&gt;&lt;td&gt;rd&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;4&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;a&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;1&lt;&#x2F;td&gt;&lt;td&gt;22&lt;&#x2F;td&gt;&lt;td&gt;fcngthrdjfcnv&lt;&#x2F;td&gt;&lt;td&gt;aa&lt;&#x2F;td&gt;&lt;td&gt;edr&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;5&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;a&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;1&lt;&#x2F;td&gt;&lt;td&gt;1215&lt;&#x2F;td&gt;&lt;td&gt;gfyeh ftgrebd&lt;&#x2F;td&gt;&lt;td&gt;a&lt;&#x2F;td&gt;&lt;td&gt;erf&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;6&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;a&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;1&lt;&#x2F;td&gt;&lt;td&gt;2333&lt;&#x2F;td&gt;&lt;td&gt;2w3erftg&lt;&#x2F;td&gt;&lt;td&gt;aa&lt;&#x2F;td&gt;&lt;td&gt;dfd&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;7&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;a&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;1&lt;&#x2F;td&gt;&lt;td&gt;33&lt;&#x2F;td&gt;&lt;td&gt;234 r 43edr 3ewdasdfgtrdfghg ashdgj xyhgsfdxgthyd sjhgbxd&lt;&#x2F;td&gt;&lt;td&gt;a&lt;&#x2F;td&gt;&lt;td&gt;vfc&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;This is some sample text again. I don’t know what to say other than that this is tedious. Okay, maybe not, but at least this is a waste of time. At least on the bright side I get to practice my typing skills and frankly I am not surprised I’m this slow. Worse, I am making too many mistakes. Good thing my typing won’t be a bottleneck. My brain will. Anyways I think this is enough text for a paragraph to check how images look between paragraphs.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;300&#x2F;200&quot; alt=&quot;Fifth&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;This is some sample text again. I don’t know what to say other than that this is tedious. Okay, maybe not, but at least this is a waste of time. At least on the bright side I get to practice my typing skills and frankly I am not surprised I’m this slow. Worse, I am making too many mistakes. Good thing my typing won’t be a bottleneck. My brain will. Anyways I think this is enough text for a paragraph to check how images look between paragraphs.&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;code block
+with just
+    some lines
+    of
+text
+that is very longggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This is some sample text again. I don’t know what to say other than that this is tedious. Okay, maybe not, but at least this is a waste of time. At least on the bright side I get to practice my typing skills and frankly I am not surprised I’m this slow. Worse, I am making too many mistakes. Good thing my typing won’t be a bottleneck. My brain will. Anyways I think this is enough text for a paragraph to check how images look between paragraphs.&lt;&#x2F;p&gt;
+&lt;div style=&quot;overflow-x: auto; margin: 1rem 0;&quot;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+    &lt;tr&gt;&lt;th&gt;Row&#x2F;col header&lt;&#x2F;th&gt; &lt;th&gt;Row header&lt;&#x2F;th&gt; &lt;th colspan=&quot;2&quot;&gt;Row header spanning 2 cols&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;thead&gt;
+&lt;tfoot&gt;
+    &lt;tr&gt;&lt;th&gt;Row&#x2F;col footer&lt;&#x2F;th&gt;&lt;th&gt;Row footer&lt;&#x2F;th&gt;&lt;th&gt;Row footer&lt;&#x2F;th&gt;&lt;th&gt;Row footer&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tfoot&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;&lt;th&gt;Col header&lt;&#x2F;th&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+    &lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;Col header spanning 2 rows&lt;&#x2F;th&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+    &lt;tr&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt; &amp;lt;- empty cell&lt;&#x2F;td&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+    &lt;tr&gt;&lt;th&gt;Col header&lt;&#x2F;th&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;td rowspan=&quot;2&quot; colspan=&quot;2&quot;&gt;Cell spanning two rows and cols&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+    &lt;tr&gt;&lt;th&gt;Col header&lt;&#x2F;th&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+    &lt;tr&gt;&lt;th&gt;Col header&lt;&#x2F;th&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;td&gt;cell&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;
+&lt;&#x2F;table&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;This is some sample text again. I don’t know what to say other than that this is tedious. Okay, maybe not, but at least this is a waste of time. At least on the bright side I get to practice my typing skills and frankly I am not surprised I’m this slow. Worse, I am making too many mistakes. Good thing my typing won’t be a bottleneck. My brain will. Anyways I think this is enough text for a paragraph to check how tables look between paragraphs.&lt;&#x2F;p&gt;
+&lt;pre&gt;&lt;code&gt;int main(void){
+    float num1;
+    float num2;
+    scanf(&amp;quot;%f, %f&amp;quot;, &amp;amp;num1, &amp;amp;num2);
+    if (num1 &amp;gt; num2){
+        printf(&amp;quot;\033[31;1;4mThe first number is greater\033[0m&amp;quot;);
+    }
+    else if (num2 &amp;gt; num1){
+        printf(&amp;quot;\033[32;1;4mThe second number is greater\033[0m&amp;quot;);
+    }
+    else {
+        printf(&amp;quot;\033[34;1;4mBoth are equal\033[0m&amp;quot;);
+    }
+    return 0;
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;-1&quot;&gt;Header2&lt;&#x2F;h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Single line blockquote that wraps around because the width of the text is longer than the width of the display on the screen of the computer, phone or other device.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Blockquote&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Which is nested&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ivanceras.github.io&#x2F;svgbob-editor&quot;&gt;External site&lt;&#x2F;a&gt; for converting ASCII to SVG. Store externally and use &lt;code&gt;loadData&lt;&#x2F;code&gt; shortcode to keep content page organized but inline the SVGs. Also use &lt;code&gt;loadData&lt;&#x2F;code&gt; for inlining interactive JS visuals.&lt;&#x2F;p&gt;
+
+No data found
+&lt;p&gt;Some random words. And some other random words, to pad out this paragraph. It’s not enough text so adding more here. I guess this is enough. Okay it’s not, so here I am adding more. It’s repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;picsum.photos&#x2F;800?grayscale&quot; alt=&quot;6th&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Some random words. And some other random words, to pad out this paragraph. It’s not enough text so adding more here. I guess this is enough. Okay it’s not, so here I am adding more. It’s repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.&lt;&#x2F;p&gt;
+&lt;p&gt;An unordered list:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;This is some sample text again. I don’t know what to say other than that this is tedious. Okay, maybe not, but at least this is a waste of time. At least on the bright side I get to practice my typing skills and frankly I am not surprised I’m this slow. Worse, I am making too many mistakes. Good thing my typing won’t be a bottleneck. My brain will. Anyways I think this is enough text for a paragraph to check how tables look between paragraphs.
+&lt;ul&gt;
+&lt;li&gt;This is some sample text again. I don’t know what to say other than that this is tedious. Okay, maybe not, but at least this is a waste of time.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;This is some sample text again. I don’t know what to say other than that this is tedious. Okay, maybe not, but at least this is a waste of time. At least on the bright side I get to practice my typing skills and frankly I am not surprised I’m this slow.
+&lt;ul&gt;
+&lt;li&gt;This is some sample text again. I don’t know what to say other than that this is tedious.
+&lt;ul&gt;
+&lt;li&gt;Worse, I am making too many mistakes. Good thing my typing won’t be a bottleneck. My brain will. Anyways I think this is enough text for a paragraph to check how tables look between paragraphs.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;And an ordered list:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;Somthing else&lt;&#x2F;li&gt;
+&lt;li&gt;This too
+&lt;ol&gt;
+&lt;li&gt;and something&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;This three &lt;a href=&quot;&#x2F;&quot;&gt;testlink&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Some random words. And some other random words, to pad out this paragraph. It’s not enough text so adding more here. I guess this is enough. Okay it’s not, so here I am adding more. It’s repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.&lt;&#x2F;p&gt;
+&lt;details  open  &gt;
+&lt;summary&gt;Disclaimer&lt;&#x2F;summary&gt;
+&lt;p&gt;Some random words. And some other random words, to pad out this paragraph. It’s not enough text so adding more here. I guess this is enough. A &lt;a href=&quot;link&quot;&gt;random link&lt;&#x2F;a&gt;. Okay it’s not, so here I am adding more. It’s repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.&lt;&#x2F;p&gt;
+&lt;p&gt;Some random words. And some other random words, to pad out this paragraph. It’s not enough text so adding more here. I guess this is enough. A &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;foo.bar&quot;&gt;random external link&lt;&#x2F;a&gt;. Okay it’s not, so here I am adding more. It’s repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.&lt;&#x2F;p&gt;
+&lt;&#x2F;details&gt;
+&lt;p&gt;Some random words. And some other random words, to pad out this paragraph. It’s not enough text so adding more here. I guess this is enough. Okay it’s not, so here I am adding more. It’s repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;-2&quot;&gt;References &#x2F; Footnotes&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;A thing.&lt;&#x2F;li&gt;
+&lt;li&gt;Other Thing.&lt;&#x2F;li&gt;
+&lt;li&gt;Something.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+    </entry>
+</feed>
