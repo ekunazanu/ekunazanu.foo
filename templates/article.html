@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+    <article>
+        <h1>{{ pagevar.title }}</h1>
+        {{ pagevar.content | safe }}
+    </article>
+</main>
+<footer>
+    <a href="{{ config.base_url }}/more#Terms_of_Use">&copy;&nbsp;2025</a>&nbsp;<a href="{{ config.base_url }}">Anchit&nbsp;Roy</a> &middot; <a rel="noopener nofollow noreferrer" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>
+</footer>
+{% endblock content %}

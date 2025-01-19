@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+    {{ section.content | safe }}
+    <div class="logs">
+        {% for page in section.pages %}
+        <a href="{{ page.permalink }}">{{ page.title }}</a><time datetime="{{ page.date }}">{{ page.date | date(format="%Y·%m·%d") }}</time>
+        {% endfor %}
+    </div>
+</main>
+{% endblock content %}
