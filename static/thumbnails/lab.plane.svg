@@ -1,0 +1,21 @@
+<svg id="rotationSVG" viewBox="0 0 200 150" fill="none" width="1200px" height="900px">
+<desc>Two lines of unit length on a polar plane.</desc>
+<rect id="rotationBG" fill="#eee" x="0" y="0" width="200" height="150" />
+<path id="rotationPathGridBG" stroke="#ddd" stroke-width="2" d="M 10 0V150M 30 0V150M 50 0V150M 70 0V150M 90 0V150M 110 0V150M 130 0V150M 150 0V150M 170 0V150M 190 0V150 M0 5 H200M0 25 H200M0 45 H200M0 65 H200M0 85 H200M0 105 H200M0 125 H200M0 145 H200" />
+<path id="rotationPathGridFG" stroke="#bbb" stroke-width="2" d="M 0 0V150M 20 0V150M 40 0V150M 60 0V150M 80 0V150M 100 0V150M 120 0V150M 140 0V150M 160 0V150M 180 0V150M 200 0V150 M0 15 H200M0 35 H200M0 55 H200M0 75 H200M0 95 H200M0 115 H200M0 135 H200" />
+<circle id="rotationCircUtCr1" stroke="#666" stroke-width="2" stroke-dasharray="1 2" cx="100" cy="75" r="20" />
+<circle id="rotationCircUtCr2" stroke="#666" stroke-width="2" stroke-dasharray="1 2" cx="100" cy="75" r="40" />
+<circle id="rotationCircUtCr3" stroke="#333" stroke-width="2" stroke-dasharray="1 2" cx="100" cy="75" r="60" />
+<circle id="rotationCircUtCr4" stroke="#666" stroke-width="2" stroke-dasharray="1 2" cx="100" cy="75" r="80" />
+<circle id="rotationCircUtCr5" stroke="#666" stroke-width="2" stroke-dasharray="1 2" cx="100" cy="75" r="100" />
+<path id="rotationPathAxes" stroke="#666" stroke-width="2" d="M30 75 H170 M100 5 V 145" />
+<line id="rotationLineNum1" stroke="#000" stroke-width="2" x1="100" y1="75" x2="149" y2="41" />
+<line id="rotationLineNum2" stroke="#000" stroke-width="2" x1="100" y1="75" x2="120" y2="19" />
+<circle id="rotationCircPoRe" fill="#558" cx="160" cy="75"  r="4" />
+<circle id="rotationCircPoIm" fill="#558" cx="100" cy="15"  r="4" />
+<circle id="rotationCircNeRe" fill="#558" cx="40"  cy="75"  r="4" />
+<circle id="rotationCircNeIm" fill="#558" cx="100" cy="135" r="4" />
+<circle id="rotationCircNum1" fill="#58a" cx="149" cy="41" r="4" />
+<circle id="rotationCircNum2" fill="#745" cx="120" cy="19" r="4" />
+<circle id="rotationCircCntr" fill="#558" cx="100" cy="75" r="6" />
+</svg>
