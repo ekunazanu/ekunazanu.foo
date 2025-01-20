@@ -10,7 +10,7 @@ generate_feeds = false
 [extra]
 type = "website"
 thumbnail = "other.doodle-experiments.avif"
-thumbnailalt = "Doodle of a person doing experiments with glass tubes and safety goggles."
+thumbnailalt = "Doodle of a person with glass tubes gazing at an explosion."
 +++
 
 <style>

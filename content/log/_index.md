@@ -9,6 +9,6 @@ paginate_by = 0
 generate_feeds = true
 [extra]
 type = "website"
-thumbnail = "other.doodle-write.avif"
-thumbnailalt = "A doodle of a logbook."
+thumbnail = "other.doodle-notes.avif"
+thumbnailalt = "A doodle of papers with squiggly lines and doodles on it."
 +++
