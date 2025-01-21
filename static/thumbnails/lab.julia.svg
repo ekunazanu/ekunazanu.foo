@@ -1,0 +1,9 @@
+<svg id="juliaSVG" viewBox="0 0 200 150" fill="none" width="1200px" height="900px">
+<desc>A julia set on the complex plane in black with three white points inside the set.</desc>
+<rect id="juliaBG" fill="#edb" x="0" y="0" width="200" height="150" />
+<path id="juliaPathGrid" stroke="#cb9" stroke-width="2" d="M0 75H200M20 0V150M40 0V150M60 0V150M80 0V150M100 0V150M120 0V150M140 0V150M160 0V150M180 0V150 M10 0V150M30 0V150M50 0V150M70 0V150M90 0V150M110 0V150M130 0V150M150 0V150M170 0V150M190 0V150" />
+<path id="juliaPathSet" fill="#000" d="M 10 75 A 1 1 0 0 0 20 75 A 1 1 0 0 0 60 75 A 40 40 0 0 0 100 115 A 1 1 0 0 0 100 125 A 1 1 0 0 0 100 115 A 40 40 0 0 0 140 75 A 1 1 0 0 0 180 75 A 1 1 0 0 0 190 75 A 1 1 0 0 0 180 75 A 1 1 0 0 0 140 75 A 40 40 0 0 0 100 35 A 1 1 0 0 0 100 25 A 1 1 0 0 0 100 35 A 40 40 0 0 0 60 75 A 1 1 0 0 0 20 75 A 1 1 0 0 0 10 75 Z" />
+<circle id="juliaCircDot1" fill="#fff" r="3" cx="132" cy="75" />
+<circle id="juliaCircDot2" fill="#fff" r="3" cx="84" cy="75" />
+<circle id="juliaCircDot3" fill="#fff" r="3" cx="68" cy="75" />
+</svg>

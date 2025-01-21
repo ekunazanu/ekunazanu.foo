@@ -1,0 +1,108 @@
+<svg id="wordsSVG" viewBox="0 0 200 150" fill="none" width="1200px" height="900px">
+<desc>A messy word-cloud filled with random words.</desc>
+<rect id="wordsBG" fill="#fff" x="0" y="0" width="200" height="150" />
+<g id="wordsGroupCloud" fill="#000" font-family="JetBrains Mono" font-size="16">
+<g id="wordsGroup1">
+<text x="-5"  y="12">zoom</text>
+<text x="15"  y="35">steadfast</text>
+<text x="83"  y="65">scintillating</text>
+<text x="133" y="91">men</text>
+<text x="64"  y="135">far</text>
+<text x="27"  y="45">cobweb</text>
+<text x="85"  y="10">wild</text>
+<text x="-20" y="131">skillful</text>
+<text x="98"  y="45">delay</text>
+<text x="192" y="85">bucket</text>
+<text x="14"  y="152">helping</text>
+</g>
+<g id="wordsGroup2">
+<text x="112" y="75">mountainous</text>
+<text x="89"  y="92">unboil</text>
+<text x="165" y="141">tank</text>
+<text x="12"  y="115">heavenly</text>
+<text x="20"  y="105">bang</text>
+<text x="10"  y="54">jealous</text>
+<text x="40"  y="61">characterisitc</text>
+<text x="70"  y="74">connect</text>
+<text x="46"  y="28">amazing</text>
+<text x="-2"  y="52">wilder</text>
+</g>
+<g id="wordsGroup3">
+<text x="80"  y="15">trousers</text>
+<text x="90"  y="102">unwieldy</text>
+<text x="153" y="111">turkey</text>
+<text x="120" y="133">staking</text>
+<text x="130" y="177">tomatoes</text>
+<text x="140" y="38">respect</text>
+<text x="150" y="15">helpless</text>
+<text x="160" y="93">mundane</text>
+<text x="130" y="7">righteous</text>
+<text x="146" y="27">agreement</text>
+<text x="68"  y="151">judicial</text>
+</g>
+<g id="wordsGroup4">
+<text x="190" y="35">icicle</text>
+<text x="-3"   y="98">chase</text>
+<text x="10"  y="130">cherries</text>
+<text x="20"  y="21">depressed</text>
+<text x="-12" y="121">repair</text>
+<text x="40"  y="143">far-flung</text>
+<text x="27"  y="84">cowardly</text>
+<text x="60"  y="105">pear</text>
+<text x="-6"  y="92">early</text>
+<text x="80"  y="12">flame</text>
+</g>
+<g id="wordsGroup5">
+<text x="90"  y="131">shut</text>
+<text x="100" y="32">honey</text>
+<text x="-6"  y="40">circle</text>
+<text x="120" y="55">special</text>
+<text x="140" y="69">drip</text>
+<text x="160" y="78">heat</text>
+<text x="22"  y="92">glow</text>
+<text x="75"  y="102">lumber</text>
+<text x="93"  y="135">island</text>
+<text x="121" y="82">cats</text>
+<text x="14"  y="8">shrimps</text>
+</g>
+<g id="wordsGroup6">
+<text x="-3"   y="25">heater</text>
+<text x="21"  y="15">thunder</text>
+<text x="91"  y="32">acoustic</text>
+<text x="41"  y="72">employ</text>
+<text x="51"  y="96">dare</text>
+<text x="-9"  y="155">rough</text>
+<text x="71"  y="122">succinct</text>
+<text x="81"  y="53">trot</text>
+<text x="91"  y="112">bait</text>
+<text x="101" y="21">wink</text>
+<text x="05"  y="108">pulp</text>
+</g>
+<g id="wordsGroup7">
+<text x="111" y="143">flowery</text>
+<text x="121" y="01">soothe</text>
+<text x="-11" y="83">inquisitive</text>
+<text x="151" y="125">appear</text>
+<text x="151" y="105">machine</text>
+<text x="161" y="23">languid</text>
+<text x="171" y="89">stocking</text>
+<text x="181" y="52">zip</text>
+<text x="121" y="45">calculating</text>
+<text x="01"  y="65">drop</text>
+<text x="85"  y="82">pass</text>
+</g>
+<g id="wordsGroup8">
+<text x="-12" y="72">reward</text>
+<text x="41"  y="117">flight</text>
+<text x="-4"  y="140">naughty</text>
+<text x="131" y="23">tow</text>
+<text x="111" y="110">label</text>
+<text x="111" y="02">learn</text>
+<text x="131" y="81">blow</text>
+<text x="151" y="105">humorous</text>
+<text x="138" y="118">tranquil</text>
+<text x="124" y="153">capricious</text>
+<text x="75"  y="42">theory</text>
+</g>
+</g>
+</svg>
