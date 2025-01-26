@@ -13,7 +13,7 @@ python3 -m csscompressor -o "./deploy/misc/main.css" "./deploy/misc/main.css"
 # Generate PNG thumbnails
 # Use images of size 1200x900
 # Could be optimzed to ignore already converted files
-for f in ./deploy/media/thumbnails/*.{svg,avif}; do magick "$f" "$f.png"; rm "$f"; done
+for f in ./deploy/thumbnails/*.{svg,avif}; do magick "$f" "$f.png"; rm "$f"; done
 
 # Move all files to root directory (for GH Pages)
 mv --force -t "." ./deploy/*
