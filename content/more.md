@@ -5,8 +5,8 @@ draft = false
 template = "page.html"
 [extra]
 type = "website"
-thumbnail = "other.doodle-bored.avif"
-thumbnailalt = "Doodle of a person who appears bored."
+thumbnail = "other.attribution.avif"
+thumbnailalt = "CC Attribution symbol."
 +++
 
 Here's stuff that I probably should mention.
