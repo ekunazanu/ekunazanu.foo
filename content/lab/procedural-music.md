@@ -16,18 +16,20 @@ I like music — a lot of people do. I also like math — a lot of people do **n
 
 ## Music Theory
  
-To create music, it helps to have an understanding of sounds and why certain sounds are more pleasant than others.
+To create music, it first helps to have some understanding of what sounds are and why certain sounds are more pleasant than others.
 
-A vibrating object can transmit its vibrations to the ear via [differences in air pressure](https://en.wikipedia.org/wiki/Acoustic_wave), which is then interpreted by the brain as a sound. If the air pressure at the ear is plotted with respect to time, then the resulting graph forms a wave. The amplitude of this wave corresponds to the difference in sound pressure, which is interpreted by the ear and brain as the intensity or **loudness** of the sound. Meanwhile, the frequency of the wave is interpreted as its **pitch**.
+Consider any vibrating object. It can transmit its vibrations to the ear via [differences in air pressure](https://en.wikipedia.org/wiki/Acoustic_wave), which is interpreted by the brain as a 'sound'. If the air pressure at the ear is plotted with respect to time, then the resulting graph forms a wave. The amplitude of this wave corresponds to the difference in sound pressure, which is interpreted by the ear and brain as the intensity or **loudness** of the sound. Meanwhile, the frequency of the wave is interpreted as its **pitch**.
 
 <canvas id="canvasWaveOne"></canvas>
 <input id="frequencySliderWaveOne" type="range"><br>
 <input id="amplitudeSliderWaveOne" type="range"><br>
 <button id="playButtonWaveOne">Play sound</button>
 
+Here, the sound source is a vibrating object, oscillating in a [sinusoidal](https://en.wikipedia.org/wiki/Sine_wave) motion — and thus the resulting air-pressure-time-graph looks like a sine wave.
+
 ### Intervals
 
-The above sound has a singular frequency, and can sound fairly plain. However, another wave can be added to it to make it sound relatively richer and more textured:
+The above sound has a singular frequency, and may sound simple. While introducing variations to the frequency and amplitude can make it somewhat interesting, it might still sound fairly plain. The (perhaps) natural question then would be, what if there was another sound to play around with, instead of having one sound — another similar sound with its own knobs for frequency and amplitude? What would the addition of the sounds, sound like?
 
 <canvas id="canvasWaveTwo"></canvas>
 <input id="frequencySliderWaveTwoA" type="range">
@@ -36,57 +38,66 @@ The above sound has a singular frequency, and can sound fairly plain. However, a
 <input id="amplitudeSliderWaveTwoB" type="range"><br>
 <button id="playButtonWaveTwo">Play sound</button>
 
-{% tangent(summary="Sound distortion", open=true) %}
-If the sum of the amplitudes exceeds the maximum amplitude, the sounds may become distorted. The addition of the sound waves produces an amplitude that is greater than the maximum value, and gets [clipped](https://en.wikipedia.org/wiki/Clipping_(signal_processing)#/media/File:Clipping.svg). This creates a square like wave instead of a sine wave, producing a [distinct buzz sound](https://aatishb.com/synthesine/examples/square/index.html).
+{% tangent(summary="Sound distortion", open=false) %}
+If the sum of the amplitudes exceeds some maximum amplitude, the sounds may become distorted. The addition of the sound waves produces an amplitude that is greater than the maximum value, and gets [clipped](https://en.wikipedia.org/wiki/Clipping_(signal_processing)#/media/File:Clipping.svg). This creates a square like wave instead of a sine wave, producing a [distinct buzz sound](https://aatishb.com/synthesine/examples/square/index.html).
 {% end %}
 
-Try changing the frequency of the second sound (wave) to <a id="switchFrequencyDouble" style="cursor: pointer;">twice</a> of the other. Now try it again with <a id="switchFrequencyOneHalf" style="cursor: pointer;">one and a half times</a> the other one. Try it using other frequencies too, and notice when they sound pleasant. When the frequency of the two sounds are in simple ratios, they sound harmonious.
+The addition of the two 'simple' sounds, can make it sound relatively more complex and textured. But something even more interesting happens if the frequency of the sounds are in some specific ratio. Try changing the frequency of the second sound to <a id="switchFrequencyDouble" style="cursor: pointer;">twice</a> that of the other. Now try it again with <a id="switchFrequencyOneHalf" style="cursor: pointer;">one and a half times</a> the other one. Try it using other frequencies too, and notice when they sound pleasant. When the frequency of the two sounds are in simple ratios, they sound harmonious.
 
-Music theory is based around these ratios, or [intervals](https://en.wikipedia.org/wiki/Interval_(music)). A frequency ratio of 2:1 is called a perfect octave. A ratio of 3:2 is a perfect fifth, 4:3 is a perfect fourth, and 5:4 is a major third. The smallest of the intervals is called a minor second or semitone, having a ratio of 16:15. The minor second, along with the [tritone](https://en.wikipedia.org/wiki/Tritone) and other intervals sound [dissonant](https://en.wikipedia.org/wiki/Consonance_and_dissonance) since they do not have simple frequency ratios, but are still useful for creating [tension](https://en.wikipedia.org/wiki/Tension_(music)).
+Music theory is based around these ratios, or [intervals](https://en.wikipedia.org/wiki/Interval_(music)). A frequency ratio of <a id="switchFrequency21" style="cursor: pointer;">2:1</a> is called a perfect octave. A ratio of <a id="switchFrequency32" style="cursor: pointer;">3:2</a> is a perfect fifth, <a id="switchFrequency43" style="cursor: pointer;">4:3</a> is a perfect fourth, and <a id="switchFrequency54" style="cursor: pointer;">5:4</a> is a major third. The smallest of the intervals is called a minor second or semitone, having a ratio of <a id="switchFrequency1615" style="cursor: pointer;">16:15</a>. The minor second, along with the [tritone](https://en.wikipedia.org/wiki/Tritone) and other intervals sound [dissonant](https://en.wikipedia.org/wiki/Consonance_and_dissonance) since they do not have simple frequency ratios, but are still useful for creating [tension](https://en.wikipedia.org/wiki/Tension_(music)).
 
 <canvas id="canvasIntervalRatioWaves"></canvas>
 <canvas id="canvasJustIntonation"></canvas>
 
-This simple integer ratio interval system is the [just intonation](https://en.wikipedia.org/wiki/Just_intonation) tuning system. But because of the way the intervals are defined, it is [mathematically impossible](https://www.youtube.com/watch?v=1Hqm0dYKUx4) to have consistent interval ratios between any two sounds. Instead, the [equal temperament](https://en.wikipedia.org/wiki/Equal_temperament) (equally spaced intervals) system is used to minimize the *overall* deviations in intonation.
+This simple integer ratio interval system is the [just intonation](https://en.wikipedia.org/wiki/Just_intonation) tuning system. But because of the way the intervals are defined, it is [mathematically impossible](https://www.youtube.com/watch?v=1Hqm0dYKUx4) to have consistent interval ratios between any two sounds. So, while the root note will be in tune with other intervals, the other intervals will not be in tune with others.
 
 <canvas id="canvasJustIntonationAlt"></canvas>
+
+As a partial solution, the [equal temperament](https://en.wikipedia.org/wiki/Equal_temperament) system is used to minimize the *overall* deviations in intonation. In this system, the ratio between any two successive notes is the twelfth root of two, and is consistent across all intervals.
+
 <canvas id="canvasEqualTemperament"></canvas>
+
+This makes it so that all intervals are ever so slightly out of tune with the other intervals. But it is better than the just intonation system where few intervals are perfectly in tune with some of the intervals, but while also being *very* out of tune with some of the others.
+
+But both of the interval systems describe the same phenomena — sounds with frequencies that are a simple ratio multiple (or close to it) of some other sound, sound pleasant. While those that are not, do not necessarily sound as soothing.
 
 ### Scales
 
-Instead of using frequencies and interval ratios to describe pitches, music theory has twelve letters or [notes](https://en.wikipedia.org/wiki/Musical_note) — A, A#, B, C, C#, D, D#, E, F, F#, G, G# — to describe the pitch of a sound. Usually, the A note describes a pitch with a frequency of [440Hz](https://en.wikipedia.org/wiki/A440_(pitch_standard)). The other notes denote a frequency that are interval multiples of the base note.
+Based around these interval ratios, music theory has standardized frequencies as well as standardized notation to represent these interval structures. There are twelve letters or [notes](https://en.wikipedia.org/wiki/Musical_note) in music theory — A, A#, B, C, C#, D, D#, E, F, F#, G, G# — to describe the pitch of sounds. Typically, the A note describes a pitch with a frequency of [440Hz](https://en.wikipedia.org/wiki/A440_(pitch_standard)), and the other notes denote a frequency that are interval multiples of the base note.
 
 <canvas id="canvasNotesOneOctave"></canvas>
 
 {% tangent(summary="Sharps and Flats", open=false) %}
-[Sharps](https://en.wikipedia.org/wiki/Accidental_(music)) (denoted using a #) can also be alternatively be written as flats (denoted with a ♭). Sharps indicate the sharper (higher) pitch variant of a note while flats indicate the flatter (lower) pitch variant of a note. For example, C# and D♭ is the same note. Certain notes do not have a sharp or flat variant; the naming convention is purely arbitrary. So all the notes can also be rewritten as: A, B♭, B, C, D♭, D, E♭, E, F, G♭, G, A♭. Using seven letters to describe twelve notes has to do with the [origins of music theory](https://www.reddit.com/r/musictheory/wiki/faq/history/alphabet/) itself and [western music](https://www.reddit.com/r/musictheory/wiki/faq/history/whytwelve/).
+[Sharps](https://en.wikipedia.org/wiki/Accidental_(music)) (denoted using a #) can also be alternatively be written as flats (denoted with a ♭). Sharps indicate the sharper (higher) pitch variant of a note while flats indicate the flatter (lower) pitch variant of a note. For example, C# and D♭ is the same note. Certain notes do not have a sharp or flat variant; the naming convention is purely arbitrary. So all the notes can also be rewritten as: A, B♭, B, C, D♭, D, E♭, E, F, G♭, G, A♭. Using seven letters to describe twelve notes has to do with the [origins of music theory](https://www.reddit.com/r/musictheory/wiki/faq/history/alphabet/) and [western music](https://www.reddit.com/r/musictheory/wiki/faq/history/whytwelve/).
 {% end %}
 
-The twelve notes are used to describe pitches up to one [octave](https://en.wikipedia.org/wiki/Octave) high. To describe pitches that are beyond this range, the same notes are used — with numbers to differentiate them. A note with one number greater indicates a pitch that is an octave higher than the same note with one number lower. Generally, A4 has a pitch of 440Hz, so A5 is 880Hz and A3 is 220Hz. Other notes follow a similar convention.
+The mentioned twelve notes are used to describe pitches up to one [octave](https://en.wikipedia.org/wiki/Octave) high. To describe pitches that are beyond this range, the same notes are used — with numbers to differentiate them. A note with one number greater indicates a pitch that is an octave higher than the same note with one number lower. Generally, A4 has a pitch of 440Hz, so A5 is 880Hz and A3 is 220Hz. Other notes follow a similar convention.
 
 <canvas id="canvasNotesAllOctaves"></canvas>
 
 {% tangent(summary="Similarity across octaves", open=false) %}
-Due to the note nomenclature, the names of notes will repeat after every twelve notes. This is intentional. Because of the equal temperament interval structure, notes double in frequency after every twelve notes, or an octave. Notes with frequencies that are binary multiples (half, double, quarter, etc) of itself will sound similar to each other. So all the notes in an octave sound similar to the respective notes in higher and lower octaves. For example, A4 (440Hz) will sound similar to A5 (880Hz), A3 (220Hz), A2 (110Hz) and so on. Similarly, all other notes will sound similar to their respective notes in higher and lower octaves.
+Due to the note nomenclature, the names of notes will repeat after every twelve notes. This is intentional. Because of the equal temperament interval structure, notes double in frequency after every twelve notes, or an octave. Notes with frequencies that are binary multiples (half, double, quarter, etc) of itself sound similar to each other. So all the notes in an octave sound similar to the respective notes in higher and lower octaves. For example, A4 (440Hz) will sound similar to A5 (880Hz), A3 (220Hz), A2 (110Hz) and so on. Similarly, all other notes will sound similar to their respective notes in higher and lower octaves.
 {% end %}
 
-From the twelve notes of an octave, a subset can be selected to get a [scale](https://en.wikipedia.org/wiki/Scale_(music)). Scales are defined by intervals and a note — by selecting a certain subset of intervals, a distinct 'mood' for the sounds can be established. Music in [major scales](https://en.wikipedia.org/wiki/Major_scale) generally sound upbeat, while music in [minor scales](https://en.wikipedia.org/wiki/Minor_scale) can sound melancholic. The [pentatonic scale](https://en.wikipedia.org/wiki/Pentatonic_scale) has an interval structure with five notes and is common in rock music.
+The twelve notes exist as a standard way to represent frequencies, but the 'feel' of the sound still comes from the interval structure of the sounds. By only selecting sounds with consonant interval ratios — perfect fifths, perfect fourths, major thirds, etc — music can be created that sound relatively harmonious. Similarly, by selecting notes with dissonant interval ratios, disharmony and tension can be created.
+
+Again, this is described in music theory using the previously mentioned twelve notes. From the twelve notes of an octave, a subset can be selected to get a [scale](https://en.wikipedia.org/wiki/Scale_(music)) — based on their interval structure, and a root note. For example, [major scales](https://en.wikipedia.org/wiki/Major_scale) use consonant intervals and generally sound relatively upbeat, while music in [minor scales](https://en.wikipedia.org/wiki/Minor_scale) can sound more melancholic. The [pentatonic scale](https://en.wikipedia.org/wiki/Pentatonic_scale) has a five-note interval structure with the major pentatonic scale sounding energetic — and is common in rock music.
 
 <canvas id="canvasScales"></canvas>
 <select id="selectScaleNote"></select><select id="selectScaleInterval"></select><button id="playScaleButton">Play notes</button>
 
-{% tangent(summary="Interval structure harmony", open=true) %}
-The interval structure of a scale defines its 'vibe'. A scale with dissonant intervals can sound jarring and tense, while a scale with a consonant intervals can sound upbeat and bright.
-{% end %}
+Using notes from a scale can bring more structure to a piece, compared to using random pitches. However, it does not mean that any of these notes when played together will sound pleasant. While the notes can sound pleasant when they are played [separately](https://en.wikipedia.org/wiki/Melody) (and with some structured rhythm), it will probably not sound as pleasant if all the notes are played together at the [same time](https://en.wikipedia.org/wiki/Harmony).
 
-When two notes are played separately in succession, it is called a [melodic interval](https://en.wikipedia.org/wiki/Melody). When the two notes are played in unison, it is called a [harmonic interval](https://en.wikipedia.org/wiki/Harmony). And when three or more notes are played simultaneously, it is called a [chord](https://en.wikipedia.org/wiki/Chord_(music)). Except [power chords](https://en.wikipedia.org/wiki/Power_chord) (which consist of two notes) are also chords, and [arpeggios](https://en.wikipedia.org/wiki/Arpeggio) (notes played separately in succession) can be chords too, so the definition is somewhat loose. Typically, chords are triads — consisting of a root note, a third, and a fifth. The names of chords again depend on the intervals of its constituent notes.
+However, there are ways to make it sound pleasant, even if the notes are played together in unison. A little earlier in this post, two intervals were played together, and when their frequencies were in the right ratios, it sounded harmonious. In a similar manner, instead of playing all or random intervals at once, only two, three, or four specific sound intervals can be played together to avoid a cacophony of multiple random notes.
+
+This simultaneous playing of a limited number of specific intervals again has a name in music theory — it is called a [chord](https://en.wikipedia.org/wiki/Chord_(music)). Usually chords consist of three intervals, but can also include only two, or sometimes more than three intervals (notes). The definition is quite loose, but generally chords are triads — consisting of a root note, a third, and a fifth. The names of chords again depend on intervals and root notes.
 
 <canvas id="canvasChords"></canvas>
 <select id="selectChordNote"></select><select id="selectChordInterval"></select><button id="playChordButton">Play chord</button>
 
-Chords can add more depth and texture to sounds than single-pitch notes. The scale, as well the progression of chords can be selectively chosen to create sounds for evoking a specific mood.
+Chords can add more depth and texture to sounds than single-pitch notes. Progression of chords can also be selectively chosen to evoke specific emotions.
 
-However, the amplitude, just like the pitch, can also be altered to change the character of a sound. Gradually increasing the amplitude of a sound can create drama and tension. Similarly sounds with gradually decreasing volume can be used to resolve tension. The variation in loudness of sounds is called [dynamics](https://en.wikipedia.org/wiki/Dynamics_(music)).
+Similar to how altering the pitch can create sounds with a specific feel, the amplitude can also be altered to change the character of a sound. Gradually increasing the amplitude of a sound can create drama and tension. In a similar manner, sounds with a gradually decreasing volume can be used to resolve tension. The variation in loudness of sounds is called [dynamics](https://en.wikipedia.org/wiki/Dynamics_(music)).
 
 <canvas id="canvasDynamics"></canvas>
 <button id="playDynamicsButton">Increase amplitude</button>
@@ -100,28 +111,31 @@ Try playing the two beats:
 <canvas id="canvasBeats"></canvas>
 <select id="selectBeat"></select><button id="playBeatsButton">Play beat</button>
 
-The first beat is [periodic](https://en.wikipedia.org/wiki/Metre_(music)), and can sound monotonous and dull. The second beat has periodically [accentuated beats](https://en.wikipedia.org/wiki/Accent_(music)) and sounds more cadenced and 'rhythmic'. Generally, the accentuated beats are [organized](https://en.wikipedia.org/wiki/Bar_(music)) in groups of [three](https://en.wikipedia.org/wiki/Triple_metre) or [four](https://en.wikipedia.org/wiki/Duple_and_quadruple_metre#Quadruple_metre) into [bars](https://en.wikipedia.org/wiki/Bar_(music)). This beat [structure](https://en.wikipedia.org/wiki/Time_signature) is common in pop and rock, while other genres can have more complex beats.
+The first beat is [periodic](https://en.wikipedia.org/wiki/Metre_(music)), and can sound monotonous. The second beat has periodically [accentuated beats](https://en.wikipedia.org/wiki/Accent_(music)) and sounds more cadenced and 'rhythmic'.
+
+Periodically accentuating beats can make sounds feels more organized, which in turn can make it feel more rhythmic. Organizing beats into groups (called [bars](https://en.wikipedia.org/wiki/Bar_(music))) of [three](https://en.wikipedia.org/wiki/Triple_metre) or [four](https://en.wikipedia.org/wiki/Duple_and_quadruple_metre#Quadruple_metre) is very common in pop and rock, while other genres can have more complex [beat structures](https://en.wikipedia.org/wiki/Time_signature).
 
 <canvas id="canvasTimeSignature"></canvas>
 <select id="selectTimeSignature"></select><button id="playTimeSignatureButton">Play beat</button>
 
-Even then, the beat will begin to sound repetitive if played long enough. The obvious way to go about it is to introduce variations in the duration of certain notes, while still loosely sticking to the same beat structure. The duration of beats can be altered to be half, twice, or quadruple the duration of a single beat. Or [somewhere in between](https://en.wikipedia.org/wiki/Note_value).
-
-The number of beats per minute or [tempo](https://en.wikipedia.org/wiki/Tempo) can itself be varied, against which the beat structure is measured and built upon.
+While different types of beats can have different structures, the 'speed' of the beats can be varied too, by changing the duration of each beat. The duration of the beats is described by the [tempo](https://en.wikipedia.org/wiki/Tempo) — in beats per minute. A higher tempo represents shorter beats and faster music, while lower tempo describes longer beats and a slower music.
 
 <canvas id="canvasTempo"></canvas>
 <input id="sliderTempo" type="range"><br>
 <button id="playTempoButton">Play beat</button>
 
-Altering the rhythm patterns can make sounds structured and more pleasing, but it can also be used to again set the of mood of the sound. For instance, the tempo of the music can be varied to produce different vibes — a fast beat can sound energetic, while a slower one can sound more relaxed and mellow.
+Altering the rhythm patterns can make sounds structured and more pleasing, but it can also be used to again set the of mood of the sound. For instance, the tempo of the music can be varied to produce different vibes — a fast and structured beat can sound energetic, while a slower and less cadenced beat can sound more relaxed and mellow.
+
+Even with a structured beat however, a piece may begin to sound repetitive if played for long enough. A way to avoid it from sounding repetitive is by introducing variations to the duration of certain notes, while still loosely sticking to the same beat structure. The duration of the beats can be changed to be half, twice, or quadruple the duration of a 'single' beat. Or [somewhere in between](https://en.wikipedia.org/wiki/Note_value). This can be achieved using multiple ways, one of which is described below.
+
 ## Procedural Generation
 
-Music theory provides guidelines for the pitch and timing of notes, to create sounds that evoke different emotions. The aforementioned ones can be distilled to:
+Music theory provides guidelines for the pitch and timing of notes, to create sounds that are pleasant, or evoke different emotions. The guidelines can be distilled to:
 
-* Deriving the pitch using structured intervals or a scale.
+* Deriving the pitch using structured intervals or from a scale.
 * Deriving the timing from a dynamic yet structured beat.
 
-The pitch for the notes can be simply selected from a scale, or it also be dynamically generated easily. However, generating a sequence for the timing that is both structured and non-repeating is slightly more complicated.
+The pitch for the notes can be simply selected from a scale, or it also be dynamically generated easily using interval ratios. However, generating a sequence for the timing that is both structured and non-repeating is slightly more complicated.
 
 ### Stochastic Transitions
 
@@ -129,11 +143,11 @@ One way to make the rhythm non-repetitive is by introducing some randomness to t
 
 <canvas id="canvasTransitionRhythm"></canvas>
 
-This type of transition preserves the structure of the current rhythm. However, it can still sound random if the transitions are uniformly random. Using weighted probabilities to emphasize specific transitions can reduce the randomness. These transition probabilities can be modeled using a [graph](https://en.wikipedia.org/wiki/Markov_chain).
+This type of transition preserves the structure of the current rhythm. However, it can still sound random if the transitions are uniformly random. Using weighted probabilities to emphasize specific transitions can reduce the randomness. These transition probabilities are modeled using a [graph](https://en.wikipedia.org/wiki/Markov_chain) here.
 
 <canvas id="canvasMarkovRhythm"></canvas>
 
-The pitch for the next notes are similarly generated using weighted probabilities. Simpler intervals ([fifths](https://en.wikipedia.org/wiki/Circle_of_fifths) for example) have a higher probability of being selected, when using a major scale.
+The pitch for the next notes can be similarly generated using weighted probabilities. Simpler intervals ([fifths](https://en.wikipedia.org/wiki/Circle_of_fifths) for example) have a higher probability of being selected, when using a major scale.
 
 <canvas id="canvasMarkovIntervals"></canvas>
 
@@ -141,9 +155,9 @@ These combined provide a basic framework for generating a melody.
 
 ## Playground
 
-The main tone generation setup is quite simple. The transition probabilities are used to generate the main melody. The melody is augmented with their [respective chords](https://en.wikipedia.org/wiki/Roman_numeral_analysis), but at a lower frequency (both in pitch and rhythm). A higher octave ascending-oscillating beat also accompanies the melody.
+The main tone generation setup is quite simple. The transition probabilities are used to generate the main melody. The melody is augmented with their [respective chords](https://en.wikipedia.org/wiki/Roman_numeral_analysis), while a higher octave ascending-oscillating beat accompanies the melody.
 
-Feel free to experiment with the octaves and amplitudes for the individual pieces, or alter the scale or tempo to change the vibe of the sounds altogether. The updates are applied at the end of each bar.
+Feel free to experiment with the octaves and amplitudes for the individual pieces, or alter the scale or tempo to change the vibe of the sounds altogether. The updates get applied at the end of each bar.
 
 <button id="mainGenerate">Generate new sequence</button><br>
 <canvas id="canvasMain"></canvas>

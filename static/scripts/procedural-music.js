@@ -118,6 +118,11 @@ const frequencySliderWaveTwoB = document.getElementById("frequencySliderWaveTwoB
 const amplitudeSliderWaveTwoB = document.getElementById("amplitudeSliderWaveTwoB");
 const switchFrequencyDouble = document.getElementById("switchFrequencyDouble");
 const switchFrequencyOneHalf = document.getElementById("switchFrequencyOneHalf");
+const switchFrequency21 = document.getElementById("switchFrequency21");
+const switchFrequency32 = document.getElementById("switchFrequency32");
+const switchFrequency43 = document.getElementById("switchFrequency43");
+const switchFrequency54 = document.getElementById("switchFrequency54");
+const switchFrequency1615 = document.getElementById("switchFrequency1615");
 intializeSliders(frequencySliderWaveOne, 50, 5000, 10, 440);
 intializeSliders(amplitudeSliderWaveOne, 0, 1, 0.01, 0.5);
 intializeSliders(frequencySliderWaveTwoA, 50, 5000, 10, 440);
@@ -169,6 +174,41 @@ switchFrequencyDouble.addEventListener("click", function() {
 });
 switchFrequencyOneHalf.addEventListener("click", function() {
     frequencySliderWaveTwoB.value = 1.5 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency21.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 2 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency32.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.5 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency43.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.3333 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency54.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.25 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency1615.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.0666 * frequencySliderWaveTwoA.value;
     canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
     drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
     drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
@@ -291,7 +331,7 @@ canvasEqualTemperament.font = "24px JetBrains Mono";
 canvasEqualTemperament.fillText("Equal Temperament", 1250, 51);
 
 // draw notes - one octave
-drawNotes(canvasNotesOneOctave, INTERVALS.chromatic, 0, NOTES.numbers, 81);
+drawNotes(canvasNotesOneOctave, INTERVALS.chromatic, 0, NOTES.letters, 81);
 drawNotes(canvasNotesOneOctave, INTERVALS.chromatic, 0, NOTES.ratiosEqual, 181, 100, 12, 12, "20px JetBrains Mono");
 drawNotes(canvasNotesOneOctave, INTERVALS.chromatic, 0, NOTES.frequencies, 15, 0, 13, 13);
 
