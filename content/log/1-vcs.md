@@ -1,5 +1,5 @@
 +++
-title = "Version control"
+title = "Version Control"
 description = "Preparing a game plan for medium success."
 date = 2025-01-20
 draft = false
