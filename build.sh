@@ -11,9 +11,10 @@ zola build
 python3 -m csscompressor -o "./deploy/misc/main.css" "./deploy/misc/main.css"
 
 # Generate PNG thumbnails
-# Use images of size 1200x900
+# Use images of size 1200x900, &+ 96x72 for /log
 # Could be optimzed to ignore already converted files
 for f in ./deploy/thumbnails/*.{svg,avif}; do magick "$f" "$f.png"; rm "$f"; done
+# for f in ./deploy/thumbnails/log.*.avif.png; do magick "$f" -resize 96x72 "$f.small.png"; done
 
 # Move all files to root directory (for GH Pages)
 mv --force -t "." ./deploy/*

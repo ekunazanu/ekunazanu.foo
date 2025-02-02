@@ -110,6 +110,7 @@ input[type='range'] {accent-color: var(--fg); vertical-align: middle;}
 
 /* log */
 .logs {display: grid; grid-gap: 0.5rem; grid-template-columns: 1fr min-content; align-items: center;}
+/* .logs {grid-template-columns: 3rem 1fr min-content} .logs img {margin: 0; width: 3rem; height: 2.25rem;} */
 .logs a {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 .logs time {color: var(--gray1); text-align: right; white-space: pre; font: 0.875rem var(--monospace);}
 /* labs */
@@ -140,6 +141,7 @@ input[type='range'] {accent-color: var(--fg); vertical-align: middle;}
 @media screen and (max-width: 42rem) {
   .logs {grid-row-gap: 0; grid-template-columns: 1fr;}
   .logs a {white-space: normal;}
+  /* .logs img {margin: 1rem 0;} */
   .logs time {text-align: left; margin: 0.5rem 0 2rem;}
   .labs {grid-template-columns: 1fr 1fr;}
 }
