@@ -6,7 +6,7 @@
     <div class="logs">
         {% for page in section.pages %}
         <!-- <img src="{{ config.base_url }}/thumbnails/{{ page.extra.thumbnail }}.png.small.png" alt="{{ page.extra.thumbnailalt }}"> -->
-        <a href="{{ page.permalink }}">{{ page.title }}</a><time datetime="{{ page.date }}">{{ page.date | date(format="%Y·%m·%d") }}</time>
+        <a href="{{ page.permalink }}">{{ page.title }}</a><time datetime="{{ page.date }}">{{ page.date }}</time>
         {% endfor %}
     </div>
 </main>
