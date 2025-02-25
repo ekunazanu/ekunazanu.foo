@@ -100,11 +100,17 @@
 @keyframes juliaAnimMove2 {95% {transform: translate(1rem);}}
 @keyframes juliaAnimMove3 {95% {transform: translate(2rem);}}
 
-#qubitEllpMain {transform-origin: center center; animation: qubitAnimRotate linear infinite paused 5s;}
-#qubitEllpMask {transform-origin: center center; animation: qubitAnimRotate linear infinite paused 5s;}
-#qubitSVG:hover > ellipse {animation-play-state: running;}
-@keyframes qubitAnimRotate {100% {transform: rotate(360deg)}}
+#electronEllpMain {transform-origin: center center; animation: electronAnimRotate linear infinite paused 5s;}
+#electronEllpMask {transform-origin: center center; animation: electronAnimRotate linear infinite paused 5s;}
+#electronSVG:hover > ellipse {animation-play-state: running;}
+@keyframes electronAnimRotate {100% {transform: rotate(360deg)}}
 
-#convolutionPathKernel {animation: convolutionAnimMove steps(32, jump-end) infinite paused 8s -2s;}
-#convolutioSVG:hover path {animation-play-state: running;}
+#convolutionPathKernel {animation: convolutionAnimMove steps(32, jump-end) infinite paused 8s -1.5s;}
+#convolutionSVG:hover > path {animation-play-state: running;}
 @keyframes convolutionAnimMove {0% {transform: translate(-3rem);} 100% {transform: translate(13rem);}}
+
+#marketGroupCircles0 {animation: marketAnimBlink0 step-end infinite paused 0.2s;}
+#marketGroupCircles1 {animation: marketAnimBlink1 step-end infinite paused 0.2s;}
+#marketSVG:hover > g {animation-play-state: running;}
+@keyframes marketAnimBlink0 {50% {fill: #58c;}}
+@keyframes marketAnimBlink1 {50% {fill: #a45;}}
