@@ -124,8 +124,8 @@
     #bitsGroupLines { stroke: var(--gray3); }
     #marketGroupCircles0 { fill: var(--gray1); } #marketGroupCircles1 { fill: var(--gray3); }
     #convolutionPathGrid { stroke: var(--gray3) } #convolutionPathKernel { stroke: var(--fg) }
-    #convolutionPathShape1 { fill: var(--gray1); } #convolutionPathShape3 { fill: var(--gray2); }
-    #convolutionPathShape5 { fill: var(--gray3); } #convolutionPathShape7 { fill: var(--gray4); }
+    #convolutionPathShape1 { fill: var(--gray4); } #convolutionPathShape3 { fill: var(--gray1); }
+    #convolutionPathShape5 { fill: var(--gray2); } #convolutionPathShape7 { fill: var(--gray3); }
     #spotifyLine1, #spotifyLine2, #spotifyLine3 { stroke: var(--bg); }
     #dieBG { fill: var(--gray4); } #dieGroupDots { fill: var(--bg); } #dieRectFace { fill: var(--gray1); }
     #rotationPathGridBG { stroke: var(--gray4); } #rotationPathGridFG, #rotationPathAxes { stroke: var(--gray3); }
