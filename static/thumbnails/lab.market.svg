@@ -1,0 +1,71 @@
+<svg id="marketSVG" viewBox="0 0 200 150" fill="none" width="1200px" height="900px">
+<desc>A chart showing supply and demand curves.</desc>
+<rect id="marketBG" fill="#fff" x="0" y="0" width="200" height="150" />
+<g id="marketGroupCircles0" fill="#a45">
+<circle id="marketCirc00" r="11" cx="12.5"  cy="12.5" />
+<circle id="marketCirc02" r="11" cx="62.5"  cy="12.5" />
+<circle id="marketCirc04" r="11" cx="112.5" cy="12.5" />
+<circle id="marketCirc06" r="11" cx="162.5" cy="12.5" />
+<circle id="marketCirc11" r="11" cx="37.5"  cy="37.5" />
+<circle id="marketCirc13" r="11" cx="87.5"  cy="37.5" />
+<circle id="marketCirc15" r="11" cx="137.5" cy="37.5" />
+<circle id="marketCirc17" r="11" cx="187.5" cy="37.5" />
+<circle id="marketCirc20" r="11" cx="12.5"  cy="62.5" />
+<circle id="marketCirc22" r="11" cx="62.5"  cy="62.5" />
+<circle id="marketCirc24" r="11" cx="112.5" cy="62.5" />
+<circle id="marketCirc26" r="11" cx="162.5" cy="62.5" />
+<circle id="marketCirc31" r="11" cx="37.5"  cy="87.5" />
+<circle id="marketCirc33" r="11" cx="87.5"  cy="87.5" />
+<circle id="marketCirc35" r="11" cx="137.5" cy="87.5" />
+<circle id="marketCirc37" r="11" cx="187.5" cy="87.5" />
+<circle id="marketCirc40" r="11" cx="12.5"  cy="112.5" />
+<circle id="marketCirc42" r="11" cx="62.5"  cy="112.5" />
+<circle id="marketCirc44" r="11" cx="112.5" cy="112.5" />
+<circle id="marketCirc46" r="11" cx="162.5" cy="112.5" />
+<circle id="marketCirc51" r="11" cx="37.5"  cy="137.5" />
+<circle id="marketCirc53" r="11" cx="87.5"  cy="137.5" />
+<circle id="marketCirc55" r="11" cx="137.5" cy="137.5" />
+<circle id="marketCirc57" r="11" cx="187.5" cy="137.5" />
+</g>
+<g id="marketGroupCircles1" fill="#58c">
+<circle id="marketCirc01" r="11" cx="37.5"  cy="12.5" />
+<circle id="marketCirc03" r="11" cx="87.5"  cy="12.5" />
+<circle id="marketCirc05" r="11" cx="137.5" cy="12.5" />
+<circle id="marketCirc07" r="11" cx="187.5" cy="12.5" />
+<circle id="marketCirc10" r="11" cx="12.5"  cy="37.5" />
+<circle id="marketCirc12" r="11" cx="62.5"  cy="37.5" />
+<circle id="marketCirc14" r="11" cx="112.5" cy="37.5" />
+<circle id="marketCirc16" r="11" cx="162.5" cy="37.5" />
+<circle id="marketCirc21" r="11" cx="37.5"  cy="62.5" />
+<circle id="marketCirc23" r="11" cx="87.5"  cy="62.5" />
+<circle id="marketCirc25" r="11" cx="137.5" cy="62.5" />
+<circle id="marketCirc27" r="11" cx="187.5" cy="62.5" />
+<circle id="marketCirc30" r="11" cx="12.5"  cy="87.5" />
+<circle id="marketCirc32" r="11" cx="62.5"  cy="87.5" />
+<circle id="marketCirc34" r="11" cx="112.5" cy="87.5" />
+<circle id="marketCirc36" r="11" cx="162.5" cy="87.5" />
+<circle id="marketCirc41" r="11" cx="37.5"  cy="112.5" />
+<circle id="marketCirc43" r="11" cx="87.5"  cy="112.5" />
+<circle id="marketCirc45" r="11" cx="137.5" cy="112.5" />
+<circle id="marketCirc47" r="11" cx="187.5" cy="112.5" />
+<circle id="marketCirc50" r="11" cx="12.5"  cy="137.5" />
+<circle id="marketCirc52" r="11" cx="62.5"  cy="137.5" />
+<circle id="marketCirc54" r="11" cx="112.5" cy="137.5" />
+<circle id="marketCirc56" r="11" cx="162.5" cy="137.5" />
+</g>
+<!--
+<path id="marketPathDemand" stroke="#e99" stroke-width="1" d="M0 10 200 140" />
+<path id="marketPathSupply" stroke="#e99" stroke-width="1" d="M0 140 200 10" />
+<path id="marketPathPrice" stroke="#fff" stroke-width="2" d="M100 75V150" />
+<path id="marketPathPrice" stroke="#fff" stroke-width="2" d="M100 75H0" />
+<circle id="marketCircPrice" r="3" cx="100" cy="75" fill="#fff" />
+<path id="marketPathLines1" stroke="#e99" stroke-width="1" d="M0 10Q40 100 200 140" />
+<path id="marketPathLines2" stroke="#e99" stroke-width="1" d="M0 140Q160 100 200 10" />
+<path id="marketPathLines1" stroke="#e99" stroke-width="1" d="M0 20Q40 110 200 130" />
+<path id="marketPathLines2" stroke="#e99" stroke-width="1" d="M0 120Q160 120 200 20" />
+<path id="marketPathLines1" stroke="#e99" stroke-width="1" d="M0 30Q40 120 200 120" />
+<path id="marketPathLines2" stroke="#e99" stroke-width="1" d="M0 135Q160 110 200 40" />
+<path id="marketPathLines1" stroke="#e99" stroke-width="1" d="M0 40Q40 90 200 130" />
+<path id="marketPathLines2" stroke="#e99" stroke-width="1" d="M0 130Q160 130 200 30" />
+-->
+</svg>
