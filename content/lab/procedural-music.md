@@ -1,7 +1,7 @@
 +++
 title = "Procedural Music"
 description = "Using music theory and randomness to generate basic tunes."
-weight = 4
+weight = 6
 draft = false
 template = "article.html"
 [extra]

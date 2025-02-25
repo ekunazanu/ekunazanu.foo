@@ -1,7 +1,7 @@
 +++
 title = "Quantifying Colour"
 description = "A visual description of the CIE 1931 colour spaces."
-weight = 1
+weight = 5
 draft = false
 template = "article.html"
 [extra]
