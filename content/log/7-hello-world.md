@@ -1,7 +1,7 @@
 +++
 title = "Hello World"
 description = "Finally publishing."
-date = 2025-03-02
+date = 2025-03-03
 draft = false
 template = "article.html"
 [extra]
