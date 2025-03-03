@@ -11,9 +11,9 @@ const inputWords = document.getElementById("inputWords");
 const infoDistribution = document.getElementById("infoDistribution");
 
 canvasTop.canvas.width = 1280;
-canvasTop.canvas.height = 350;
+canvasTop.canvas.height = 0;
 canvasDistribution.canvas.width = 1280;
-canvasDistribution.canvas.height = 650;
+canvasDistribution.canvas.height = 0;
 
 var topItems = {};
 var topCounts = [];
@@ -42,6 +42,7 @@ async function syncChart(url, n = 16) {
     topItems = await getTop(url);
     sortCounts(topItems, n);
     getArrays(topItems, topCounts, topElements, n);
+    canvasTop.canvas.height = 1050;
     drawTop(canvasTop, topCounts, topElements, 50, 70);
 }
 
@@ -60,6 +61,7 @@ async function getDistribution(url) {
     try {
         countDistribution = await getTop(url);
         countDistribution.distribution.sort( function(a, b) { return a - b; }).reverse();
+        canvasDistribution.canvas.height = 650;
         drawDistribution(canvasDistribution, countDistribution.distribution, countDistribution.cardinality);
     } catch (error) { handleServerDisconnect(); }
 }
@@ -127,7 +129,7 @@ function getRank(count, n = 256) {
 
 function drawTop(canvas, frequencies, words) {
     var normalizedFrequencies = getNormalizedFrequencies(frequencies, 1280);
-    canvas.clearRect(0, 0, 1280, 350);
+    canvas.clearRect(0, 0, 1280, 1050);
     canvas.fillStyle = "#aaa";
     for (let i = 0; i < frequencies.length; i++)
         canvas.fillRect(0, i * 70 + 10, normalizedFrequencies[i], 50);
