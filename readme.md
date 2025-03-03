@@ -1,0 +1,1 @@
+Personal site, powered by [zola](https://getzola.org), with design based off of [macwright.com](https://macwright.com). If you're interesting in checking draft articles, switch to the drafts branch and simply run `zola serve --drafts`.
