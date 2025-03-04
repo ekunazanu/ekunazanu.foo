@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>ekunazanu</title>
+    <subtitle>A blogified version of xkcd, only worse, and more personal, and not really funny.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://ekunazanu.foo/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://ekunazanu.foo"/>
+    <updated>2025-03-03T00:00:00+00:00</updated>
+    <id>https://ekunazanu.foo/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Hello World</title>
+        <published>2025-03-03T00:00:00+00:00</published>
+        <updated>2025-03-03T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/7-hello-world/"/>
+        <id>https://ekunazanu.foo/log/7-hello-world/</id>
+        <summary type="html">Finally publishing.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/7-hello-world/">&lt;p&gt;Just a few hours after writing last week’s post, I very soon realized limiting &lt;a href=&quot;&#x2F;lab&#x2F;free-speech&quot;&gt;free speech&lt;&#x2F;a&gt; to a small subset of people is very ironic. I did a little searching, and learnt free tunneling services &lt;em&gt;do&lt;&#x2F;em&gt; exist. So I used Cloudflare tunnel to tunnel all requests to PBMBDB. &lt;a href=&quot;&#x2F;lab&#x2F;free-speech&quot;&gt;It should now be available&lt;&#x2F;a&gt; to everyone on the internet — subject to outages from my ISP.&lt;&#x2F;p&gt;
+&lt;p&gt;Which also means it’s time. It’s finally time to publish this site on the internet. For future readers (if there are any), who are confused: All this while I’ve been posting to myself, for myself. But now, this site is finally live. Now I will post for myself, but to the public. Does it mean the quality of the posts will increase? Lol no.&lt;&#x2F;p&gt;
+&lt;p&gt;Also somewhat related, I want to thank &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;macwright.com&quot;&gt;Tom MacWright&lt;&#x2F;a&gt;. He was very kind to license his website design to me for free :)&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;The_Big_(Motion)_Picture&quot;&gt;The Big (Motion) Picture&lt;&#x2F;h2&gt;
+&lt;p&gt;Okay then, time for updates. The first half of the week I spent shooting a movie (sort of), and the latter half I spent admiring a different one (sort of). One of the things I learnt while making a movie is that there’s a strict hierarchy in the movie set and you should not annoy those above you. I learnt it the hard way — I was demoted from cinematographer to a runner pretty quickly after I challenged the director’s vision.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;movie-set-hierarchy.avif&quot; alt=&quot;animated doodle of hierarchy in a movie set and showing arrows to denote the demotion from cinematographer to errand boy&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Regardless, that’s hopefully still considered enough work — for me to pass the class. I really don’t want an F grade in a filmmaking class on a Comp. Sci. degree.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;&quot;&gt;El Psy Kongroo&lt;&#x2F;h2&gt;
+&lt;p&gt;The second half of the week I watched Steins;Gate. It is not a movie, but a one-season anime. And it’s a masterpiece. Writing time travel with consistent logic is already difficult, but Steins;Gate not only does it, but conveys the rules of world effortlessly. Its timeline theory is also surprisingly &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Attractor&quot;&gt;grounded in real math&lt;&#x2F;a&gt;, at least if you believe that the world is a deterministic chaotic system. The voice acting is outstanding; the pacing and the frame composition is perfect; the characters have depth; the score adds emotion without being too soppy; the muted visuals perfectly capture its dystopian vibes. Everything about it feels perfect.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;steins-gate-pin.avif&quot; alt=&quot;overly detailed drawing anime&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;I don’t know; it’s been a long time since I &lt;strong&gt;loved&lt;&#x2F;strong&gt; a show.&lt;&#x2F;p&gt;
+&lt;p&gt;Anyway, cya next week — I’ll be less of a film buff and talk more tech stuff.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Back on Track</title>
+        <published>2025-02-23T00:00:00+00:00</published>
+        <updated>2025-02-23T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/6-back-on-track/"/>
+        <id>https://ekunazanu.foo/log/6-back-on-track/</id>
+        <summary type="html">It&#x27;s time to speed up.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/6-back-on-track/">&lt;p&gt;Title is clickbait. When I say back on track, it is something closer to this:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;on-track.avif&quot; alt=&quot;doodle of a person strapped to a railway track&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Thing is, everything was indeed going as planned. The server is up and running, and the frontend for it looks and works decent. The main roadblock turned out to be my college ISP. I was expecting a few issues, but nothing fundamentally unfix-able (or unhack-able). Turned out not to be the case.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;&quot;&gt;PBMBDB v0.2&lt;&#x2F;h2&gt;
+&lt;p&gt;About some changes first. I changed the structure for storing the top elements — instead of a min-heap, I am using an unsorted array and just tracking the minimum count. This makes the insertions scale in linear time instead of being log-linear (although in practice the difference is almost negligible). Also, I went with &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Fowler%E2%80%93Noll%E2%80%93Vo_hash_function&quot;&gt;FNV-1A&lt;&#x2F;a&gt; for hashing — it is much simpler and faster, and still retains a satisfactory uniform distribution. I also calculate only a single hash and break it into separate parts to simulate multiple hashes. A big speedup for a slight increase in collisions and a very slight degradation in precision.&lt;&#x2F;p&gt;
+&lt;p&gt;For data serialization, I originally wanted to go with &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Protocol_Buffers&quot;&gt;protobuf&lt;&#x2F;a&gt; because of its size and performance. But later, I realized it would just add more dependencies I don’t want. In the future I might reconsider it if it becomes a bottleneck. However right now, I have an even bigger issue: The college internet service provider.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;-1&quot;&gt;Derailing Hard&lt;&#x2F;h2&gt;
+&lt;p&gt;Turns out my college ISP uses NAT, and my server is behind it. In hindsight it should have been pretty obvious. Anyhow, it means that I cannot have a simple DNS (or even a DDNS) setup for the API endpoints — it will be inaccessible. While I can use a tunneling service, it would mean shelling out $$$. An ugly workaround is to send requests from the server to another device and track the TCP source port and use that information for the API endpoint. But that is too unreliable and too ugly for my liking.&lt;&#x2F;p&gt;
+&lt;p&gt;So what now? Imagine you are in a race; you are the hare. You take a nap just before the finish line and let the tortoise beat you. What now? Do you give up? No. You pretend it was all part of the plan. You pretend that your nap was intentional, and that the race was just an act to symbolize that underdogs can win too.&lt;&#x2F;p&gt;
+&lt;p&gt;That’s what I am doing as well.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;feature-not-bug.avif&quot; alt=&quot;doodle of cool person explaining the bug is actually a feature&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;I am simply rebranding the project. Instead of allowing anyone to post, it is exclusively for the people in my college. Early Facebook style. Except the project is really basic, and serves no other purpose than being a fun little &lt;del&gt;social network&lt;&#x2F;del&gt; social experiment. It &lt;a href=&quot;&#x2F;lab&#x2F;free-speech&quot;&gt;should be up&lt;&#x2F;a&gt; in a few hours.&lt;&#x2F;p&gt;
+&lt;p&gt;Until I find the right way to get it working for the wider internet, my DNS record just points to the LAN IP of the Raspberry Pi I am running the server on. And anyway once I get back home, I should be able to connect it to my home router (IPv6, no NAT non-sense). But that will take a few months ¯\_(&amp;#39;_&amp;#39;)_&#x2F;¯.&lt;&#x2F;p&gt;
+&lt;p&gt;That’s all. Cya next week.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Precision Engineering</title>
+        <published>2025-02-16T00:00:00+00:00</published>
+        <updated>2025-02-16T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/5-precision-engineering/"/>
+        <id>https://ekunazanu.foo/log/5-precision-engineering/</id>
+        <summary type="html">Time dilation is real.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/5-precision-engineering/">&lt;p&gt;I spent this entire week &lt;del&gt;building&lt;&#x2F;del&gt; admiring precision engineered systems. Systems with tolerances measured only in micrometres. Precision that defines the difference between life and death. Literally. I am talking about jets, like actual fighter jets.&lt;&#x2F;p&gt;
+&lt;p&gt;For some context, my college is &lt;em&gt;right&lt;&#x2F;em&gt; next to an national air force station, and this week there was an air show happening. Now of course the government does not want any potential collateral damage and a PR crisis, so they asked my college to shut down for a week. Good for me; I would get a lot of time to work on my ‘database’.&lt;&#x2F;p&gt;
+&lt;p&gt;Except I did not get that much done.&lt;&#x2F;p&gt;
+&lt;p&gt;This week went by just as fast as the jets. My dorm is right behind the airbase — all I did was watch the F-35s and Su-57s perform a lot of insane maneuvers. As well as watch other planes fly in formation. The amount of precision required to pull it off — both for the pilots and the engineering team — it felt unreal at times.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;formation-flying.avif&quot; alt=&quot;doodle of jet planes flying in formation&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Anyway, I wrote simple implementations for HLL and CMS in Go yesterday. I ran some very basic tests and the accuracy was pretty much as expected. Now I need to write working implementations to store the distribution sketch the top-k elements as well, and then find a way to connect it to the internet.&lt;&#x2F;p&gt;
+&lt;p&gt;That’s all. I don’t have much more to write, since I didn’t do much else. The only other remotely productive work I got done was updating my &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;notes.ekunazanu.foo&#x2F;&quot;&gt;notes&lt;&#x2F;a&gt; to now include some basic git and networking stuff. Cya next week.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>PB MB DB</title>
+        <published>2025-02-09T00:00:00+00:00</published>
+        <updated>2025-02-09T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/4-pb-mb-db/"/>
+        <id>https://ekunazanu.foo/log/4-pb-mb-db/</id>
+        <summary type="html">Designing a probabilistic database in under an MB, sort of.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/4-pb-mb-db/">&lt;p&gt;I didn’t get much work done this week; I was busy with my filmmaking classes. I watched movies all week &lt;del&gt;as part of my course&lt;&#x2F;del&gt;. I definitely wasn’t just procrastinating.&lt;&#x2F;p&gt;
+&lt;p&gt;Okay, maybe I was.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;doodle-procrastinating.avif&quot; alt=&quot;doodle of a person saying tomorrow for a week&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;But just because I did not code much does not mean I did not get anything done.&lt;&#x2F;p&gt;
+&lt;p&gt;I created a design for a very simple database, for the next project. Well it is a database if you &lt;em&gt;really&lt;&#x2F;em&gt; stretch the definition of a database. Data can be added and queried, but it cannot be modified. This might seem like a very idiotic limitation, but I see it as precision engineering — removing (u)necessary features. So what is the purpose of this restrictive database? Storing counts for items. Possibly millions of items. While using just a single mebibyte. Okay, maybe a few bits over a mebibyte.&lt;&#x2F;p&gt;
+&lt;p&gt;You’ll see why modifying counts is not really necessary (and perhaps, even a little disingenuous), once the project is up and running. And as for why should the size of the database be limited to a mebibyte? Well, why not? It makes the project a whole lot more interesting.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;&quot;&gt;Sketches&lt;&#x2F;h2&gt;
+&lt;p&gt;Okay, a few things first. The only way I am getting this database down to a mebibyte is by using a sketch of the data instead of dealing with the actual data. This makes things a lot easier, but will cost precision. So much for precision engineering. Anyway, I am also pretty sure the data will have a highly skewed &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Zipf%27s_law&quot;&gt;Zipfian distribution&lt;&#x2F;a&gt;. So a &lt;a href=&quot;&#x2F;lab&#x2F;probabilistic-data-structures#Count-Min_Sketch&quot;&gt;count-min sketch&lt;&#x2F;a&gt; should do fine. Hopefully this priori holds, otherwise the precision will be abysmal.&lt;&#x2F;p&gt;
+&lt;p&gt;I am also pretty sure that the count will easily exceed billions for the heavy hitters, so 32-bit counters won’t do, but 64-bits should be plenty enough. Now a count-min sketch guarantees that the estimate will exceed by ε|A| with probability at most δ — where |A| is the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Norm_(mathematics)&quot;&gt;L1 norm&lt;&#x2F;a&gt; of the stream — for a sketch with width w = e&#x2F;ε and depth d = ln(1&#x2F;δ). That is, for a sketch with depth ln(1&#x2F;δ) and width e&#x2F;ε, the error will remain bounded by ε times the size of the input stream with a probability at least 1 - δ.&lt;&#x2F;p&gt;
+&lt;p&gt;A count-min sketch of dimensions 32768 x 4 with 64-bit counters will use 32768 * 4 * 8 bytes — exactly a mebibyte. With d = 4, the probability of &lt;strong&gt;NOT&lt;&#x2F;strong&gt; overestimating the count by ε|A| is about 98%. Nice. However, ε|A| itself is huge as the norm of A is likely in the billions. But the input data stream is likely to follow a Zipfian distribution. Then the space required scales a bit differently — O(ε^(-1&#x2F;z) * ln(1&#x2F;δ)) — where z is the Zipf distribution parameter. Rearranging in terms of ε, the error scales by w^(-z) instead of e&#x2F;w. So, even at z ≈ 2, the error bound decreases from a million to less than ten. Beautiful.&lt;&#x2F;p&gt;
+&lt;p&gt;Now, multiplicity estimation uses exactly one mebibyte. Goal achieved. But as mentioned earlier, the database is slightly over a mebibyte. A few extra bits are reserved for some nice-to-haves — 2048B for cardinality estimation, 2048B for rank estimation and another 2048B to store the top 16 elements.&lt;&#x2F;p&gt;
+&lt;p&gt;The cardinality estimation is done via &lt;a href=&quot;&#x2F;lab&#x2F;probabilistic-data-structures#HyperLogLog&quot;&gt;HyperLogLog&lt;&#x2F;a&gt; with 97.7% accuracy. The top items are stored on a min-heap, using the count-min sketch and principles from &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Misra%E2%80%93Gries_summary&quot;&gt;Misra–Gries summaries&lt;&#x2F;a&gt; for selection of elements. I am estimating ranks using a custom data structure loosely based on t-digest. Elements are selected at random, and their multiplicities are sorted and stored to create a simple distribution sketch. The rank is then calculated using cardinality estimates from HyperLogLog and by interpolating between the values from the distribution sketch. I am not good at math to prove guarantees for error bounds, but I will try tweaking it to get at least 98% accuracy.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;hll-rank.avif&quot; alt=&quot;a distribution sketch estimated using hyperloglog, count-min sketch and arrays of random estimates&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;This brings the total size of the ‘database’ to 1054720 bytes — 1.01MB. Sweet. Can I add more features? Yes. Will feature creep set in? Very likely. So no features. It is not because I am lazy. I am very much not. Really.&lt;&#x2F;p&gt;
+&lt;p&gt;Now, is it a real database? Well the transactions are atomic and consistent, and there is (complete) isolation and and durability. So perhaps? I don’t know, you decide. Either way, cya next week — hopefully by then, I will have actually built it.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Go! Go! Go!</title>
+        <published>2025-02-02T00:00:00+00:00</published>
+        <updated>2025-02-02T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/3-go-go-go/"/>
+        <id>https://ekunazanu.foo/log/3-go-go-go/</id>
+        <summary type="html">Going with the flow.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/3-go-go-go/">&lt;p&gt;Did a couple of things that week. Another &lt;a href=&quot;&#x2F;lab&#x2F;procedural-music&quot;&gt;lab article&lt;&#x2F;a&gt; is up as promised. Other than that, also started experimenting with a ‘real’ language yesterday — Go. Why? You’ll see, once I get the entire project up and running. Maybe within the next two weeks? I don’t know. We’ll see how many obstacles come my way a.k.a how much Go(d) hates me.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;go-god.avif&quot; alt=&quot;doodle of a person and a gopher facing god, who is asking them to go away&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;I am not ashamed of my puns. Cya next week.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Reality Hit</title>
+        <published>2025-01-26T00:00:00+00:00</published>
+        <updated>2025-01-26T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/2-reality-hit/"/>
+        <id>https://ekunazanu.foo/log/2-reality-hit/</id>
+        <summary type="html">You win, capitalism.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/2-reality-hit/">&lt;p&gt;The Plan™ is going horribly wrong. Remember the goals timeline I set out for myself? That was me at the peak of Mount Stupid. Now, I have hit the valley of despair. Turns out I am dumb and had &lt;em&gt;massively&lt;&#x2F;em&gt; overestimated my capabilities.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;dunning-kruger-curve-down.avif&quot; alt=&quot;an arrow pointing at down but not bottom valley of the Dunning Kruger curve&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Well, long story short I live in a capitalistic country and I need money. For that I need a job. For that I need to have skills. Skills that are visible to employers. And that requires me to have ‘real’ projects which is often some sort of kind of…&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;drum-roll.avif&quot; alt=&quot;doodle of drum roll&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;A web project.&lt;&#x2F;p&gt;
+&lt;p&gt;Yes, so this site technically counts too. Except it’s too basic, so I really need to start populating &lt;a href=&quot;&#x2F;lab&quot;&gt;lab&lt;&#x2F;a&gt; with some ‘real projects’. Luckily, I did write some content during the last semester — most of them are still drafts — well I completed &lt;a href=&quot;&#x2F;lab&#x2F;probabilistic-data-structures&quot;&gt;one of them&lt;&#x2F;a&gt; this week, and should complete another one by next week. The others are mostly about math and other tech-y topics that I personally care about, but recruiters probably won’t, so I will be finishing those later.&lt;&#x2F;p&gt;
+&lt;p&gt;So is The Plan™ still on? Well yes, I still want to complete everything I mentioned last time. But I am pushing it back; I need to work on projects and grind LeetCode for now.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Version Control</title>
+        <published>2025-01-20T00:00:00+00:00</published>
+        <updated>2025-01-20T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/1-vcs/"/>
+        <id>https://ekunazanu.foo/log/1-vcs/</id>
+        <summary type="html">Preparing a game plan for medium success.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/1-vcs/">&lt;p&gt;I won’t beat around the bush. College feels like a giant waste of time and money; not that I am surprised. But to be completely fair I haven’t been productive myself either. I just wasted an entire year. And two years before that. Also two years before that. I have been slacking for way too long and it’s time to get serious.&lt;&#x2F;p&gt;
+&lt;p&gt;This is the goal: Speedrun the fundamentals of computer science.&lt;&#x2F;p&gt;
+&lt;p&gt;First things first, I need a plan. Fortunately I have one. Unfortunately I don’t have enough braincells to pull it off quickly enough. BUT fortunately my braincell count is exactly at the point where I &lt;em&gt;think&lt;&#x2F;em&gt; I can do it — right the top of the Dunning-Kruger curve.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;dunning-kruger-curve.avif&quot; alt=&quot;cartoonish representation of a Dunning Kruger curve&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;&quot;&gt;The Plan™&lt;&#x2F;h2&gt;
+&lt;p&gt;Okay, so The Plan™ is ridiculously simple: Just study. Okay to be slightly more specific, it includes completing the first three chapters of &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;web.mit.edu&#x2F;6.001&#x2F;6.037&#x2F;sicp.pdf&quot;&gt;SICP&lt;&#x2F;a&gt;, and getting comfortable with &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;cims.nyu.edu&#x2F;~regev&#x2F;teaching&#x2F;discrete_math_fall_2005&#x2F;dmbook.pdf&quot;&gt;discrete math&lt;&#x2F;a&gt; and &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ocw.mit.edu&#x2F;courses&#x2F;18-06sc-linear-algebra-fall-2011&#x2F;&quot;&gt;linear algebra&lt;&#x2F;a&gt;. I also want to focus a bit on &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www3.cs.stonybrook.edu&#x2F;~skiena&#x2F;373&#x2F;videos&#x2F;&quot;&gt;DSA&lt;&#x2F;a&gt;. All this hopefully by the end the of this first quarter of this year. And if I have a healthy amount of time left, do some &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;courses.csail.mit.edu&#x2F;6.042&#x2F;spring17&#x2F;mcs.pdf&quot;&gt;math for CS&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;If all those links seemed familiar, it is because it’s from &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;teachyourselfcs.com&#x2F;&quot;&gt;teachyourselfcs.com&lt;&#x2F;a&gt;. By the next quarter I am hoping to finish &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;teachyourselfcs.com&#x2F;#operating-systems&quot;&gt;operating systems&lt;&#x2F;a&gt; and &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;teachyourselfcs.com&#x2F;#networking&quot;&gt;networking&lt;&#x2F;a&gt; and a little bit about &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;teachyourselfcs.com&#x2F;#databases&quot;&gt;databases&lt;&#x2F;a&gt;. I probably don’t &lt;em&gt;need&lt;&#x2F;em&gt; to learn about compilers too, so it’s pretty far down the list of things I need to get done immediately — but it’s a nice topic I definitely I want to learn more about after graduation.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;important.avif&quot; alt=&quot;text that says important followed by an arrow pointing down&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;And now, the most important part of The Plan™ — I know my ADHD brain will try its best to get distracted by the most random of things, so the aim here is to post a log every week about the things I learned to keep me in check. Similar to how tracking expenses make people more deliberate about their spending, hopefully writing these logs will knock some sense into me and make me aware of how much time I waste every week. These will be short summaries; the actual notes will on a &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;notes.ekunazanu.foo&quot;&gt;separate repository&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;That’s all. See you until next week — if this project still exists by then. If it does, I don’t intend on wasting more than ten minutes writing these. So if anyone is reading this, do not expect any high quality posts at all.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;TL;DR&lt;&#x2F;strong&gt;: It’s time to start being productive. And hopefully to find gold. Or a job.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+</feed>
