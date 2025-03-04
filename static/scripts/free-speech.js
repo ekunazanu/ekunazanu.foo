@@ -77,9 +77,11 @@ async function postWord(word, url) {
         currentItem.count = data;
         getRank(data);
         drawDistribution(canvasDistribution, countDistribution.distribution, countDistribution.cardinality);
+        canvasDistribution.fillStyle = "#fe8";
+        canvasDistribution.fillRect(currentItem.rawRank * 5, 0, 5, 600);
         canvasDistribution.fillStyle = "#000";
         canvasDistribution.fillRect(currentItem.rawRank * 5, 600 - currentItem.count * 600 / countDistribution.distribution[0], 5, currentItem.count * 600 / countDistribution.distribution[0]);
-        infoDistribution.innerHTML = `Added '${word}'. It appears roughly ${data} times, at approximately the ${Math.round(currentItem.rank / 255 * 100)}th percentile, with a rank of about ${Math.round(currentItem.rank / 255 * countDistribution.cardinality + 1)}.`;
+        infoDistribution.innerHTML = `Added <mark>${word}</mark>. It appears roughly <strong>${data} times</strong>, at about the <strong>${Math.round(currentItem.rank / 255 * 100)}th percentile</strong>, with an approximate <strong>rank of ${Math.round(currentItem.rank / 255 * countDistribution.cardinality + 1)}</strong>.`;
     })
     .catch(error => { handleServerDisconnect(); });
 }
