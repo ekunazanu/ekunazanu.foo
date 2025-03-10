@@ -40,7 +40,7 @@ On a side note, I don't like how JavaScript has no native support for 8-bit unsi
 
 <canvas id="canvas4"></canvas>
 
-6. Ripples — (159, x\*x+y\*y, 207). The pixels having same intensity k for x\*x+y\*y=k follow the equation for a circle — and hence the pattern. The narrowing concentric circles also reveal the exponential nature of the function and the modular nature of unsigned integers. There are some nice interference patterns going as well.
+6. Ripples — (63, x\*x+y\*y, 175). The pixels having same intensity k for x\*x+y\*y=k follow the equation for a circle — and hence the pattern. The narrowing concentric circles also reveal the exponential nature of the function and the modular nature of unsigned integers. There are some nice interference patterns going as well.
 
 <canvas id="canvas5"></canvas>
 
@@ -60,7 +60,7 @@ On a side note, I don't like how JavaScript has no native support for 8-bit unsi
 
 <canvas id="canvas9"></canvas>
 
-11. Peacock — (x\*x\*x\*x\*y\*y\*y\*y, x\*x\*y\*y, x\*x\*x\*y\*y\*y). I think this is one of the prettiest patterns. The colors remind me of the feathers of a peacock.
+11. Peacock — (0, x\*x\*y\*y, x\*x\*x\*y\*y\*y). I think this is one of the prettiest patterns. The colors remind me of the feathers of a peacock.
 
 <canvas id="canvas10"></canvas>
 
@@ -85,3 +85,4 @@ Watching a tutorial on how to use a solder properly seems like the saner (and ob
 Anyway that is all for this week. Cya next week.
 
 <script src="/scripts/8-pretty-pixel-patterns.js"></script>
+<style>canvas {image-rendering: pixelated;}</style>
