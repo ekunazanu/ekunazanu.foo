@@ -1,6 +1,6 @@
 +++
 title = "Procedural Music"
-description = "Using music theory and markov models to generate music, sort of."
+description = "Using music theory and randomness to generate basic tunes."
 weight = 4
 draft = false
 template = "article.html"

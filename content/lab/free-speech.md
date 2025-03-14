@@ -1,6 +1,6 @@
 +++
 title = "Free Speech"
-description = "Visualising frequently used word submissions."
+description = "Visualizing frequent word submissions."
 weight = 8
 draft = false
 template = "article.html"

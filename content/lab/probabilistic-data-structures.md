@@ -1,13 +1,13 @@
 +++
 title = "Probabilistic Data Structures"
-description = "A primer on bloom filters, count-min sketches, and HyperLogLog."
+description = "A primer on Bloom Filters, Count-min Sketch, and HyperLogLog."
 weight = 1
 draft = false
 template = "article.html"
 [extra]
 type = "article"
 thumbnail = "lab.die.svg"
-thumbnailalt = "Die face showing five dots."
+thumbnailalt = "A die showing the face with five dots."
 +++
 
 Probabilistic data structures are what their names suggest — these are [data structures](https://en.wikipedia.org/wiki/Data_structure) that give probabilistic answers to queries. What is lost in [precision](https://en.wikipedia.org/wiki/Accuracy_and_precision#/media/File:Accuracy_and_precision.svg) however, is more than made up for in extremely efficient use of memory and/or computational resources.
@@ -349,7 +349,7 @@ For example, HyperLogLog is able to estimate cardinalities of more than a billio
 
 There are lots of other probabilistic data structures that trade accuracy for efficiency. [Cuckoo filters](https://en.wikipedia.org/wiki/Cuckoo_filter) and [quotient filers](https://en.wikipedia.org/wiki/Quotient_filter) are probabilistic data structures used for membership queries, in addition to bloom filters. Estimating distinct elements can be done via [linear counting](https://doi.org/10.1145/78922.78925) — like HyperLogLog — but the underlying principle is similar to bloom filters. Rank can be approximated using [t-digests](https://doi.org/10.48550/arXiv.1902.04023), or [KLL sketches](https://doi.org/10.48550/arXiv.1603.05346). Similarities can be estimated using [LSH](https://en.wikipedia.org/wiki/Locality-sensitive_hashing), [MinHash](https://en.wikipedia.org/wiki/MinHash), and [SimHash](https://doi.org/10.1145/509907.509965).
 
-There are lots of probabilisitic data structures, each with their own advantages, disadvantages, and purpose. But the tradeoff is similar in all cases — trading precision for efficiency.
+There are other probabilistic data structures too, each with their own advantages and disadvantages. But the trade off is similar in all cases — precision for efficiency.
 
 ---
 
