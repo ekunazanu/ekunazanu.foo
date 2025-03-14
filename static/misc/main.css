@@ -5,11 +5,13 @@
   --gray3: #aaa; /* faint but visible: non-significant separator lines */
   --gray4: #ddd; /* background gray: behind text: inline codes etc */
   --yellow: #fe8; --blue: #37a; --green: #ce7;
-  --red: #e98; --purple: #703; /* #69a #bef #048 */
+  --red: #e98; --purple: #dae; /* #69a #bef #048 */
   --sans: Inter, sans-serif; --serif: Playfair, serif;
   --monospace: 'JetBrains Mono', monospace;
-}
-/*
+} /* @media (prefers-color-scheme: dark) { :root {
+  --fg: #fff; --bg: #000; --gray1: #aaa; --gray2: #999; --gray3: #555; --gray4: #444;
+  --blue: #67d; --green: #164; --yellow: #880; --red: #932; --purple: #703;
+}}
 @font-face {
   font-family: 'Inter-stripped'; font-display: swap;
   font-style: normal; font-weight: 100 900;
