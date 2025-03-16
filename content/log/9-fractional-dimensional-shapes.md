@@ -1,13 +1,13 @@
 +++
 title = "Fractional Dimensional Shapes"
-description = "Creating Julia fractals."
+description = "Creating slices of abstract four dimensional fractals."
 date = 2025-03-16
 draft = false
 template = "article.html"
 [extra]
 type = "article"
 thumbnail = "log.9.fractal.avif"
-thumbnailalt = "Doodle of a sierpinski triangle."
+thumbnailalt = "Doodle of a low iteration Sierpinski triangle."
 +++
 
 Fractals. That's what [fractional dimensional shapes are](https://en.wikipedia.org/wiki/Hausdorff_dimension). I just thought phrasing the title that way sounded cooler.
