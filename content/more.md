@@ -50,7 +50,7 @@ However, pretty much all of the "This is advice for legal pages but this is not 
 
 ### Privacy Policy
 
-There is no analytics done on this website because I'm already aware of my target demographic, aka [Arhya](https://arhya.codes). The TLDR is I do not collect your personal information; I simply don't care enough about you, sorry. This entire subsection is irrelevant. I cannot speak for the platforms hosting this site though.
+There is no analytics done on this website because I'm already aware of my target demographic, [Anubrat](https://anubratbora.me). The TLDR is I do not collect your personal information; I simply don't care enough about you, sorry. This entire subsection is irrelevant. I cannot speak for the platforms hosting this site though.
 
 ### Disclaimer
 
