@@ -25,7 +25,7 @@ You also can try specific aspect ratios: Most screens will usually have an aspec
 
 Designing the function for collisions made it obvious why it has to be that way: Collisions are symmetric and the bounding box is a rectangle. So if the rhombic tiles are coming close to each other, it means the ray elsewhere is experiencing two close collisions — somewhere near a corner. As the tiling patterns overlap, that collision difference reaches zero which means the ray has to hit a corner. It also means that other initial conditions result in an infinite loop. That DVD square will never reach a corner. Sad.
 
-As for other things, The Plan™ got derailed. Of course, it did. But to be fair, I did have my midterms all week. And while I did procrastinate a lot, I did learn other things — mostly about rotatary positional embeddings. This [post](https://blog.eleuther.ai/rotary-embeddings/) explains it pretty well. Anyhow, I'll try to start The Plan™ this week. For real. <small>(If the lab exams don't ruin my schedule.)</small>
+As for other things, The Plan™ got derailed. Of course, it did. But to be fair, I did have my midterms all week. And while I did procrastinate a lot, I did learn other things — mostly about rotary positional embeddings. This [post here](https://blog.eleuther.ai/rotary-embeddings/) explains it pretty well. Anyhow, I'll try to start The Plan™ this week. For real. <small>(If the lab exams don't ruin my schedule.)</small>
 
 ![doodle of a person asking others to trust them](/media/log/trust-me-bro.avif)
 
