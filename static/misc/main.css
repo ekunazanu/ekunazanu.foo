@@ -77,7 +77,7 @@ footer a, footer a[target="_blank"] {color: var(--gray1); text-decoration: none;
 footer a:hover, footer a[target="_blank"]:hover {color: var(--fg);}
 
 /* text */
-p {margin: 1rem 0;} ul, ol {padding: 0 0 0 1em;} sup {vertical-align: top; font-size: 0.6em;}
+p {margin: 1rem 0;} ul, ol {padding: 0 0 0 1em;} sup, sub {font-size: 0.75em;}
 hr {margin: 2rem 0; border-bottom: 0.0625rem solid var(--fg); border-top: none;}
 strong {font-weight: 700;} em {font-style: italic;} small {font-size: 0.75rem;}
 mark {background-color: var(--yellow); color: var(--fg);}
