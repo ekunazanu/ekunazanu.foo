@@ -84,7 +84,7 @@ mark {background-color: var(--yellow); color: var(--fg);}
 blockquote {font-style: italic; padding: 0.5rem 1rem; margin: 1rem 0rem; border-left: 0.0625rem solid var(--fg);}
 blockquote p:first-child {margin-top: 0;} blockquote p:last-child {margin-bottom: 0;}
 details {color: var(--gray1); font-size: 0.75rem; line-height: 1.25rem; padding: 0; margin: 1rem 0;}
-details summary {font-weight: 600; cursor: pointer;} details p {margin: 0.5rem 0;} details p:nth-child(2) {margin-top: 0;}
+details summary {font-weight: 700; cursor: pointer;} details p {margin: 0.5rem 0;} details p:nth-child(2) {margin-top: 0;}
 
 /* media */
 img, canvas, svg {display: block; max-width: 100%; height: auto; margin: 1rem auto;}
