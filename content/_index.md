@@ -5,30 +5,95 @@ draft = false
 template = "page.html"
 [extra]
 type = "website"
-thumbnail = "other.doodle-me.avif"
-thumbnailalt = "A doodle of a person waving."
+thumbnail = "other.ekunazanu.avif"
+thumbnailalt = "A black square box with rectangular eyes, signifying a face."
 +++
 
-Hi! I am Anchit. I am currently a third year computer science undergraduate student. I like math, movies, progressive rock, and coding. One of them is a lie.
+<canvas id="canvasGOL"></canvas>
 
-![doodle of frustrated person looking at their computer](/media/other/doodle-frustrated-looking-at-computer.avif)
+Yet another blog on the internet. Nothing much here, just some [normal posts](/log) a few [other things](/lab) I created that I [like to] think is cool.
 
-I also like doodling I guess.
+That's pretty much it, but here's more [about](/about) me and this site.
 
-## About
+<script>
+const canvasGOL = document.getElementById('canvasGOL').getContext('2d');
+canvasGOL.canvas.width = 1280;
+canvasGOL.canvas.height = 322;
+const gridSizeX = 63;
+const gridSizeY = 16;
+const cellSize = 20;
+const eyeCells = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [1, 0], [1, 4]];
+let grid = [];
+let nextGrid = [];
 
-Most smart people I know have their own blogs and I want to *appear* smart too, so here we are. No, my real goal is to become a competent coder and write high-quality-ultra-production-grade-hyper-fast-efficient-code within the next six months. The one and only obstacle stopping me from achieving that is my laziness and stupidity. And I found a solution: Just keep track of my laziness and stupidity to be aware of my laziness and stupidity. So here I am — creating a web [log](/log) of my laziness and stupidity.
+function initializeGrid() {
+    for (let i = 0; i < gridSizeY; i++) {
+        grid[i] = [];
+        nextGrid[i] = [];
+        for (let j = 0; j < gridSizeX; j++) {
+            grid[i][j] = Math.random() < 0.2 ? 1 : 0;
+            nextGrid[i][j] = 0;
+        }
+    }
+}
 
-Just kidding; the *real* real goal was indeed the first one: Trick people into thinking I'm smart.
+function initializeLogo() {
+    for (let i = 2; i < 14; i++)
+        for (let j = 2; j < 14; j++)
+            grid[i][j] = 1;
+    for (let i = 0; i < eyeCells.length; i++) {
+        grid[eyeCells[i][1] + 4][eyeCells[i][0] + 4] = 0;
+        grid[eyeCells[i][1] + 4][eyeCells[i][0] + 9] = 0;
+    }
+}
 
-![doodle of person wearing sunglasses with more confused smileys inside his head](/media/other/doodle-fake-it-make-it.avif)
+function drawGrid() {
+    for (let i = 0; i < gridSizeY; i++) {
+        for (let j = 0; j < gridSizeX; j++) {
+            canvasGOL.fillStyle = grid[i][j] == 1 ? "#000" : "#fff";
+            canvasGOL.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
+            canvasGOL.strokeStyle = "#000";
+            canvasGOL.lineWidth = 2;
+            canvasGOL.strokeRect(j * cellSize + 1, i * cellSize + 1, cellSize, cellSize);
+        }
+    }
+}
 
-Anyhow, I also want this site to be *at least* of some use to people other than me. And so there's another section [lab](/lab), where I'll post 'real' content. It simply means that I'll try to put at least *some* effort towards the content. Maybe. No guarantees. These will mostly be topics that I find interesting — boring things like math and data.
+function countNeighbors(x, y) {
+    let count = 0;
+    for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+            if (i == 0 && j == 0) continue;
+            let ni = (x + i + gridSizeY) % gridSizeY;
+            let nj = (y + j + gridSizeX) % gridSizeX;
+            count += grid[ni][nj];
+        }
+    }
+    return count;
+}
 
-There's not much [more](/more) to this site. Or is there?
+function updateGrid() {
+    for (let i = 0; i < gridSizeY; i++) {
+        for (let j = 0; j < gridSizeX; j++) {
+            let neighbors = countNeighbors(i, j);
+            if (grid[i][j] == 1 && (neighbors < 2 || neighbors > 3)) {
+                nextGrid[i][j] = 0;
+            } else if (grid[i][j] == 0 && neighbors == 3) {
+                nextGrid[i][j] = 1;
+            } else {
+                nextGrid[i][j] = grid[i][j];
+            }
+        }
+    }
+    [grid, nextGrid] = [nextGrid, grid];
+}
 
-## Contact
+function gameLoop() {
+    initializeLogo()
+    drawGrid();
+    updateGrid();
+}
 
-If you want to complain about my lousy writing, point out factual inaccuracies, or send ideas or memes to me: Don't. Okay, maybe do. I'm available at [me@ekunazanu.foo](mailto:me@ekunazanu.foo) and at [Bluesky](https://bsky.app/profile/ekunazanu.foo). Will I respond? Good question.
-
-I sign my stuff with a [minisign key](/misc/ekunazanu.pub).
+initializeGrid();
+setInterval(gameLoop, 500);
+</script>
