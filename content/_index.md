@@ -9,9 +9,11 @@ thumbnail = "other.ekunazanu.avif"
 thumbnailalt = "A black square box with rectangular eyes, signifying a face."
 +++
 
+Hello, World!
+
 <canvas id="canvasGOL"></canvas>
 
-Yet another blog on the internet. Nothing much here, just some [normal posts](/log) a few [other things](/lab) I created that I [like to] think is cool.
+This is yet another blog on the internet. Nothing much here, just some [normal posts](/log) and a few [other things](/lab) I created that I [like to] think is cool.
 
 That's pretty much it, but here's more [about](/about) me and this site.
 
