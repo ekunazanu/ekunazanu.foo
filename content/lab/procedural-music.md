@@ -179,4 +179,6 @@ All throughout, only a simple composition of [pure tones](https://en.wikipedia.o
 
 For now, I am satisfied with how it sounds given how simple the mechanism for the tone generation process is.
 
-<script src="/scripts/procedural-music.js"></script>
+<script>
+{{ loadData(path="/scripts/procedural-music.js") }}
+</script>

@@ -359,7 +359,9 @@ There are other probabilistic data structures too, each with their own advantage
 * Eric Crahen: [Count-Min Sketching, Configuration & Point-Queries](https://crahen.github.io/algorithm/stream/count-min-sketch-point-query.html)
 * Engineering at Meta: [HyperLogLog in Presto: A significantly faster way to handle cardinality estimation](https://engineering.fb.com/2018/12/13/data-infrastructure/hyperloglog/)
 
-<script src="/scripts/probabilistic-data-structures.js"></script>
+<script>
+{{ loadData(path="/scripts/probabilistic-data-structures.js") }}
+</script>
 <style>
 .setContainer {font: normal 0.875rem var(--monospace); line-height: 1.25rem; overflow: auto; padding: 1rem; margin: 1rem 0rem; border: 0.0625rem solid var(--fg);}
 .highlight {font-weight: 800;}
