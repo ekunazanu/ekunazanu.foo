@@ -175,9 +175,9 @@ Tempo: <input id="sliderMainTempo" type="range"><br>
 
 Does it sound like 'music'? Maybe not. But it sounds arguably good for something that is effectively randomly generated. And it might be useful in environments requiring ambient music that is not attention grabbing — in arcade-ish games for example.
 
-All throughout, only a simple composition of [pure tones](https://en.wikipedia.org/wiki/Pure_tone) (purely sinusoidal sound waves) were used. But the [waveforms](https://en.wikipedia.org/wiki/Waveform) can also be modified to make it sound like [different musical instruments](https://en.wikipedia.org/wiki/Timbre). While it is possible to recreate it using [code](https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode), I would prefer using my own recordings and samples to experiment with. Perhaps later, in another post.
+All throughout, only a simple composition of [pure tones](https://en.wikipedia.org/wiki/Pure_tone) (purely sinusoidal sound waves) were used. But the [waveforms](https://en.wikipedia.org/wiki/Waveform) can also be modified to make it sound like [different musical instruments](https://en.wikipedia.org/wiki/Timbre). While it is possible to recreate it using [code](https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode), I would prefer using my own recordings and samples to experiment with. Perhaps later, in another post. Maybe even utilize fractals and chaos theory for procedural generation.
 
-For now, I am satisfied with how it sounds given how simple the mechanism for the tone generation process is.
+This is all for now though.
 
 <script>
 {{ loadData(path="/scripts/procedural-music.js") }}
