@@ -107,11 +107,11 @@ To reduce the probability of collisions, multiple hash functions can be used for
 <canvas id="bfCanvasMultiple"></canvas>
 <input id="bfInputMultipleAdd" value="hello"><button id="bfButtonMultipleAdd">Add</button><br>
 <input id="bfInputMultipleQuery" value="foo"><button id="bfButtonMutlipleQuery">Search</button><br>
-Hash: <code id="bfOutputMultipleHash">44, 242, 77</code> <span id="bfOutputMultipleMessage"></span><br>
+<input id="bfInputMultipleSlider" type="range"><br>
 Hash depth: <span id="bfOutputMultipleHashDepth">3</span><br>
-<input id="bfInputMultipleSlider" type="range">
+Hash: <code id="bfOutputMultipleHash">44, 242, 77</code> <span id="bfOutputMultipleMessage"></span>
 
-{% tangent(summary="Universal hashing", open=true) %}
+{% tangent(summary="Universal hashing", open=false) %}
 The hash depth refers to the number of hash functions used. The output of the hash functions should be randomly distributed and should not be correlated to each other. Formally, the hash functions should be selected from a [universal family](https://en.wikipedia.org/wiki/Universal_hashing), and should ideally be [pairwise independent](https://en.wikipedia.org/wiki/Pairwise_independence). These assumptions are used when calculating the probability of collisions when using multiple hash functions.
 {% end %}
 
@@ -175,8 +175,8 @@ A way to utilize the extra bits is by using them as 'counters' to store informat
 <input id="cmsInputComparisonAdd" value="hello"><button id="cmsButtonComparisonAdd">Add</button><br>
 <input id="cmsInputComparisonQuery" value="hello"><button id="cmsButtonComparisonQuery">Search</button><br>
 Hash: <code id="cmsOutputComparisonHash">44, 242, 77</code><br>
-Bloom Filter: <span id="cmsOutputComparisonMessage">&nbsp;</span><br>
-Counting Bloom Filter: <span id="cmsOutputComparisonValues"></span><br>
+Bloom Filter: <span id="cmsOutputComparisonMessage">-</span><br>
+Counting Bloom Filter: <span id="cmsOutputComparisonValues">-</span><br>
 
 The array on top is a bloom filter, which only only be used for binary queries — that is, whether it exists or not. The array below the bloom filter is a counting bloom filter which can give slightly richer information in the form of frequency estimates.
 
@@ -211,8 +211,8 @@ Notice how collisions do not affect the bits that are already set in the bloom f
 <code style="display: none" id="cmsOutputComparisonErrorsHash">44, 242, 77</code>
 <span style="display: none" id="cmsOutputComparisonErrorsMessage">&nbsp;</span>
 <span style="display: none" id="cmsOutputComparisonErrorsValues">0, 0, 0</span>
+<input id="cmsInputComparisonErrorsSlider" type="range"><br>
 Hash depth: <span id="cmsOutputComparisonErrorsHashDepth">32</span><br>
-<input id="cmsInputComparisonErrorsSlider" type="range">
 
 The solution to reducing errors then would be to increase the size of the array and to minimize the number hash functions. And while that is acceptable, there are better ways to go about it.
 
