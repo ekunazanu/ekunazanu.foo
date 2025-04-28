@@ -84,5 +84,7 @@ Watching a tutorial on how to use a solder properly seems like the saner (and ob
 
 Anyway that is all for this week. Cya next week.
 
-<script src="/scripts/8-pretty-pixel-patterns.js"></script>
+<script>
+{{ loadData(path="/scripts/8-pretty-pixel-patterns.js") }}
+</script>
 <style>canvas {image-rendering: pixelated;}</style>
