@@ -826,7 +826,7 @@ function drawAngle(canvas, angleA, angleB, colorA, colorB, radiusA = 30, radiusB
     canvas.stroke();
 };
 
-function drawWave(canvas, frequency, yOffset, color = "#aaa", width = 2) {
+function drawWave(canvas, frequency, yOffset, color = "#000", width = 2) {
     canvas.strokeStyle = color;
     canvas.lineWidth = width;
     canvas.beginPath();
