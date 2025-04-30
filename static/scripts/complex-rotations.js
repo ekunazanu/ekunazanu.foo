@@ -911,7 +911,7 @@ function drawGridNumbers(canvas, originX, originY, real, imag, color = "#000", m
         drawLine(canvas, getX(i + originX, originY, real, imag), getY(i + originX, originY, real, imag) - 15, getX(i + originX, originY, real, imag), getY(i + originX, originY, real, imag) + 15);
         drawLine(canvas, getX(originX, i + originY, real, imag) - 15, getY(originX, i + originY, real, imag), getX(originX, i + originY, real, imag) + 15, getY(originX, i + originY, real, imag));
         canvas.fillText(i, getX(i + originX, originY, real, imag) + textOffset, getY(i + originX, originY, real, imag) + textOffset);
-        canvas.fillText(-i, getX(originX, i + originY, real, imag) + textOffset, getY(originX, i + originY, real, imag) + textOffset);
+        canvas.fillText(i, getX(originX, i + originY, real, imag) + textOffset, getY(originX, i + originY, real, imag) + textOffset);
     }
     canvas.stroke();
 }
