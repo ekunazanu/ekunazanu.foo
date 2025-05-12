@@ -25,6 +25,7 @@ Here, the sound source is a vibrating object, oscillating in a [sinusoidal](http
 <canvas id="canvasWaveOne"></canvas>
 <input id="frequencySliderWaveOne" type="range"><br>
 <input id="amplitudeSliderWaveOne" type="range"><br>
+
 <button id="playButtonWaveOne">Play sound</button>
 
 ### Intervals
@@ -36,6 +37,7 @@ The above sound has a singular frequency, and may sound simple. While introducin
 <input id="frequencySliderWaveTwoB" type="range"><br>
 <input id="amplitudeSliderWaveTwoA" type="range">
 <input id="amplitudeSliderWaveTwoB" type="range"><br>
+
 <button id="playButtonWaveTwo">Play sound</button>
 
 {% tangent(summary="Sound distortion", open=false) %}
@@ -128,6 +130,7 @@ While different types of beats can have different structures, the 'speed' of the
 
 <canvas id="canvasTempo"></canvas>
 <input id="sliderTempo" type="range"><br>
+
 <button id="playTempoButton">Play beat</button>
 
 Altering the rhythm patterns can make sounds structured and more pleasing, but it can also be used to again set the of mood of the sound. For instance, the tempo of the music can be varied to produce different vibes — a fast and structured beat can sound energetic, while a slower and less cadenced beat can sound more relaxed and mellow.
