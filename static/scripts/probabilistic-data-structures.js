@@ -32,8 +32,22 @@ document.getElementById("setContainerBinary").innerHTML = setArraySorted.map((wo
 document.getElementById("setContainerUnique").innerHTML = setArrayUnique.map((word, index) => `<span id="setSpanUnique-${index}">${word}</span>`).join(" ");
 document.getElementById("setContainerHashes").innerHTML = setArrayHashes.map((word, index) => `<span id="setSpanHashes-${index}">${word}</span>`).join(" ");
 
+function setButtonStatus(button, enabled) {
+    if (enabled) {
+        button.innerHTML = "Searching";
+        button.disabled = true;
+        button.style.pointerEvents = "none"
+    } else {
+        button.innerHTML = "Search";
+        button.disabled = false;
+        button.style.pointerEvents = "auto"
+    }
+}
+
 // linear search
-async function linearSearch(setContainer, target, setArray, setOutput) {
+
+async function linearSearch(setContainer, target, setArray, setOutput, button) {
+    setButtonStatus(button, true);
     var children = document.getElementById(setContainer).children;
     for (let child of children) {child.classList.remove("highlight", "found");};
     for (let i = 0; i < setArray.length; i++) {
@@ -44,16 +58,19 @@ async function linearSearch(setContainer, target, setArray, setOutput) {
             currentWord.classList.remove("highlight");
             currentWord.classList.add("found");
             document.getElementById(setOutput).innerHTML = "<b>Element found.</b>";
+            setButtonStatus(button, false);
             return true;
         }
         currentWord.classList.remove("highlight");
     }
     document.getElementById(setOutput).innerHTML = "Element not found.";
+    setButtonStatus(button, false);
     return false;
 }
 
 // binary search
-async function binarySearch(setContainer, target, setArray, setOutput, setFunctionType) {
+async function binarySearch(setContainer, target, setArray, setOutput, setFunctionType, button) {
+    setButtonStatus(button, true);
     var tmpWords = document.getElementById(setContainer).children;
     for (let child of tmpWords) {child.classList.remove("highlight", "found");};
     let left = 0;
@@ -67,6 +84,7 @@ async function binarySearch(setContainer, target, setArray, setOutput, setFuncti
             currentWord.classList.remove("highlight");
             currentWord.classList.add("found");
             document.getElementById(setOutput).innerHTML = "<b>Element found.</b>";
+            setButtonStatus(button, false);
             return true;
         }
         currentWord.classList.remove("highlight");
@@ -74,6 +92,7 @@ async function binarySearch(setContainer, target, setArray, setOutput, setFuncti
         else right = mid - 1;
     }
     document.getElementById(setOutput).innerHTML = "Element not found.";
+    setButtonStatus(button, false);
     return false;
 }
 
@@ -81,21 +100,21 @@ const setButtonLinear = document.getElementById("setButtonLinear");
 setButtonLinear.onclick = async() => {
     var target = document.getElementById("setInputLinear").value.trim();
     if (!target) return;
-    await linearSearch("setContainerLinear", target, setArrayMain, "setOutputLinear");
+    await linearSearch("setContainerLinear", target, setArrayMain, "setOutputLinear", setButtonLinear);
 };
 
 const setButtonBinary = document.getElementById("setButtonBinary");
 setButtonBinary.onclick = async() => {
     var target = document.getElementById("setInputBinary").value.trim();
     if (!target) return;
-    await binarySearch("setContainerBinary", target, setArraySorted, "setOutputBinary", "Binary");
+    await binarySearch("setContainerBinary", target, setArraySorted, "setOutputBinary", "Binary", setButtonBinary);
 };
 
 const setButtonUnique = document.getElementById("setButtonUnique");
 setButtonUnique.onclick = async() => {
     var target = document.getElementById("setInputUnique").value.trim();
     if (!target) return;
-    await binarySearch("setContainerUnique", target, setArrayUnique, "setOutputUnique", "Unique");
+    await binarySearch("setContainerUnique", target, setArrayUnique, "setOutputUnique", "Unique", setButtonUnique);
 };
 
 const setButtonHashes = document.getElementById("setButtonHashes");
@@ -104,7 +123,7 @@ setButtonHashes.onclick = async() => {
     if (!target) return;
     target = await getHash(target);
     document.getElementById("setOutputHashesHash").innerHTML = target[0];
-    await binarySearch("setContainerHashes", target[0], setArrayHashes, "setOutputHashes", "Hashes");
+    await binarySearch("setContainerHashes", target[0], setArrayHashes, "setOutputHashes", "Hashes", setButtonHashes);
 };
 
 // initialise canvas
