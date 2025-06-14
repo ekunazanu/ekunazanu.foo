@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>ekunazanu</title>
+    <subtitle>A blogified version of xkcd, only worse, and more personal, and not really funny.</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://ekunazanu.foo/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://ekunazanu.foo"/>
+    <updated>2025-06-10T00:00:00+00:00</updated>
+    <id>https://ekunazanu.foo/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Busy Building</title>
+        <published>2025-06-10T00:00:00+00:00</published>
+        <updated>2025-06-10T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/14-busy-building/"/>
+        <id>https://ekunazanu.foo/log/14-busy-building/</id>
+        <summary type="html">Busy building bugs and excuses.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/14-busy-building/">&lt;p&gt;Endsems are over, I am back in hometown, and I am doing a little internship. Needless to say, I’ve been busy trying to dodge invitations and get some work done. So there’s not a lot of internet-related log-apt updates for this month.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;sleeping-calling.avif&quot; alt=&quot;doodle of a person lying on their bed, pretending to be busy on a phone call&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;But not a lot != none. First, I’ve decided to make an article for &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;some.3b1b.co&#x2F;&quot;&gt;SoME4&lt;&#x2F;a&gt;. I’ve always enjoyed the content people made for SoME, and I feel like this year I might be able to contribute too. Would I have written an article anyway? Probably. But I think the fact that at least one person will be reading&#x2F;reviewing it is making me want to elevate its quality — more than the other lab articles. Unless laziness kicks in; we’ll see.&lt;&#x2F;p&gt;
+&lt;p&gt;Second, I had to revisit some linear algebra, and matrix inversions have finally started to make &lt;em&gt;some&lt;&#x2F;em&gt; geometric sense. If the determinant &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=Ip3X9LOh2dk&quot;&gt;determines the scaling factor&lt;&#x2F;a&gt; by which a matrix scales the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Hypercube&quot;&gt;hypercube&lt;&#x2F;a&gt; formed by the identity matrix into some &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Parallelepiped#Parallelotope&quot;&gt;parallelotope&lt;&#x2F;a&gt; of non unit hyper-volume, then the inverse of the scaling factor (determinant) should restore scale the signed volume of the transformed parallelotope back to unit hyper-volume. The transpose provides a way to encode &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;math.stackexchange.com&#x2F;a&#x2F;37402&quot;&gt;the reverse ordering of the transformations&lt;&#x2F;a&gt;. Another way to think about it: If a 3x2 matrix will transform a 2D space to 3D, then its transpose will transform the 3D vector space back to 2D. Not the best analogy since inversions are not defined for rectangular matrices — they can lower the rank, making ‘inversions’ impossible. But still helps me remember. The cofactors — I still don’t understand. If there is an intuitive explanation, please let me know.&lt;&#x2F;p&gt;
+&lt;p&gt;Also while I was also solving &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.janestreet.com&#x2F;puzzles&#x2F;current-puzzle&#x2F;&quot;&gt;this month’s puzzle&lt;&#x2F;a&gt;, I unknowingly ended up creating an oddly satisfying tiler. I guess it is only satisfying if you have (very subtle) OCD. Anyhow, I wanted a quick way to find &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;erich-friedman.github.io&#x2F;mathmagic&#x2F;0802.html&quot;&gt;partridge tilings&lt;&#x2F;a&gt; for squares, and instead of drawing it out or coming up with an algorithm to solve it, I just wrote a quick implementation for drawing tiles quickly. And what do you know, it’s a great way to pass time — it was for me at least. So I thought about just leaving it up here:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvasPartridge&quot;&gt;&lt;&#x2F;canvas&gt;
+&lt;canvas id=&quot;canvasPartridgeSelection&quot;&gt;&lt;&#x2F;canvas&gt;
+&lt;select id=&quot;selectPartridge&quot;&gt;&lt;&#x2F;select&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;If you don’t want to read what partridge tiling is, here’s the gist: &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=BP6bLvfl0V0&quot;&gt;the sum of the cubes of natural numbers is equal to the square of the sum of those natural numbers&lt;&#x2F;a&gt;. Now instead of the sum of n cubes, just think of them as the sum of n squares of n side length. This means area of n squares of n side length, where n goes from one to any number, is equal to the area of another square. But simply because the areas add up does not mean the squares will tile perfectly. But for squares of certain order, all the squares will neatly pack into the larger square. Here that order is nine, and tiling solutions do exist; you can try finding a few. Select the square from the menus or just use your keyboard. Right click to remove squares. Sorry mobile users, the grid is too small for you anyway.&lt;&#x2F;p&gt;
+&lt;p&gt;Not much else for this month. Cya next month.&lt;&#x2F;p&gt;
+&lt;script&gt;
+
+&#x2F;&#x2F; change dimensions
+&#x2F;&#x2F; show outline on hover
+
+const cellSize = 28;
+const gridN = 9;
+const gridSize = (gridN * (gridN + 1)) &#x2F; 2;
+const colors = [&quot;#fff&quot;, &quot;#000&quot;, &quot;#0a0&quot;, &quot;#f80&quot;, &quot;#00a&quot;, &quot;#a05&quot;, &quot;#5ad&quot;, &quot;#ee5&quot;, &quot;#644&quot;, &quot;#aaa&quot;];
+const colorsText = [&quot;#000&quot;, &quot;#fff&quot;, &quot;#fff&quot;, &quot;#000&quot;, &quot;#fff&quot;, &quot;#fff&quot;, &quot;#000&quot;, &quot;#000&quot;, &quot;#fff&quot;, &quot;#000&quot;];
+const canvasPartridge = document.getElementById(&quot;canvasPartridge&quot;).getContext(&quot;2d&quot;);
+const canvasPartridgeSelection = document.getElementById(&quot;canvasPartridgeSelection&quot;).getContext(&quot;2d&quot;);
+const selectPartridge = document.getElementById(&quot;selectPartridge&quot;);
+canvasPartridge.canvas.height = 1280;
+canvasPartridge.canvas.width = 1280;
+canvasPartridgeSelection.canvas.height = 150;
+canvasPartridgeSelection.canvas.width = 1280;
+for (let i = 1; i &lt;= gridN; i++) {
+    const option = document.createElement(&quot;option&quot;);
+    option.value = i; option.textContent = i;
+    selectPartridge.appendChild(option);
+}
+selectPartridge.value = 9;
+
+let partridgeSquaresCardinality = new Array(gridSize).fill(0);
+let partridgeGrid = new Array(gridSize).fill(0).map(val =&gt; new Array(gridSize).fill(0));
+let partridgeSquares = new Array(gridSize).fill(0).map(val =&gt; new Array(3).fill(0));
+let x, y, size = 0;
+
+canvasPartridge.canvas.addEventListener(&quot;mousedown&quot;, (evt) =&gt; {
+    updateSquares(evt, Number(selectPartridge.value));
+    drawSelection();
+    drawGrid();
+});
+canvasPartridgeSelection.canvas.addEventListener(&quot;mousedown&quot;, (evt) =&gt; {
+    selectPartridge.value = getSelection(evt);
+    drawSelection(); });
+canvasPartridge.canvas.addEventListener(&quot;contextmenu&quot;, (evt) =&gt; { evt.preventDefault(); });
+window.addEventListener(&quot;keydown&quot;, (evt) =&gt; {
+    if (evt.key &gt; 0 &amp;&amp; evt.key &lt;= gridN) {
+        selectPartridge.value = evt.key;
+        drawSelection();
+}});
+drawGridLines(canvasPartridge);
+drawSelection(canvasPartridgeSelection);
+
+function getSelection(evt, canvas = canvasPartridgeSelection) {
+    const rect = canvas.canvas.getBoundingClientRect();
+    return Math.floor(((evt.clientX - rect.left) * (canvas.canvas.width &#x2F; rect.width) &#x2F; 140) + 1);
+}
+
+function drawSelection(canvas = canvasPartridgeSelection, cardinality = partridgeSquaresCardinality, currentSel = selectPartridge.value) {
+    canvas.font = &quot;32px JetBrains Mono&quot;;
+    canvas.textAlign = &quot;center&quot;;
+    canvas.textBaseline = &quot;middle&quot;;
+    canvas.strokeStyle = &quot;#000&quot;;
+    canvas.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+    for (let i = 1; i &lt;= gridN; i++) {
+        canvas.lineWidth = 2;
+        canvas.fillStyle = colors[i];
+        if (i == currentSel) canvas.lineWidth = 6;
+        canvas.fillRect(i * 140 - 131, 11, 120, 120);
+        canvas.strokeRect(i * 140 - 131, 11, 120, 120);
+        canvas.fillStyle = colorsText[i];
+        canvas.fillText(i - cardinality[i], i * 140 - 71, 70);
+    }
+}
+
+function drawGrid(canvas = canvasPartridge) {
+    canvas.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+    drawGridLines(canvas);
+    drawSquares(canvas);
+}
+
+function drawSquares(canvas, squares = partridgeSquares) {
+    canvas.font = &quot;32px JetBrains Mono&quot;;
+    canvas.textAlign = &quot;center&quot;;
+    canvas.textBaseline = &quot;middle&quot;;
+    canvas.strokeStyle = &quot;#000&quot;;
+    canvas.lineWidth = 4;
+    for (let i = 0; i &lt; squares.length; i++) {
+        if (squares[i][2] == 0) continue;
+        canvas.fillStyle = colors[squares[i][2]];
+        canvas.fillRect(squares[i][0] * cellSize + 1, squares[i][1] * cellSize + 1, squares[i][2] * cellSize, squares[i][2] * cellSize);
+        canvas.strokeRect(squares[i][0] * cellSize + 1, squares[i][1] * cellSize + 1, squares[i][2] * cellSize, squares[i][2] * cellSize);
+        canvas.fillStyle = colorsText[squares[i][2]];
+        canvas.fillText(squares[i][2], squares[i][0] * cellSize + squares[i][2] * cellSize &#x2F; 2, squares[i][1] * cellSize + squares[i][2] * cellSize &#x2F; 2);
+    }
+}
+
+function drawGridLines(canvas) {
+    canvas.strokeStyle = &quot;#000&quot;;
+    canvas.lineWidth = 2;
+    canvas.beginPath();
+    for (let i = 0; i &lt;= gridSize; i++) { canvas.moveTo(0, i * cellSize + 1); canvas.lineTo(cellSize * gridSize, i * cellSize + 1); }
+    for (let i = 0; i &lt;= gridSize; i++) { canvas.moveTo(i * cellSize + 1, 0); canvas.lineTo(i * cellSize + 1, cellSize * gridSize); }
+    canvas.stroke();
+}
+
+function updateGrid(x, y, size, grid, index) {
+    for (let i = x; i &lt; x + size; i++)
+        for (let j = y; j &lt; y + size; j++)
+            grid[i][j] = index;
+}
+
+function checkInvalidity(x, y, size, cardinality, grid) {
+    if (cardinality[size] &gt;= size) return true;
+    for (let i = x; i &lt; x + size; i++)
+        for (let j = y; j &lt; y + size; j++)
+            if (grid[i][j] != 0) return true;
+    return false;
+}
+
+function addSquare(x, y, size, currentList = partridgeSquares, currentCardinality = partridgeSquaresCardinality, currentGrid = partridgeGrid, canvas = canvasPartridge) {
+    if (checkInvalidity(x, y, size, currentCardinality, currentGrid)) return;
+    let index = ((size * (size - 1)) &#x2F; 2);
+    for (let i = 0; i &lt; size; i++) { if (currentList[index][2] == 0 ) break; index++; }
+    currentList[index][0] = x;
+    currentList[index][1] = y;
+    currentList[index][2] = size;
+    updateGrid(x, y, size, currentGrid, index + 1);
+    currentCardinality[size] += 1;
+}
+
+function removeSquare(x, y, currentList = partridgeSquares, currentCardinality = partridgeSquaresCardinality, currentGrid = partridgeGrid, canvas = canvasPartridge) {
+    index = currentGrid[x][y] - 1;
+    if (index &lt; 0) return;
+    x = currentList[index][0]; currentList[index][0] = 0;
+    y = currentList[index][1]; currentList[index][1] = 0;
+    let size = currentList[index][2]; currentList[index][2] = 0;
+    updateGrid(x, y, size, currentGrid, 0);
+    currentCardinality[size] -= 1;
+}
+
+function updateSquares(evt, size, canvas = canvasPartridge) {
+    let x, y = 0;
+    const rect = canvas.canvas.getBoundingClientRect();
+    x = Math.floor((evt.clientX - rect.left) * (canvas.canvas.width &#x2F; rect.width) &#x2F; cellSize);
+    y = Math.floor((evt.clientY - rect.top) * (canvas.canvas.height &#x2F; rect.height) &#x2F; cellSize);
+    if (event.button === 0) { addSquare(x, y, size); }
+    else if (event.button === 2) { removeSquare(x, y); }
+}
+
+
+&lt;&#x2F;script&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Streaming Rendering</title>
+        <published>2025-05-11T00:00:00+00:00</published>
+        <updated>2025-05-11T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/13-streaming-rendering/"/>
+        <id>https://ekunazanu.foo/log/13-streaming-rendering/</id>
+        <summary type="html">Winging April.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/13-streaming-rendering/">&lt;p&gt;This &lt;del&gt;week&lt;&#x2F;del&gt; month has been pretty chill. I haven’t been creating a lot lately, but I have been consuming a lot (of media). I think this sums up my current state pretty well:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;sleep-deprived.avif&quot; alt=&quot;doodle of a person with red eyes in a dark room watching his glowing monitor&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;It would be fair to say that April was anime month for me. I dove deeper (relatively) into anime and have been really enjoying it so far. I completed Steins;Gate 0, Steins;Gate: The Movie, Death Note, A Silent Voice, Saiki K, and Your Name. I absolutely loved A Silent Voice; it was much slower paced than the others, but the pace builds up gradually — like Steins;Gate, which is my favourite so far. Ironically, I did not watch Your Lie in April. I did just complete Summer Time Rendering yesterday (it’s great), and started watching Grand Blue. So far, it is the funniest of all animes I watched.&lt;&#x2F;p&gt;
+&lt;p&gt;Since I have been consuming a lot of art, I have been drawing a lot less this month. Nah it is actually because because I used to draw mostly during classes and classes are over for this semester. But I do want to get back to it soon, because I find it pretty relaxing and therapeutic. And it’s not like I have stopped completely, I have &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;bsky.app&#x2F;profile&#x2F;ekunazanu.foo&#x2F;post&#x2F;3lonhmojmrs2d&quot;&gt;started experimenting with digital art&lt;&#x2F;a&gt; more. It is mostly pixel art for now, but it is pretty relaxing too.&lt;&#x2F;p&gt;
+&lt;img alt=&quot;a dithered pixel art image of a sunset&quot; decoding=async loading=lazy src=&quot;&#x2F;media&#x2F;log&#x2F;sunset-dither.avif&quot; style=&quot;image-rendering: pixelated; width: 100%;&quot;&gt;
+&lt;p&gt;In other things, writing cool software is now on pause since it is endsem season right now. Because I have exams. Not because I am lazy. Nothing has changed about that. In fact I will stop procrastinating. From next week onwards, after my exams end. I did write some simple visualization code for a &lt;a href=&quot;&#x2F;lab&#x2F;complex-rotations&quot;&gt;new lab article&lt;&#x2F;a&gt; though.&lt;&#x2F;p&gt;
+&lt;p&gt;In meta updates: The site has a new home page. The old one looked very cluttered, so I created a cleaner one. They say, “Show, don’t tell”, so I added a live, random &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Conway%27s_Game_of_Life&quot;&gt;Game of Life&lt;&#x2F;a&gt; simulation that may give an idea of what this site is about— computer science, math, and experimentation. Maybe I should add something for statistics as well.&lt;&#x2F;p&gt;
+&lt;p&gt;Speaking of statistics: I have my data-something-something exam tomorrow. But I was bored and didn’t want to study, so I instead read about &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Wave_function&quot;&gt;wave functions&lt;&#x2F;a&gt;. And tried to create a visualization (because that’s my thing now I guess) for the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Wave_interference&quot;&gt;interference patterns&lt;&#x2F;a&gt; of two waves. It’s not fully accurate; the waves do not follow the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Inverse-square_law&quot;&gt;inverse square law&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;canvas id=canvasWaves&gt;&lt;&#x2F;canvas&gt;
+&lt;input id=sliderWavl1 type=range&gt;&lt;input id=sliderWavl2 type=range&gt;Wavelength&lt;br&gt;
+&lt;input id=sliderAmpl1 type=range&gt;&lt;input id=sliderAmpl2 type=range&gt;Amplitude&lt;br&gt;
+&lt;input id=sliderPhas1 type=range&gt;&lt;input id=sliderPhas2 type=range&gt;Phase&lt;br&gt;
+&lt;input id=sliderDistance type=range&gt; Distance&lt;&#x2F;p&gt;
+&lt;p&gt;That’s pretty much it. I did finally read about computer networks, and will probably start learning about operating systems next. But after my exams end. I also want go back to making mediocre art and mediocre-r software. Hopefully all these will resume when this endsem season ends.&lt;&#x2F;p&gt;
+&lt;p&gt;Cya next month.&lt;&#x2F;p&gt;
+&lt;script&gt;
+
+&#x2F;&#x2F; could be more efficient, but works decently fast
+
+const WIDTH = 1280;
+const HEIGHT = 640;
+
+const canvasWaves = document.getElementById(&quot;canvasWaves&quot;).getContext(&quot;2d&quot;);
+canvasWaves.canvas.width = WIDTH;
+canvasWaves.canvas.height = HEIGHT;
+
+const sliderWavl1 = document.getElementById(&quot;sliderWavl1&quot;);
+const sliderAmpl1 = document.getElementById(&quot;sliderAmpl1&quot;);
+const sliderPhas1 = document.getElementById(&quot;sliderPhas1&quot;);
+const sliderWavl2 = document.getElementById(&quot;sliderWavl2&quot;);
+const sliderAmpl2 = document.getElementById(&quot;sliderAmpl2&quot;);
+const sliderPhas2 = document.getElementById(&quot;sliderPhas2&quot;);
+const sliderDistance = document.getElementById(&quot;sliderDistance&quot;);
+initializeSliders(sliderWavl1, 10, 50, 1, 20);
+initializeSliders(sliderAmpl1, 0, 50, 1, 40);
+initializeSliders(sliderPhas1, 0, 1, 0.05, 0);
+initializeSliders(sliderWavl2, 10, 50, 1, 20);
+initializeSliders(sliderAmpl2, 0, 50, 1, 40);
+initializeSliders(sliderPhas2, 0, 1, 0.05, 0);
+initializeSliders(sliderDistance, 0, 300, 1, 50);
+
+sliderWavl1.addEventListener(&quot;input&quot;, updateCanvas);
+sliderAmpl1.addEventListener(&quot;input&quot;, updateCanvas);
+sliderPhas1.addEventListener(&quot;input&quot;, updateCanvas);
+sliderWavl2.addEventListener(&quot;input&quot;, updateCanvas);
+sliderAmpl2.addEventListener(&quot;input&quot;, updateCanvas);
+sliderPhas2.addEventListener(&quot;input&quot;, updateCanvas);
+sliderDistance.addEventListener(&quot;input&quot;, updateCanvas);
+
+let col1, col2;
+updateCanvas();
+
+function updateCanvas() {
+    col1 = 255 - Math.floor(sliderAmpl1.value * 5);
+    col2 = 255 - Math.floor(sliderAmpl2.value * 5);
+    canvasWaves.clearRect(0, 0, WIDTH, HEIGHT);
+    drawCircles(canvasWaves, Number(sliderWavl1.value), sliderPhas1.value * sliderWavl1.value, Number(sliderDistance.value), `rgb(${col1} ${col1} ${col1})`);
+    drawCircles(canvasWaves, Number(sliderWavl2.value), sliderPhas2.value * sliderWavl2.value, Number(-sliderDistance.value), `rgb(${col2} ${col2} ${col2})`);
+    canvasWaves.clearRect(1000, 0, 280, HEIGHT);
+    drawLine(canvasWaves, 1141, 0, 1141, 640);
+    drawWaves(canvasWaves, Number(sliderWavl1.value), Number(sliderAmpl1.value), Number(sliderPhas1.value), Number(sliderWavl2.value), Number(sliderAmpl2.value), Number(sliderPhas2.value), Number(sliderDistance.value));
+}
+
+function drawWaves(canvas, wavelengthA, amplitudeA, phaseA, wavelengthB, amplitudeB, phaseB, distance, color = &quot;#000&quot;, x = 1000) {
+    let argA, argB, val;
+    canvas.lineWidth = 2;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    canvas.moveTo(1141, -2);
+    for (let i = -2; i &lt;= HEIGHT; i += 2) {
+        canvas.lineTo(val, i);
+        distA = (Math.sqrt(x**2 + (HEIGHT &#x2F; 2 + distance - i)**2) + phaseA * wavelengthA) % wavelengthA;
+        distB = (Math.sqrt(x**2 + (HEIGHT &#x2F; 2 - distance - i)**2) + phaseB * wavelengthB) % wavelengthB;
+        val = x + 141 + amplitudeA * Math.sin(6.28 * distA &#x2F; wavelengthA) + amplitudeB * Math.sin(6.28 * distB &#x2F; wavelengthB);
+    }
+    canvas.stroke();
+}
+
+function drawCircles(canvas, wavelength, phase, distance, color = &quot;#000&quot;) {
+    canvas.lineWidth = 2;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    let centerY = (HEIGHT &#x2F; 2);
+    for (let i = 0; i &lt; WIDTH; i += wavelength) {
+        canvas.arc(-1 + phase, centerY + distance, i, -1.57, 4.71);
+    }
+    canvas.stroke();
+}
+
+function drawLine(canvas, x1, y1, x2, y2, color = &quot;#aaa&quot;){
+    canvas.lineWidth = 2;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    canvas.moveTo(x1, y1);
+    canvas.lineTo(x2, y2);
+    canvas.stroke();
+}
+
+function initializeSliders(slider, minimum, maximum, step, value) {
+    slider.min = minimum;
+    slider.max = maximum;
+    slider.step = step;
+    slider.value = value;
+}
+
+
+&lt;&#x2F;script&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Diffusion and Denoising</title>
+        <published>2025-04-06T00:00:00+00:00</published>
+        <updated>2025-04-06T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/12-diffusion-and-denoising/"/>
+        <id>https://ekunazanu.foo/log/12-diffusion-and-denoising/</id>
+        <summary type="html">Learning about statistics and diffusion models.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/12-diffusion-and-denoising/">&lt;p&gt;Did I learn about network protocols? No. Was I was bedridden this week? Yes. That is my justification. Nah, but I did learn a lot about diffusion models.&lt;&#x2F;p&gt;
+&lt;p&gt;I think diffusion models are the most convincing arguments for the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Manifold_hypothesis&quot;&gt;manifold hypothesis&lt;&#x2F;a&gt;, along with &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Variational_autoencoder&quot;&gt;VAEs&lt;&#x2F;a&gt;. But in a way, diffusion models are also autoencoders, just with non-parameterized encoding. But then, they can also be considered just &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;sander.ai&#x2F;2024&#x2F;09&#x2F;02&#x2F;spectral-autoregression.html&quot;&gt;autoregression in the frequency domain&lt;&#x2F;a&gt;. Either way, diffusion models are powerful for how simple they are.&lt;&#x2F;p&gt;
+&lt;p&gt;Okay, the theory behind diffusion models is ‘simple’ if you already know some statistics and probability theory. From a high level, diffusion models simply denoise data — by predicting the mean of the distribution to get structured data. The encoder part gradually adds random noise to the data and the decoder is trained to remove this noise.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;diffusion-distribution.avif&quot; alt=&quot;a distribution transformed to a Gaussian distribution and then back to a similar distribution&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Assume x is some structured data with some distribution. This is gradually corrupted by shifting its mean and adding noise: z = (1-β)x + β·ϵ, where ϵ is a random variable sampled from a standard normal distribution N(0, 1). In other words, z ~ N((1-β)x, β). This is done iteratively, adding small noise over multiple steps — well, the forward encoding process is actually done in a single step as the normal distribution is simply reparameterized. The decoding process however &lt;em&gt;does&lt;&#x2F;em&gt; use multiple iterations.&lt;&#x2F;p&gt;
+&lt;p&gt;As said, the encoding will result in a new PDF given by q(z&lt;sub&gt;t&lt;&#x2F;sub&gt; | z&lt;sub&gt;t-1&lt;&#x2F;sub&gt;) = N((1-β)·z&lt;sub&gt;t&lt;&#x2F;sub&gt;, b), and when it is done in a single iteration till some final step T, then q(z&lt;sub&gt;T&lt;&#x2F;sub&gt; | x) = N(α·x, 1-α) where α is the products of 1−β&lt;sub&gt;t&lt;&#x2F;sub&gt;. That is, α = Π[1 − β&lt;sub&gt;t&lt;&#x2F;sub&gt;] — the new distribution parameter.&lt;&#x2F;p&gt;
+&lt;p&gt;The decoder is slightly more complicated. Like other models, the goal is to minimize the negative-log-likelihood of the function. The decoder PDF must be the inverse of the encoder: q(z&lt;sub&gt;t-1&lt;&#x2F;sub&gt; | z&lt;sub&gt;t&lt;&#x2F;sub&gt;). And when performed iteratively until t = 0, we should get something similar to the original distribution x. A way to get q(z&lt;sub&gt;t-1&lt;&#x2F;sub&gt; | z&lt;sub&gt;t&lt;&#x2F;sub&gt;) from q(z&lt;sub&gt;t&lt;&#x2F;sub&gt; | z&lt;sub&gt;t-1&lt;&#x2F;sub&gt;) is via Bayes’ Theorem: q(z&lt;sub&gt;t-1&lt;&#x2F;sub&gt; | z&lt;sub&gt;t&lt;&#x2F;sub&gt;) = q(z&lt;sub&gt;t&lt;&#x2F;sub&gt; | z&lt;sub&gt;t-1&lt;&#x2F;sub&gt;) · q(z&lt;sub&gt;t-1&lt;&#x2F;sub&gt;) &#x2F; q(z&lt;sub&gt;t&lt;&#x2F;sub&gt;). But this is marginal probability for all x. To be more accurate: q(z&lt;sub&gt;t&lt;&#x2F;sub&gt; | z&lt;sub&gt;t-1&lt;&#x2F;sub&gt;, x) · q(z&lt;sub&gt;t-1&lt;&#x2F;sub&gt;, x) &#x2F; q(z&lt;sub&gt;t&lt;&#x2F;sub&gt; | x).&lt;&#x2F;p&gt;
+&lt;p&gt;There’s some more clever rearranging that results in a easy-to-backpropagate lower bound from which the model is trained to maximize the probability of q(z&lt;sub&gt;t-1&lt;&#x2F;sub&gt; | z&lt;sub&gt;t&lt;&#x2F;sub&gt;). I am not completely confident of how the calculations works out, so I won’t spew non-sense here. I need to learn more about statistics.&lt;&#x2F;p&gt;
+&lt;p&gt;But it is still magical that this is enough to create structured distributions from pure noise. Even complicated structured data like images. In fact, diffusion models are common in the generative image space — so common that it feels like they are half of the images on the internet now. I don’t mind generative art, but I also hope for a world where human art thrives, and art and IP rights are respected.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;me-ghibli.avif&quot; alt=&quot;a doodle with ghibli colors of a portrait of a person in a forest surrounded by flowers&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;So, networking protocols and operating systems this week? Perhaps. I am also changing the upload schedule to monthly posts now, because (b)logging weekly is dragging down my productivity rather than improving it. Who would have thought.&lt;&#x2F;p&gt;
+&lt;p&gt;Cya next month.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Visualizing Julia Sets</title>
+        <published>2025-04-02T00:00:00+00:00</published>
+        <updated>2025-04-02T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/11-visualizing-julia-sets/"/>
+        <id>https://ekunazanu.foo/log/11-visualizing-julia-sets/</id>
+        <summary type="html">Visualizing Julia sets with domain coloring.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/11-visualizing-julia-sets/">&lt;p&gt;This week, I again played with fractals. In one of the &lt;a href=&quot;&#x2F;log&#x2F;9-fractional-dimensional-shapes&quot;&gt;previous posts&lt;&#x2F;a&gt;, I explored the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Mandelbrot_set&quot;&gt;Mandelbrot&lt;&#x2F;a&gt; and the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Burning_Ship_fractal&quot;&gt;Burning Ship&lt;&#x2F;a&gt;. Continuing this theme, I experimented with Julia sets (for the quadratic map) — this time with domain coloring.&lt;&#x2F;p&gt;
+&lt;p&gt;Now the quadratic Julia set is defined very similar to the Mandelbrot — z^2+c. The only difference is that the Mandelbrot is defined in the parametric space (c), while the Julia set is defined on the complex plane itself (z). This distinction actually makes it a lot more intuitive to visualize Julia sets, compared to the Mandelbrot set.&lt;&#x2F;p&gt;
+&lt;p&gt;To visualize complex function transformations, I’ll just use domain coloring. Most domain coloring diagrams use the HSL colorspace, but I find it introduces visual distortions, so I am using a more perceptually uniform colorspace. The hue describes the phase and the luminance represents the magnitude of the numbers in the complex plane.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-complex-plane.avif&quot; alt=&quot;domain coloring of the complex plane&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Addition and subtraction ‘shift’ the space, while squaring transforms the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Riemann_surface&quot;&gt;complex surface&lt;&#x2F;a&gt; such that entire space is duplicated and ‘squished’ to fit in the original space.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-complex-addition.avif&quot; alt=&quot;domain coloring for addition by 1, -1, and i&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-complex-exponentiation.avif&quot; alt=&quot;domain coloring for simple complex quadratic functions&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The first plot of the top row represents z, the second is z+1, and the third and fourth are z-1 and z+i. The ones below show z^2, z^2 + 1, z^2 - 1, and z^2 + i.&lt;&#x2F;p&gt;
+&lt;p&gt;The ‘duplication and squishing’ of the space reveals why applying these operations for infinite iterations will form fractal structures. In fact, points where the magnitude does not diverge to infinity (non-white regions) is exactly the Julia set. The following visualizations stop after nine iterations.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-julia.avif&quot; alt=&quot;group of julia sets with different parameters c&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;If c is not part of the Mandelbrot set, it implies that the initial z at 0 will diverge to infinity. And since these transformations never connect sets, the set will always be disconnected and applying the operations for infinite iterations will results in infinitely small, infinite points — called Fatou dust. The last two might look connected but it is because only nine iterations of the transformations are performed.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-fatou.avif&quot; alt=&quot;group of fatou dusts with different parameters c&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;There are other ways to study complex dynamics, but I think this is one the easier ways to comprehend it (at least for Julia sets). I think there’s a lot yet to uncover that gives a fuller picture using phase plots and bifurcation diagrams — but that’s too long, and more apt as a full length article for &lt;a href=&quot;&#x2F;lab&quot;&gt;lab&lt;&#x2F;a&gt;. One day I might write about it. Maybe.&lt;&#x2F;p&gt;
+&lt;p&gt;Other than fractals, week was slightly hectic. Aced my lab exams, again organized my data, and studied &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Public_choice&quot;&gt;public choice theory&lt;&#x2F;a&gt; after a brief read of &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Special:BookSources&#x2F;0307719219&quot;&gt;Why Nations Fail&lt;&#x2F;a&gt;. I went to Udupi for the weekend as well, and had a tiny accident there — hence the delayed post. Things are also slowly getting back on track with The Plan™. For this week, I want to finish the basics of computer networks and protocols, and start with operating systems next week. Perhaps some more economics too. We’ll see.&lt;&#x2F;p&gt;
+&lt;p&gt;Cya next week.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Calculating Collisions</title>
+        <published>2025-03-23T00:00:00+00:00</published>
+        <updated>2025-03-23T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/10-calculating-collisions/"/>
+        <id>https://ekunazanu.foo/log/10-calculating-collisions/</id>
+        <summary type="html">Turns out (sometimes), the DVD square will never reach the corner.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/10-calculating-collisions/">&lt;p&gt;I had my midterm exams this entire week, so naturally I ended up wasting a lot of time on YouTube. Something interesting happens during exams — I procrastinate more and do everything except study, even productive things. Human psychology I guess. And I know I am not the only one; I know full well that all of my friends share the exact same laissez faire attitude during exam season. Or maybe it’s true that birds of a feather flock together.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;exam-cricket.avif&quot; alt=&quot;doodle of friends agreeing to play cricket before exams&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;I was binge-watching clips of The Office, and came across the scene where &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.youtube.com&#x2F;watch?v=QOtuX0jL85Y&quot;&gt;everyone is eagerly waiting for a DVD logo to hit a corner&lt;&#x2F;a&gt;. And that made me curious — how many collisions does it actually take? So I quickly wrote a basic function to count the number of collisions for some initial coordinates and some given aspect ratio for the bounding box. I added two more lines of code to visualize the collisions as well. And got this:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvasCollisions&quot;&gt;&lt;&#x2F;canvas&gt;
+&lt;input id=&quot;sliderYCoord&quot; type=&quot;range&quot; style=&quot;margin-left: 0&quot;&gt;Initial Y: &lt;span id=&quot;textYCoord&quot;&gt;0.0000&lt;&#x2F;span&gt;&lt;br&gt;
+&lt;input id=&quot;sliderRatio&quot; type=&quot;range&quot; style=&quot;margin-left: 0&quot;&gt;Aspect ratio: &lt;span id=&quot;textRatio&quot;&gt;3.0000&lt;&#x2F;span&gt;&lt;br&gt;
+Collisions: &lt;span id=&quot;textCollisions&quot;&gt;5&lt;&#x2F;span&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;You also can try specific aspect ratios: Most screens will usually have an aspect ratio of either &lt;a id=&quot;switchRatio43&quot; style=&quot;cursor: pointer;&quot;&gt;4:3&lt;&#x2F;a&gt; or &lt;a id=&quot;switchRatio169&quot; style=&quot;cursor: pointer;&quot;&gt;16:9&lt;&#x2F;a&gt;. Anyway, I think there are some interesting insights. The collisions will either be infinite or finite depending on the initial conditions. It is finite whenever the ‘criss-crosses overlap’ — for lack of a proper definition&#x2F;description. Note that it may not seem that way because the canvas has a finite precision, so if the Y position is off by even half a pixel, it will not register as hitting the corner.&lt;&#x2F;p&gt;
+&lt;p&gt;Designing the function for collisions made it obvious why it has to be that way: Collisions are symmetric and the bounding box is a rectangle. So if the rhombic tiles are coming close to each other, it means the ray elsewhere is experiencing two close collisions — somewhere near a corner. As the tiling patterns overlap, that collision difference reaches zero which means the ray has to hit a corner. It also means that other initial conditions result in an infinite loop. That DVD square will never reach a corner. Sad.&lt;&#x2F;p&gt;
+&lt;p&gt;As for other things, The Plan™ got derailed. Of course, it did. But to be fair, I did have my midterms all week. And while I did procrastinate a lot, I did learn other things — mostly about rotary positional embeddings. This &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;blog.eleuther.ai&#x2F;rotary-embeddings&#x2F;&quot;&gt;post here&lt;&#x2F;a&gt; explains it pretty well. Anyhow, I’ll try to start The Plan™ this week. For real. &lt;small&gt;(If the lab exams don’t ruin my schedule.)&lt;&#x2F;small&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;trust-me-bro.avif&quot; alt=&quot;doodle of a person asking others to trust them&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Cya next week.&lt;&#x2F;p&gt;
+&lt;script&gt;
+
+&#x2F;&#x2F; quick ugly script
+&#x2F;&#x2F; decetly performat, but code is ugly
+
+const maxIters = 100;
+const canvasCollisions = document.getElementById(&quot;canvasCollisions&quot;).getContext(&quot;2d&quot;);
+const textYCoord = document.getElementById(&quot;textYCoord&quot;);
+const textRatio = document.getElementById(&quot;textRatio&quot;);
+const textCollisions = document.getElementById(&quot;textCollisions&quot;);
+const sliderYCoord = document.getElementById(&quot;sliderYCoord&quot;);
+const sliderRatio = document.getElementById(&quot;sliderRatio&quot;);
+const switchRatio43 = document.getElementById(&quot;switchRatio43&quot;);
+const switchRatio169 = document.getElementById(&quot;switchRatio169&quot;);
+var collisions = 0;
+
+canvasCollisions.canvas.width = 1296;
+canvasCollisions.canvas.height = 432;
+canvasCollisions.canvas.style.border = &quot;0.0625rem solid #000&quot;
+sliderYCoord.min = 0;
+sliderYCoord.max = canvasCollisions.canvas.height;
+sliderYCoord.step = 1;
+sliderYCoord.value = 0;
+sliderRatio.min = 432;
+sliderRatio.max = 1296;
+sliderRatio.step = 2;
+sliderRatio.value = 1296;
+
+drawReflections(canvasCollisions, 0, 0, canvasCollisions.canvas.width, canvasCollisions.canvas.height, maxIters);
+drawCircle(canvasCollisions, 0);
+
+sliderYCoord.addEventListener(&quot;input&quot;, function() {
+    updateCanvasWrapper();
+});
+
+sliderRatio.addEventListener(&quot;input&quot;, function() {
+    canvasCollisions.canvas.width = sliderRatio.value;
+    updateCanvasWrapper();
+});
+
+switchRatio43.addEventListener(&quot;click&quot;, function() {
+    canvasCollisions.canvas.width = 576;
+    sliderRatio.value = 576;
+    updateCanvasWrapper();
+});
+
+switchRatio169.addEventListener(&quot;click&quot;, function() {
+    canvasCollisions.canvas.width = 768;
+    sliderRatio.value = 768;
+    updateCanvasWrapper();
+});
+
+function updateCanvasWrapper() {
+    canvasCollisions.clearRect(0, 0, canvasCollisions.canvas.width, canvasCollisions.canvas.height);
+    collisions = drawReflections(canvasCollisions, 0, sliderYCoord.value, canvasCollisions.canvas.width, canvasCollisions.canvas.height, maxIters);
+    drawCircle(canvasCollisions, sliderYCoord.value);
+    textYCoord.innerHTML = (sliderYCoord.value &#x2F; sliderYCoord.max).toFixed(4);
+    textRatio.innerHTML = (sliderRatio.value &#x2F; 432).toFixed(4);
+    if (collisions == 100) textCollisions.innerHTML = &quot;≥ 100&quot;;
+    else textCollisions.innerHTML = collisions;
+}
+
+function drawCircle(canvas, y, x = 0, radius = 15, color = &quot;#aaa&quot;) {
+    canvas.fillStyle = color;
+    canvas.beginPath();
+    canvas.arc(x, y, radius, 0, Math.PI * 2);
+    canvas.closePath();
+    canvas.fill();
+    canvas.stroke();
+}
+
+function drawReflections(canvas, initialX, initialY, boundX, boundY, maxIter = 5, color = &quot;#000&quot;, strokewidth = 2) {
+    let iter = 0;
+    let x = initialX;
+    let y = initialY;
+    let right = true;
+    let down = true;
+    let diffX, diffY;
+    canvas.strokeStyle = color;
+    canvas.lineWidth = strokewidth;
+    canvas.beginPath();
+    while (iter &lt; maxIter) {
+        canvas.moveTo(x, y);
+        if (right) {diffX = boundX - x} else {diffX = x}
+        if (down) {diffY = boundY - y} else {diffY = y}
+        if (diffX &lt; diffY) {
+            if (right) {x = boundX; right = false} else {x = 0; right = true;}
+            if (down) {y += diffX} else {y -= diffX}
+        }
+        else if (diffY &lt; diffX) {
+            if (down) {y = boundY; down = false} else {y = 0; down = true;}
+            if (right) {x += diffY} else {x -= diffY}
+        }
+        else if (diffX == diffY) {
+            if (down) {y = boundY} else {y = 0}
+            if (right) {x = boundX} else {x = 0}
+            canvas.lineTo(x, y);
+            canvas.closePath();
+            canvas.stroke();
+            drawCircle(canvas, y, x);
+            break;
+        }
+        canvas.lineTo(x, y);
+        iter++;
+    }
+    canvas.closePath();
+    canvas.stroke();
+    return iter
+}
+
+
+&lt;&#x2F;script&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Fractional Dimensional Shapes</title>
+        <published>2025-03-16T00:00:00+00:00</published>
+        <updated>2025-03-16T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/9-fractional-dimensional-shapes/"/>
+        <id>https://ekunazanu.foo/log/9-fractional-dimensional-shapes/</id>
+        <summary type="html">Creating slices of abstract four dimensional fractals.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/9-fractional-dimensional-shapes/">&lt;p&gt;Fractals. That’s what &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Hausdorff_dimension&quot;&gt;fractional dimensional shapes are&lt;&#x2F;a&gt;. I just thought phrasing the title that way sounded cooler.&lt;&#x2F;p&gt;
+&lt;p&gt;Anyway, this week I read &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;doi.org&#x2F;10.1201&#x2F;9780429280801&quot;&gt;An Introduction to Chaotic Dynamical Systems&lt;&#x2F;a&gt;, and organized all my data. My midterms also started this week so I am a little busy with that too. No one cares about how I organized my data, or why I hate exams, so I will update on what I did after reading the book — creating fractals.&lt;&#x2F;p&gt;
+&lt;p&gt;Now the book explores the behaviour of the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Logistic_map&quot;&gt;logistic map&lt;&#x2F;a&gt;, &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Rational_mapping&quot;&gt;rational maps&lt;&#x2F;a&gt;, &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Julia_set&quot;&gt;Julia sets&lt;&#x2F;a&gt; and the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Mandelbrot_set&quot;&gt;Mandelbrot set&lt;&#x2F;a&gt;, but I mostly experimented with the latter. Now, the Mandelbrot set is defined for an initial z = 0. However, removing that restriction provides two more parameters in addition to c — creating a new four dimensional set. I tried to render a few 2D slices of this 4D set at different points. For example, translating through the set by changing z from -2+0i to 2+0i results in this animation:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;video controls&gt;&lt;source src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-mandelbrot-real.mp4&quot; type=&quot;video&#x2F;mp4&quot;&gt;&lt;&#x2F;video&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;While changing z from 0-2i to 0+2i generates this:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;video controls&gt;&lt;source src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-mandelbrot-imaginary.mp4&quot; type=&quot;video&#x2F;mp4&quot;&gt;&lt;&#x2F;video&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Changing z such that it completes a full round of the complex unit circle yields this:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;video controls&gt;&lt;source src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-mandelbrot-rotation.mp4&quot; type=&quot;video&#x2F;mp4&quot;&gt;&lt;&#x2F;video&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;These 2D slices of the 4D shape reveal there is some symmetry in this complicated four dimensional structure, unlike the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Burning_Ship_fractal&quot;&gt;Burning Ship fractal&lt;&#x2F;a&gt; which is less symmetric:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;video controls&gt;&lt;source src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-ship-real.mp4&quot; type=&quot;video&#x2F;mp4&quot;&gt;&lt;&#x2F;video&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;The above animation shows when z changes from -2+0i to 4+0i, while the one below represents changing z from 0-2i to 0+4i. And the animation below that again represents when z runs counter-clockwise on the complex unit circle.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;video controls&gt;&lt;source src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-ship-imaginary.mp4&quot; type=&quot;video&#x2F;mp4&quot;&gt;&lt;&#x2F;video&gt;
+&lt;video controls&gt;&lt;source src=&quot;&#x2F;media&#x2F;log&#x2F;fractal-ship-rotation.mp4&quot; type=&quot;video&#x2F;mp4&quot;&gt;&lt;&#x2F;video&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Other than that, I celebrated the festival of colors. By having a water-fight in the dorm washroom. Also the display I was trying to solder was not damaged — I connected it to a RPi Pico and it was all good. However I am still not sure if the SD card reader unit is working. But if it is, maybe a tiny Game Boy emulator soon? I don’t know. As of right now, it has a lower priority than The Plan™ — which I &lt;em&gt;want&lt;&#x2F;em&gt; to to get back to this week. But it’ll likely end up being next week since I will be busy with midterms this entire week.&lt;&#x2F;p&gt;
+&lt;p&gt;This is all. Cya next week.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Pretty Pixel Patterns</title>
+        <published>2025-03-09T00:00:00+00:00</published>
+        <updated>2025-03-09T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/8-pretty-pixel-patterns/"/>
+        <id>https://ekunazanu.foo/log/8-pretty-pixel-patterns/</id>
+        <summary type="html">Playing around with pixels.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/8-pretty-pixel-patterns/">&lt;p&gt;Week went by quick. Had quizzes, cleaned some of my digital library but I still have to organize all my accounts and data. But I should be done with most of the things I &lt;em&gt;need&lt;&#x2F;em&gt; to get done by next week. After that, I can go back to The Plan™. If you still remember that.&lt;&#x2F;p&gt;
+&lt;p&gt;In other news, I tried to generate &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Perlin_noise#Algorithm_detail&quot;&gt;Perlin noise&lt;&#x2F;a&gt;, and that led to me experimenting with pixel coloring. Surprisingly good looking patterns can arise from very simple bitwise and arithmetic operations. I colored the pixels based on their position — the intensity for each channel for a pixel is a function of its spatial coordinates — and that was enough for generating some very interesting images. I want to show a few nice ones:&lt;&#x2F;p&gt;
+&lt;details  &gt;
+&lt;summary&gt;Enable JavaScript&lt;&#x2F;summary&gt;
+&lt;p&gt;If the images are not visible, JavaScript is probably disabled; you will need to enable JavaScript to render the patterns. The images are rendered on the browser because compression algorithms distort the patterns and lossless formats take up too much space — and I really don’t want to pollute my Git history with big binary files, even with LFS enabled.&lt;&#x2F;p&gt;
+&lt;p&gt;On a side note, I don’t like how JavaScript has no native support for 8-bit unsigned integers. I initially wrote this in Go, and it felt ugly adding extra logic in JavaScript just to recreate 8-bit overflows and underflows.&lt;&#x2F;p&gt;
+&lt;&#x2F;details&gt;
+&lt;ol&gt;
+&lt;li&gt;Gradients — (x, y, !x). The pixels become redder towards the right, greener towards the bottom, and bluer towards the left. It is an 8-bit image so the pattern repeats after every 256 pixels.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas0&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;Shadows — (x+y, x+y, x+y). The pixel value is a simple linear x+y, so diagonal pixels have the same intensity values. The image is grayscale since all the channels have the same value for a given pixel.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas1&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;Candy — (x+y, x+y+85, x+y+171). It similar to the above pattern, but the added offsets ‘separate’ each channel and create distinct bands.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas2&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;Waves — (0, (x%y)&#x2F;2, x%y). The intensity of the blue (and green) channel increases as x increases, until the diagonal x=y — where it resets as the remainder becomes zero. It happens again at diagonals x=2y, x=3y, x=4y, etc.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas3&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;5&quot;&gt;
+&lt;li&gt;Boxer — (x, x^y, x+y). The diagonal gradient is because of the red and blue channels. The alternating squares is due to the green channel’s x^y. I feel the XOR is a great way to represent the frequency of bit flips at different indices — each square boundary represents a bit flip at some index. Higher the contrast, higher the index of the bit flip.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas4&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;6&quot;&gt;
+&lt;li&gt;Ripples — (63, x*x+y*y, 175). The pixels having same intensity k for x*x+y*y=k follow the equation for a circle — and hence the pattern. The narrowing concentric circles also reveal the exponential nature of the function and the modular nature of unsigned integers. There are some nice interference patterns going as well.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas5&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;7&quot;&gt;
+&lt;li&gt;Hyperbolic — (x*x-y*y, x*x-y*y, x*x-y*y). Just as x*x+y*y is the equation for a circle, x*x-y*y is the equation for a hyperbola. So instead of narrowing concentric circles, the pattern now consists of narrowing concentric hyperbolas.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas6&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;8&quot;&gt;
+&lt;li&gt;Chip — (255, (x&amp;amp;y)*y, x). The x&amp;amp;y has a look similar to the XOR pattern, and multiplying it with y gives it with a high-frequency, grain-y look. Additionally, the red and blue channels are defined to give it a silicon-wafer-reflection-esque look.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas7&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;9&quot;&gt;
+&lt;li&gt;Matrix — (0, (x^y)*(x^y), 0). From this point on, why the patterns emerge the way it does is beyond me. If you know, please share; I would love to know it too. Functions from here on are mostly a result of me trying to make the patterns look pretty.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas8&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;10&quot;&gt;
+&lt;li&gt;Temple — (((x*x)&amp;amp;y)*y, ((x*x)&amp;amp;y)*y, 32). Looks like pillars, as well as patterns etched on the walls of old temples.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas9&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;11&quot;&gt;
+&lt;li&gt;Peacock — (0, x*x*y*y, x*x*x*y*y*y). I think this is one of the prettiest patterns. The colors remind me of the feathers of a peacock.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas10&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;12&quot;&gt;
+&lt;li&gt;Crimson — ((x^(x*x*y*y))&amp;amp;y, 0, 0). Uses the same x*x*y*y function but masked with an XOR with x and an AND with y. I feel like this can be the loading screen of a bloody horror-thriller game.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas11&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;ol start=&quot;13&quot;&gt;
+&lt;li&gt;Phases — (x^(x*x*y*y)&#x2F;2, (x*x*y*y)^y, (x*x*y*y)^x^y). Pretty much the same pattern as before, but the green and blue channels have slightly altered versions of the same function resulting in different colors. Makes it look light like night and morning.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&lt;canvas id=&quot;canvas12&quot;&gt;&lt;&#x2F;canvas&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;There are more functions but I found these the most pretty.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;Melting_Metal_and_Mental_States&quot;&gt;Melting Metal and Mental States&lt;&#x2F;h2&gt;
+&lt;p&gt;I also experimented with hardware a bit. I bought a small TFT display but it did not come with pins attached. I had a few pins laying around so I decided to solder it, but ended up causing chaos: I inhaled the lead-tin fumes, my friend ingested it. I burnt my fingers, and as a reflex threw the solder on my friend — he dodged it, but burnt his fingers later anyway. I was holding the solder &lt;del&gt;near&lt;&#x2F;del&gt; on top of some cup noodles and managed to get its plastic melted and stuck on the gun. Tried to sand it off with paper and the paper burnt. Also right as I threw the solder gun, it melted the solder wire itself exposing the copper inside. Another guy came to help us and got a mild shock from it. It was chaotic but also quite comical to say the least.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;solder-chaos.avif&quot; alt=&quot;doodle of a person soldering and lighting things on fire and another person with a burnt finger looking and another person in the background horrified&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Watching a tutorial on how to use a solder properly seems like the saner (and obvious) approach in retrospect.&lt;&#x2F;p&gt;
+&lt;p&gt;Anyway that is all for this week. Cya next week.&lt;&#x2F;p&gt;
+&lt;script&gt;
+
+var canvasList = []
+const scale = 2;
+for (let i = 0; i &lt; 13; i++) {
+    canvasList[i] = document.getElementById(`canvas${i}`).getContext(&quot;2d&quot;);
+    canvasList[i].canvas.width = 512 * scale;
+    canvasList[i].canvas.height = 256 * scale;
+}
+
+async function generatePattern(canvasCurr, rFunc, gFunc, bFunc) {
+    const width = canvasCurr.canvas.width;
+    const height = canvasCurr.canvas.height;
+    const imageData = canvasCurr.createImageData(width, height);
+    const data = imageData.data;
+    for (let x = 0; x &lt; width; x++) {
+        for (let y = 0; y &lt; height; y++) {
+            const index = (y * width + x) * 4;
+            data[index]     = (rFunc(x&#x2F;scale, y&#x2F;scale)) % 0x100;
+            data[index + 1] = (gFunc(x&#x2F;scale, y&#x2F;scale)) % 0x100;
+            data[index + 2] = (bFunc(x&#x2F;scale, y&#x2F;scale)) % 0x100;
+            data[index + 3] = 0xFF;
+        }
+    }
+    canvasCurr.putImageData(imageData, 0, 0);
+}
+
+generatePattern(canvasList[0], (x,y)=&gt; x, (x,y)=&gt; y, (x,y)=&gt; x^0xFF);
+generatePattern(canvasList[1], (x,y)=&gt; x+y, (x,y)=&gt; x+y, (x,y)=&gt; x+y);
+generatePattern(canvasList[2], (x,y)=&gt; x+y, (x,y)=&gt; x+y+85, (x,y)=&gt; x+y+171);
+generatePattern(canvasList[3], (x,y)=&gt; 0, (x,y)=&gt; (x % 0x100) % (y % 0x100)&#x2F;2, (x,y)=&gt; (x % 0x100) % (y % 0x100));
+generatePattern(canvasList[4], (x,y)=&gt; x, (x,y)=&gt; x^y, (x,y)=&gt; x+y);
+generatePattern(canvasList[5], (x,y)=&gt; 0x3F, (x,y)=&gt; scale*x*x+scale*y*y, (x,y)=&gt; 0xAF);
+generatePattern(canvasList[6], (x,y)=&gt; ((scale*x*x-scale*y*y) % 0x100) + 0x100, (x,y)=&gt; ((scale*x*x-scale*y*y) % 0x100) + 0x100, (x,y)=&gt; ((scale*x*x-scale*y*y) % 0x100) + 0x100);
+generatePattern(canvasList[7], (x,y)=&gt; 0xFF, (x,y)=&gt; ((x&amp;y) % 0x100) * y, (x,y)=&gt; x);
+generatePattern(canvasList[8], (x,y)=&gt; 0, (x,y)=&gt; (x^y)*(x^y), (x,y)=&gt; 0);
+generatePattern(canvasList[9], (x,y)=&gt; (((x*x*scale*scale)&amp;y)*y), (x,y)=&gt; (((x*x*scale*scale)&amp;y)*y), (x,y)=&gt; 0x20); &#x2F;&#x2F; the correct scaling not multiply twice, but it looks bad
+generatePattern(canvasList[10], (x,y)=&gt; 0, (x,y)=&gt; ((x*y) % 0x100)*((x*y) % 0x100) * scale*scale*scale, (x,y)=&gt; ((x*y) % 0x100)*((x*y) % 0x100)*((x*y) % 0x100) * scale*scale*scale*scale*scale);
+generatePattern(canvasList[11], (x,y)=&gt; (x^((((x*x*y*y)%0x100)*scale*scale*scale) % 0x100))&amp;y, (x,y)=&gt; 0, (x,y)=&gt; 0);
+generatePattern(canvasList[12], (x,y)=&gt; ((x*scale)^((((x*x*y*y)%0x100)*scale*scale*scale) % 0x100))&#x2F;2, (x,y)=&gt; (y^((((x*x*y*y)%0x100)*scale*scale*scale) % 0x100)), (x,y)=&gt; (x^y^((((x*x*y*y)%0x100)*scale*scale*scale) % 0x100)));
+
+
+&lt;&#x2F;script&gt;
+&lt;style&gt;canvas {image-rendering: pixelated;}&lt;&#x2F;style&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Hello World</title>
+        <published>2025-03-03T00:00:00+00:00</published>
+        <updated>2025-03-03T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/7-hello-world/"/>
+        <id>https://ekunazanu.foo/log/7-hello-world/</id>
+        <summary type="html">Finally publishing.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/7-hello-world/">&lt;p&gt;Just a few hours after writing last week’s post, I very soon realized limiting &lt;a href=&quot;&#x2F;lab&#x2F;free-speech&quot;&gt;free speech&lt;&#x2F;a&gt; to a small subset of people is very ironic. I did a little searching, and learnt free tunneling services &lt;em&gt;do&lt;&#x2F;em&gt; exist. So I used Cloudflare tunnel to tunnel all requests to PBMBDB. &lt;a href=&quot;&#x2F;lab&#x2F;free-speech&quot;&gt;It should now be available&lt;&#x2F;a&gt; to everyone on the internet — subject to outages from my ISP.&lt;&#x2F;p&gt;
+&lt;p&gt;Which also means it’s time. It’s finally time to publish this site on the internet. For future readers (if there are any), who are confused: All this while I’ve been posting to myself, for myself. But now, this site is finally live. Now I will post for myself, but to the public. Does it mean the quality of the posts will increase? Lol no.&lt;&#x2F;p&gt;
+&lt;p&gt;Also somewhat related, I want to thank &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;macwright.com&quot;&gt;Tom MacWright&lt;&#x2F;a&gt;. He was very kind to license his website design to me for free :)&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;The_Big_(Motion)_Picture&quot;&gt;The Big (Motion) Picture&lt;&#x2F;h2&gt;
+&lt;p&gt;Okay then, time for updates. The first half of the week I spent shooting a movie (sort of), and the latter half I spent admiring a different one (sort of). One of the things I learnt while making a movie is that there’s a strict hierarchy in the movie set and you should not annoy those above you. I learnt it the hard way — I was demoted from cinematographer to a runner pretty quickly after I challenged the director’s vision.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;movie-set-hierarchy.avif&quot; alt=&quot;animated doodle of hierarchy in a movie set and showing arrows to denote the demotion from cinematographer to errand boy&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Regardless, that’s hopefully still considered enough work — for me to pass the class. I really don’t want an F grade in a filmmaking class on a Comp. Sci. degree.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;&quot;&gt;El Psy Kongroo&lt;&#x2F;h2&gt;
+&lt;p&gt;The second half of the week I watched Steins;Gate. It is not a movie, but a one-season anime. And it’s a masterpiece. Writing time travel with consistent logic is already difficult, but Steins;Gate not only does it, but conveys the rules of world effortlessly. Its timeline theory is also surprisingly &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Attractor&quot;&gt;grounded in real math&lt;&#x2F;a&gt;, at least if you believe that the world is a deterministic chaotic system. The voice acting is outstanding; the pacing and the frame composition is perfect; the characters have depth; the score adds emotion without being too soppy; the muted visuals perfectly capture its dystopian vibes. Everything about it feels perfect.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;steins-gate-pin.avif&quot; alt=&quot;overly detailed drawing anime&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;I don’t know; it’s been a long time since I &lt;strong&gt;loved&lt;&#x2F;strong&gt; a show.&lt;&#x2F;p&gt;
+&lt;p&gt;Anyway, cya next week — I’ll be less of a film buff and talk more tech stuff.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Back on Track</title>
+        <published>2025-02-23T00:00:00+00:00</published>
+        <updated>2025-02-23T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/6-back-on-track/"/>
+        <id>https://ekunazanu.foo/log/6-back-on-track/</id>
+        <summary type="html">It&#x27;s time to speed up.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/6-back-on-track/">&lt;p&gt;Title is clickbait. When I say back on track, it is something closer to this:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;on-track.avif&quot; alt=&quot;doodle of a person strapped to a railway track&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Thing is, everything was indeed going as planned. The server is up and running, and the frontend for it looks and works decent. The main roadblock turned out to be my college ISP. I was expecting a few issues, but nothing fundamentally unfix-able (or unhack-able). Turned out not to be the case.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;&quot;&gt;PBMBDB v0.2&lt;&#x2F;h2&gt;
+&lt;p&gt;About some changes first. I changed the structure for storing the top elements — instead of a min-heap, I am using an unsorted array and just tracking the minimum count. This makes the insertions scale in linear time instead of being log-linear (although in practice the difference is almost negligible). Also, I went with &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Fowler%E2%80%93Noll%E2%80%93Vo_hash_function&quot;&gt;FNV-1A&lt;&#x2F;a&gt; for hashing — it is much simpler and faster, and still retains a satisfactory uniform distribution. I also calculate only a single hash and break it into separate parts to simulate multiple hashes. A big speedup for a slight increase in collisions and a very slight degradation in precision.&lt;&#x2F;p&gt;
+&lt;p&gt;For data serialization, I originally wanted to go with &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Protocol_Buffers&quot;&gt;protobuf&lt;&#x2F;a&gt; because of its size and performance. But later, I realized it would just add more dependencies I don’t want. In the future I might reconsider it if it becomes a bottleneck. However right now, I have an even bigger issue: The college internet service provider.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;-1&quot;&gt;Derailing Hard&lt;&#x2F;h2&gt;
+&lt;p&gt;Turns out my college ISP uses NAT, and my server is behind it. In hindsight it should have been pretty obvious. Anyhow, it means that I cannot have a simple DNS (or even a DDNS) setup for the API endpoints — it will be inaccessible. While I can use a tunneling service, it would mean shelling out $$$. An ugly workaround is to send requests from the server to another device and track the TCP source port and use that information for the API endpoint. But that is too unreliable and too ugly for my liking.&lt;&#x2F;p&gt;
+&lt;p&gt;So what now? Imagine you are in a race; you are the hare. You take a nap just before the finish line and let the tortoise beat you. What now? Do you give up? No. You pretend it was all part of the plan. You pretend that your nap was intentional, and that the race was just an act to symbolize that underdogs can win too.&lt;&#x2F;p&gt;
+&lt;p&gt;That’s what I am doing as well.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;feature-not-bug.avif&quot; alt=&quot;doodle of cool person explaining the bug is actually a feature&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;I am simply rebranding the project. Instead of allowing anyone to post, it is exclusively for the people in my college. Early Facebook style. Except the project is really basic, and serves no other purpose than being a fun little &lt;del&gt;social network&lt;&#x2F;del&gt; social experiment. It &lt;a href=&quot;&#x2F;lab&#x2F;free-speech&quot;&gt;should be up&lt;&#x2F;a&gt; in a few hours.&lt;&#x2F;p&gt;
+&lt;p&gt;Until I find the right way to get it working for the wider internet, my DNS record just points to the LAN IP of the Raspberry Pi I am running the server on. And anyway once I get back home, I should be able to connect it to my home router (IPv6, no NAT non-sense). But that will take a few months ¯\_(&amp;#39;_&amp;#39;)_&#x2F;¯.&lt;&#x2F;p&gt;
+&lt;p&gt;That’s all. Cya next week.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+    <entry xml:lang="en">
+        <title>Precision Engineering</title>
+        <published>2025-02-16T00:00:00+00:00</published>
+        <updated>2025-02-16T00:00:00+00:00</updated>
+        <author><name>Anchit Roy</name></author>
+        <link rel="alternate" type="text/html" href="https://ekunazanu.foo/log/5-precision-engineering/"/>
+        <id>https://ekunazanu.foo/log/5-precision-engineering/</id>
+        <summary type="html">Time dilation is real.</summary>
+        <content type="html" xml:base="https://ekunazanu.foo/log/5-precision-engineering/">&lt;p&gt;I spent this entire week &lt;del&gt;building&lt;&#x2F;del&gt; admiring precision engineered systems. Systems with tolerances measured only in micrometres. Precision that defines the difference between life and death. Literally. I am talking about jets, like actual fighter jets.&lt;&#x2F;p&gt;
+&lt;p&gt;For some context, my college is &lt;em&gt;right&lt;&#x2F;em&gt; next to an national air force station, and this week there was an air show happening. Now of course the government does not want any potential collateral damage and a PR crisis, so they asked my college to shut down for a week. Good for me; I would get a lot of time to work on my ‘database’.&lt;&#x2F;p&gt;
+&lt;p&gt;Except I did not get that much done.&lt;&#x2F;p&gt;
+&lt;p&gt;This week went by just as fast as the jets. My dorm is right behind the airbase — all I did was watch the F-35s and Su-57s perform a lot of insane maneuvers. As well as watch other planes fly in formation. The amount of precision required to pull it off — both for the pilots and the engineering team — it felt unreal at times.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;media&#x2F;log&#x2F;formation-flying.avif&quot; alt=&quot;doodle of jet planes flying in formation&quot; loading=&quot;lazy&quot; decoding=&quot;async&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Anyway, I wrote simple implementations for HLL and CMS in Go yesterday. I ran some very basic tests and the accuracy was pretty much as expected. Now I need to write working implementations to store the distribution sketch the top-k elements as well, and then find a way to connect it to the internet.&lt;&#x2F;p&gt;
+&lt;p&gt;That’s all. I don’t have much more to write, since I didn’t do much else. The only other remotely productive work I got done was updating my &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;notes.ekunazanu.foo&#x2F;&quot;&gt;notes&lt;&#x2F;a&gt; to now include some basic git and networking stuff. Cya next week.&lt;&#x2F;p&gt;
+</content>
+    </entry>
+</feed>
