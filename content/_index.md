@@ -1,5 +1,5 @@
 +++
-title = "ekunazanu"
+title = "Home"
 description = "A blogified version of xkcd, only worse and more personal and not really funny."
 draft = false
 template = "page.html"

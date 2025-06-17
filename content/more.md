@@ -1,5 +1,5 @@
 +++
-title = "More stuff"
+title = "More Stuff"
 description = "More things about this site, more or less."
 draft = false
 template = "page.html"

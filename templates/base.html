@@ -19,7 +19,11 @@
         <meta property="og:locale" content="en_US">
         <meta property="og:site_name" content="{{ config.title }}">
 
-        <title>{{ pagevar.title }}</title>
+        {% if current_path == "/" %}
+        <title>{{ config.title }}</title>
+        {% else %}
+        <title>{{ pagevar.title }} ~ {{ config.title }}</title>
+        {% endif %}
 
         <link rel="cannonical" href="{{ pagevar.permalink }}">
         <link rel="alternate" type="application/atom+xml" href="{{ config.base_url }}/atom.xml">
