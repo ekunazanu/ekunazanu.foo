@@ -1,5 +1,5 @@
 base_url = "https://ekunazanu.foo"
-title = "ekunazanu"
+title = "ekunazanu.foo"
 description = "A blogified version of xkcd, only worse, and more personal, and not really funny."
 default_language = "en"
 output_dir = "deploy"
@@ -12,7 +12,7 @@ generate_feeds = true
 feed_filenames = ["atom.xml"]
 feed_limit = 10
 hard_link_static = false
-author = "Anchit Roy"
+author = "ekunazanu"
 taxonomies = []
 build_search_index = false
 
