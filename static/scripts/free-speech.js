@@ -144,7 +144,6 @@ function createRectangle(svg, x, y, width, height, text = null, color = "#aaa") 
     if (text) {
         txt.setAttribute("x", 20);
         txt.setAttribute("y", y + height / 2 + 10);
-        txt.setAttribute("alignment-baseline", "middle");
         txt.setAttribute("text-anchor", "start");
         txt.setAttribute("font-size", "28");
         txt.setAttribute("fill", "#000");
