@@ -67,7 +67,7 @@ drawNumberLine(canvasNumberlineSquareMap, 65, "#aaa");
 drawNumberMark(canvasNumberlineSquareMap, 65, "#aaa");
 drawNumberMark(canvasNumberlineSquareMap, 321, "#aaa");
 drawNumberLine(canvasNumberlineSquareMap, 321);
-drawNumberMark(canvasNumberlineSquareMap, 640, 750, 321, "#000", -36);
+drawNumberMark(canvasNumberlineSquareMap, 321, "#000", -36, 70, 641, 640, 750);
 canvasNumberlineSquareMap.moveTo(921, 306)
 canvasNumberlineSquareMap.lineTo(921, 336);
 canvasNumberlineSquareMap.stroke();
