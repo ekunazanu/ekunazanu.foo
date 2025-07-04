@@ -1,0 +1,1008 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1" name=viewport><meta content=ekunazanu name=author><meta content="Building an intuition for the complex plane and rotation using multiplication." name=description><meta content="Complex Rotations" property=og:title><meta content=article property=og:type><meta content="Building an intuition for the complex plane and rotation using multiplication." property=og:description><meta content=https://ekunazanu.foo/lab/complex-rotations/ property=og:url><meta content=https://ekunazanu.foo/thumbnails/lab.plane.svg.png property=og:image><meta content="Two lines of unit length on a polar plane." property=og:image:alt><meta content=image/png property=og:image:type><meta content=1200 property=og:image:width><meta content=900 property=og:image:height><meta content=en_US property=og:locale><meta content=ekunazanu.foo property=og:site_name><title>Complex Rotations ~ ekunazanu.foo</title><link href=https://ekunazanu.foo/lab/complex-rotations/ rel=cannonical><link href=https://ekunazanu.foo/atom.xml rel=alternate type=application/atom+xml><link href=https://ekunazanu.foo/misc/main.css rel=stylesheet><link href=https://ekunazanu.foo/misc/favicon.png rel=icon><meta content=Zola name=generator><body><nav><ul><li><h2><a href=https://ekunazanu.foo>ekunazanu.foo</a></h2><li><a href=https://ekunazanu.foo/log>Log</a><li><a href=https://ekunazanu.foo/lab>Lab</a> ⟶</ul></nav><div class=print>https://ekunazanu.foo</div><main><article><h1>Complex Rotations</h1><p>In mathematics there are multiple ways to represent the same underlying principles or ideas. There are different ways to represent two dimensional spaces — the <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Cartesian_coordinate_system target=_blank>cartesian</a>, <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Polar_coordinate_system target=_blank>polar</a>, and <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Category:Two-dimensional_coordinate_systems target=_blank>other</a> coordinate systems — and multiple ways to morph that space. Complex numbers are a way to represent two dimensional spaces, and are an even more elegant way to represent two dimensional rotations.<h2 id=Real_Numbers>Real Numbers</h2><p>This a real number line:<p><canvas id=canvasNumberlineStatic></canvas><p>It can be thought of as a one dimensional space — where any real number <code>x</code> is a point on the space with distance <code>x</code> from the origin point, zero. Positive numbers are on the right of the origin, and negative numbers on the left.<p>Since any real number is a point on this space, the output of any operation that results in a real number will also be a point on the one dimensional space — both the input and output can be mapped on the real number line. The operation can then be thought of as a transformation of the number line.<p><canvas id=canvasNumberlineMap></canvas><p>Consider addition: If a point or number is taken, and an addend <code>d</code> is added to it — then the sum would lie <code>d</code> distance to the right or left from the original point on the number line, depending on the sign of the addend. Since it is true for all points, the entire number line can be thought of as being <strong>shifted</strong> by distance <code>d</code>.<p><canvas id=canvasNumberlineAdd></canvas> <input id=sliderAdd type=range> <code>d</code>: <span id=spanNumberlineAdd>0.00</span><details open><summary>Transforming number lines</summary> <p>The numbers on the transformed number line (below) is the result of the addition operation when <code>d</code> is added to the numbers on the old numbers line (above). A single point (zero) is highlighted to make it easier to keep track of how the new number line numbers above is transformed.</p></details><p>Just as addition morphed the number line by shifting it, multiplication morphs the number by scaling, or <strong>stretching</strong> it — by the amount specified by the multiplier. Multiplication by a negative value stretches and also <strong>flips</strong> the number line around zero.<p><canvas id=canvasNumberlineMultiply></canvas> <input id=sliderMultiply type=range> <code>m</code>: <span id=spanNumberlineMultiply>1.00</span><p>The visual transformation analogues on a number line for the square function is however much more complicated than a simple shift or stretch.<p><canvas id=canvasNumberlineSquareMap></canvas><p>It is complicated to describe how <em>all</em> the numbers behave using a single transform, but breaking it down into multiple transformations for <em>each</em> number makes it much easier to comprehend. Since squaring a number simply involves multiplying it by itself — it can be represented as stretching (and possibly flipping) the number line twice by the same multiplier.<p><canvas id=canvasNumberlineSquare></canvas> <input id=sliderSquare type=range> Square of <span id=spanNumberlineSquare>1.00</span> = <span id=spanNumberlineSquareRes>1.00</span><p>Visualizing the square root function to a number line transformation is tricky as well. But the square root function can alternatively defined using the square function — the root shall be defined as the number which, when squared, yields the operand.<p><canvas id=canvasNumberlineSqrt></canvas> <input id=sliderSqrtRes type=range><br> <input id=sliderSqrt type=range><br> Square root of <span id=spanNumberlineSqrtRes>1.00</span> <span id=spanNumberlineSqrtEqu>is</span> <span id=spanNumberlineSqrt>1.00</span><details open><summary>Finding square roots</summary> <p>Finding a square root using this transformation involves specifying a number, and then using trial and error to find another number that squares to the number selected earlier — to get the square root.</p></details><p>There is a problem however. It is impossible to find the square root of negative numbers, since the output of the square function is always mapped to a non-negative number.<p><canvas id=canvasNumberlineSqrtNeg></canvas> <input id=sliderSqrtNegRes type=range><br> <input id=sliderSqrtNeg type=range><br> Square root of <span id=spanNumberlineSqrtNegRes>0.00</span> <span id=spanNumberlineSqrtNegEqu>is <b>not</b></span> <span id=spanNumberlineSqrtNeg>1.00</span><p>This is not a limitation of the visualization, but rather a limitation arising from the current definition of the function, and real numbers itself — it is impossible to find the square root of negative numbers from the existing definition of the number system.<p>Unless the definition itself is changed.<h2 id=Imaginary_Numbers>Imaginary Numbers</h2><p>Suppose numbers which square to any negative number do exist. The natural questions that might then arise are: What is the points of making these numbers up? Or how should the numbers be organized, or how should the numbers behave? This is where it helps to make certain assumptions.<ul><li><strong>Assumption I</strong>: Since the square root of negative numbers could not be mapped on the real number line, they must lie on a completely different number line. Since these numbers do not lie on the real number line, they will also be referred to as imaginary numbers from now on.</ul><p><canvas id=canvasNumberlineImaginary></canvas><ul><li><p><strong>Assumption II</strong>: The square root of any negative numbers (imaginary numbers) can derived using the square root of negative one and scaling it with a <strong>real number</strong>. Square root of negative one shall be denoted as <code>i</code>. So an imaginary number can be represented as <code>b·i</code>, where <code>b</code> is a real number. The real and imaginary numbers together shall be described as a sum <code>a+bi</code>, where <code>a</code> and <code>b</code> are real numbers and <code>i</code> is the square root of negative one.</p><li><p><strong>Assumption III</strong>: Addition is defined as <code>(a+bi) + (c+di)</code> = <code>(a+c) + (b+d)i</code>; ie. both operate on their own respective real and imaginary components. Multiplication is defined as <code>(a+bi) · (c+di)</code> = <code>a·c + a·i + bi·c + bi·di</code> or simplified, <code>(ac-bd) + (ad+bc)i</code> — ie. multiplication is distributed over addition.</p></ul><p>It can be inferred from the assumptions:<ul><li>Addition affects their own component and has no effect on the other entity.<li>Multiplication of any real number with another real number multiplier scales the original number by the multiplier.<li>Since any imaginary number can be thought of as the root of negative one scaled up by a real number, they can be decomposed into its real factors and <code>i</code>. This implies multiplying a real with any imaginary number results in a (scaled) imaginary number as well — ie. <code>kb·i</code> = <code>k · bi</code>, so <code>k · bi</code> = <code>kb·i</code>.<li>So, <strong>multiplication with a real number results scales a number by the real multiplier</strong>, irrespective of whether the multiplicand is real or imaginary.<li>Multiplying an imaginary number with an imaginary number involves multiplying their scalars and multiplying their roots of negative one. But squaring the root of negative one is just negative one, so <strong>multiplying two imaginary numbers results in a (scaled) negative real number</strong>. That is, <code>bi · di</code> can be rewritten as <code>b·d · i·i</code>, which is just <code>bd · -1</code> = <code>-bd</code>.<li>Multiplying two numbers with both non-zero real and imaginary components results in a number that is the product of the two numbers following the rules of distributive multiplication over addition.</ul><p>It is difficult to visualize how the multiplication of numbers with both non-zero real and imaginary components transform the number lines. But addition and multiplication with only a real component or an the root of negative one is relatively easier to visualize. Geometrically:<ul><li>Addition with real numbers shifts only the real number line.<li>Addition with imaginary numbers shifts only the imaginary number line.<li>Multiplication with real numbers stretches the real number line as well as the imaginary number lines.<li>Multiplication with <code>i</code> morphs number lines such that: <ul><li>If the number (line) was on the real number line, it now lies on the imaginary number line.<li>If the number (line) was on the imaginary number line, it now lies on the flipped real number line.</ul></ul><p><canvas id=canvasNumberlinesTransform></canvas> Transformed Number: <b><span id=spanTransformNumber>0.00+0.00i</span></b><br> <input id=sliderTransformAddR type=range>Add by real: <span id=spanTransformAddR>0.00</span><br> <input id=sliderTransformAddI type=range>Add by imaginary: <span id=spanTransformAddI>0.00</span><br> <input id=sliderTransformMultiplyR type=range>Multiply by real: <span id=spanTransformMultiplyR>1.00</span><p><button id=buttonTransformMultiplyI>Multiply by i</button><p>But how does the multiplication of numbers with both non-zero real and imaginary components transform the number lines? And why these assumptions specifically? All of this might seem arbitrary at first, but the motivation behind it starts making more sense when the second dimension is taken into account.<h2 id=Complex_Plane>Complex Plane</h2><p>Take any point on a cartesian plane, and keep track of its coordinates as well as the <code>x</code> and <code>y</code> axes when it is rotated counter-clockwise by 90°:<p><canvas id=canvasPlaneCartesian></canvas> <canvas id=canvasPlaneCartesianLine></canvas> Coordinates: <b><span id=spanPlaneCartesianNumber>0.00, 0.00</span></b><br> <input id=sliderPlaneCartesianX type=range>X: <span id=spanPlaneCartesianX>0.00</span><br> <input id=sliderPlaneCartesianY type=range>Y: <span id=spanPlaneCartesianY>0.00</span><p><button id=buttonPlaneCartesianRotate>Rotate counter-clockwise</button><p>The <code>x</code> and <code>y</code> axes get swapped, and the <code>x</code> axis also gets flipped. But this behavior is the same as the behavior of real and imaginary number lines when multiplied by <code>i</code>:<p><canvas id=canvasComplexLinesMultiply></canvas><p><button id=buttonComplexLinesMultiply>Multiply by i</button><p>So, if the real and imaginary number lines are perpendicular to each other, and a point (a,b) is represented by <code>a+bi</code> — then multiplication with <code>i</code>, represents a 90° counter clockwise rotation of the point.<p><canvas id=canvasPlaneComplex></canvas> <canvas id=canvasPlaneComplexLine></canvas> Transformed Number: <b><span id=spanPlaneComplexNumber>0.00 + 0.00i</span></b><br> <input id=sliderPlaneComplexR type=range>Add by Real (a): <span id=spanPlaneComplexR>0.00</span><br> <input id=sliderPlaneComplexI type=range>Add by Imaginary (b): <span id=spanPlaneComplexI>0.00</span><br> <input id=sliderPlaneComplexM type=range>Multiply by Real: <span id=spanPlaneComplexM>1.00</span><p><button id=buttonPlaneComplexRotate>Multiply by i</button><p>The perpendicular real and imaginary number lines together form a plane, where a point (a,b) on the plane can be represented as a number <code>a+bi</code>. The only defining feature of this plane is that multiplying a point on it by <code>i</code> rotates it counter-clockwise by 90°. And that begs the question — is it any useful if it can only represent quarter turn rotations? Or can it be generalized for other angles too?<h3 id=Looking_from_a_Different_Angle>Looking from a Different Angle</h3><p>Multiplying a number by <code>i</code> rotates it by a quarter turn, and multiplying a number twice by <code>i</code> would rotate it by half a turn. But multiplying twice by <code>i</code> is the same as multiplying by negative one — since <code>i·i</code> is just <code>-1</code>. So multiplying a point by negative one should have the effect of rotating it by a half turn. And it does.<p><canvas id=canvasPlaneComplexNegOne></canvas> <canvas id=canvasPlaneComplexNegOneLine></canvas> Transformed Number: <b><span id=spanPlaneComplexNegOneNumber>0.00 + 0.00i</span></b><br> <input id=sliderPlaneComplexNegOneR type=range>Add by Real (a): <span id=spanPlaneComplexNegOneR>0.00</span><br> <input id=sliderPlaneComplexNegOneI type=range>Add by Imaginary (b): <span id=spanPlaneComplexNegOneI>0.00</span><br> <input id=sliderPlaneComplexNegOneM type=range>Multiply by Real: <span id=spanPlaneComplexNegOneM>1.00</span><p><button id=buttonPlaneComplexNegOneMI>Multiply by i twice</button><button id=buttonPlaneComplexNegOneMO>Multiply by -1</button><p>Alternatively framed, multiplying by <code>-1</code> rotates a point and the plane by a half turn, and multiplying by <code>i</code>, or <code>√-1</code>, rotates it by a quarter turn. It is then not totally implausible to assume that multiplying by <code>√i</code> should result in a one-eight turn, or 45° rotation.<p>But <code>√-1</code> was defined as <code>i</code> as an assumption. Does <code>√i</code> need to be defined as another new number — that results in a 45° rotation? Before defining new numbers, it’s useful to see if <code>√i</code> can be defined using the existing number system. Finding <code>√i</code> is much easier analytically — compared to deducing it from its geometric properties.<p><code>Let a+bi = √i</code><br> <code>=> (a+bi)^2 = i</code><br> <code>=> a^2 - b^2 + 2abi = i</code><br> <code>=> a^2 - b^2 = 0, 2ab = 1</code><br> <code>=> a = 1/√2, b = 1/√2</code><br> <code>=> √i = 1/√2 + i/√2</code><details><summary>Alternate solutions</summary> <p>The above equation also has another solution: <code>a = -1/√2,  b = -1/√2</code>. However for simplicity, it has been excluded for now.</p></details><p>Analytically, <code>√i</code> is equivalent to <code>1/√2 + i/√2</code>, and multiplying a number by <code>1/√2 + i/√2</code> rotates it by 45° — somehow the analytically derived value of <code>√i</code> is consistent with its geometric properties which was only <em>assumed</em> to be true.<p><canvas id=canvasPlaneComplexHalf></canvas> <canvas id=canvasPlaneComplexHalfLine></canvas> Transformed Number: <b><span id=spanPlaneComplexHalfNumber>0.00 + 0.00i</span></b><br> <input id=sliderPlaneComplexHalfR type=range>Add by Real (a): <span id=spanPlaneComplexHalfR>0.00</span><br> <input id=sliderPlaneComplexHalfI type=range>Add by Imaginary (b): <span id=spanPlaneComplexHalfI>0.00</span><br> <input id=sliderPlaneComplexHalfM type=range>Multiply by Real: <span id=spanPlaneComplexHalfM>1.00</span><p><button id=buttonPlaneComplexHalfRotate>Multiply by 1/√2 + i/√2</button><p>The number <code>1/√2 + i/√2</code> interestingly lies halfway between <code>1</code> and <code>i</code>. It also lies on unit circle, forming a 45° angle with the positive real number axis. Other points lying on the unit circle such as <code>1/2 + √3i/2</code> and <code>√3/2 + i/2</code> form 30° and 60° angles with the positive real axis, respectively — and multiplying a point with the mentioned numbers again rotates it by 30° and 60° accordingly.<p>In fact multiplying a number by another number that lies on the unit circle rotates it — by the angle formed by the number on the unit circle and the positive real axis. For example, the multiplier here takes values of numbers lying on the unit circle:<p><canvas id=canvasPlaneComplexUnit></canvas> <canvas id=canvasPlaneComplexUnitLine></canvas> <span id=spanPlaneComplexUnitNums>(0.00+0.00i)(1.00i+0.00i)</span> = <b><span id=spanPlaneComplexUnitNumber>0.00 + 0.00i</span></b><br> <input id=sliderPlaneComplexUnitR type=range>Add by Real (a): <span id=spanPlaneComplexUnitR>0.00</span><br> <input id=sliderPlaneComplexUnitI type=range>Add by Imaginary (b): <span id=spanPlaneComplexUnitI>0.00</span><br> <input id=sliderPlaneComplexUnitA type=range>Multiply by Number: <span id=spanPlaneComplexUnitA>0.00</span><p>If a number is multiplied by another number that is not on the unit circle, it again gets rotated by the angle formed by the multiplier and positive real axis. But now, it also gets scaled. The point lies farther or closer from the origin depending on the multiplier — the distance scales linearly with the distance of the multiplier from the origin.<p><canvas id=canvasPlaneComplexMag></canvas> <canvas id=canvasPlaneComplexMagLine></canvas> <span id=spanPlaneComplexMagNums>(0.00+0.00i)(1.00i+0.00i)</span> = <b><span id=spanPlaneComplexMagNumber>0.00 + 0.00i</span></b><br> <input id=sliderPlaneComplexMagR type=range>Add by Real (a): <span id=spanPlaneComplexMagR>0.00</span><br> <input id=sliderPlaneComplexMagI type=range>Add by Imaginary (b): <span id=spanPlaneComplexMagI>0.00</span><br> <input id=sliderPlaneComplexMagA type=range>Multiply by Number: <span id=spanPlaneComplexMagA>0.00</span><br> <input id=sliderPlaneComplexMagM type=range>Multiply by Number: <span id=spanPlaneComplexMagM>0.00</span><p>It may seem that this what the transformation of the plane looks like when multiplied by real and imaginary numbers, but it is actually wrong. Until now, the transformation of only a single number was tracked — the rest of the plane was simply a translation with respect to that transformed number. To know the actual transformation, all the points of the plane must be tracked instead of a single point.<p>For example, multiplying all the <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Gaussian_integer target=_blank>integers points on this plane</a> with a number reveals that transformation of the plane is a rotation. Using more points reinforces the idea that it applies for all points in the plane. The aforementioned translation transformation of the plane also still occurs, but for addition, not multiplication. Here below, all the points in the plane are operated upon, but a single point can still be tracked for reference.<p><canvas id=canvasPlaneComplexAll></canvas> <canvas id=canvasPlaneComplexAllLine></canvas> <b>Z</b>[i] · <span id=spanPlaneComplexAllMult>(0.00+0.00i)(1.00i+0.00i)</span><br> <span id=spanPlaneComplexAllNums>(0.00+0.00i)(1.00i+0.00i)</span> = <b><span id=spanPlaneComplexAllNumber>0.00 + 0.00i</span></b><br> <input id=sliderPlaneComplexAllR type=range>Add by Real (a): <span id=spanPlaneComplexAllR>0.00</span><br> <input id=sliderPlaneComplexAllI type=range>Add by Imaginary (b): <span id=spanPlaneComplexAllI>0.00</span><br> <input id=sliderPlaneComplexAllA type=range>Multiply by Number: <span id=spanPlaneComplexAllA>0.00</span><br> <input id=sliderPlaneComplexAllM type=range>Multiply by Number: <span id=spanPlaneComplexAllM>0.00</span><p>This answers the original question of how multiplication of numbers with non-zero real and imaginary components translates to a geometric transformation: A stretching and rotation of the entire plane itself.<h2 id=Definitions>Definitions</h2><p>The plane and the number system consisting of real and imaginary numbers can be used to represent rotations. But to be formally used in mathematical context, it is necessary to establish certain formal definitions to describe ‘rotation’ and ‘stretching’ — and to prove it holds true for all points in the plane.<p>Specific terms can be defined to help describe the properties of the new plane and the number system — which will aid in formally describing and quantifying the rotational and stretching effect of multiplication:<ul><li>Numbers of the form <code>a+bi</code> where <code>a</code> and <code>b</code> are real numbers, and <code>i</code> is <code>√-1</code> are defined as <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Complex_number target=_blank><strong>complex numbers</strong></a> — and the plane formed by the perpendicular real and imaginary number lines is defined as the <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Complex_plane target=_blank><strong>complex plane</strong></a>.<li>The <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Argument_(complex_analysis) target=_blank><strong>argument</strong></a> of a complex number is defined as the angle between the line joining the origin and the complex number, and the positive real axis. The argument of a complex number <code>z</code> is usually denoted by <code>arg(z)</code>.<li>The <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Absolute_value#Complex_numbers target=_blank><strong>absolute value</strong></a> of a complex number is defined as its <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Magnitude_(mathematics)#Complex_numbers target=_blank>magnitude</a> — its <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Euclidean_distance target=_blank>distance</a> from the origin. The absolute value of a complex number <code>z</code> is denoted by <code>|z|</code>.</ul><p><canvas id=canvasDefinitions></canvas><p>While having formal definitions to work with is helpful, it is mostly useless if it is used to describe the properties of an idea whose underlying assumption about the premise itself is flawed, or based only on experimental observation of a few numbers — instead of a solid logical proof that applies <em>generally</em> to all numbers.<p>So there needs to be a proof that shows multiplication rotates and stretches the entire complex plane. Or more formally, it needs to be proved that the argument of the product of two complex numbers is the sum of the argument of the individual numbers, while the magnitude of the product is the product of the magnitude of its individual numbers.<p><canvas id=canvasProofProduct></canvas><h2 id=Interpretation>Interpretation</h2><p>Before going through a proof, it first helps to understand how multiplication has the effect of rotating numbers — by decomposing how the real and imaginary components of the product change with respect to its operands.<p>The product of two complex numbers <code>a+bi</code> and <code>c+di</code> is <code>ac-bd + (ad+bc)i</code>. The real component of the product is <code>ac-bd</code> and the imaginary component is <code>ad+bc</code>. For the real component, <code>ac</code> signifies that the real components of the product scales with the magnitude of the real components of its factors.<p>However, it also gets subtracted by <code>bd</code> — the product of the imaginary components. One way to visualize it is if the imaginary components increase, their arguments increase as well, shrinking the projection of the product on the real number line.<p><canvas id=canvasProofReal></canvas> <input id=sliderProofRealA type=range><input id=sliderProofRealB type=range> a: <span id=spanProofRealA>0.00</span> b: <span id=spanProofRealB>0.00</span><br> <input id=sliderProofRealC type=range><input id=sliderProofRealD type=range> c: <span id=spanProofRealC>0.00</span> d: <span id=spanProofRealD>0.00</span><br><p>The imaginary component of the product is <code>ad+bc</code>. To keep things simpler, <code>b</code> and <code>c</code> can be kept constant. Then, <code>a</code> can be viewed as determining the magnitude of the first number, while <code>d</code> as the argument of the other number — suggesting that the magnitude of the first number gets roughly ‘rotated’ by the argument of the second number when multiplied. As either of the magnitude or argument gets bigger, the product’s projection on the imaginary axis gets bigger.<p>A similar argument can be made for <code>bc</code>, keeping <code>ad</code> constant — the magnitude of the second number gets rotated by the argument of the first number.<p><canvas id=canvasProofImag></canvas> <input id=sliderProofImagA type=range><input id=sliderProofImagB type=range> a: <span id=spanProofImagA>0.00</span> b: <span id=spanProofImagB>0.00</span><br> <input id=sliderProofImagC type=range><input id=sliderProofImagD type=range> c: <span id=spanProofImagC>0.00</span> d: <span id=spanProofImagD>0.00</span><br><p>These are only useful to build an initial intuition, and are in no way complete, and are not at all exact.<h3 id=Trigonometric_Proof>Trigonometric Proof</h3><p>To be more rigorous, some knowledge about trigonometry is required. Let us assume the same two complex numbers, but this time represented using the magnitudes <code>|z1|</code> and <code>|z2|</code>, with arguments <code>α</code> and <code>β</code> respectively. The components can then alternatively be represented as:<p><code>a = |z1|·cos(α)</code><br> <code>b = |z1|·sin(α)</code><br> <code>c = |z2|·cos(β)</code><br> <code>d = |z2|·sin(β)</code><p>Multiplying the complex numbers <code>a+bi</code> and <code>c+di</code> would then result in:<p><code>+ |z1|·|z2|·cos(α)·cos(β)</code><br> <code>- |z1|·|z2|·sin(α)·sin(β)</code><br> <code>+ |z1|·|z2|·cos(α)·sin(β)·i</code><br> <code>+ |z1|·|z2|·sin(α)·cos(β)·i</code><p>If the magnitudes are factored out, the result is:<p><code>cos(α)·cos(β) - sin(α)·sin(β)</code> as the real component,<br> <code>cos(α)·sin(β) + sin(α)·cos(β)</code> as the imaginary component.<p>Using <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Angle_sum_and_difference_identities target=_blank>basic trigonometric identities</a>, it can be deduced that resultant product will have a real component <code>cos(α+β)</code> and imaginary component <code>sin(α+β)</code>. It is evident that the argument of the resultant number will be <code>α+β</code>.<p>The final result is <code>|z1|·|z2|·(cos(α+β) + sin(α+β)i)</code>, after the magnitudes are factored back in. Clearly, the magnitude of the product is <code>|z1|·|z2|</code> — the product of the individual magnitudes of the operands.<p>Since <code>a</code>, <code>b</code>, <code>c</code>, and <code>d</code> are any real numbers, the proof applies generally for all points in the plane. Thus, it can be said that multiplying with a complex number has the effect of stretching the complex plane by its magnitude, as well as rotating it by its argument.<h2 id=Purpose>Purpose</h2><p>Complex numbers can thus be used to model two dimensional rotations. However it can be argued that these rotations can also be described using vectors and <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Rotation_matrix target=_blank>rotational matrices</a>, and that those are considerably more powerful since they are not restricted to only two dimensions. So this means that complex numbers are not strictly ‘necessary’.<p>Although not <em>absolutely</em> necessary (in applied math), complex numbers are nonetheless very handy since they simplify descriptions of rotations — it is a simple multiplication. In fact, this simplicity is embodied in the <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Euler%27s_formula target=_blank>Euler’s formula</a>, which provides an elegant and concise way to describe periodic functions using rotations — and forms the basis of the Fourier and Laplace transforms.<p><canvas id=canvasFourier></canvas><details open><summary>The Fourier and Laplace transform</summary> <p>The <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Fourier_transform target=_blank>Fourier transform</a> transforms a function to another function describing the intensity of various frequencies present in the original function. The <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Laplace_transform target=_blank>Laplace transform</a> is a more generalized form of the Fourier transform which also describes the rate of <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Exponential_decay target=_blank>decay</a> of a function.</p></details><p>The necessity of complex numbers is even more significant in <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Complex_number#Algebraic_number_theory target=_blank>pure mathematics</a> — they form the algebraically closed field for real numbers.<p><canvas id=canvasFields></canvas><details open><summary>Algebraically Closed Fields</summary> <p>In mathematics, an <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Algebraic_structure target=_blank>algebraic structure</a> is a set of elements and operations, that satisfies certain <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Axiom#Non-logical_axioms target=_blank>rules</a>. A <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Field_(mathematics) target=_blank>field</a> is an algebraic structure that satisfies <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Field_(mathematics)#Alternative_definition target=_blank>the <strong>properties</strong> of addition, subtraction, multiplication, and division</a>. Real numbers are fields. An <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Algebraically_closed_field target=_blank>algebraically closed field</a> is a field that must have roots for a <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Polynomial#Classification target=_blank>non-constant polynomial</a> in that field — if the coefficients of the polynomial are elements of that field.</p> <p>For example, <code>x^2 + 1 = 0</code> does not have its roots defined in real numbers even though its coefficients are real — so real numbers are not algebraically closed. However, the roots are defined for all complex numbers, and thus the set of complex numbers form an algebraically closed field.</p></details><p>So now the question arises: Does it warrant redefining the number system to describe rotations? Absolutely. But does it make sense that a number system that is intuitive, and is used to <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Wave_function target=_blank>describe reality</a> are called imaginary? Absolutely not. Would anyone describe negative numbers as ‘unnatural’ because they are not a part of natural numbers?</p><script>// numberline static
+const canvasNumberlineStatic = document.getElementById("canvasNumberlineStatic").getContext("2d");
+canvasNumberlineStatic.canvas.width = 1280;
+canvasNumberlineStatic.canvas.height = 128;
+drawNumberLine(canvasNumberlineStatic, 65);
+drawNumberMark(canvasNumberlineStatic, 65);
+canvasNumberlineStatic.stroke();
+
+// numberline mapping
+const canvasNumberlineMap = document.getElementById("canvasNumberlineMap").getContext("2d");
+canvasNumberlineMap.canvas.width = 1280;
+canvasNumberlineMap.canvas.height = 384;
+drawNumberLine(canvasNumberlineMap, 65, "#aaa");
+drawNumberMark(canvasNumberlineMap, 65, "#aaa");
+drawNumberMark(canvasNumberlineMap, 321, "#aaa");
+drawNumberLine(canvasNumberlineMap, 321);
+drawNumberMark(canvasNumberlineMap, 321, "#000", -36, 140, 571);
+drawLine(canvasNumberlineMap, 641, 120, 571, 261);
+drawLine(canvasNumberlineMap, 571, 120, 435, 261);
+drawLine(canvasNumberlineMap, 501, 120, 301, 261);
+drawLine(canvasNumberlineMap, 711, 120, 711, 261);
+drawLine(canvasNumberlineMap, 781, 120, 841, 261);
+canvasNumberlineMap.fillText("f(x)", 750, 200);
+canvasNumberlineMap.stroke();
+
+// numberline addition
+const canvasNumberlineAdd = document.getElementById("canvasNumberlineAdd").getContext("2d");
+const sliderAdd = document.getElementById("sliderAdd");
+initializeSliders(sliderAdd, -8, 8, 0.05, 0);
+canvasNumberlineAdd.canvas.width = 1280;
+canvasNumberlineAdd.canvas.height = 384;
+drawNumberLine(canvasNumberlineAdd, 65, "#aaa");
+drawNumberMark(canvasNumberlineAdd, 65, "#aaa");
+function updateNumberlineAdd() {
+    canvasNumberlineAdd.clearRect(0, 119, 1280, 265);
+    drawNumberLineOverlay(canvasNumberlineAdd, 321, 1, sliderAdd.value);
+    drawLine(canvasNumberlineAdd, 641, 120, sliderAdd.value * 70 + 641, 261);
+    canvasNumberlineAdd.stroke();
+    spanNumberlineAdd.innerHTML = Number(sliderAdd.value).toFixed(2);
+}
+updateNumberlineAdd();
+sliderAdd.addEventListener("input", updateNumberlineAdd);
+
+// number line multiplication
+const canvasNumberlineMultiply = document.getElementById("canvasNumberlineMultiply").getContext("2d");
+const sliderMultiply = document.getElementById("sliderMultiply");
+initializeSliders(sliderMultiply, -6, 6, 0.05, 1);
+canvasNumberlineMultiply.canvas.width = 1280;
+canvasNumberlineMultiply.canvas.height = 384;
+drawNumberLine(canvasNumberlineMultiply, 65, "#aaa");
+drawNumberMark(canvasNumberlineMultiply, 65, "#aaa");
+function updateNumberlineMultiply() {
+    canvasNumberlineMultiply.clearRect(0, 119, 1280, 265);
+    drawNumberLineOverlay(canvasNumberlineMultiply, 321, sliderMultiply.value, 0);
+    drawLine(canvasNumberlineMultiply, 711, 120, sliderMultiply.value * 70 + 641, 261);
+    canvasNumberlineMultiply.stroke();
+    spanNumberlineMultiply.innerHTML = Number(sliderMultiply.value).toFixed(2);
+}
+updateNumberlineMultiply();
+sliderMultiply.addEventListener("input", updateNumberlineMultiply);
+
+// numberline square mapping
+const canvasNumberlineSquareMap = document.getElementById("canvasNumberlineSquareMap").getContext("2d");
+canvasNumberlineSquareMap.canvas.width = 1280;
+canvasNumberlineSquareMap.canvas.height = 384;
+drawNumberLine(canvasNumberlineSquareMap, 65, "#aaa");
+drawNumberMark(canvasNumberlineSquareMap, 65, "#aaa");
+drawNumberMark(canvasNumberlineSquareMap, 321, "#aaa");
+drawNumberLine(canvasNumberlineSquareMap, 321);
+drawNumberMark(canvasNumberlineSquareMap, 321, "#000", -36, 70, 641, 640, 750);
+canvasNumberlineSquareMap.moveTo(921, 306)
+canvasNumberlineSquareMap.lineTo(921, 336);
+canvasNumberlineSquareMap.stroke();
+canvasNumberlineSquareMap.fillText("2", 921, 285);
+drawLine(canvasNumberlineSquareMap, 641, 120, 641, 261);
+drawLine(canvasNumberlineSquareMap, 571, 120, 701, 261);
+drawLine(canvasNumberlineSquareMap, 711, 120, 711, 261);
+drawLine(canvasNumberlineSquareMap, 501, 120, 901, 261);
+drawLine(canvasNumberlineSquareMap, 781, 120, 911, 261);
+drawLine(canvasNumberlineSquareMap, 451, 120, 1250, 261);
+drawLine(canvasNumberlineSquareMap, 871, 120, 1260, 261);
+drawLine(canvasNumberlineSquareMap, 381, 120, 1260, 201);
+drawLine(canvasNumberlineSquareMap, 941, 120, 1260, 171);
+canvasNumberlineSquareMap.stroke();
+
+// numberline squaring
+const canvasNumberlineSquare = document.getElementById("canvasNumberlineSquare").getContext("2d");
+const sliderSquare = document.getElementById("sliderSquare");
+initializeSliders(sliderSquare, -2.5, 2.5, 0.05, 1);
+canvasNumberlineSquare.canvas.width = 1280;
+canvasNumberlineSquare.canvas.height = 640;
+drawNumberLine(canvasNumberlineSquare, 65, "#aaa");
+drawNumberMark(canvasNumberlineSquare, 65, "#aaa");
+function updateNumberlineSquare() {
+    canvasNumberlineSquare.clearRect(0, 119, 1280, 521);
+    drawNumberLineOverlay(canvasNumberlineSquare, 321, sliderSquare.value, 0);
+    drawNumberLineOverlay(canvasNumberlineSquare, 577, sliderSquare.value * sliderSquare.value, 0);
+    drawLine(canvasNumberlineSquare, 711, 120, sliderSquare.value * 70 + 641, 261);
+    drawLine(canvasNumberlineSquare, sliderSquare.value * 70 + 641, 376, sliderSquare.value * sliderSquare.value * 70 + 641, 517);
+    canvasNumberlineSquare.stroke();
+    canvasNumberlineSquare.fillText(Number(sliderSquare.value).toFixed(2) + "x", 1221, 193);
+    canvasNumberlineSquare.fillText(Number(sliderSquare.value).toFixed(2) + "x", 1221, 449);
+    spanNumberlineSquare.innerHTML = Number(sliderSquare.value).toFixed(2);
+    spanNumberlineSquareRes.innerHTML = (sliderSquare.value * sliderSquare.value).toFixed(2);
+}
+updateNumberlineSquare();
+sliderSquare.addEventListener("input", updateNumberlineSquare);
+
+// numberline square root
+const canvasNumberlineSqrt = document.getElementById("canvasNumberlineSqrt").getContext("2d");
+const sliderSqrt = document.getElementById("sliderSqrt");
+const sliderSqrtRes = document.getElementById("sliderSqrtRes");
+initializeSliders(sliderSqrtRes, 0, 6.25, 0.05, 1);
+initializeSliders(sliderSqrt, -2.5, 2.5, 0.1, 1);
+canvasNumberlineSqrt.canvas.width = 1280;
+canvasNumberlineSqrt.canvas.height = 640;
+drawNumberLine(canvasNumberlineSqrt, 65, "#aaa");
+drawNumberMark(canvasNumberlineSqrt, 65, "#aaa");
+function updateNumberlineSqrt() {
+    canvasNumberlineSqrt.clearRect(0, 119, 1280, 510);
+    drawNumberLineOverlay(canvasNumberlineSqrt, 321, sliderSqrt.value, 0);
+    drawNumberLineOverlay(canvasNumberlineSqrt, 577, sliderSqrt.value * sliderSqrt.value, 0);
+    drawLine(canvasNumberlineSqrt, 711, 120, sliderSqrt.value * 70 + 641, 261);
+    drawLine(canvasNumberlineSqrt, sliderSqrt.value * 70 + 641, 376, sliderSqrt.value * sliderSqrt.value * 70 + 641, 517);
+    canvasNumberlineSqrt.stroke();
+    canvasNumberlineSqrt.fillText(Number(sliderSqrt.value).toFixed(2) + "x", 1221, 193);
+    canvasNumberlineSqrt.fillText(Number(sliderSqrt.value).toFixed(2) + "x", 1221, 449);
+    spanNumberlineSqrt.innerHTML = Number(sliderSqrt.value).toFixed(2);
+    updateNumberlineSqrtText();
+}
+function updateNumberlineSqrtTrig() {
+    canvasNumberlineSqrt.clearRect(0, 629, 1280, 11);
+    drawTriangle(canvasNumberlineSqrt, sliderSqrtRes.value * 70 + 641, 629)
+    spanNumberlineSqrtRes.innerHTML = Number(sliderSqrtRes.value).toFixed(2);
+    updateNumberlineSqrtText();
+}
+function updateNumberlineSqrtText() {
+    if (sliderSqrt.value * sliderSqrt.value == sliderSqrtRes.value) spanNumberlineSqrtEqu.innerHTML = "is";
+    else spanNumberlineSqrtEqu.innerHTML = "is <b>not</b>";
+}
+updateNumberlineSqrt();
+updateNumberlineSqrtTrig();
+sliderSqrt.addEventListener("input", updateNumberlineSqrt);
+sliderSqrtRes.addEventListener("input", updateNumberlineSqrtTrig);
+
+// numberline square root negative
+const canvasNumberlineSqrtNeg = document.getElementById("canvasNumberlineSqrtNeg").getContext("2d");
+const sliderSqrtNeg = document.getElementById("sliderSqrtNeg");
+const sliderSqrtNegRes = document.getElementById("sliderSqrtNegRes");
+initializeSliders(sliderSqrtNegRes, -6.25, 0, 0.05, 0);
+initializeSliders(sliderSqrtNeg, -2.5, 2.5, 0.1, 1);
+canvasNumberlineSqrtNeg.canvas.width = 1280;
+canvasNumberlineSqrtNeg.canvas.height = 640;
+drawNumberLine(canvasNumberlineSqrtNeg, 65, "#aaa");
+drawNumberMark(canvasNumberlineSqrtNeg, 65, "#aaa");
+function updateNumberlineSqrtNeg() {
+    canvasNumberlineSqrtNeg.clearRect(0, 119, 1280, 510);
+    drawNumberLineOverlay(canvasNumberlineSqrtNeg, 321, sliderSqrtNeg.value, 0);
+    drawNumberLineOverlay(canvasNumberlineSqrtNeg, 577, sliderSqrtNeg.value * sliderSqrtNeg.value, 0);
+    drawLine(canvasNumberlineSqrtNeg, 711, 120, sliderSqrtNeg.value * 70 + 641, 261);
+    drawLine(canvasNumberlineSqrtNeg, sliderSqrtNeg.value * 70 + 641, 376, sliderSqrtNeg.value * sliderSqrtNeg.value * 70 + 641, 517);
+    canvasNumberlineSqrtNeg.stroke();
+    canvasNumberlineSqrtNeg.fillText(Number(sliderSqrtNeg.value).toFixed(2) + "x", 1221, 193);
+    canvasNumberlineSqrtNeg.fillText(Number(sliderSqrtNeg.value).toFixed(2) + "x", 1221, 449);
+    spanNumberlineSqrtNeg.innerHTML = Number(sliderSqrtNeg.value).toFixed(2);
+    updateNumberlineSqrtNegText();
+}
+function updateNumberlineSqrtNegTrig() {
+    canvasNumberlineSqrtNeg.clearRect(0, 629, 1280, 11);
+    drawTriangle(canvasNumberlineSqrtNeg, sliderSqrtNegRes.value * 70 + 641, 629)
+    spanNumberlineSqrtNegRes.innerHTML = Number(sliderSqrtNegRes.value).toFixed(2);
+    updateNumberlineSqrtNegText();
+}
+function updateNumberlineSqrtNegText() {
+    if (sliderSqrtNeg.value * sliderSqrtNeg.value == sliderSqrtNegRes.value) spanNumberlineSqrtNegEqu.innerHTML = "is";
+    else spanNumberlineSqrtNegEqu.innerHTML = "is <b>not</b>";
+}
+updateNumberlineSqrtNeg();
+updateNumberlineSqrtNegTrig();
+sliderSqrtNeg.addEventListener("input", updateNumberlineSqrtNeg);
+sliderSqrtNegRes.addEventListener("input", updateNumberlineSqrtNegTrig);
+
+// numberline imaginary static
+const canvasNumberlineImaginary = document.getElementById("canvasNumberlineImaginary").getContext("2d");
+canvasNumberlineImaginary.canvas.width = 1280;
+canvasNumberlineImaginary.canvas.height = 334;
+drawNumberLine(canvasNumberlineImaginary, 65);
+drawNumberMark(canvasNumberlineImaginary, 65);
+drawNumberLine(canvasNumberlineImaginary, 271);
+drawNumberMark(canvasNumberlineImaginary, 271);
+canvasNumberlineImaginary.stroke();
+canvasNumberlineImaginary.textAlign = "right";
+canvasNumberlineImaginary.fillText("Real Number Line", 1270, 15);
+canvasNumberlineImaginary.fillText("Imaginary Number Line", 1270, 221);
+
+// numberlines transformation
+const canvasNumberlinesTransform = document.getElementById("canvasNumberlinesTransform").getContext("2d");
+const sliderTransformAddR = document.getElementById("sliderTransformAddR");
+const sliderTransformAddI = document.getElementById("sliderTransformAddI");
+const sliderTransformMultiplyR = document.getElementById("sliderTransformMultiplyR");
+const buttonTransformMultiplyI = document.getElementById("buttonTransformMultiplyI");
+initializeSliders(sliderTransformAddR, -8, 8, 0.05, 0);
+initializeSliders(sliderTransformAddI, -8, 8, 0.05, 0);
+initializeSliders(sliderTransformMultiplyR, -2, 2, 0.05, 1);
+canvasNumberlinesTransform.canvas.width = 1280;
+canvasNumberlinesTransform.canvas.height = 370;
+canvasNumberlinesTransform.font = "25px JetBrains Mono";
+canvasNumberlinesTransform.textBaseline = "middle";
+canvasNumberlinesTransform.textAlign = "right";
+canvasNumberlinesTransform.fillStyle = "#000";
+canvasNumberlinesTransform.fillText("Real Number Line", 1270, 15);
+canvasNumberlinesTransform.fillText("Imaginary Number Line", 1270, 221);
+function updateNumberlineTransform() {
+    canvasNumberlinesTransform.clearRect(0, 24, 1280, 150);
+    canvasNumberlinesTransform.clearRect(0, 235, 1280, 356);
+    drawNumberLineOverlay(canvasNumberlinesTransform, 95, sliderTransformMultiplyR.value, sliderTransformAddR.value * sliderTransformMultiplyR.value);
+    drawNumberLineOverlay(canvasNumberlinesTransform, 301, sliderTransformMultiplyR.value, sliderTransformAddI.value * sliderTransformMultiplyR.value);
+    drawTriangle(canvasNumberlinesTransform, sliderTransformMultiplyR.value * sliderTransformAddR.value * 70 + 641, 154);
+    drawTriangle(canvasNumberlinesTransform, sliderTransformMultiplyR.value * sliderTransformAddI.value * 70 + 641, 360);
+    spanTransformAddR.innerHTML = Number(sliderTransformAddR.value).toFixed(2);
+    spanTransformAddI.innerHTML = Number(sliderTransformAddI.value).toFixed(2);
+    spanTransformMultiplyR.innerHTML = Number(sliderTransformMultiplyR.value).toFixed(2);
+    spanTransformNumber.innerHTML = getComplexNum(sliderTransformMultiplyR.value * sliderTransformAddR.value, sliderTransformMultiplyR.value * sliderTransformAddI.value);
+}
+updateNumberlineTransform();
+sliderTransformAddR.addEventListener("input", updateNumberlineTransform);
+sliderTransformAddI.addEventListener("input", updateNumberlineTransform);
+sliderTransformMultiplyR.addEventListener("input", updateNumberlineTransform);
+buttonTransformMultiplyI.addEventListener("click", function() {
+    var temp_R = sliderTransformAddR.value;
+    sliderTransformAddR.value = sliderTransformAddI.value * -1;
+    sliderTransformAddI.value = temp_R;
+    updateNumberlineTransform();
+});
+
+// cartesian plane transformation
+const canvasPlaneCartesian = document.getElementById("canvasPlaneCartesian").getContext("2d");
+const canvasPlaneCartesianLine = document.getElementById("canvasPlaneCartesianLine").getContext("2d");
+const canvasComplexLinesMultiply = document.getElementById("canvasComplexLinesMultiply").getContext("2d");
+const sliderPlaneCartesianX = document.getElementById("sliderPlaneCartesianX");
+const sliderPlaneCartesianY = document.getElementById("sliderPlaneCartesianY");
+const buttonPlaneCartesianRotate = document.getElementById("buttonPlaneCartesianRotate");
+const buttonComplexLinesMultiply = document.getElementById("buttonComplexLinesMultiply");
+initializeSliders(sliderPlaneCartesianX, -4, 4, 0.05, 3);
+initializeSliders(sliderPlaneCartesianY, -4, 4, 0.05, 0);
+canvasPlaneCartesian.canvas.width = 1280;
+canvasPlaneCartesian.canvas.height = 640;
+canvasPlaneCartesianLine.canvas.width = 1280;
+canvasPlaneCartesianLine.canvas.height = 350;
+canvasComplexLinesMultiply.canvas.width = 1280;
+canvasComplexLinesMultiply.canvas.height = 350;
+canvasPlaneCartesianLine.font = "25px JetBrains Mono";
+canvasPlaneCartesianLine.textBaseline = "middle";
+canvasPlaneCartesianLine.textAlign = "right";
+canvasPlaneCartesianLine.fillStyle = "#000";
+canvasPlaneCartesianLine.fillText("X", 1270, 25);
+canvasPlaneCartesianLine.fillText("Y", 1270, 201);
+canvasComplexLinesMultiply.font = "25px JetBrains Mono";
+canvasComplexLinesMultiply.textBaseline = "middle";
+canvasComplexLinesMultiply.textAlign = "right";
+canvasComplexLinesMultiply.fillStyle = "#000";
+canvasComplexLinesMultiply.fillText("Real", 1270, 25);
+canvasComplexLinesMultiply.fillText("Imaginary", 1270, 201);
+function updatePlaneCartesian() {
+    canvasPlaneCartesianLine.clearRect(0, 35, 1280, 150);
+    canvasPlaneCartesianLine.clearRect(0, 215, 1280, 356);
+    drawNumberLineOverlay(canvasPlaneCartesianLine, 109, 1, sliderPlaneCartesianX.value);
+    drawNumberLineOverlay(canvasPlaneCartesianLine, 281, 1, sliderPlaneCartesianY.value);
+    drawTriangle(canvasPlaneCartesianLine, sliderPlaneCartesianX.value * 70 + 641, 160);
+    drawTriangle(canvasPlaneCartesianLine, sliderPlaneCartesianY.value * 70 + 641, 336);
+    canvasPlaneCartesian.clearRect(0, 0, 1280, 640);
+    drawGridOverlay(canvasPlaneCartesian, Number(sliderPlaneCartesianX.value), Number(sliderPlaneCartesianY.value), 1, 0);
+    spanPlaneCartesianX.innerHTML = Number(sliderPlaneCartesianX.value).toFixed(2);
+    spanPlaneCartesianY.innerHTML = Number(sliderPlaneCartesianY.value).toFixed(2);
+    spanPlaneCartesianNumber.innerHTML = Number(sliderPlaneCartesianX.value).toFixed(2) + ", " + Number(sliderPlaneCartesianY.value).toFixed(2);
+    updateComplexLinesMultiply();
+}
+function updatePlaneCartesianRotate() {
+    var temp_X = sliderPlaneCartesianX.value;
+    sliderPlaneCartesianX.value = sliderPlaneCartesianY.value * -1;
+    sliderPlaneCartesianY.value = temp_X;
+    updatePlaneCartesian();
+    updateComplexLinesMultiply();
+}
+function updateComplexLinesMultiply() {
+    canvasComplexLinesMultiply.clearRect(0, 35, 1280, 150);
+    canvasComplexLinesMultiply.clearRect(0, 215, 1280, 356);
+    drawNumberLineOverlay(canvasComplexLinesMultiply, 109, 1, sliderPlaneCartesianX.value);
+    drawNumberLineOverlay(canvasComplexLinesMultiply, 281, 1, sliderPlaneCartesianY.value);
+    drawTriangle(canvasComplexLinesMultiply, sliderPlaneCartesianX.value * 70 + 641, 160);
+    drawTriangle(canvasComplexLinesMultiply, sliderPlaneCartesianY.value * 70 + 641, 336);
+}
+updatePlaneCartesian();
+sliderPlaneCartesianX.addEventListener("input", updatePlaneCartesian);
+sliderPlaneCartesianY.addEventListener("input", updatePlaneCartesian);
+buttonPlaneCartesianRotate.addEventListener("click", updatePlaneCartesianRotate);
+buttonComplexLinesMultiply.addEventListener("click", updatePlaneCartesianRotate);
+
+// complex plane transformation
+const canvasPlaneComplex = document.getElementById("canvasPlaneComplex").getContext("2d");
+const canvasPlaneComplexLine = document.getElementById("canvasPlaneComplexLine").getContext("2d");
+const sliderPlaneComplexR = document.getElementById("sliderPlaneComplexR");
+const sliderPlaneComplexI = document.getElementById("sliderPlaneComplexI");
+const sliderPlaneComplexM = document.getElementById("sliderPlaneComplexM");
+const buttonPlaneComplexRotate = document.getElementById("buttonPlaneComplexRotate");
+initializeSliders(sliderPlaneComplexR, -4, 4, 0.05, 3);
+initializeSliders(sliderPlaneComplexI, -4, 4, 0.05, 0);
+initializeSliders(sliderPlaneComplexM, -2, 2, 0.05, 1);
+canvasPlaneComplex.canvas.width = 1280;
+canvasPlaneComplex.canvas.height = 640;
+canvasPlaneComplexLine.canvas.width = 1280;
+canvasPlaneComplexLine.canvas.height = 350;
+canvasPlaneComplexLine.font = "25px JetBrains Mono";
+canvasPlaneComplexLine.textBaseline = "middle";
+canvasPlaneComplexLine.textAlign = "right";
+canvasPlaneComplexLine.fillStyle = "#000";
+canvasPlaneComplexLine.fillText("Real", 1270, 25);
+canvasPlaneComplexLine.fillText("Imaginary", 1270, 201);
+function updatePlaneComplex() {
+    canvasPlaneComplexLine.clearRect(0, 35, 1280, 150);
+    canvasPlaneComplexLine.clearRect(0, 215, 1280, 356);
+    drawNumberLineOverlay(canvasPlaneComplexLine, 109, sliderPlaneComplexM.value, sliderPlaneComplexM.value * sliderPlaneComplexR.value);
+    drawNumberLineOverlay(canvasPlaneComplexLine, 281, sliderPlaneComplexM.value, sliderPlaneComplexM.value * sliderPlaneComplexI.value);
+    drawTriangle(canvasPlaneComplexLine, sliderPlaneComplexM.value * sliderPlaneComplexR.value * 70 + 641, 160);
+    drawTriangle(canvasPlaneComplexLine, sliderPlaneComplexM.value * sliderPlaneComplexI.value * 70 + 641, 336);
+    canvasPlaneComplex.clearRect(0, 0, 1280, 640);
+    drawGridOverlay(canvasPlaneComplex, Number(sliderPlaneComplexR.value), Number(sliderPlaneComplexI.value), sliderPlaneComplexM.value, 0);
+    spanPlaneComplexR.innerHTML = Number(sliderPlaneComplexR.value).toFixed(2);
+    spanPlaneComplexI.innerHTML = Number(sliderPlaneComplexI.value).toFixed(2);
+    spanPlaneComplexM.innerHTML = Number(sliderPlaneComplexM.value).toFixed(2);
+    spanPlaneComplexNumber.innerHTML = getComplexNum(sliderPlaneComplexM.value * sliderPlaneComplexR.value, sliderPlaneComplexM.value * sliderPlaneComplexI.value);
+}
+function updatePlaneComplexRotate() {
+    var temp_X = sliderPlaneComplexR.value;
+    sliderPlaneComplexR.value = sliderPlaneComplexI.value * -1;
+    sliderPlaneComplexI.value = temp_X;
+    updatePlaneComplex();
+}
+updatePlaneComplex();
+sliderPlaneComplexR.addEventListener("input", updatePlaneComplex);
+sliderPlaneComplexI.addEventListener("input", updatePlaneComplex);
+sliderPlaneComplexM.addEventListener("input", updatePlaneComplex);
+buttonPlaneComplexRotate.addEventListener("click", updatePlaneComplexRotate);
+
+// complex plane multiplication negative one
+const canvasPlaneComplexNegOne = document.getElementById("canvasPlaneComplexNegOne").getContext("2d");
+const canvasPlaneComplexNegOneLine = document.getElementById("canvasPlaneComplexNegOneLine").getContext("2d");
+const sliderPlaneComplexNegOneR = document.getElementById("sliderPlaneComplexNegOneR");
+const sliderPlaneComplexNegOneI = document.getElementById("sliderPlaneComplexNegOneI");
+const sliderPlaneComplexNegOneM = document.getElementById("sliderPlaneComplexNegOneM");
+const buttonPlaneComplexNegOneMO = document.getElementById("buttonPlaneComplexNegOneMO");
+const buttonPlaneComplexNegOneMI = document.getElementById("buttonPlaneComplexNegOneMI");
+initializeSliders(sliderPlaneComplexNegOneR, -4, 4, 0.05, 3);
+initializeSliders(sliderPlaneComplexNegOneI, -4, 4, 0.05, 0);
+initializeSliders(sliderPlaneComplexNegOneM, -2, 2, 0.05, 1);
+canvasPlaneComplexNegOne.canvas.width = 1280;
+canvasPlaneComplexNegOne.canvas.height = 640;
+canvasPlaneComplexNegOneLine.canvas.width = 1280;
+canvasPlaneComplexNegOneLine.canvas.height = 350;
+canvasPlaneComplexNegOneLine.font = "25px JetBrains Mono";
+canvasPlaneComplexNegOneLine.textBaseline = "middle";
+canvasPlaneComplexNegOneLine.textAlign = "right";
+canvasPlaneComplexNegOneLine.fillStyle = "#000";
+canvasPlaneComplexNegOneLine.fillText("Real", 1270, 25);
+canvasPlaneComplexNegOneLine.fillText("Imaginary", 1270, 201);
+function updatePlaneComplexNegOne() {
+    canvasPlaneComplexNegOneLine.clearRect(0, 35, 1280, 150);
+    canvasPlaneComplexNegOneLine.clearRect(0, 215, 1280, 356);
+    drawNumberLineOverlay(canvasPlaneComplexNegOneLine, 109, sliderPlaneComplexNegOneM.value, sliderPlaneComplexNegOneM.value * sliderPlaneComplexNegOneR.value);
+    drawNumberLineOverlay(canvasPlaneComplexNegOneLine, 281, sliderPlaneComplexNegOneM.value, sliderPlaneComplexNegOneM.value * sliderPlaneComplexNegOneI.value);
+    drawTriangle(canvasPlaneComplexNegOneLine, sliderPlaneComplexNegOneM.value * sliderPlaneComplexNegOneR.value * 70 + 641, 160);
+    drawTriangle(canvasPlaneComplexNegOneLine, sliderPlaneComplexNegOneM.value * sliderPlaneComplexNegOneI.value * 70 + 641, 336);
+    canvasPlaneComplexNegOne.clearRect(0, 0, 1280, 640);
+    drawGridOverlay(canvasPlaneComplexNegOne, Number(sliderPlaneComplexNegOneR.value), Number(sliderPlaneComplexNegOneI.value), sliderPlaneComplexNegOneM.value, 0);
+    spanPlaneComplexNegOneR.innerHTML = Number(sliderPlaneComplexNegOneR.value).toFixed(2);
+    spanPlaneComplexNegOneI.innerHTML = Number(sliderPlaneComplexNegOneI.value).toFixed(2);
+    spanPlaneComplexNegOneM.innerHTML = Number(sliderPlaneComplexNegOneM.value).toFixed(2);
+    spanPlaneComplexNegOneNumber.innerHTML = getComplexNum(sliderPlaneComplexNegOneM.value * sliderPlaneComplexNegOneR.value, sliderPlaneComplexNegOneM.value * sliderPlaneComplexNegOneI.value);
+}
+function updatePlaneComplexNegOneMultiplyOne() {
+    sliderPlaneComplexNegOneR.value *= -1;
+    sliderPlaneComplexNegOneI.value *= -1;
+    updatePlaneComplexNegOne();
+}
+async function updatePlaneComplexNegOneMultiplyImg() {
+    for (let i = 0; i < 2; i++) {
+        var temp_X = sliderPlaneComplexNegOneR.value;
+        sliderPlaneComplexNegOneR.value = sliderPlaneComplexNegOneI.value * -1;
+        sliderPlaneComplexNegOneI.value = temp_X;
+        updatePlaneComplexNegOne();
+        await new Promise(resolve => setTimeout(resolve, 700));
+    }
+}
+updatePlaneComplexNegOne();
+sliderPlaneComplexNegOneR.addEventListener("input", updatePlaneComplexNegOne);
+sliderPlaneComplexNegOneI.addEventListener("input", updatePlaneComplexNegOne);
+sliderPlaneComplexNegOneM.addEventListener("input", updatePlaneComplexNegOne);
+buttonPlaneComplexNegOneMO.addEventListener("click", updatePlaneComplexNegOneMultiplyOne);
+buttonPlaneComplexNegOneMI.addEventListener("click", updatePlaneComplexNegOneMultiplyImg);
+
+// complex plane transformation 45 deg
+const canvasPlaneComplexHalf = document.getElementById("canvasPlaneComplexHalf").getContext("2d");
+const canvasPlaneComplexHalfLine = document.getElementById("canvasPlaneComplexHalfLine").getContext("2d");
+const sliderPlaneComplexHalfR = document.getElementById("sliderPlaneComplexHalfR");
+const sliderPlaneComplexHalfI = document.getElementById("sliderPlaneComplexHalfI");
+const sliderPlaneComplexHalfM = document.getElementById("sliderPlaneComplexHalfM");
+const buttonPlaneComplexHalfRotate = document.getElementById("buttonPlaneComplexHalfRotate");
+initializeSliders(sliderPlaneComplexHalfR, -4, 4, 0.05, 2);
+initializeSliders(sliderPlaneComplexHalfI, -4, 4, 0.05, 0);
+initializeSliders(sliderPlaneComplexHalfM, -2, 2, 0.05, 1);
+canvasPlaneComplexHalf.canvas.width = 1280;
+canvasPlaneComplexHalf.canvas.height = 640;
+canvasPlaneComplexHalfLine.canvas.width = 1280;
+canvasPlaneComplexHalfLine.canvas.height = 350;
+canvasPlaneComplexHalfLine.font = "25px JetBrains Mono";
+canvasPlaneComplexHalfLine.textBaseline = "middle";
+canvasPlaneComplexHalfLine.textAlign = "right";
+canvasPlaneComplexHalfLine.fillStyle = "#000";
+canvasPlaneComplexHalfLine.fillText("Real", 1270, 25);
+canvasPlaneComplexHalfLine.fillText("Imaginary", 1270, 201);
+function updatePlaneComplexHalf() {
+    canvasPlaneComplexHalfLine.clearRect(0, 35, 1280, 150);
+    canvasPlaneComplexHalfLine.clearRect(0, 215, 1280, 356);
+    drawNumberLineOverlay(canvasPlaneComplexHalfLine, 109, sliderPlaneComplexHalfM.value, sliderPlaneComplexHalfM.value * sliderPlaneComplexHalfR.value);
+    drawNumberLineOverlay(canvasPlaneComplexHalfLine, 281, sliderPlaneComplexHalfM.value, sliderPlaneComplexHalfM.value * sliderPlaneComplexHalfI.value);
+    drawTriangle(canvasPlaneComplexHalfLine, sliderPlaneComplexHalfM.value * sliderPlaneComplexHalfR.value * 70 + 641, 160);
+    drawTriangle(canvasPlaneComplexHalfLine, sliderPlaneComplexHalfM.value * sliderPlaneComplexHalfI.value * 70 + 641, 336);
+    canvasPlaneComplexHalf.clearRect(0, 0, 1280, 640);
+    drawGridOverlay(canvasPlaneComplexHalf, Number(sliderPlaneComplexHalfR.value), Number(sliderPlaneComplexHalfI.value), sliderPlaneComplexHalfM.value, 0);
+    spanPlaneComplexHalfR.innerHTML = Number(sliderPlaneComplexHalfR.value).toFixed(2);
+    spanPlaneComplexHalfI.innerHTML = Number(sliderPlaneComplexHalfI.value).toFixed(2);
+    spanPlaneComplexHalfM.innerHTML = Number(sliderPlaneComplexHalfM.value).toFixed(2);
+    spanPlaneComplexHalfNumber.innerHTML = getComplexNum(sliderPlaneComplexHalfM.value * sliderPlaneComplexHalfR.value, sliderPlaneComplexHalfM.value * sliderPlaneComplexHalfI.value);
+}
+function updatePlaneComplexHalfRotate() {
+    var temp_X = sliderPlaneComplexHalfR.value;
+    sliderPlaneComplexHalfR.value = getReal(sliderPlaneComplexHalfR.value, sliderPlaneComplexHalfI.value, 0.7071, 0.70711);
+    sliderPlaneComplexHalfI.value = getImag(temp_X, sliderPlaneComplexHalfI.value, 0.7071, 0.70711);
+    updatePlaneComplexHalf();
+}
+updatePlaneComplexHalf();
+sliderPlaneComplexHalfR.addEventListener("input", updatePlaneComplexHalf);
+sliderPlaneComplexHalfI.addEventListener("input", updatePlaneComplexHalf);
+sliderPlaneComplexHalfM.addEventListener("input", updatePlaneComplexHalf);
+buttonPlaneComplexHalfRotate.addEventListener("click", updatePlaneComplexHalfRotate);
+
+// complex plane transformation unit circle
+const canvasPlaneComplexUnit = document.getElementById("canvasPlaneComplexUnit").getContext("2d");
+const canvasPlaneComplexUnitLine = document.getElementById("canvasPlaneComplexUnitLine").getContext("2d");
+const sliderPlaneComplexUnitR = document.getElementById("sliderPlaneComplexUnitR");
+const sliderPlaneComplexUnitI = document.getElementById("sliderPlaneComplexUnitI");
+const sliderPlaneComplexUnitA = document.getElementById("sliderPlaneComplexUnitA");
+var varPlaneComplexUnitR = 0;
+var varPlaneComplexUnitI = 0;
+var varPlaneComplexUnitX;
+var varPlaneComplexUnitY;
+var varPlaneComplexUnitNum;
+initializeSliders(sliderPlaneComplexUnitR, -4, 4, 0.05, 2);
+initializeSliders(sliderPlaneComplexUnitI, -4, 4, 0.05, 0);
+initializeSliders(sliderPlaneComplexUnitA, -3.14, 3.14, 0.01, 0);
+canvasPlaneComplexUnit.canvas.width = 1280;
+canvasPlaneComplexUnit.canvas.height = 640;
+canvasPlaneComplexUnitLine.canvas.width = 1280;
+canvasPlaneComplexUnitLine.canvas.height = 350;
+canvasPlaneComplexUnitLine.font = "25px JetBrains Mono";
+canvasPlaneComplexUnitLine.textBaseline = "middle";
+canvasPlaneComplexUnitLine.textAlign = "right";
+canvasPlaneComplexUnitLine.fillStyle = "#000";
+canvasPlaneComplexUnitLine.fillText("Real", 1270, 25);
+canvasPlaneComplexUnitLine.fillText("Imaginary", 1270, 201);
+function updatePlaneComplexUnit() {
+    canvasPlaneComplexUnitLine.clearRect(0, 35, 1280, 150);
+    canvasPlaneComplexUnitLine.clearRect(0, 215, 1280, 356);
+    canvasPlaneComplexUnit.clearRect(0, 0, 1280, 640);
+    varPlaneComplexUnitI = Math.sin(sliderPlaneComplexUnitA.value);
+    varPlaneComplexUnitR = Math.cos(sliderPlaneComplexUnitA.value);
+    varPlaneComplexUnitX = getReal(varPlaneComplexUnitR, varPlaneComplexUnitI, sliderPlaneComplexUnitR.value, sliderPlaneComplexUnitI.value);
+    varPlaneComplexUnitY = getImag(varPlaneComplexUnitR, varPlaneComplexUnitI, sliderPlaneComplexUnitR.value, sliderPlaneComplexUnitI.value);
+    varPlaneComplexUnitNum = getComplexNum(varPlaneComplexUnitR, varPlaneComplexUnitI);
+    drawNumberLineOverlay(canvasPlaneComplexUnitLine, 109, 1, varPlaneComplexUnitX);
+    drawNumberLineOverlay(canvasPlaneComplexUnitLine, 281, 1, varPlaneComplexUnitY);
+    drawTriangle(canvasPlaneComplexUnitLine, varPlaneComplexUnitX * 70 + 641, 160);
+    drawTriangle(canvasPlaneComplexUnitLine, varPlaneComplexUnitY * 70 + 641, 336);
+    drawGridOverlay(canvasPlaneComplexUnit, varPlaneComplexUnitX, varPlaneComplexUnitY, 1, 0);
+    spanPlaneComplexUnitR.innerHTML = Number(sliderPlaneComplexUnitR.value).toFixed(2);
+    spanPlaneComplexUnitI.innerHTML = Number(sliderPlaneComplexUnitI.value).toFixed(2);
+    spanPlaneComplexUnitA.innerHTML = varPlaneComplexUnitNum;
+    spanPlaneComplexUnitNums.innerHTML = "(" + getComplexNum(Number(sliderPlaneComplexUnitR.value), Number(sliderPlaneComplexUnitI.value)) + ") · (" + getComplexNum(varPlaneComplexUnitR, varPlaneComplexUnitI) +")";
+    spanPlaneComplexUnitNumber.innerHTML = getComplexNum(varPlaneComplexUnitX, varPlaneComplexUnitY);
+}
+updatePlaneComplexUnit();
+sliderPlaneComplexUnitR.addEventListener("input", updatePlaneComplexUnit);
+sliderPlaneComplexUnitI.addEventListener("input", updatePlaneComplexUnit);
+sliderPlaneComplexUnitA.addEventListener("input", updatePlaneComplexUnit);
+
+// complex plane transformation unit circle + magnitude
+const canvasPlaneComplexMag = document.getElementById("canvasPlaneComplexMag").getContext("2d");
+const canvasPlaneComplexMagLine = document.getElementById("canvasPlaneComplexMagLine").getContext("2d");
+const sliderPlaneComplexMagR = document.getElementById("sliderPlaneComplexMagR");
+const sliderPlaneComplexMagI = document.getElementById("sliderPlaneComplexMagI");
+const sliderPlaneComplexMagA = document.getElementById("sliderPlaneComplexMagA");
+const sliderPlaneComplexMagM = document.getElementById("sliderPlaneComplexMagM");
+var varPlaneComplexMagR = 0;
+var varPlaneComplexMagI = 0;
+var varPlaneComplexMagX;
+var varPlaneComplexMagY;
+var varPlaneComplexMagNum;
+initializeSliders(sliderPlaneComplexMagR, -4, 4, 0.05, 2);
+initializeSliders(sliderPlaneComplexMagI, -4, 4, 0.05, 0);
+initializeSliders(sliderPlaneComplexMagA, -3.14, 3.14, 0.01, 0);
+initializeSliders(sliderPlaneComplexMagM, -2, 2, 0.05, 1);
+canvasPlaneComplexMag.canvas.width = 1280;
+canvasPlaneComplexMag.canvas.height = 640;
+canvasPlaneComplexMagLine.canvas.width = 1280;
+canvasPlaneComplexMagLine.canvas.height = 350;
+canvasPlaneComplexMagLine.font = "25px JetBrains Mono";
+canvasPlaneComplexMagLine.textBaseline = "middle";
+canvasPlaneComplexMagLine.textAlign = "right";
+canvasPlaneComplexMagLine.fillStyle = "#000";
+canvasPlaneComplexMagLine.fillText("Real", 1270, 25);
+canvasPlaneComplexMagLine.fillText("Imaginary", 1270, 201);
+function updatePlaneComplexMag() {
+    canvasPlaneComplexMagLine.clearRect(0, 35, 1280, 150);
+    canvasPlaneComplexMagLine.clearRect(0, 215, 1280, 356);
+    canvasPlaneComplexMag.clearRect(0, 0, 1280, 640);
+    varPlaneComplexMagI = Math.sin(sliderPlaneComplexMagA.value);
+    varPlaneComplexMagR = Math.cos(sliderPlaneComplexMagA.value);
+    varPlaneComplexMagX = getReal(varPlaneComplexMagR, varPlaneComplexMagI, sliderPlaneComplexMagR.value, sliderPlaneComplexMagI.value);
+    varPlaneComplexMagY = getImag(varPlaneComplexMagR, varPlaneComplexMagI, sliderPlaneComplexMagR.value, sliderPlaneComplexMagI.value);
+    varPlaneComplexMagNum = getComplexNum(varPlaneComplexMagR, varPlaneComplexMagI);
+    drawNumberLineOverlay(canvasPlaneComplexMagLine, 109, sliderPlaneComplexMagM.value, sliderPlaneComplexMagM.value * varPlaneComplexMagX);
+    drawNumberLineOverlay(canvasPlaneComplexMagLine, 281, sliderPlaneComplexMagM.value, sliderPlaneComplexMagM.value * varPlaneComplexMagY);
+    drawTriangle(canvasPlaneComplexMagLine, sliderPlaneComplexMagM.value * varPlaneComplexMagX * 70 + 641, 160);
+    drawTriangle(canvasPlaneComplexMagLine, sliderPlaneComplexMagM.value * varPlaneComplexMagY * 70 + 641, 336);
+    drawGridOverlay(canvasPlaneComplexMag, varPlaneComplexMagX, varPlaneComplexMagY, sliderPlaneComplexMagM.value, 0);
+    spanPlaneComplexMagR.innerHTML = Number(sliderPlaneComplexMagR.value).toFixed(2);
+    spanPlaneComplexMagI.innerHTML = Number(sliderPlaneComplexMagI.value).toFixed(2);
+    spanPlaneComplexMagM.innerHTML = Number(sliderPlaneComplexMagM.value).toFixed(2);
+    spanPlaneComplexMagA.innerHTML = varPlaneComplexMagNum;
+    spanPlaneComplexMagNums.innerHTML = "(" + getComplexNum(Number(sliderPlaneComplexMagR.value), Number(sliderPlaneComplexMagI.value)) + ") · ((" + getComplexNum(varPlaneComplexMagR, varPlaneComplexMagI) +")·(" + Number(sliderPlaneComplexMagM.value).toFixed(2) + "))";
+    spanPlaneComplexMagNumber.innerHTML = getComplexNum(varPlaneComplexMagX * sliderPlaneComplexMagM.value, varPlaneComplexMagY * sliderPlaneComplexMagM.value);
+}
+updatePlaneComplexMag();
+sliderPlaneComplexMagR.addEventListener("input", updatePlaneComplexMag);
+sliderPlaneComplexMagI.addEventListener("input", updatePlaneComplexMag);
+sliderPlaneComplexMagA.addEventListener("input", updatePlaneComplexMag);
+sliderPlaneComplexMagM.addEventListener("input", updatePlaneComplexMag);
+
+// complex plane rotation transformation
+const canvasPlaneComplexAll = document.getElementById("canvasPlaneComplexAll").getContext("2d");
+const canvasPlaneComplexAllLine = document.getElementById("canvasPlaneComplexAllLine").getContext("2d");
+const sliderPlaneComplexAllR = document.getElementById("sliderPlaneComplexAllR");
+const sliderPlaneComplexAllI = document.getElementById("sliderPlaneComplexAllI");
+const sliderPlaneComplexAllA = document.getElementById("sliderPlaneComplexAllA");
+const sliderPlaneComplexAllM = document.getElementById("sliderPlaneComplexAllM");
+var varPlaneComplexAllR = 0;
+var varPlaneComplexAllI = 0;
+var varPlaneComplexAllX;
+var varPlaneComplexAllY;
+var varPlaneComplexAllNum;
+initializeSliders(sliderPlaneComplexAllR, -4, 4, 0.05, 2);
+initializeSliders(sliderPlaneComplexAllI, -4, 4, 0.05, 0);
+initializeSliders(sliderPlaneComplexAllA, -3.14, 3.14, 0.01, 0);
+initializeSliders(sliderPlaneComplexAllM, -2, 2, 0.05, 1);
+canvasPlaneComplexAll.canvas.width = 1280;
+canvasPlaneComplexAll.canvas.height = 640;
+canvasPlaneComplexAllLine.canvas.width = 1280;
+canvasPlaneComplexAllLine.canvas.height = 350;
+canvasPlaneComplexAllLine.font = "25px JetBrains Mono";
+canvasPlaneComplexAllLine.textBaseline = "middle";
+canvasPlaneComplexAllLine.textAlign = "right";
+canvasPlaneComplexAllLine.fillStyle = "#000";
+canvasPlaneComplexAllLine.fillText("Real", 1270, 25);
+canvasPlaneComplexAllLine.fillText("Imaginary", 1270, 201);
+function updatePlaneComplexAll() {
+    canvasPlaneComplexAllLine.clearRect(0, 35, 1280, 150);
+    canvasPlaneComplexAllLine.clearRect(0, 215, 1280, 356);
+    canvasPlaneComplexAll.clearRect(0, 0, 1280, 640);
+    varPlaneComplexAllI = Math.sin(sliderPlaneComplexAllA.value);
+    varPlaneComplexAllR = Math.cos(sliderPlaneComplexAllA.value);
+    varPlaneComplexAllX = getReal(varPlaneComplexAllR, varPlaneComplexAllI, sliderPlaneComplexAllR.value, sliderPlaneComplexAllI.value);
+    varPlaneComplexAllY = getImag(varPlaneComplexAllR, varPlaneComplexAllI, sliderPlaneComplexAllR.value, sliderPlaneComplexAllI.value);
+    varPlaneComplexAllNum = getComplexNum(varPlaneComplexAllR, varPlaneComplexAllI);
+    drawNumberLineOverlay(canvasPlaneComplexAllLine, 109, sliderPlaneComplexAllM.value, sliderPlaneComplexAllM.value * varPlaneComplexAllX);
+    drawNumberLineOverlay(canvasPlaneComplexAllLine, 281, sliderPlaneComplexAllM.value, sliderPlaneComplexAllM.value * varPlaneComplexAllY);
+    drawTriangle(canvasPlaneComplexAllLine, sliderPlaneComplexAllM.value * varPlaneComplexAllX * 70 + 641, 160);
+    drawTriangle(canvasPlaneComplexAllLine, sliderPlaneComplexAllM.value * varPlaneComplexAllY * 70 + 641, 336);
+    drawGridOverlay(canvasPlaneComplexAll, Number(sliderPlaneComplexAllR.value), Number(sliderPlaneComplexAllI.value), varPlaneComplexAllR * sliderPlaneComplexAllM.value, varPlaneComplexAllI * sliderPlaneComplexAllM.value);
+    spanPlaneComplexAllR.innerHTML = Number(sliderPlaneComplexAllR.value).toFixed(2);
+    spanPlaneComplexAllI.innerHTML = Number(sliderPlaneComplexAllI.value).toFixed(2);
+    spanPlaneComplexAllM.innerHTML = Number(sliderPlaneComplexAllM.value).toFixed(2);
+    spanPlaneComplexAllA.innerHTML = varPlaneComplexAllNum;
+    spanPlaneComplexAllMult.innerHTML = "(" + getComplexNum(varPlaneComplexAllR, varPlaneComplexAllI) +")·(" + Number(sliderPlaneComplexAllM.value).toFixed(2) + "))";
+    spanPlaneComplexAllNums.innerHTML = "(" + getComplexNum(Number(sliderPlaneComplexAllR.value), Number(sliderPlaneComplexAllI.value)) + ") · ((" + getComplexNum(varPlaneComplexAllR, varPlaneComplexAllI) +")·(" + Number(sliderPlaneComplexAllM.value).toFixed(2) + "))";
+    spanPlaneComplexAllNumber.innerHTML = getComplexNum(varPlaneComplexAllX * sliderPlaneComplexAllM.value, varPlaneComplexAllY * sliderPlaneComplexAllM.value);
+}
+updatePlaneComplexAll();
+sliderPlaneComplexAllR.addEventListener("input", updatePlaneComplexAll);
+sliderPlaneComplexAllI.addEventListener("input", updatePlaneComplexAll);
+sliderPlaneComplexAllA.addEventListener("input", updatePlaneComplexAll);
+sliderPlaneComplexAllM.addEventListener("input", updatePlaneComplexAll);
+
+// definitions
+const canvasDefinitions = document.getElementById("canvasDefinitions").getContext("2d");
+canvasDefinitions.canvas.width = 1280;
+canvasDefinitions.canvas.height = 640;
+drawGrid(canvasDefinitions, 0, 0, 1, 0, "#ccc");
+drawGridNumbers(canvasDefinitions, 0, 0, 1, 0, "#aaa");
+drawPoint(canvasDefinitions, 3, 0, 2, 1, "#aaa");
+drawGrid(canvasDefinitions, 3, 0, 2, 1, "#888", 10)
+drawGridNumbers(canvasDefinitions, 3, 0, 2, 1, "#000", 10, -16);
+canvasDefinitions.fillText("Argument", 810, 295);
+canvasDefinitions.fillText("Magnitude", 820, 135);
+canvasDefinitions.lineWidth = 5;
+drawArc(canvasDefinitions, 0.46);
+drawLine(canvasDefinitions, 621, 280, 1041, 70);
+drawLine(canvasDefinitions, 621, 280, 631, 250);
+drawLine(canvasDefinitions, 1041, 70, 1010, 65);
+canvasDefinitions.stroke();
+
+// proof multiplication rotation
+const canvasProofProduct = document.getElementById("canvasProofProduct").getContext("2d");
+canvasProofProduct.canvas.width = 1280;
+canvasProofProduct.canvas.height = 450;
+drawGrid(canvasProofProduct, 0, 0, 1, 0, "#aaa", 3, 221, 225);
+drawGrid(canvasProofProduct, 0, 0, 1, 0, "#aaa", 2, 641, 225);
+drawGrid(canvasProofProduct, 0, 0, 1, 0, "#aaa", 3, 1061, 225);
+canvasProofProduct.lineWidth = 3;
+drawArc(canvasProofProduct, 3.14, 30, 0, 221, 225);
+drawArc(canvasProofProduct, 0.8, 45, 0, 221, 225);
+drawArc(canvasProofProduct, 0.5, 60, 0, 221, 225);
+drawArc(canvasProofProduct, 3.14, 30, 0, 1061, 225);
+drawArc(canvasProofProduct, 0.78, 45, 0, 1061, 225);
+drawArc(canvasProofProduct, 0.5, 60, 0, 1061, 225);
+canvasProofProduct.strokeStyle = "#000";
+drawArc(canvasProofProduct, 0.8, 30, 0, 641, 225);
+drawArc(canvasProofProduct, 4, 30, 3.14, 1061, 225);
+drawArc(canvasProofProduct, 1.5, 45, 0.78, 1061, 225);
+drawArc(canvasProofProduct, 1.2, 60, 0.5, 1061, 225);
+canvasProofProduct.strokeStyle = "#aaa";
+canvasProofProduct.lineWidth = 5;
+canvasProofProduct.beginPath();
+drawLine(canvasProofProduct, 11, 225, 431, 225);
+drawLine(canvasProofProduct, 501, 225, 781, 225);
+drawLine(canvasProofProduct, 851, 225, 1271, 225);
+drawLine(canvasProofProduct, 221, 15, 221, 435);
+drawLine(canvasProofProduct, 641, 85, 641, 365);
+drawLine(canvasProofProduct, 1061, 15, 1061, 435);
+drawLine(canvasProofProduct, 221, 225, 291, 155);
+drawLine(canvasProofProduct, 221, 225, 361, 155);
+drawLine(canvasProofProduct, 221, 225, 151, 225);
+drawLine(canvasProofProduct, 1061, 225, 1061, 125);
+drawLine(canvasProofProduct, 1061, 225, 1111, 75);
+drawLine(canvasProofProduct, 1061, 225, 1011, 275);
+canvasProofProduct.stroke();
+drawDiamond(canvasProofProduct, 291, 155, "#aaa");
+drawDiamond(canvasProofProduct, 361, 155, "#aaa");
+drawDiamond(canvasProofProduct, 151, 225, "#aaa");
+canvasProofProduct.strokeStyle = "#000";
+canvasProofProduct.beginPath();
+drawLine(canvasProofProduct, 1061, 125, 1061, 85);
+drawLine(canvasProofProduct, 641, 225, 711, 155);
+drawLine(canvasProofProduct, 1111, 75, 1131, 15);
+drawLine(canvasProofProduct, 1011, 275, 991, 295);
+canvasProofProduct.stroke();
+drawDiamond(canvasProofProduct, 711, 155);
+drawDiamond(canvasProofProduct, 1061, 85);
+drawDiamond(canvasProofProduct, 1131, 15);
+drawDiamond(canvasProofProduct, 991, 295);
+drawDiamond(canvasProofProduct, 221, 225, "#aaa");
+drawDiamond(canvasProofProduct, 641, 225, "#aaa");
+drawDiamond(canvasProofProduct, 1061, 225, "#aaa");
+canvasProofProduct.lineWidth = 2;
+canvasProofProduct.beginPath();
+drawLine(canvasProofProduct, 456, 215, 476, 235);
+drawLine(canvasProofProduct, 456, 235, 476, 215);
+drawLine(canvasProofProduct, 800, 221, 830, 221);
+drawLine(canvasProofProduct, 800, 231, 830, 231);
+canvasProofProduct.stroke();
+
+// proof real part
+const canvasProofReal = document.getElementById("canvasProofReal").getContext("2d");
+const sliderProofRealA = document.getElementById("sliderProofRealA");
+const sliderProofRealB = document.getElementById("sliderProofRealB");
+const sliderProofRealC = document.getElementById("sliderProofRealC");
+const sliderProofRealD = document.getElementById("sliderProofRealD");
+initializeSliders(sliderProofRealA, -3, 3, 0.05, 1);
+initializeSliders(sliderProofRealB, -3, 3, 0.05, 1);
+initializeSliders(sliderProofRealC, -3, 3, 0.05, 2);
+initializeSliders(sliderProofRealD, -3, 3, 0.05, 1);
+canvasProofReal.canvas.width = 1280;
+canvasProofReal.canvas.height = 640;
+var varProofRealAngle1 = 0;
+var varProofRealAngle2 = 0;
+function updateProofReal() {
+    canvasProofReal.clearRect(0, 0, 1280, 640);
+    drawGrid(canvasProofReal, 0, 0, 1, 0, "#aaa");
+    drawGridNumbers(canvasProofReal, 0, 0, 1, 0, "#aaa");
+    canvasProofReal.lineWidth = 5;
+    varProofRealAngle1 = Math.atan2(sliderProofRealB.value, sliderProofRealA.value);
+    varProofRealAngle2 = Math.atan2(sliderProofRealD.value, sliderProofRealC.value);
+    drawAngle(canvasProofReal, varProofRealAngle1, varProofRealAngle2, "#c88", "#78a");
+    drawProjection(canvasProofReal, sliderProofRealA.value, sliderProofRealB.value, 1, 0, true, "#c88", "#c88");
+    drawProjection(canvasProofReal, sliderProofRealC.value, sliderProofRealD.value, 1, 0, true, "#78a", "#78a");
+    drawProjection(canvasProofReal, sliderProofRealA.value, sliderProofRealB.value, sliderProofRealC.value, sliderProofRealD.value, true, "#000");
+    spanProofRealA.innerHTML = Number(sliderProofRealA.value).toFixed(2);
+    spanProofRealB.innerHTML = Number(sliderProofRealB.value).toFixed(2);
+    spanProofRealC.innerHTML = Number(sliderProofRealC.value).toFixed(2);
+    spanProofRealD.innerHTML = Number(sliderProofRealD.value).toFixed(2);
+}
+updateProofReal();
+sliderProofRealA.addEventListener("input", updateProofReal);
+sliderProofRealB.addEventListener("input", updateProofReal);
+sliderProofRealC.addEventListener("input", updateProofReal);
+sliderProofRealD.addEventListener("input", updateProofReal);
+
+// proof real part
+const canvasProofImag = document.getElementById("canvasProofImag").getContext("2d");
+const sliderProofImagA = document.getElementById("sliderProofImagA");
+const sliderProofImagB = document.getElementById("sliderProofImagB");
+const sliderProofImagC = document.getElementById("sliderProofImagC");
+const sliderProofImagD = document.getElementById("sliderProofImagD");
+initializeSliders(sliderProofImagA, -3, 3, 0.05, 1);
+initializeSliders(sliderProofImagB, -3, 3, 0.05, 1);
+initializeSliders(sliderProofImagC, -3, 3, 0.05, 2);
+initializeSliders(sliderProofImagD, -3, 3, 0.05, 1);
+canvasProofImag.canvas.width = 1280;
+canvasProofImag.canvas.height = 640;
+var varProofImagAngle1 = 0;
+var varProofImagAngle2 = 0;
+function updateProofImag() {
+    canvasProofImag.clearRect(0, 0, 1280, 640);
+    drawGrid(canvasProofImag, 0, 0, 1, 0, "#aaa");
+    drawGridNumbers(canvasProofImag, 0, 0, 1, 0, "#aaa");
+    canvasProofImag.lineWidth = 5;
+    varProofImagAngle1 = Math.atan2(sliderProofImagB.value, sliderProofImagA.value);
+    varProofImagAngle2 = Math.atan2(sliderProofImagD.value, sliderProofImagC.value);
+    drawAngle(canvasProofImag, varProofImagAngle1, varProofImagAngle2, "#c88", "#78a");
+    drawProjection(canvasProofImag, sliderProofImagA.value, sliderProofImagB.value, 1, 0, false, "#c88", "#c88");
+    drawProjection(canvasProofImag, sliderProofImagC.value, sliderProofImagD.value, 1, 0, false, "#78a", "#78a");
+    drawProjection(canvasProofImag, sliderProofImagA.value, sliderProofImagB.value, sliderProofImagC.value, sliderProofImagD.value, false, "#000");
+    spanProofImagA.innerHTML = Number(sliderProofImagA.value).toFixed(2);
+    spanProofImagB.innerHTML = Number(sliderProofImagB.value).toFixed(2);
+    spanProofImagC.innerHTML = Number(sliderProofImagC.value).toFixed(2);
+    spanProofImagD.innerHTML = Number(sliderProofImagD.value).toFixed(2);
+}
+updateProofImag();
+sliderProofImagA.addEventListener("input", updateProofImag);
+sliderProofImagB.addEventListener("input", updateProofImag);
+sliderProofImagC.addEventListener("input", updateProofImag);
+sliderProofImagD.addEventListener("input", updateProofImag);
+
+// fourier
+const canvasFourier = document.getElementById("canvasFourier").getContext("2d");
+canvasFourier.canvas.width = 1280;
+canvasFourier.canvas.height = 720;
+canvasFourier.lineWidth = 2;
+canvasFourier.strokeStyle = "#000";
+canvasFourier.beginPath();
+canvasFourier.moveTo(0, 100);
+for (let x = 0; x < 1280; x += 2) {
+    const y = 100 + 25 * (Math.sin(0.01 * x * Math.PI) + Math.sin(0.02 * x * Math.PI) + Math.sin(0.03 * x * Math.PI) + Math.sin(0.04 * x * Math.PI));
+    canvasFourier.lineTo(x, y);
+}
+canvasFourier.stroke();
+canvasFourier.beginPath();
+canvasFourier.moveTo(641, 220);
+canvasFourier.lineTo(641, 301);
+canvasFourier.lineTo(631, 291);
+canvasFourier.lineTo(651, 291);
+canvasFourier.lineTo(641, 301);
+canvasFourier.stroke();
+canvasFourier.fill();
+drawWave(canvasFourier, 1, 370);
+drawWave(canvasFourier, 2, 470);
+drawWave(canvasFourier, 3, 570);
+drawWave(canvasFourier, 4, 670);
+
+// roots of unity
+const canvasFields = document.getElementById("canvasFields").getContext("2d");
+canvasFields.canvas.width = 1280;
+canvasFields.canvas.height = 640;
+drawGrid(canvasFields, 0, 0, 4, 0, "#aaa");
+drawGridNumbers(canvasFields, 0, 0, 4, 0, "#aaa");
+canvasFields.beginPath();
+canvasFields.arc(641, 321, 280, 0, 2 * Math.PI);
+canvasFields.stroke();
+drawDiamond(canvasFields, 921, 321);
+drawDiamond(canvasFields, 501, 78);
+drawDiamond(canvasFields, 501, 563);
+canvasFields.fillText("x^3 = 1", 891, 585);
+canvasFields.strokeStyle = "#000";
+var arrFieldsCoords = [921, 501, 501, 321, 78, 563];
+for (let j = 0; j < 3; j++) {
+    for (let i = 10; i < 250; i*= 1.5) {
+        canvasFields.beginPath();
+        canvasFields.arc(arrFieldsCoords[j], arrFieldsCoords[j + 3], i, 0, 2 * Math.PI);
+        canvasFields.stroke();
+    }
+}
+
+
+
+function drawLine(canvas, x1, y1, x2, y2) {
+    canvas.moveTo(x1, y1);
+    canvas.lineTo(x2, y2);
+}
+
+function drawArc(canvas, angleEnd, radius = 100, angleStart = 0, centerX = 641, centerY = 321) {
+    canvas.beginPath();
+    if (angleEnd < 0) canvas.arc(centerX, centerY, radius, -angleStart, -angleEnd);
+    else canvas.arc(centerX, centerY, radius, 2 * Math.PI - angleStart, 2 * Math.PI - angleEnd, true);
+    canvas.stroke();
+}
+
+function drawAngle(canvas, angleA, angleB, colorA, colorB, radiusA = 30, radiusB = 40, radiusP = 70, x = 641, y = 321) {
+    canvas.strokeStyle = colorA;
+    drawArc(canvas, angleA, radiusA);
+    drawArc(canvas, angleA, radiusP);
+    canvas.strokeStyle = colorB;
+    drawArc(canvas, angleB, radiusB);
+    canvas.beginPath();
+    if (angleA > 0 && angleB < 0) { canvas.arc(x, y, radiusP + 5, -angleA, -angleA - angleB);
+    } else if (angleA < 0 && angleB > 0) { canvas.arc(x, y, radiusP + 5, -angleA, -angleA - angleB, true);
+    } else { drawArc(canvas, angleA + angleB, radiusP + 5, angleA); }
+    canvas.stroke();
+};
+
+function drawWave(canvas, frequency, yOffset, color = "#000", width = 2) {
+    canvas.strokeStyle = color;
+    canvas.lineWidth = width;
+    canvas.beginPath();
+    canvas.moveTo(0, yOffset);
+    for (let x = 0; x < 1280; x += 2) {
+        const y = yOffset + 40 * Math.sin(frequency * 0.01 * x * Math.PI);
+        canvas.lineTo(x, y);
+    }
+    canvas.stroke();
+}
+
+function drawNumberLine(canvas, y, color = "#000", x1 = 5, x2 = 1275, width = 2) {
+    canvas.beginPath();
+    canvas.lineWidth = 5;
+    canvas.strokeStyle = color;
+    drawLine(canvas, x1, y, x2, y);
+    drawLine(canvas, x1, y, x1+20, y+20);
+    drawLine(canvas, x1, y, x1+20, y-20);
+    drawLine(canvas, x2, y, x2-20, y+20);
+    drawLine(canvas, x2, y, x2-20, y-20);
+    canvas.stroke();
+}
+
+function drawNumberMark(canvas, y, color = "#000", textOffset = 36, gaps = 70, origin = 641, x1 = 5, x2 = 1275, font = "25px JetBrains Mono", width = 2) {
+    canvas.lineWidth = width;
+    canvas.strokeStyle = color;
+    canvas.fillStyle = color;
+    canvas.textAlign = "center";
+    canvas.textBaseline = "middle";
+    canvas.font = font;
+    canvas.beginPath();
+    var i = 0;
+    for (let x = Number(origin); x < (x2 - Math.abs(gaps / 4)); x += Math.abs(gaps)) {
+        drawLine(canvas, x, y - 15, x, y + 15);
+        if (gaps > 2) canvas.fillText(i, x, y + textOffset);
+        else if (gaps < -2) canvas.fillText(-i, x, y + textOffset);
+        else break
+        i++;
+    }
+    var i = 0;
+    for (let x = origin; x > (x1 + Math.abs(gaps / 4)); x -= Math.abs(gaps)) {
+        drawLine(canvas, x, y - 15, x, y + 15);
+        if (gaps > 2) canvas.fillText(i, x, y + textOffset);
+        else if (gaps < -2) canvas.fillText(-i, x, y + textOffset);
+        else break
+        i--;
+    }
+    canvas.stroke();
+}
+
+function drawNumberLineOverlay(canvas, y, multiplier = 1, addition = 0, colorBG = "#aaa", colorFG = "#000") {
+    drawNumberMark(canvas, y, colorBG);
+    drawNumberLine(canvas, y);
+    drawNumberMark(canvas, y, colorFG, -36, multiplier * 70, addition * 70 + 641);
+}
+
+function drawGrid(canvas, x, y, real, imag, color = "#000", maxL = 10, originX = 641, originY = 321, width = 2) {
+    canvas.lineWidth = width;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    if (maxL < 500) for (let i = -maxL; i <= maxL; i++)
+        drawLine(canvas, getX(i + x, -maxL, real, imag, originX), getY(i + x, -maxL, real, imag, originY), getX(i + x, maxL, real, imag, originX), getY(i + x, maxL, real, imag, originY));
+    if (maxL < 500) for (let i = -maxL; i <= maxL; i++)
+        drawLine(canvas, getX(-maxL, i + y, real, imag, originX), getY(-maxL, i + y, real, imag, originY), getX(maxL, i + y, real, imag, originX), getY(maxL, i + y, real, imag, originY));
+    canvas.stroke();
+}
+
+function drawGridNumbers(canvas, originX, originY, real, imag, color = "#000", maxL = 10, textOffset = 16, width = 5, widthMarks = 2, font = "25px JetBrains Mono") {
+    canvas.lineWidth = width;
+    canvas.fillStyle = color;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    if (maxL < 500) drawLine(canvas, getX(originX, maxL, real, imag), getY(originX, maxL, real, imag), getX(originX, -maxL, real, imag), getY(originX, -maxL, real, imag));
+    if (maxL < 500) drawLine(canvas, getX(-maxL, originY, real, imag), getY(-maxL, originY, real, imag), getX(maxL, originY, real, imag), getY(maxL, originY, real, imag));
+    canvas.stroke();
+    canvas.lineWidth = widthMarks;
+    canvas.textAlign = "center";
+    canvas.textBaseline = "middle";
+    canvas.font = font;
+    canvas.beginPath();
+    if (maxL < 500) for (let i = -maxL; i < maxL; i++) {
+        drawLine(canvas, getX(i + originX, originY, real, imag), getY(i + originX, originY, real, imag) - 15, getX(i + originX, originY, real, imag), getY(i + originX, originY, real, imag) + 15);
+        drawLine(canvas, getX(originX, i + originY, real, imag) - 15, getY(originX, i + originY, real, imag), getX(originX, i + originY, real, imag) + 15, getY(originX, i + originY, real, imag));
+        canvas.fillText(i, getX(i + originX, originY, real, imag) + textOffset, getY(i + originX, originY, real, imag) + textOffset);
+        canvas.fillText(i, getX(originX, i + originY, real, imag) + textOffset, getY(originX, i + originY, real, imag) + textOffset);
+    }
+    canvas.stroke();
+}
+
+function drawPoint(canvas, x, y, real, imag, color = "#000", width = 2) {
+    canvas.lineWidth = width;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    drawLine(canvas, getX(x, y, real, imag), getY(x, y, real, imag), getX(x, y, real, imag), 321);
+    drawLine(canvas, getX(x, y, real, imag), getY(x, y, real, imag), 641, getY(x, y, real, imag));
+    canvas.stroke();
+    drawDiamond(canvas, 641, getY(x, y, real, imag), "#aaa");
+    drawDiamond(canvas, getX(x, y, real, imag), 321, "#aaa");
+    drawDiamond(canvas, getX(x, y, real, imag), getY(x, y, real, imag));
+}
+
+function drawProjection(canvas, x, y, real, imag, X, color = "#000", colorPoint = "#000", width = 2) {
+    canvas.lineWidth = width;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    if (X) {
+        drawLine(canvas, getX(x, y, real, imag), getY(x, y, real, imag), getX(x, y, real, imag), 321);
+        drawLine(canvas, 641, 321, getX(x, y, real, imag), 321);
+        canvas.stroke();
+        drawDiamond(canvas, getX(x, y, real, imag), 321, colorPoint, 8);
+    }
+    else {
+        drawLine(canvas, getX(x, y, real, imag), getY(x, y, real, imag), 641, getY(x, y, real, imag));
+        drawLine(canvas, 641, 321, 641, getY(x, y, real, imag));
+        canvas.stroke();
+        drawDiamond(canvas, 641, getY(x, y, real, imag), colorPoint, 8);
+    }
+    drawDiamond(canvas, getX(x, y, real, imag), getY(x, y, real, imag), colorPoint, 5);
+    canvas.lineWidth = 5;
+    canvas.strokeStyle = color;
+    drawLine(canvas, 641, 321, getX(x, y, real, imag), getY(x, y, real, imag));
+    canvas.stroke();
+}
+
+function drawGridOverlay(canvas, x, y, real, imag, colorBG = "#aaa", colorFG = "#000") {
+    drawGrid(canvas, 0, 0, 1, 0, colorBG);
+    drawGridNumbers(canvas, 0, 0, 1, 0, colorBG);
+    drawPoint(canvas, x, y, real, imag, colorBG);
+    drawGrid(canvas, x, y, real, imag, colorFG, parseInt(40 / (Math.abs(real) + Math.abs(imag))));
+    drawGridNumbers(canvas, x, y, real, imag, "#000", parseInt(40 / (Math.abs(real) + Math.abs(imag))), -16);
+}
+
+function drawTriangle(canvas, xOffset, yOffset, color = "#000", size = 11) {
+    canvas.beginPath();
+    canvas.moveTo(xOffset, yOffset);
+    canvas.lineTo(xOffset - size, yOffset + size);
+    canvas.lineTo(xOffset + size, yOffset + size);
+    canvas.closePath();
+    canvas.fillStyle = color;
+    canvas.fill();
+}
+
+function drawDiamond(canvas, xOffset, yOffset, color = "#000", size = 11) {
+    canvas.beginPath();
+    canvas.moveTo(xOffset, yOffset - size);
+    canvas.lineTo(xOffset - size, yOffset);
+    canvas.lineTo(xOffset, yOffset + size);
+    canvas.lineTo(xOffset + size, yOffset);
+    canvas.closePath();
+    canvas.fillStyle = color;
+    canvas.fill();
+}
+
+function getReal(real1, imag1, real2, imag2) {
+    return real1 * real2 - imag1 * imag2;
+}
+
+function getImag(real1, imag1, real2, imag2) {
+    return real1 * imag2 + imag1 * real2;
+}
+
+function getX(real1, imag1, real2, imag2, origin = 641, gaps = 70) {
+    return origin + getReal(real1, imag1, real2, imag2) * gaps;
+}
+
+function getY(real1, imag1, real2, imag2, origin = 321, gaps = 70) {
+    return origin - getImag(real1, imag1, real2, imag2) * gaps;
+}
+
+function getComplexNum(a, b) {
+    return a.toFixed(2) + (b < 0 ? "" : "+") + b.toFixed(2) + "i";
+}
+
+function initializeSliders(slider, minimum, maximum, step, value) {
+    slider.min = minimum;
+    slider.max = maximum;
+    slider.step = step;
+    slider.value = value;
+}</script></article></main><footer><a href=https://ekunazanu.foo/more#Terms_of_Use>© 2025</a> <a href=https://ekunazanu.foo/about>ekunazanu</a> · <a rel="noopener nofollow noreferrer" href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC BY 4.0</a> · <a rel="noopener nofollow noreferrer" href=https://github.com/ekunazanu/ekunazanu.foo target=_blank>Source</a></footer>
