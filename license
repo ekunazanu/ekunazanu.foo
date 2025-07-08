@@ -1,1 +1,16 @@
-The licensing is complicated. The 'content' (files in the content directory), and the media that I own are both licensed under Creative Commons Attribution 4.0 International (https://creativecommons.org/licenses/by/4.0/). The scripts for the articles (under static/scripts) are licensed under the MIT license (https://opensource.org/license/mit). The design of this site is based off Tom MacWright's site (https://macwright.com/), so if you want to use them make sure you have his permission. The fonts and media that I do not own belong to their respective owners, are licensed under their respective licenses.
+The licensing is complicated.
+
+The 'content', or the files in the `content` directory, as well as the media
+that I own, have been both licensed under the Creative Commons Attribution 4.0
+International licence (https://creativecommons.org/licenses/by/4.0/).
+
+The scripts for the articles (under static/scripts) are licensed under the MIT
+license (https://opensource.org/license/mit).
+
+The design of the site is based on an original design by Tom MacWright
+(https://macwright.com/). The design of his site is protected under copyright,
+so if plan to use these layout templates in this repository, be sure to obtain
+his permission for using his design first.
+
+All the fonts and media not owned by me are the property of their respective
+owners, and are subject to their original licensing terms.
