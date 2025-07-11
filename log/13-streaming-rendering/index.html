@@ -1,0 +1,87 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1" name=viewport><meta content=ekunazanu name=author><meta content="Winging April." name=description><meta content="Streaming Rendering" property=og:title><meta content=article property=og:type><meta content="Winging April." property=og:description><meta content=https://ekunazanu.foo/log/13-streaming-rendering/ property=og:url><meta content=https://ekunazanu.foo/thumbnails/log.13.april.avif.png property=og:image><meta content="Doodle of pages of a calendar with dates from April on it." property=og:image:alt><meta content=image/png property=og:image:type><meta content=1200 property=og:image:width><meta content=900 property=og:image:height><meta content=en_US property=og:locale><meta content=ekunazanu.foo property=og:site_name><title>Streaming Rendering ~ ekunazanu.foo</title><link href=https://ekunazanu.foo/log/13-streaming-rendering/ rel=cannonical><link href=https://ekunazanu.foo/atom.xml rel=alternate type=application/atom+xml><link href=https://ekunazanu.foo/misc/main.css rel=stylesheet><link href=https://ekunazanu.foo/misc/favicon.png rel=icon><meta content=Zola name=generator><body><nav><ul><li><h2><a href=https://ekunazanu.foo>ekunazanu.foo</a></h2><li><a href=https://ekunazanu.foo/log>Log</a> ⟶<li><a href=https://ekunazanu.foo/lab>Lab</a></ul></nav><div class=print>https://ekunazanu.foo</div><main><article><h1>Streaming Rendering</h1><p>This <del>week</del> month has been pretty chill. I haven’t been creating a lot lately, but I have been consuming a lot (of media). I think this sums up my current state pretty well:<p><img alt="doodle of a person with red eyes in a dark room watching his glowing monitor" decoding=async loading=lazy src=/media/log/sleep-deprived.avif><p>It would be fair to say that April was anime month for me. I dove deeper (relatively) into anime and have been really enjoying it so far. I completed Steins;Gate 0, Steins;Gate: The Movie, Death Note, A Silent Voice, Saiki K, and Your Name. I absolutely loved A Silent Voice; it was much slower paced than the others, but the pace builds up gradually — like Steins;Gate, which is my favourite so far. Ironically, I did not watch Your Lie in April. I did just complete Summer Time Rendering yesterday (it’s great), and started watching Grand Blue. So far, it is the funniest of all animes I watched.<p>Since I have been consuming a lot of art, I have been drawing a lot less this month. Nah it is actually because because I used to draw mostly during classes and classes are over for this semester. But I do want to get back to it soon, because I find it pretty relaxing and therapeutic. And it’s not like I have stopped completely, I have <a rel="noopener nofollow noreferrer" href=https://bsky.app/profile/ekunazanu.foo/post/3lonhmojmrs2d target=_blank>started experimenting with digital art</a> more. It is mostly pixel art for now, but it is pretty relaxing too.</p><img alt="a dithered pixel art image of a sunset" decoding=async loading=lazy src=/media/log/sunset-dither.avif style=image-rendering:pixelated;width:100%><p>In other things, writing cool software is now on pause since it is endsem season right now. Because I have exams. Not because I am lazy. Nothing has changed about that. In fact I will stop procrastinating. From next week onwards, after my exams end. I did write some simple visualization code for a <a href=/lab/complex-rotations>new lab article</a> though.<p>In meta updates: The site has a new home page. The old one looked very cluttered, so I created a cleaner one. They say, “Show, don’t tell”, so I added a live, random <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life target=_blank>Game of Life</a> simulation that may give an idea of what this site is about— computer science, math, and experimentation. Maybe I should add something for statistics as well.<p>Speaking of statistics: I have my data-something-something exam tomorrow. But I was bored and didn’t want to study, so I instead read about <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Wave_function target=_blank>wave functions</a>. And tried to create a visualization (because that’s my thing now I guess) for the <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Wave_interference target=_blank>interference patterns</a> of two waves. It’s not fully accurate; the waves do not follow the <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Inverse-square_law target=_blank>inverse square law</a>.<p><canvas id=canvasWaves></canvas> <input id=sliderWavl1 type=range><input id=sliderWavl2 type=range>Wavelength<br> <input id=sliderAmpl1 type=range><input id=sliderAmpl2 type=range>Amplitude<br> <input id=sliderPhas1 type=range><input id=sliderPhas2 type=range>Phase<br> <input id=sliderDistance type=range> Distance<p>That’s pretty much it. I did finally read about computer networks, and will probably start learning about operating systems next. But after my exams end. I also want go back to making mediocre art and mediocre-r software. Hopefully all these will resume when this endsem season ends.<p>Cya next month.</p><script>// could be more efficient, but works decently fast
+
+const WIDTH = 1280;
+const HEIGHT = 640;
+
+const canvasWaves = document.getElementById("canvasWaves").getContext("2d");
+canvasWaves.canvas.width = WIDTH;
+canvasWaves.canvas.height = HEIGHT;
+
+const sliderWavl1 = document.getElementById("sliderWavl1");
+const sliderAmpl1 = document.getElementById("sliderAmpl1");
+const sliderPhas1 = document.getElementById("sliderPhas1");
+const sliderWavl2 = document.getElementById("sliderWavl2");
+const sliderAmpl2 = document.getElementById("sliderAmpl2");
+const sliderPhas2 = document.getElementById("sliderPhas2");
+const sliderDistance = document.getElementById("sliderDistance");
+initializeSliders(sliderWavl1, 10, 50, 1, 20);
+initializeSliders(sliderAmpl1, 0, 50, 1, 40);
+initializeSliders(sliderPhas1, 0, 1, 0.05, 0);
+initializeSliders(sliderWavl2, 10, 50, 1, 20);
+initializeSliders(sliderAmpl2, 0, 50, 1, 40);
+initializeSliders(sliderPhas2, 0, 1, 0.05, 0);
+initializeSliders(sliderDistance, 0, 300, 1, 50);
+
+sliderWavl1.addEventListener("input", updateCanvas);
+sliderAmpl1.addEventListener("input", updateCanvas);
+sliderPhas1.addEventListener("input", updateCanvas);
+sliderWavl2.addEventListener("input", updateCanvas);
+sliderAmpl2.addEventListener("input", updateCanvas);
+sliderPhas2.addEventListener("input", updateCanvas);
+sliderDistance.addEventListener("input", updateCanvas);
+
+let col1, col2;
+updateCanvas();
+
+function updateCanvas() {
+    col1 = 255 - Math.floor(sliderAmpl1.value * 5);
+    col2 = 255 - Math.floor(sliderAmpl2.value * 5);
+    canvasWaves.clearRect(0, 0, WIDTH, HEIGHT);
+    drawCircles(canvasWaves, Number(sliderWavl1.value), sliderPhas1.value * sliderWavl1.value, Number(sliderDistance.value), `rgb(${col1} ${col1} ${col1})`);
+    drawCircles(canvasWaves, Number(sliderWavl2.value), sliderPhas2.value * sliderWavl2.value, Number(-sliderDistance.value), `rgb(${col2} ${col2} ${col2})`);
+    canvasWaves.clearRect(1000, 0, 280, HEIGHT);
+    drawLine(canvasWaves, 1141, 0, 1141, 640);
+    drawWaves(canvasWaves, Number(sliderWavl1.value), Number(sliderAmpl1.value), Number(sliderPhas1.value), Number(sliderWavl2.value), Number(sliderAmpl2.value), Number(sliderPhas2.value), Number(sliderDistance.value));
+}
+
+function drawWaves(canvas, wavelengthA, amplitudeA, phaseA, wavelengthB, amplitudeB, phaseB, distance, color = "#000", x = 1000) {
+    let argA, argB, val;
+    canvas.lineWidth = 2;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    canvas.moveTo(1141, -2);
+    for (let i = -2; i <= HEIGHT; i += 2) {
+        canvas.lineTo(val, i);
+        distA = (Math.sqrt(x**2 + (HEIGHT / 2 + distance - i)**2) + phaseA * wavelengthA) % wavelengthA;
+        distB = (Math.sqrt(x**2 + (HEIGHT / 2 - distance - i)**2) + phaseB * wavelengthB) % wavelengthB;
+        val = x + 141 + amplitudeA * Math.sin(6.28 * distA / wavelengthA) + amplitudeB * Math.sin(6.28 * distB / wavelengthB);
+    }
+    canvas.stroke();
+}
+
+function drawCircles(canvas, wavelength, phase, distance, color = "#000") {
+    canvas.lineWidth = 2;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    let centerY = (HEIGHT / 2);
+    for (let i = 0; i < WIDTH; i += wavelength) {
+        canvas.arc(-1 + phase, centerY + distance, i, -1.57, 4.71);
+    }
+    canvas.stroke();
+}
+
+function drawLine(canvas, x1, y1, x2, y2, color = "#aaa"){
+    canvas.lineWidth = 2;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    canvas.moveTo(x1, y1);
+    canvas.lineTo(x2, y2);
+    canvas.stroke();
+}
+
+function initializeSliders(slider, minimum, maximum, step, value) {
+    slider.min = minimum;
+    slider.max = maximum;
+    slider.step = step;
+    slider.value = value;
+}</script></article></main><footer><a href=https://ekunazanu.foo/more#Terms_of_Use>© 2025</a> <a href=https://ekunazanu.foo/about>ekunazanu</a> · <a rel="noopener nofollow noreferrer" href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC BY 4.0</a> · <a rel="noopener nofollow noreferrer" href=https://github.com/ekunazanu/ekunazanu.foo target=_blank>Source</a></footer>
