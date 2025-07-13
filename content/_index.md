@@ -99,3 +99,33 @@ function gameLoop() {
 initializeGrid();
 setInterval(gameLoop, 500);
 </script>
+
+<!--
+const canvasHFT = document.getElementById("canvasHFT").getContext("2d");
+canvasHFT.canvas.width = 1280;
+canvasHFT.canvas.height = 960;
+canvasHFT.globalCompositeOperation = "multiply";
+
+const halfTones = ["#0ff", "#f0f", "#ff0", "#000"];
+const halfToneAngles = [15, -15, 0, 15];
+const halfToneSizeRange = [9, 9, 9, 6];
+const halfToneSizeBaseDenom = [3, 3, 3, 4];
+const halfToneSizeMax = 18;
+const halfToneXMax = 20;
+const halfToneYMax = 18;
+
+function createHalfTones() {
+    canvasHFT.clearRect(0, 0, 1280, 960);
+    for (let color = 0; color < halfTones.length; color++) {
+        canvasHFT.fillStyle = halfTones[color];
+        for (let y = -halfToneYMax; y < halfToneYMax; y++) {
+            for (let x = -halfToneXMax; x < halfToneXMax; x++) {
+                canvasHFT.beginPath();
+                canvasHFT.arc(2 * halfToneSizeMax * (x * Math.cos(halfToneAngles[color] * (Math.PI / 180)) - y * Math.sin(halfToneAngles[color] * (Math.PI / 180))) + color * 5 + 640, 2 * halfToneSizeMax * (x * Math.sin(halfToneAngles[color] * (Math.PI / 180)) + y * Math.cos(halfToneAngles[color] * (Math.PI / 180))) + color * 5 + 480, Math.floor(Math.random() * halfToneSizeRange[color] + halfToneSizeMax / halfToneSizeBaseDenom[color]), 0, 2 * Math.PI);
+                canvasHFT.fill();
+            }
+        }
+    }
+}
+createHalfTones();
+-->
