@@ -106,7 +106,7 @@ pre {
 /* inputs, buttons */
 input, button, select {font: 400 1rem var(--sans); padding: 0.5rem 1rem; margin: 0.125rem 0.125rem; border: 0.0625rem solid var(--fg);}
 input, select {color: var(--fg); background-color: var(--bg);} input::placeholder {color: var(--gray1); opacity: 1;}
-input[type='range'], progress {accent-color: var(--fg); vertical-align: middle; padding: 0; margin: 0.125rem 0.5rem; outline: none;}
+input[type="range"], input[type="checkbox"], progress {accent-color: var(--fg); vertical-align: middle; padding: 0; margin: 0.125rem 0.5rem; outline: none;}
 button {color: var(--bg); background-color: var(--fg);} button:active {color: var(--fg); background-color: var(--bg);}
 
 /* log */
