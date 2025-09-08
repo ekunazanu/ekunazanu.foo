@@ -258,6 +258,12 @@ The cones responses cannot be calculated from the spectral power distribution if
 
 Interestingly, colours were quantified and standardized even before the sensitivity of the cones were measurable with a decent level of precision. So there was already an existing definition/model for colours, making the LMS colour space redundant.
 
+And perhaps, you might have never even heard of colours being represented as a set of LMS values. Instead you might have seen colours represented as a set of RGB values. What is up with that? How is it different from LMS values? And if you have ever searched for numerical values for colour, you might have come across some random XYZ values and a coloured horseshoe diagram that looks like this:
+
+<canvas id="canvasXYChromaticityDiagram"></canvas>
+
+What is up with THAT? To understand this weird diagram, and how RGB values work, we need to forget about cone fundamentals and start using the standard that was used for quantifying colours earlier.
+
 This older model of colours did not use the cone responses as its basis. Instead, it used colour matching functions — mapping colours to the intensity of certain lights required to produce that colour. This is the same as quantifying colours using numbers (measurable intensity values), but the difference is that it relies on a different phenomenon to map colours to numbers.
 
 ## Metamerism

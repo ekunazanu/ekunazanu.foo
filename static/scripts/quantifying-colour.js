@@ -378,6 +378,20 @@ drawWavelengthAxes(canvasSensitivityUndefinedSSC);
 drawLabels(canvasSensitivityUndefinedSSC, ["Undefined"], [[641, 135]]);
 
 
+const canvasXYChromaticityDiagram = initializeCanvas("canvasXYChromaticityDiagram", 600);
+function updateXYChromaticityDiagram() {
+    drawSpaceChroma(canvasXYChromaticityDiagram);
+    drawSpaceLocus(canvasXYChromaticityDiagram, arrayCHRMATXYZ, PROJMAT);
+    drawSpaceLocus(canvasXYChromaticityDiagram, arrayPLANCKXYZ, PROJMAT);
+    drawLabels(canvasXYChromaticityDiagram, WAVXYZLABELS, WAVXYZLABELPOS);
+    drawLabels(canvasXYChromaticityDiagram, CCTTEMPS, CCTTEMPSPOS, "#000", "20px JetBrains Mono");
+    for (let i = 0; i < CCTLINES.length; i++)
+        drawSpaceLine(canvasXYChromaticityDiagram, CCTLINES[i][0], CCTLINES[i][1], PROJMAT);
+    for (let i = 0; i < COLSPACES.length; i++)
+        drawGamut(canvasXYChromaticityDiagram, COLSPACES[i], [0, 0, 0]);
+}
+
+
 const canvasNonSpectralSPD = initializeCanvas("canvasNonSpectralSPD", 300);
 const canvasNonSpectralSSC = initializeCanvas("canvasNonSpectralSSC", 300);
 const canvasNonSpectralRSP = initializeCanvas("canvasNonSpectralRSP", 200);
@@ -1395,6 +1409,7 @@ function updateChromaticAdaptationDressChroma() {
 
 
 Promise.all([loadImage(imgChromaticAdaptationDress), loadImage(CHRDIAGRAM)]).then(() => {
+    updateXYChromaticityDiagram();
     updateLocusRatio();
     updateLocusGamutTwo();
     updateLocusGamutCIE();
