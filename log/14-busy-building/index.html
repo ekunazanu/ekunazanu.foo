@@ -1,0 +1,140 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1" name=viewport><meta content=ekunazanu name=author><meta content="Busy building bugs and excuses." name=description><meta content="Busy Building" property=og:title><meta content=article property=og:type><meta content="Busy building bugs and excuses." property=og:description><meta content=https://ekunazanu.foo/log/14-busy-building/ property=og:url><meta content=https://ekunazanu.foo/thumbnails/log.14.impostor.avif.png property=og:image><meta content="Doodle of an Among Us dead body." property=og:image:alt><meta content=image/png property=og:image:type><meta content=1200 property=og:image:width><meta content=900 property=og:image:height><meta content=en_US property=og:locale><meta content=ekunazanu.foo property=og:site_name><title>Busy Building ~ ekunazanu.foo</title><link href=https://ekunazanu.foo/log/14-busy-building/ rel=cannonical><link href=https://ekunazanu.foo/atom.xml rel=alternate type=application/atom+xml><link href=https://ekunazanu.foo/misc/main.css rel=stylesheet><link href=https://ekunazanu.foo/misc/favicon.png rel=icon><meta content=Zola name=generator><body><nav><ul><li><h2><a href=https://ekunazanu.foo>ekunazanu.foo</a></h2><li><a href=https://ekunazanu.foo/log>Log</a> ⟶<li><a href=https://ekunazanu.foo/lab>Lab</a></ul></nav><div class=print>https://ekunazanu.foo</div><main><article><h1>Busy Building</h1><p>Endsems are over, I am back in hometown, and I am doing a little internship. Needless to say, I’ve been busy trying to dodge invitations and get some work done. So there’s not a lot of internet-related log-apt updates for this month.<p><img alt="doodle of a person lying on their bed, pretending to be busy on a phone call" decoding=async loading=lazy src=/media/log/sleeping-calling.avif><p>But not a lot != none. First, I’ve decided to make an article for <a rel="noopener nofollow noreferrer" href=https://some.3b1b.co/ target=_blank>SoME4</a>. I’ve always enjoyed the content people made for SoME, and I feel like this year I might be able to contribute too. Would I have written an article anyway? Probably. But I think the fact that at least one person will be reading/reviewing it is making me want to elevate its quality — more than the other lab articles. Unless laziness kicks in; we’ll see.<p>Second, I had to revisit some linear algebra, and matrix inversions have finally started to make <em>some</em> geometric sense. If the determinant <a href="https://www.youtube.com/watch?v=Ip3X9LOh2dk" rel="noopener nofollow noreferrer" target=_blank>determines the scaling factor</a> by which a matrix scales the <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Hypercube target=_blank>hypercube</a> formed by the identity matrix into some <a rel="noopener nofollow noreferrer" href=https://en.wikipedia.org/wiki/Parallelepiped#Parallelotope target=_blank>parallelotope</a> of non unit hyper-volume, then the inverse of the scaling factor (determinant) should restore scale the signed volume of the transformed parallelotope back to unit hyper-volume. The transpose provides a way to encode <a rel="noopener nofollow noreferrer" href=https://math.stackexchange.com/a/37402 target=_blank>the reverse ordering of the transformations</a>. Another way to think about it: If a 3x2 matrix will transform a 2D space to 3D, then its transpose will transform the 3D vector space back to 2D. Not the best analogy since inversions are not defined for rectangular matrices — they can lower the rank, making ‘inversions’ impossible. But still helps me remember. The cofactors — I still don’t understand. If there is an intuitive explanation, please let me know.<p>Also while I was also solving <a rel="noopener nofollow noreferrer" href=https://www.janestreet.com/puzzles/some-ones-somewhere-index/ target=_blank>this month’s puzzle</a>, I unknowingly ended up creating an oddly satisfying tiler. I guess it is only satisfying if you have (very subtle) OCD. Anyhow, I wanted a quick way to find <a rel="noopener nofollow noreferrer" href=https://erich-friedman.github.io/mathmagic/0802.html target=_blank>partridge tilings</a> for squares, and instead of drawing it out or coming up with an algorithm to solve it, I just wrote a quick implementation for drawing tiles quickly. And what do you know, it’s a great way to pass time — it was for me at least. So I thought about just leaving it up here:<p><canvas id=canvasPartridge></canvas> <canvas id=canvasPartridgeSelection></canvas> <select id=selectPartridge></select><p>If you don’t want to read what partridge tiling is, here’s the gist: <a href="https://www.youtube.com/watch?v=BP6bLvfl0V0" rel="noopener nofollow noreferrer" target=_blank>the sum of the cubes of natural numbers is equal to the square of the sum of those natural numbers</a>. Now instead of the sum of n cubes, just think of them as the sum of n squares of n side length. This means area of n squares of n side length, where n goes from one to any number, is equal to the area of another square. But simply because the areas add up does not mean the squares will tile perfectly. But for squares of certain order, all the squares will neatly pack into the larger square. Here that order is nine, and tiling solutions do exist; you can try finding a few. Select the square from the menus or just use your keyboard. Right click to remove squares. Sorry mobile users, the grid is too small for you anyway.<p>Not much else for this month. Cya next month.</p><script>// change dimensions
+// show outline on hover
+
+const cellSize = 28;
+const gridN = 9;
+const gridSize = (gridN * (gridN + 1)) / 2;
+const colors = ["#fff", "#000", "#0a0", "#f80", "#00a", "#a05", "#5ad", "#ee5", "#644", "#aaa"];
+const colorsText = ["#000", "#fff", "#fff", "#000", "#fff", "#fff", "#000", "#000", "#fff", "#000"];
+const canvasPartridge = document.getElementById("canvasPartridge").getContext("2d");
+const canvasPartridgeSelection = document.getElementById("canvasPartridgeSelection").getContext("2d");
+const selectPartridge = document.getElementById("selectPartridge");
+canvasPartridge.canvas.height = 1280;
+canvasPartridge.canvas.width = 1280;
+canvasPartridgeSelection.canvas.height = 150;
+canvasPartridgeSelection.canvas.width = 1280;
+for (let i = 1; i <= gridN; i++) {
+    const option = document.createElement("option");
+    option.value = i; option.textContent = i;
+    selectPartridge.appendChild(option);
+}
+selectPartridge.value = 9;
+
+let partridgeSquaresCardinality = new Array(gridSize).fill(0);
+let partridgeGrid = new Array(gridSize).fill(0).map(val => new Array(gridSize).fill(0));
+let partridgeSquares = new Array(gridSize).fill(0).map(val => new Array(3).fill(0));
+let x, y, size = 0;
+
+canvasPartridge.canvas.addEventListener("mousedown", (evt) => {
+    updateSquares(evt, Number(selectPartridge.value));
+    drawSelection();
+    drawGrid();
+});
+canvasPartridgeSelection.canvas.addEventListener("mousedown", (evt) => {
+    selectPartridge.value = getSelection(evt);
+    drawSelection(); });
+canvasPartridge.canvas.addEventListener("contextmenu", (evt) => { evt.preventDefault(); });
+window.addEventListener("keydown", (evt) => {
+    if (evt.key > 0 && evt.key <= gridN) {
+        selectPartridge.value = evt.key;
+        drawSelection();
+}});
+drawGridLines(canvasPartridge);
+drawSelection(canvasPartridgeSelection);
+
+function getSelection(evt, canvas = canvasPartridgeSelection) {
+    const rect = canvas.canvas.getBoundingClientRect();
+    return Math.floor(((evt.clientX - rect.left) * (canvas.canvas.width / rect.width) / 140) + 1);
+}
+
+function drawSelection(canvas = canvasPartridgeSelection, cardinality = partridgeSquaresCardinality, currentSel = selectPartridge.value) {
+    canvas.font = "32px JetBrains Mono";
+    canvas.textAlign = "center";
+    canvas.textBaseline = "middle";
+    canvas.strokeStyle = "#000";
+    canvas.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+    for (let i = 1; i <= gridN; i++) {
+        canvas.lineWidth = 2;
+        canvas.fillStyle = colors[i];
+        if (i == currentSel) canvas.lineWidth = 6;
+        canvas.fillRect(i * 140 - 131, 11, 120, 120);
+        canvas.strokeRect(i * 140 - 131, 11, 120, 120);
+        canvas.fillStyle = colorsText[i];
+        canvas.fillText(i - cardinality[i], i * 140 - 71, 70);
+    }
+}
+
+function drawGrid(canvas = canvasPartridge) {
+    canvas.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
+    drawGridLines(canvas);
+    drawSquares(canvas);
+}
+
+function drawSquares(canvas, squares = partridgeSquares) {
+    canvas.font = "32px JetBrains Mono";
+    canvas.textAlign = "center";
+    canvas.textBaseline = "middle";
+    canvas.strokeStyle = "#000";
+    canvas.lineWidth = 4;
+    for (let i = 0; i < squares.length; i++) {
+        if (squares[i][2] == 0) continue;
+        canvas.fillStyle = colors[squares[i][2]];
+        canvas.fillRect(squares[i][0] * cellSize + 1, squares[i][1] * cellSize + 1, squares[i][2] * cellSize, squares[i][2] * cellSize);
+        canvas.strokeRect(squares[i][0] * cellSize + 1, squares[i][1] * cellSize + 1, squares[i][2] * cellSize, squares[i][2] * cellSize);
+        canvas.fillStyle = colorsText[squares[i][2]];
+        canvas.fillText(squares[i][2], squares[i][0] * cellSize + squares[i][2] * cellSize / 2, squares[i][1] * cellSize + squares[i][2] * cellSize / 2);
+    }
+}
+
+function drawGridLines(canvas) {
+    canvas.strokeStyle = "#000";
+    canvas.lineWidth = 2;
+    canvas.beginPath();
+    for (let i = 0; i <= gridSize; i++) { canvas.moveTo(0, i * cellSize + 1); canvas.lineTo(cellSize * gridSize, i * cellSize + 1); }
+    for (let i = 0; i <= gridSize; i++) { canvas.moveTo(i * cellSize + 1, 0); canvas.lineTo(i * cellSize + 1, cellSize * gridSize); }
+    canvas.stroke();
+}
+
+function updateGrid(x, y, size, grid, index) {
+    for (let i = x; i < x + size; i++)
+        for (let j = y; j < y + size; j++)
+            grid[i][j] = index;
+}
+
+function checkInvalidity(x, y, size, cardinality, grid) {
+    if (cardinality[size] >= size) return true;
+    for (let i = x; i < x + size; i++)
+        for (let j = y; j < y + size; j++)
+            if (grid[i][j] != 0) return true;
+    return false;
+}
+
+function addSquare(x, y, size, currentList = partridgeSquares, currentCardinality = partridgeSquaresCardinality, currentGrid = partridgeGrid, canvas = canvasPartridge) {
+    if (checkInvalidity(x, y, size, currentCardinality, currentGrid)) return;
+    let index = ((size * (size - 1)) / 2);
+    for (let i = 0; i < size; i++) { if (currentList[index][2] == 0 ) break; index++; }
+    currentList[index][0] = x;
+    currentList[index][1] = y;
+    currentList[index][2] = size;
+    updateGrid(x, y, size, currentGrid, index + 1);
+    currentCardinality[size] += 1;
+}
+
+function removeSquare(x, y, currentList = partridgeSquares, currentCardinality = partridgeSquaresCardinality, currentGrid = partridgeGrid, canvas = canvasPartridge) {
+    index = currentGrid[x][y] - 1;
+    if (index < 0) return;
+    x = currentList[index][0]; currentList[index][0] = 0;
+    y = currentList[index][1]; currentList[index][1] = 0;
+    let size = currentList[index][2]; currentList[index][2] = 0;
+    updateGrid(x, y, size, currentGrid, 0);
+    currentCardinality[size] -= 1;
+}
+
+function updateSquares(evt, size, canvas = canvasPartridge) {
+    let x, y = 0;
+    const rect = canvas.canvas.getBoundingClientRect();
+    x = Math.floor((evt.clientX - rect.left) * (canvas.canvas.width / rect.width) / cellSize);
+    y = Math.floor((evt.clientY - rect.top) * (canvas.canvas.height / rect.height) / cellSize);
+    if (event.button === 0) { addSquare(x, y, size); }
+    else if (event.button === 2) { removeSquare(x, y); }
+}</script></article></main><footer><a href=https://ekunazanu.foo/more#Terms_of_Use>© 2025</a> <a href=https://ekunazanu.foo/about>ekunazanu</a> · <a rel="noopener nofollow noreferrer" href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC BY 4.0</a> · <a rel="noopener nofollow noreferrer" href=https://github.com/ekunazanu/ekunazanu.foo target=_blank>Source</a></footer>
