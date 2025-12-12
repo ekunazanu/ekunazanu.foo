@@ -21,10 +21,9 @@ That's pretty much it, but here's more [about](/about) me and this site.
 const canvasGOL = document.getElementById('canvasGOL').getContext('2d');
 canvasGOL.canvas.width = 1280;
 canvasGOL.canvas.height = 322;
-const gridSizeX = 63;
-const gridSizeY = 16;
-const cellSize = 20;
-const eyeCells = [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [1, 0], [1, 4]];
+const gridSizeX = 127;
+const gridSizeY = 32;
+const cellSize = 10;
 let grid = [];
 let nextGrid = [];
 
@@ -39,13 +38,21 @@ function initializeGrid() {
     }
 }
 
-function initializeLogo() {
-    for (let i = 2; i < 14; i++)
-        for (let j = 2; j < 14; j++)
+function initializeLogo(xOffset = 4, yOffset = 4, scale = 2) {
+    for (let i = yOffset; i < 12 * scale + yOffset; i++)
+        for (let j = xOffset; j < 12 * scale + xOffset; j++)
             grid[i][j] = 1;
-    for (let i = 0; i < eyeCells.length; i++) {
-        grid[eyeCells[i][1] + 4][eyeCells[i][0] + 4] = 0;
-        grid[eyeCells[i][1] + 4][eyeCells[i][0] + 9] = 0;
+    for (let y = 2 * scale; y < 7 * scale; y++) {
+        for (let x = 2 * scale; x < 5 * scale; x++) {
+            grid[y + yOffset][x + xOffset] = 0;
+            grid[y + yOffset][x + 5 * scale + xOffset] = 0;
+        }
+    }
+    for (let y = 3 * scale; y < 6 * scale; y++) {
+        for (let x = 3 * scale; x < 4 * scale; x++) {
+            grid[y + yOffset][x + xOffset] = 1;
+            grid[y + yOffset][x + 5 * scale + xOffset] = 1;
+        }
     }
 }
 
