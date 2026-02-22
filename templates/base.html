@@ -45,17 +45,17 @@
             {% endif %}
 
             {% if current_path == "/log/" %}
-            <li>Log &LongLeftArrow;</li>
+            <li>Log &LongRightArrow;</li>
             {% elif current_path is matching("/log/") %}
-            <li><a href="{{ config.base_url }}/log">Log</a> &LongRightArrow;</li>
+            <li><a href="{{ config.base_url }}/log">Log</a> &LongLeftArrow;</li>
             {% else %}
             <li><a href="{{ config.base_url }}/log">Log</a></li>
             {% endif %}
 
             {% if current_path == "/lab/" %}
-            <li>Lab &LongLeftArrow;</li>
+            <li>Lab &LongRightArrow;</li>
             {% elif current_path is matching("/lab/") %}
-            <li><a href="{{ config.base_url }}/lab">Lab</a> &LongRightArrow;</li>
+            <li><a href="{{ config.base_url }}/lab">Lab</a> &LongLeftArrow;</li>
             {% else %}
             <li><a href="{{ config.base_url }}/lab">Lab</a></li>
             {% endif %}
