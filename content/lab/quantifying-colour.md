@@ -262,7 +262,7 @@ And perhaps, you might have never even heard of colours being represented as a s
 
 <canvas id="canvasXYChromaticityDiagram"></canvas>
 
-What is up with THAT? To understand this weird diagram, and how RGB values work, we need to forget about cone fundamentals and start using the standard that was used for quantifying colours earlier.
+To understand this weird looking diagram, and how RGB values came to be, we need to start using the standard that was used for quantifying colours earlier.
 
 This older model of colours did not use the cone responses as its basis. Instead, it used colour matching functions — mapping colours to the intensity of certain lights required to produce that colour. This is the same as quantifying colours using numbers (measurable intensity values), but the difference is that it relies on a different phenomenon to map colours to numbers.
 
