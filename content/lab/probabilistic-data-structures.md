@@ -75,9 +75,9 @@ For example if the output hash is `44`, the 44th bit is flipped to one.
 <input id="bfInputAdd" value="hello"><button id="bfButtonAdd">Add</button><br>
 Hash: <code id="bfOutputAddHash">44</code> <span id="bfOutputAddMessage"></span>
 
-{% tangent(summary="Bit ordinality", open=false) %}
+{% <tangent summary="Bit ordinality" open={false}> %}
 The n-th bit is in reference to a [zero based indexing](https://en.wikipedia.org/wiki/Zero-based_numbering) system. Because the range of the hash is from 0 to 255, instead of from 1 to 256, the 'first' bit is considered as the 0-th bit and the ordinality of all the bits are considered as one lesser than their 'actual' ordinality. 
-{% end %}
+{% </tangent> %}
 
 It should be obvious that using a bit-array is analogous to storing the hash itself. But while in the previous approach multiple bits were needed to store the individual hashes, the new bit-array approach requires only one bit per hash.
 
@@ -111,9 +111,9 @@ To reduce the probability of collisions, multiple hash functions can be used for
 Hash depth: <span id="bfOutputMultipleHashDepth">3</span><br>
 Hash: <code id="bfOutputMultipleHash">44, 242, 77</code> <span id="bfOutputMultipleMessage"></span>
 
-{% tangent(summary="Universal hashing", open=false) %}
+{% <tangent summary="Universal hashing" open={false}> %}
 The hash depth refers to the number of hash functions used. The output of the hash functions should be randomly distributed and should not be correlated to each other. Formally, the hash functions should be selected from a [universal family](https://en.wikipedia.org/wiki/Universal_hashing), and should ideally be [pairwise independent](https://en.wikipedia.org/wiki/Pairwise_independence). These assumptions are used when calculating the probability of collisions when using multiple hash functions.
-{% end %}
+{% </tangent> %}
 
 The probability of two elements having the same hash outputs is `1/m` where `m` is the size of the bloom filter. However, if two hash functions are used for every element, the probability of two elements having the same hash outputs is roughly `1/m * 1/m`. In general, using more hashing functions exponentially decreases the probability that **all** the hash outputs of two elements will collide.
 
@@ -306,11 +306,11 @@ Actual cardinality: <span id="hllOutputBucketCardinality">0</span><br>
 <input id="hllInputBucketAdd" value="foo"><button id="hllButtonBucketAdd">Add</button><br>
 <button id="hllButtonBucketRandom">Add random</button><button id="hllButtonBucketReset">Reset count</button>
 
-{% tangent(summary="Averaging estimates", open=true) %}
+{% <tangent summary="Averaging estimates" open={true}> %}
 The addition of new buckets 'spreads' the cardinality over all the buckets. However, the bucket quantity information is lost during averaging, and the estimates gets scaled down by the number of buckets. To counteract this, the harmonic mean is scaled by the number of buckets. That is, if there are `m` buckets, the estimate is `m * mean`.
 
 The harmonic mean is used for averaging because it reduces the influence of large outliers and has shown to be more accurate.
-{% end %}
+{% </tangent> %}
 
 However, even with the corrective measures, there is a [predictable bias](https://www.moderndescartes.com/essays/hyperloglog/#loglog) towards larger estimates. Scaling the average by a correction factor counteracts this bias. This brings down the [error](https://en.wikipedia.org/wiki/Standard_error) to 1.04/√m, where m is the number of buckets.
 
@@ -329,9 +329,9 @@ Actual cardinality: <span id="hllOutputMainCardinality">0</span><br>
 <button id="hllButtonMainRandom">Add random</button><button id="hllButtonMainReset">Reset count</button><br>
 <button id="hllButtonMainRandomK">Add 500 random elements</button>
 
-{% tangent(summary="Correction factor", open=true) %}
+{% <tangent summary="Correction factor" open={true}> %}
 The correction factor ranges between 0.672 and 0.723, depending on the number of buckets. It is approximately equal to `0.723/(1+1.079/m)` where `m` is the number of buckets.
-{% end %}
+{% </tangent> %}
 
 This is HyperLogLog. A very simple and elegant data structure that is also ridiculously efficient. Adding elements involves hashing them and storing their longest run of leading zeroes in buckets. Estimating the cardinality involves finding the harmonic mean of the estimates, scaled by the number of buckets and a correction factor.
 
@@ -360,7 +360,7 @@ There are other probabilistic data structures too, each with their own advantage
 * Engineering at Meta: [HyperLogLog in Presto: A significantly faster way to handle cardinality estimation](https://engineering.fb.com/2018/12/13/data-infrastructure/hyperloglog/)
 
 <script>
-{{ loadData(path="/scripts/probabilistic-data-structures.js") }}
+{{ <loadData path="/scripts/probabilistic-data-structures.js" /> }}
 </script>
 <style>
 .setContainer {font: normal 0.875rem var(--monospace); line-height: 1.25rem; overflow: auto; padding: 1rem; margin: 1rem 0rem; border: 0.0625rem solid var(--fg);}

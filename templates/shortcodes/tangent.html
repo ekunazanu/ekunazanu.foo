@@ -1,0 +1,6 @@
+{% component tangent(summary: string, open: bool = false) %}
+<details {% if open %} open {% endif %}>
+<summary>{{ summary }}</summary>
+{{ body | markdown }}
+</details>
+{% endcomponent %}

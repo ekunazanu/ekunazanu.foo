@@ -37,5 +37,5 @@ That's pretty much it. I did finally read about computer networks, and will prob
 Cya next month.
 
 <script>
-{{ loadData(path="/scripts/13-streaming-rendering.js") }}
+{{ <loadData path="/scripts/13-streaming-rendering.js" /> }}
 </script>

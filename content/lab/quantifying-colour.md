@@ -14,11 +14,11 @@ There are [billions of monitors](https://www.statista.com/statistics/245501/mult
 
 ![a image of green leaves with boxes below showing some of the shades of green present in the image](/media/lab/quantifying-colour/leaves.avif)
 
-{% tangent(summary="Same name, different colours", open=true) %}
+{% <tangent summary="Same name, different colours" open={true}> %}
 The above coloured rectangles shows some of the colours present in the above image. Despite being different, all the shades can be described by the same label — green. One could argue, they can be labelled as lime-green, olive-green, light-green, dark-green, etc to create some distinction. But this naming system is still clunky and highly inefficient. To display the above image accurately, there needs to be a way to describe the all the different shades of green uniquely without needing to resort to an ever-growing list of labels.
 
 Image sourced from [Pixabay](https://pixabay.com/photos/boundary-dark-green-wallpaper-1867353/), under [CC0](https://creativecommons.org/public-domain/cc0/).
-{% end %}
+{% </tangent> %}
 
 Instead of mapping colours to possibly millions of labels, it would be much simpler to use numbered units — the desired precision can then be achieved by simply using more or fewer digits. The idea of mapping colours to numbers might look odd, but it is not too far fetched. Most measurable physical phenomena have already been quantified (for eg. distances, temperature, etc). So if colours can be physically measured it should be easy to map them to numbers, in theory.
 
@@ -33,15 +33,15 @@ Light is complicated, but it can be thought of as a bunch of wave-like particles
 <canvas id="canvasPhoton"></canvas>
 <input id="sliderPhotonWavelength" type="range">Wavelength
 
-{% tangent(summary="Photon representation", open=true) %}
+{% <tangent summary="Photon representation" open={true}> %}
 The above is an interpretation of a photon, and is not necessarily accurate. The exact shape of photons is difficult to describe since photons exhibit [both particle and wave-like behaviour](https://en.wikipedia.org/wiki/Wave%E2%80%93particle_duality#Wave-particle_duality_of_light). Trying to visualize photons as both a particle and a wave can get very tricky very quickly.
-{% end %}
+{% </tangent> %}
 
 <canvas id="canvasPhotonSpectrum"></canvas>
 
-{% tangent(summary="Electromagnetic spectrum", open=true) %}
+{% <tangent summary="Electromagnetic spectrum" open={true}> %}
 There are photons with different energies (or wavelengths). The different wavelengths of photons together form the [electromagnetic spectrum](https://en.wikipedia.org/wiki/Electromagnetic_spectrum). It is simply the full range photons energies, ordered by wavelength or frequency. The above wavelengths are not to scale.
-{% end %}
+{% </tangent> %}
 
 The energy carried by photons can be physically measured, making it trivial to quantify light. To simplify comparisons between different types of light however, the energy measurements are normalized per unit time as [power](https://en.wikipedia.org/wiki/Power_(physics)), and then normalized per unit area as [intensity](https://en.wikipedia.org/wiki/Intensity_(physics)) — where the area is the total area of the body radiating the photons/light.
 
@@ -55,9 +55,9 @@ So, light sources can be quantified using a singular intensity value. However, f
 <input id="sliderPhotonPowerWavelength3" type="range">600nm Photons<br>
 <input id="sliderPhotonPowerWavelength4" type="range">650nm Photons<br>
 
-{% tangent(summary="Spectral power distribution", open=true) %}
+{% <tangent summary="Spectral power distribution" open={true}> %}
 The above is an example of a spectral power distribution. The intensity at each wavelength depends on the number of photons at that wavelength and the energy of photons at that wavelength. The [energy of a photon](https://en.wikipedia.org/wiki/Photon_energy) is inversely proportional to its wavelength, so the shorter wavelength photons shown above have a higher intensity for the same number of photons.
-{% end %}
+{% </tangent> %}
 
 The spectral power distribution provides a way to quantify light. But this is all irrelevant until there is a quantitative way to define a relationship between colours and the spectral power distribution (light) as well.
 
@@ -69,17 +69,17 @@ To understand how eyes can distinguish between different wavelengths of light, i
 
 <canvas id="canvasSPDSun"></canvas>
 
-{% tangent(summary="Spectral power distribution of the sun", open=true) %}
+{% <tangent summary="Spectral power distribution of the sun" open={true}> %}
 The above is an approximation of the spectral power distribution of the sun. Human eyes have evolved to become sensitive to these wavelengths to be able to perceive environments lit up by the sun.
-{% end %}
+{% </tangent> %}
 
 Photons, depending on their energy (their wavelength), can 'excite' certain photoreceptor cells to produce a specific response. The human eye has two kinds of photoreceptor cells — [rod cells](https://en.wikipedia.org/wiki/Rod_cell) and three types of [cone cells](https://en.wikipedia.org/wiki/Cone_cell). The different types of photoreceptor cells are sensitive to different wavelengths of light by differing amounts — some cone cells will not produce a significant response to lights with longer wavelengths but other cones may. The [sensitivity](https://en.wikipedia.org/wiki/Spectral_sensitivity) curves of the different photoreceptor cells are shown below:
 
 <canvas id="canvasSensitivityCurves"></canvas>
 
-{% tangent(summary="Normalized approximations", open=true) %}
+{% <tangent summary="Normalized approximations" open={true}> %}
 The sensitivity curves shown here are normalized approximations (for simpler visualizations and calculations), and are not accurate. In reality, the sensitivity curves are less smooth, and different types of cones have differing levels of sensitivity. For example, the sensitivity of S-cones is significantly lower compared to the other cones. Similarly, rods are more sensitive to light than any of the cones.
-{% end %}
+{% </tangent> %}
 
 Because of the varying sensitivity curves, the cones can distinguish between different wavelengths of light. Consider a [monochromatic light source](https://en.wikipedia.org/wiki/Monochromatic_radiation) (a light source with a near singular wavelength). The cones will produce a response to the light, depending on the wavelength of the light and how sensitive the cones are to that wavelength. However, since each type of cone has a different sensitivity, their response will be different for the same light.
 
@@ -88,9 +88,9 @@ Because of the varying sensitivity curves, the cones can distinguish between dif
 <canvas id="canvasSimpleRSP"></canvas>
 <input id="sliderSimpleWavelength" type="range">Wavelength<br>
 
-{% tangent(summary="Photoreceptor cell responses", open=true) %}
+{% <tangent summary="Photoreceptor cell responses" open={true}> %}
 The first graph is the spectral power distribution of the light source. Since it is monochromatic, the intensity narrowly peaks at some wavelength. The graph below shows the sensitivity curves of the cones. The diagram on the bottom represents the responses of the cones to the monochromatic light. The different cones produce different responses to the same monochromatic light source — because of their differing sensitivity.
-{% end %}
+{% </tangent> %}
 
 This is in itself is not enough to help differentiate different wavelengths, but the way the sensitivity curves are (or have evolved to be) distributed makes it such that all different wavelengths will always correspond to a unique set of responses in the cones — making it possible to distinguish different wavelengths. The brain has evolved to interpret these unique responses as perceiving unique colours.
 
@@ -100,11 +100,11 @@ This is in itself is not enough to help differentiate different wavelengths, but
 <div id="divSimpleColor" class="cBox"></div>
 <input id="sliderSimpleColorWavelength" type="range">Wavelength<br>
 
-{% tangent(summary="Colour perception", open=true) %}
+{% <tangent summary="Colour perception" open={true}> %}
 Notice how different wavelengths always result in a unique set of values. Wavelengths that are close to each other may produce similar cone responses and thus the brain interprets them as similar colours. But in general, wavelengths that are distinct will produce distinctly different responses and the brain will interpret them as different colours.
 
 The colour in the above box is how the brain interprets the cone responses as a colour. The colours in the above box (and all subsequent boxes) is however just for illustration — it is an approximation and is not accurate. Also, the name in the above colour box is an example of a [word-based definition](https://en.wikipedia.org/wiki/Spectral_color#Spectral_color_terms). Notice here how imprecise they are — the same name correspond to lots of different shades of colours.
-{% end %}
+{% </tangent> %}
 
 Rods are not shown in the above examples because they do not affect colour perception. In [well-lit conditions](https://en.wikipedia.org/wiki/Photopic_vision), cones might produce different responses based on the wavelength of light. But in such conditions, the rod cells produce a saturated response since rods are more sensitive to light than cones. Since the response of rods in bright environments is indifferent to wavelengths, it cannot differentiate between distinct wavelengths, and thus does not have a major impact on colour perception — in bright conditions.
 
@@ -114,9 +114,9 @@ Rods are not shown in the above examples because they do not affect colour perce
 <div id="divRodsLight" class="cBox"></div>
 <input id="sliderRodsLightWavelength" type="range">Wavelength<br>
 
-{% tangent(summary="Saturated response", open=true) %}
+{% <tangent summary="Saturated response" open={true}> %}
 The sensitivity of the rods is represented here with respect to the sensitivity of the cones (but it is not-to-scale, and is still an approximation). Because of their high sensitivity, the response of rods remain saturated, and no meaningful information about the wavelength is obtained from the response. The set of cones responses however, remains varied for different wavelengths, and the distinct cone responses can be interpreted by the brain as distinct wavelengths.
-{% end %}
+{% </tangent> %}
 
 In [dark environments](https://en.wikipedia.org/wiki/Scotopic_vision), rods produce a response when cones do not. But unlike cones, there is only one type of rod cell; there is no other type of rod cell with a slightly different sensitivity curve to help differentiate wavelengths. So, two light sources with different wavelengths can produce the same response in rods, and there is no way to differentiate the wavelengths from the singular response of the rods. The brain evolved to interpret the response of the rods as a singular luminance (brightness) value.
 
@@ -127,9 +127,9 @@ In [dark environments](https://en.wikipedia.org/wiki/Scotopic_vision), rods prod
 <div id="divRodsDarkBox" class="cBox"></div>
 <input id="sliderRodsDarkWavelength" type="range">Wavelength<br>
 
-{% tangent(summary="Wavelength ambiguity", open=true) %}
+{% <tangent summary="Wavelength ambiguity" open={true}> %}
 Different wavelengths can produce similar responses in the rods, and are thus perceived as similar by the brain. For example, a low intensity light of <a id="linkRodsDarkWavelengthA" class="linkSwitch">492nm</a> and <a id="linkRodsDarkWavelengthB" class="linkSwitch">536nm</a> can produce similar sets of responses in the rods (and cones), and so cyan and yellow-ish green may appear similar in the dark.
-{% end %}
+{% </tangent> %}
 
 So rods cannot distinguish light of differing wavelengths regardless of whether it is dark or bright, and hence do not play a big role in colour perception.
 
@@ -145,9 +145,9 @@ Sometimes cone cells too may not be able to differentiate between different wave
 <input id="sliderBlindWavelength" type="range">Wavelength<br>
 <input id="sliderBlindSensitivityOverlap" type="range">M-cone Overlap<br>
 
-{% tangent(summary="Wavelength ambiguity", open=true) %}
+{% <tangent summary="Wavelength ambiguity" open={true}> %}
 If the sensitivity curves of the M-cones overlap the sensitivity curves of the L-cones, then different wavelengths of light (for eg. <a id="linkBlindWavelengthA" class="linkSwitch">554nm</a> and <a id="linkBlindWavelengthB" class="linkSwitch">604nm</a>) can produce similar sets of responses in the cones — causing them to appear similar. This is not the case if the sensitivity of the M-cones and L-cones <a id="linkBlindOverlap" class="linkSwitch">do not have significant overlap</a>.
-{% end %}
+{% </tangent> %}
 
 The type of cone anomaly determines the type of colour blindness. The sensitivity curve of the L-cones may shift towards shorter wavelengths (protanomaly), or the sensitivity of the M-cones can skew towards longer wavelengths (deuteranomaly). Some people might also lack functional L-cones (protanopia) or M-cones (deuteranopia) entirely. The result is similar in all the cases — reds and greens look similar. In very rare cases, people can have anomalous S-cones, resulting in tritanomaly and tritanopia.
 
@@ -156,9 +156,9 @@ The type of cone anomaly determines the type of colour blindness. The sensitivit
 <canvas id="canvasBlindBARDP"></canvas>
 <canvas id="canvasBlindBARTP"></canvas>
 
-{% tangent(summary="Colour blindness types", open=true) %}
+{% <tangent summary="Colour blindness types" open={true}> %}
 The bars represent how colours of different wavelengths for people with normal colour vision might appear to people with colour blindness. The first bar shows unaltered colours. The second bar shows colours for people with protanopia, and the third depicts colours for people with deuteranopia. The fourth bar represents how colours appear to people with tritanopia.
-{% end %}
+{% </tangent> %}
 
 In extremely rare cases, people might have only S-cones or no cone cells at all. Both will result in [total colour blindness](https://en.wikipedia.org/wiki/Monochromacy#Humans) since there is no mechanism for differentiating light with different wavelengths.
 
@@ -168,9 +168,9 @@ Nonetheless, the same wavelengths of light are generally perceived consistently 
 
 <canvas id="canvasAggregateSSC"></canvas>
 
-{% tangent(summary="Standardizing sensitivity curves", open=true) %}
+{% <tangent summary="Standardizing sensitivity curves" open={true}> %}
 A standard set of sensitivity curves can be defined using the aggregate of the sensitivity curves of people with normal colour vision.
-{% end %}
+{% </tangent> %}
 
 This results in a set of standardized sensitivity curves, which can be used for quantifying colours. However, before doing that, another type of colour needs to be addressed.
 
@@ -181,9 +181,9 @@ Until now, only [spectral colours](https://en.wikipedia.org/wiki/Spectral_color)
 <canvas id="canvasMonochromaticSPD"></canvas>
 <canvas id="canvasNonMonochromaticSPD"></canvas>
 
-{% tangent(summary="Monochromatic and non-monochromatic light", open=true) %}
+{% <tangent summary="Monochromatic and non-monochromatic light" open={true}> %}
 The first spectral power distribution shows a monochromatic light source. The second spectral power distribution shows a light source that is non-monochromatic, since it emits light over a much wider range of wavelengths. Notice how non-monochromatic light does not necessarily emit the same intensity of light at all wavelengths.
-{% end %}
+{% </tangent> %}
 
 Instead, the responses for non-monochromatic light sources is calculated by finding the weighted average of all the responses — by computing the normalized area under the response curve. The response curve is simply the product of the cone sensitivity curves and spectral power distribution: The spectral power distribution describes the intensity of light for some given wavelengths. Meanwhile, the sensitivity curves describes the sensitivity of the cones at some given wavelengths. So, their product together describes the cone response at that wavelength. Measuring this product over all wavelengths (equivalent to calculating the area) gives the total response, which may be normalized if required (eg. responses are normalized for monochromatic light).
 
@@ -194,19 +194,19 @@ For example, this is what the cone responses for light corresponding to <a id="l
 <canvas id="canvasNonSpectralRSP"></canvas>
 <div id="divNonSpectral" class="cBox"></div>
 
-{% tangent(summary="Interactive spectral power distribution", open=true) %}
+{% <tangent summary="Interactive spectral power distribution" open={true}> %}
 The spectral power distribution can also be modified by drawing on it.
-{% end %}
+{% </tangent> %}
 
-{% tangent(summary="Cone responses", open=true) %}
+{% <tangent summary="Cone responses" open={true}> %}
 The response of the cones is the the total area under the curve that is obtained after multiplying the spectral power distribution and the cone sensitivity curves. The response may be normalized for light sources that have a very narrow wavelength range (eg. monochromatic light).
-{% end %}
+{% </tangent> %}
 
 The colour of non-monochromatic light can look different from spectral colours because the set of cone responses produced for these types of lights may be different from the set of responses produced for spectral colours. The brain interprets these unique cone responses as a colour distinct from spectral colours. These colours are aptly referred to as non-spectral colours.
 
-{% tangent(summary="Metamerism", open=true) %}
+{% <tangent summary="Metamerism" open={true}> %}
 There are times when non-monochromatic light produces cone responses that are similar to the responses produced by spectral colours — making them appear similar to spectral colours. This phenomenon will be discussed later.
-{% end %}
+{% </tangent> %}
 
 ## Colour Space
 
@@ -220,9 +220,9 @@ Again, as discussed in the non-spectral colours subsection, the biology virtuoso
 <canvas id="canvasPointWiseSSC"></canvas>
 <canvas id="canvasPointWiseRSP"></canvas>
 
-{% tangent(summary="Cone response revisited", open=true) %}
+{% <tangent summary="Cone response revisited" open={true}> %}
 The response of the cones is the the normalized area under the curve of the response curve. The response curve is the point-wise product of the spectral power distribution and the cone sensitivity curves.
-{% end %}
+{% </tangent> %}
 
 This relationship can be more formally described as:
 
@@ -240,9 +240,9 @@ So the colour of any light or any object reflecting light can be precisely descr
 <input id="sliderColorSpaceLMSM" type="range">M<br>
 <input id="sliderColorSpaceLMSS" type="range">S<br>
 
-{% tangent(summary="The LMS colour space", open=true) %}
+{% <tangent summary="The LMS colour space" open={true}> %}
 While all colours can be represented using LMS values — and hence will always be in the LMS color space, the reverse is not always true. Not all LMS values correspond to perceivable colours. Since the sensitivity curves of the M-cones overlaps the sensitivity curves of L-cones and S-cones, any type of light that excites the M-cones, must also excite the L-cones, or S-cones, or both. So 'colours' having LMS values such as <a id="linkColorSpaceLMSImp" class="linkSwitch">(0,0.7,0)</a> are [imaginary](https://en.wikipedia.org/wiki/Impossible_color#Imaginary_colors). The imaginary values are represented as black in the above LMS colour space, but their actual colour is hard to approximate since these 'colours' do not appear naturally, and have only been replicated recently by [shooting lasers directly to the retina](https://en.wikipedia.org/wiki/Olo_(color)).
-{% end %}
+{% </tangent> %}
 
 So we achieved our goal — a way to quantify colours precisely, using numbers. Except this is not at all the standard used when describing colours. The LMS colour space is *one* way to describe colours, but is not the *standard* way to describe them.
 
@@ -252,9 +252,9 @@ As mentioned, defining the LMS values for a colour requires defining some relati
 <canvas id="canvasSensitivityUndefinedSSC"></canvas>
 <canvas id="canvasSensitivityUndefinedRSP"></canvas>
 
-{% tangent(summary="Undefined cone sensitivity", open=true) %}
+{% <tangent summary="Undefined cone sensitivity" open={true}> %}
 The cones responses cannot be calculated from the spectral power distribution if there is nothing relating them both.
-{% end %}
+{% </tangent> %}
 
 Interestingly, colours were quantified and standardized even before the sensitivity of the cones were measurable with a decent level of precision. So there was already an existing definition/model for colours, making the LMS colour space redundant.
 
@@ -275,9 +275,9 @@ As mentioned earlier briefly, sometimes lights with different spectral power dis
 <canvas id="canvasMetamerRSP"></canvas>
 <div id="divMetamer" class="cBox"></div>
 
-{% tangent(summary="Metamer examples", open=true) %}
+{% <tangent summary="Metamer examples" open={true}> %}
 Here, <a id="linkMetamerDistributionA" class="linkSwitch">multiple</a> <a id="linkMetamerDistributionB" class="linkSwitch">distributions</a> can produce similar <a id="linkMetamerDistributionX" class="linkSwitch">maroons</a>.
-{% end %}
+{% </tangent> %}
 
 This phenomenon was explored further in colour matching experiments by [William David Wright](https://doi.org/10.1088/1475-4878/30/4/301) and [John Guild](https://doi.org/10.1098/rsta.1932.0005). A light source with three wavelengths (435nm, 546nm, 700nm), each with different intensities, were mapped to spectral colours by varying the intensities of its constituent monochromatic lights — such that the resultant light was perceived to be the same as a spectral colour. The findings were then aggregated and summarized as (the now standardized) colour-matching functions.
 
@@ -290,9 +290,9 @@ The colour matching curves define the intensity of each of the three [primaries]
 <div id="divColorMatching" class="cBox"></div>
 <input id="sliderColorMatchingWavelength" type="range">Wavelength<br>
 
-{% tangent(summary="Inaccurate cyans", open=true) %}
+{% <tangent summary="Inaccurate cyans" open={true}> %}
 The first graph shows the intensity of the primaries — they are colour matching functions. The rest of the graphs have the same meaning as the previous figures. Notice the negative intensity values, and notice how the colours formed by the primaries around <a id="linkColorMatchingWavelengthA" class="linkSwitch">500nm</a> cyan looks very different from the real cyan at 500nm.
-{% end %}
+{% </tangent> %}
 
 While the three primaries can produce similar responses to certain spectral colours in the cones — making them appear similar — it is not always the case. There are spectral colours which can never be replicated using only the three monochromatic primaries. For example, the three wavelengths above cannot produce a colour that looks similar to spectral cyans (light having wavelengths around 500nm).
 
@@ -301,11 +301,11 @@ However, the cyans can still be mapped to the primaries. The spectral cyans look
 <canvas id="canvasColorMatchCircle"></canvas>
 <input id="sliderColorMatchCircleIntensity" type="range">700nm Intensity (Normalized): <span id="spanColorMatchingCircleR"></span><br>
 
-{% tangent(summary="Negative intensity", open=true) %}
+{% <tangent summary="Negative intensity" open={true}> %}
 The 435nm, 546nm, and 700nm primaries cannot produce colours that exactly matches the spectral cyans. The only way to match the primaries to spectral colours is by adding <a id="linkColorMatchCircle" class="linkSwitch">some amount</a> of the 700nm primary to the spectral colour itself. The addition of 700nm light to the spectral colours is represented as negative intensity in the colour matching functions.
 
 Physically, it is impossible to create light with negative intensity, so it is impossible to reproduce certain colours using only three wavelengths of light. However, colours can still be **represented theoretically** using negative values in these colour matching functions, for the purpose of quantifying colours.
-{% end %}
+{% </tangent> %}
 
 These colour matching functions form the basis for the present standards that are used for describing and defining colours.
 
@@ -321,9 +321,9 @@ Instead of constraining the intensity values of the primaries to follow the colo
 <input id="sliderColorSpaceRGBG" type="range">G (546nm)<br>
 <input id="sliderColorSpaceRGBB" type="range">B (435nm)<br>
 
-{% tangent(summary="The CIE RGB colour space", open=true) %}
+{% <tangent summary="The CIE RGB colour space" open={true}> %}
 The CIE RGB colour space uses the normalized intensity of 700nm, 546nm, and 435nm lights as its bases. The LMS colour space, in contrast, used the response of the cones (L,M,S) as its bases.
-{% end %}
+{% </tangent> %}
 
 These intensity values are again measurable and quantifiable, and forms another way to quantify colours. However, there are some minor inconveniences with this colours space. Not all colours are present in this colours space. Or more accurately, not all perceivable colours lie in the positive quadrant of this colour space.
 
@@ -333,9 +333,9 @@ Consider the spectral colours. Mapping spectral colours in the this colour space
 <canvas id="canvasColorSpaceRGBLocus"></canvas>
 <input id="sliderColorSpaceRGBLocusWavelength" type="range">Wavelength<br>
 
-{% tangent(summary="Cyans outside the positive quadrant", open=true) %}
+{% <tangent summary="Cyans outside the positive quadrant" open={true}> %}
 Unlike the LMS colour space, which describes all perceivable colours using non-negative values (all colours have values within zero and one), the CIE RGB colour space requires negative values to define certain colours. For example, spectral cyans are represented using negative intensity of the R primary, and thus lie in the negative R half of the CIE RGB space.
-{% end %}
+{% </tangent> %}
 
 It was decided that a colour space that could map all colours to non-negative values would have been preferable. But instead of conducting more experiments to construct a new colour space, the existing CIE RGB colour space could also be transformed using simple linear transformations. The transformation of the three dimensional colour space can be defined using a simple 3x3 matrix.
 
@@ -345,9 +345,9 @@ It was decided that a colour space that could map all colours to non-negative va
 <input id="sliderColorSpaceTransform3" type="range"><input id="sliderColorSpaceTransform4" type="range"><input id="sliderColorSpaceTransform5" type="range"><br>
 <input id="sliderColorSpaceTransform6" type="range"><input id="sliderColorSpaceTransform7" type="range"><input id="sliderColorSpaceTransform8" type="range"><br>
 
-{% tangent(summary="Linear transformations", open=true) %}
+{% <tangent summary="Linear transformations" open={true}> %}
 The matrix defines how the space gets transformed. To get a more intuitive feel of the transformations, try fiddling around with the matrix value sliders. To understand how linear transformations and matrices work in more detail, you can refer to [this great resource](https://www.3blue1brown.com/lessons/linear-transformations).
-{% end %}
+{% </tangent> %}
 
 <a id="linkColorSpaceTransformMatRandom" class="linkSwitch">Transforming</a> the space means the new space is now defined by different new bases or new primaries. Earlier, some spectral colours had to be defined by negative values of a primary, but now the same colour is defined by positive values. It suggests that the coordinate system (the primaries) itself has to contain some sort of a negative intensity. But it is impossible for light to have negative intensity, implying that the primaries for the new colour cannot physically exist, and themselves are imaginary.
 
@@ -359,13 +359,13 @@ Since the primaries of the new colour space are imaginary, it is reasonable to d
 <input id="sliderColorSpaceTransformSpecific3" type="range"><input id="sliderColorSpaceTransformSpecific4" type="range"><input id="sliderColorSpaceTransformSpecific5" type="range"><br>
 <input id="sliderColorSpaceTransformSpecific6" type="range"><input id="sliderColorSpaceTransformSpecific7" type="range"><input id="sliderColorSpaceTransformSpecific8" type="range"><br>
 
-{% tangent(summary="Specific transformation", open=true) %}
+{% <tangent summary="Specific transformation" open={true}> %}
 A <a id="linkColorSpaceTransformSpecificMat" class="linkSwitch">specfic matrix</a> was defined to transforms the colour matching functions to have all positive values, and to fulfill other certain criteria — one of them being separating luminance and chromaticity.
-{% end %}
+{% </tangent> %}
 
-{% tangent(summary="Luminance and chromaticity", open=true) %}
+{% <tangent summary="Luminance and chromaticity" open={true}> %}
 Luminance refers to the perceived brightness of a colour, while chromaticity is analogous to hues. According to the [opponent process](https://en.wikipedia.org/wiki/Opponent_process) theory, colours are perceived as pairs of opposing colours — red vs green, blue vs yellow (chromaticity), and black vs white (luminance). Hence, it is possible to describe a colour by how red it is compared to how green it is, how blue it is compared to how yellow it is, and how bright the overall colour is — ie. defining colours based on luminance and chromaticity values.
-{% end %}
+{% </tangent> %}
 
 The primaries of this new colour space are named X, Y, and Z — and the resulting colour space is called the [CIE XYZ colour space](https://en.wikipedia.org/wiki/CIE_1931_color_space#Meaning_of_X,_Y_and_Z). All spectral colours lie in the positive quadrant of this colour space.
 
@@ -373,9 +373,9 @@ The primaries of this new colour space are named X, Y, and Z — and the resulti
 <canvas id="canvasColorSpaceXYZLocus"></canvas>
 <input id="sliderColorSpaceXYZLocusWavelength" type="range">Wavelength<br>
 
-{% tangent(summary="Imaginary primaries", open=true) %}
+{% <tangent summary="Imaginary primaries" open={true}> %}
 Notice how transforming the CIE RGB space results in a new space, defined by new bases (primaries). The new XYZ primaries are no longer grounded in physical reality, and instead are more abstract and imaginary.
-{% end %}
+{% </tangent> %}
 
 The other colours in the CIE RGB space can similarly be mapped in the XYZ colour space by applying the same matrix transformation. However, not all perceivable colours can be mapped to the XYZ space using this transformation since the CIE RGB space itself does not define all perceivable colours in its space — colours that require 'negative' intensities have not been defined, **apart from the spectral colours**. Unlike the RGB colour space, where the primaries are physical monochromatic lights and thus have a corresponding colour, the CIE XYZ space has imaginary primaries and so it is not obvious which colour a certain combination of (X,Y,Z) values refer to — or if it even maps to a valid colour.
 
@@ -384,9 +384,9 @@ The other colours in the CIE RGB space can similarly be mapped in the XYZ colour
 <input id="sliderColorSpaceXYZY" type="range">Y<br>
 <input id="sliderColorSpaceXYZZ" type="range">Z<br>
 
-{% tangent(summary="The CIE XYZ colour space", open=true) %}
+{% <tangent summary="The CIE XYZ colour space" open={true}> %}
 The colours in the CIE RGB space after the transformation — resulting in the XYZ space — is shown above. While some of the values in the new XYZ space are valid colours (eg. the CIE RGB colours), it is not clear what the values outside the CIE RGB bounds represent. Real and perceivable colours like the <a id="linkColorSpaceXYZCyan" class="linkSwitch">spectral cyans</a> lie outside the positive bounds of CIE RGB space, but still lie inside the positive bounds of the CIE XYZ space. There must similarly be other (X,Y,Z) values that are outside the RGB bounds but inside the XYZ bounds, that are valid colours — for example, the colours lying between the spectral cyans the the CIE RGB colours. However, mapping these colours can be very difficult, since the primaries of the CIE XYZ space are imaginary and don't necessarily correspond to an observable colour, unlike the physical CIE RGB primaries.
-{% end %}
+{% </tangent> %}
 
 To find which colours the undefined values correspond to, it is helpful to first discuss yet another popular way to represent colours — using chromaticity spaces.
 
@@ -396,9 +396,9 @@ As mentioned before, colours can be alternatively classified based on more abstr
 
 Consider the CIE RGB colour space. A simple way to obtain a crude approximation of the luminance from the primaries' values is by taking the their sum (R+G+B). Likewise, the chromaticity values can be approximated by taking the ratios between the intensities of the RGB primaries.
 
-{% tangent(summary="Luminance-chromaticity estimates", open=false) %}
+{% <tangent summary="Luminance-chromaticity estimates" open={false}> %}
 While the luminance and chromaticity are approximations, it does not mean that there is loss of information. The exact RGB values can be recreated using the luminance and chromaticity estimates. The approximation simply refers to the imperfect separation of luminance and chromaticity.
-{% end %}
+{% </tangent> %}
 
 So, the luminance of a colour with values (R,G,B) will be L=R+G+B, and its chromaticity values would be their relative intensities — which can be computed by normalizing them. That is, the chromaticity ratios r, g, b would be equal to R/L, G/L, and B/L respectively. Consider a simple example where the luminance is fixed to one. In the CIE RGB space, all the colours with a luminance value of one will lie on the R+G+B=1 plane. The (R,G,B) values of a colour on this plane represents the ratios of its primaries, and so represents its chromaticity values.
 
@@ -408,11 +408,11 @@ So, the luminance of a colour with values (R,G,B) will be L=R+G+B, and its chrom
 <input id="sliderColorSpaceRGBChroma1" type="range">G<progress id="progressColorSpaceRGBChroma1"></progress>g<br>
 <input id="sliderColorSpaceRGBChroma2" type="range">B<progress id="progressColorSpaceRGBChroma2"></progress>b<br>
 
-{% tangent(summary="Chromaticity plane", open=true) %}
+{% <tangent summary="Chromaticity plane" open={true}> %}
 The above slice of the CIE RGB space represents a chromaticity plane. When the luminance is fixed, changing any of the (R,G,B) values changes the relative intensity of the primaries without changing their total intensity (luminance). So colours on these type of planes represent colours with a fixed luminance, but different chromaticities.
 
 Here, since the luminance is fixed to one, the chromaticity ratios (r,g,b) of the colours are simply the (R,G,B) values.
-{% end %}
+{% </tangent> %}
 
 A colour with some other luminance k will lie on the plane R+G+B=k. Meanwhile the chromaticity ratios will be the normalized intensities of the primaries, so the (r,g,b) ratios are the projection of the (R,G,B) values on the R+G+B=1 plane.
 
@@ -423,22 +423,22 @@ A colour with some other luminance k will lie on the plane R+G+B=k. Meanwhile th
 <input id="sliderColorSpaceRGBChromaProject2" type="range">B<progress id="progressColorSpaceRGBChromaProject2"></progress>b<br>
 <input id="sliderColorSpaceRGBChromaProjectPan" type="range">Pan
 
-{% tangent(summary="Dimensionality reduction", open=true) %}
+{% <tangent summary="Dimensionality reduction" open={true}> %}
 The coloured dots represent colours with the same luminance — colours that lie on the R+G+B=k plane (outlined using the gray triangle). The chromaticity of a colour is the ratio of the intensities, or put simply, their normalized intensities. Geometrically, the chromaticity (the point in black) is the projection of the (R,G,B) point (coloured gray) on the R+G+B=1 plane. Try <a id="linkColorSpaceRGBChromaProjectPan" class="linkSwitch">panning</a> to get a feel of this space.
 
 From the diagram it can be seen that colours with the same chromaticity but different luminance lie on the same lines radiating from the origin. These can be thought of as lines of chromaticity. Points on these lines represent colours with the same chromaticity but different luminance values. Colours with the same chromaticity values appear 'similar' but can look lighter or darker, depending on their luminance. For example, <a id="linkColorSpaceRGBChromaProjectGreen1" class="linkSwitch">greens</a> lying on the same chromaticity-line look similar but appear <a id="linkColorSpaceRGBChromaProjectGreen2" class="linkSwitch">lighter</a> or <a id="linkColorSpaceRGBChromaProjectGreen0" class="linkSwitch">darker</a> based on their luminance.
 
 Since colours with the same chromaticity but different luminance values get projected to the same point, it leads to a [loss of information](https://en.wikipedia.org/wiki/Dimensionality_reduction). The chromaticity plane contains information about chromaticity, and generally does not contain any information about luminance. So unless luminance is explicitly specified, it is impossible to recreate the corresponding RGB values using just the (r,g,b) values.
-{% end %}
+{% </tangent> %}
 
 For some specific luminance, the chromaticity space is just a two dimensional plane in a three dimensional space. Instead of representing the chromaticity space as a plane embedded in a three dimensional space, it is simply represented as a two dimensional space by projecting the chromaticity plane to one of the colour space planes. In the case of the CIE RGB space, the R+G+B=1 chromaticity plane is projected to the RG plane.
 
 <canvas id="canvasChromaSpaceRG"></canvas>
 <input id="sliderChromaSpaceRGPan" type="range">Pan
 
-{% tangent(summary="The CIE rg chromaticity space", open=true) %}
+{% <tangent summary="The CIE rg chromaticity space" open={true}> %}
 Projecting the R+G+B=1 plane of the CIE RGB space to the <a id="linkChromaSpaceRGPan" class="linkSwitch">RG plane</a> results in the [rg chromaticity space](https://en.wikipedia.org/wiki/Rg_chromaticity). This plane is specifically called rg plane, and not the RG plane, because RG and rg represent different quantities. The values (r,g) represent the chromaticity of a colour — it represents the relative ratios of the R and G primaries. Meanwhile the (R,G) values simply represent the absolute intensity of R and G primaries.
-{% end %}
+{% </tangent> %}
 
 The chromaticity values for the spectral colours, too, can be calculated by applying the same transformations on the spectral locus — normalizing the intensity of the primaries to get its projection on the R+G+B=1 plane, and then selecting the (r,g) values to get its <a id="linkChromaRGBLocusPan" class="linkSwitch">projection on the rg plane</a>.
 
@@ -447,25 +447,25 @@ The chromaticity values for the spectral colours, too, can be calculated by appl
 <input id="sliderChromaRGBLocusPan" type="range">Pan<br>
 <input id="switchChromaRGBLocusSlice" type="checkbox" checked><label for="switchChromaRGBLocusSlice">Show colours</label>
 
-{% tangent(summary="The CIE rg chromaticity diagram", open=true) %}
+{% <tangent summary="The CIE rg chromaticity diagram" open={true}> %}
 Applying the same operations for the spectral colours instead of the CIE RGB colours — applying the transformations on the spectral locus — results in the [rg chromaticity diagram](https://en.wikipedia.org/wiki/Rg_chromaticity#rg_chromaticity_diagram). The spectral locus is represented in gray, while its projection on the R+G+B=1 plane is coloured in black. Notice that again, a part of the locus lies on the negative half in the rg chromaticity space.
-{% end %}
+{% </tangent> %}
 
 While the colours, and therefore the chromaticity of the colours in the positive quadrant in the rg chromaticity space are defined, the chromaticity for colours outside the small subset of the positive quadrant is again not defined. Apart from the spectral colours, of course.
 
 <canvas id="canvasChromaRGUndefined"></canvas>
 
-{% tangent(summary="Undefined chromaticity", open=true) %}
+{% <tangent summary="Undefined chromaticity" open={true}> %}
 The CIE rg chromaticity space is derived from the CIE RGB colour space, so colours and values that are undefined in the RGB colour space are also undefined in the rg chromaticity space. The only colours that have defined values are the colours created using the CIE RGB primaries, and the spectral colours. These have definite values in the RGB space and thus also have values defined in the rg chromaticity space.
-{% end %}
+{% </tangent> %}
 
 The rg chromaticity diagram above might look a little weird with chromaticities defined in some of the negative half of this space (the spectral cyans), and other chromaticities defined in some of the positive half (the colours replicable using the CIE RGB primaries), but with no chromaticities defined for values in between that space. It is not because there are no such colours — colours that are a combination of spectral cyans and the CIE RGB primaries exist, and intuition would suggest that they will have (r,g) values in between those of the cyans and CIE RGB colours in the chromaticity space. The problem is finding a way to map these colours (chromaticities) in the chromaticity space.
 
 <canvas id="canvasChromaRGDefined"></canvas>
 
-{% tangent(summary="In-between chromaticities", open=true) %}
+{% <tangent summary="In-between chromaticities" open={true}> %}
 Intuition suggests that the chromaticity of colours which consist of some combination of spectral cyans and CIE RGB primaries would lie in the space between the spectral locus (the part corresponding to cyans) and the CIE RGB colours. This space is highlighted in light blue above.
-{% end %}
+{% </tangent> %}
 
 Defining the chromaticity for this undefined, in-between space requires another insight from other experiments — namely that [addition of colours can be approximated as a linear operation](https://en.wikipedia.org/wiki/Grassmann%27s_laws_(color_science)). What it means is that colours defined in the CIE spaces can be used to define other colours that are a linear combination of the already-defined colours.
 
@@ -481,11 +481,11 @@ The rg-chromaticity of resultant colour:<br>
 <span id="spanChromaRGLinearChromaValues"></span><br>
 = <span id="spanChromaRGLinearChromaResult"></span>
 
-{% tangent(summary="Defining chromaticity using already defined chromaticities", open=true) %}
+{% <tangent summary="Defining chromaticity using already defined chromaticities" open={true}> %}
 Combining spectral colours of varying intensities results in real, observable colours. These perceivable colours can be defined as a linear combination of the spectral colours. Since addition of colours is linear, and the spectral colours have values defined in the CIE colour and chromaticity spaces, these new colours can themselves be defined as the linear combination of CIE colour/chromaticity space using the already-defined values of the spectral colours.
 
 The entire space 'inside' the spectral locus will have a defined chromaticity, and it should be obvious why — any colour that can be created as some combination of spectral colours will always lie inside this space. In fact, this space contains the chromaticity of all perceivable colours. Since a colour is ultimately determined by the intensity of lights at different wavelengths (the spectral power distribution), a linear combination of their intensities can be mapped in this space — and since these intensities will always be non-negative, their chromaticity values will always lie inside the area spanned by the spectral locus.
-{% end %}
+{% </tangent> %}
 
 This property of linearity of colour addition can similarly be expanded from the two dimensional chromaticity spaces to the three dimensional colour spaces. A colour can be first quantified as the intensity of two monochromatic lights, which can then be rewritten as the linear combination of the CIE primaries using the CIE colour values of the two monochromatic lights.
 
@@ -501,11 +501,11 @@ Similar to how the CIE RGB colour space was transformed to get the rg chromatici
 <input id="sliderChromaXYZLocusWavelength" type="range">Wavelength<br>
 <input id="sliderChromaXYZLocusPan" type="range">Pan
 
-{% tangent(summary="Meaning of xy", open=true) %}
+{% <tangent summary="Meaning of xy" open={true}> %}
 The nomenclature used in the CIE XYZ colour space is analogous to the naming convention used in the CIE RGB colour space. So x = X/(X+Y+Z) and y = Y/(X+Y+Z). The chromaticity value is obtained by projecting colours on the X+Y+Z=1 plane, and then z values are discarded to get the (x,y) values — analogous to projecting the the X+Y+Z=1 chromaticity plane to the XY plane.
 
 Here, the chromaticity of the spectral colours (the spectral locus) is shown above.
-{% end %}
+{% </tangent> %}
 
 Since the XYZ colour space is specifically defined to map spectral colours to positive values, the chromaticity values (which are just normalized values of the primaries) of the spectral colours are all positive as well. Because all perceivable colours are some combination of the spectral colours, the chromaticity values of all observable colours will lie inside the spectral locus area, and thus will also have positive values.
 
@@ -515,9 +515,9 @@ Since the XYZ colour space is specifically defined to map spectral colours to po
 <input id="sliderLocusRatioWavelength1" type="range"><input id="sliderLocusRatioIntensity1" type="range"><br>
 <span id="spanLocusRatiox"></span>, <span id="spanLocusRatioy"></span><br>
 
-{% tangent(summary="The CIE xy chromaticity diagram", open=true) %}
+{% <tangent summary="The CIE xy chromaticity diagram" open={true}> %}
 Unlike the rg chromaticity space, all the perceivable colours have their chromaticity defined using non-negative values in the xy chromaticity space. The (x,y) chromaticity values for all the colours can be derived the same way it was done in the rg-chromaticity space — using a linear combination of two spectral colours, and then using their xy chromaticity values to calculate the xy chromaticity values of the colours formed using the two spectral colours.
-{% end %}
+{% </tangent> %}
 
 Quantifying colours using chromaticity values is not perfect because of the elimination of the luminance information, but chromaticity diagrams like the xy chromaticity diagram can be still be useful for certain applications — eg. to visualize the limitations of gamuts.
 
@@ -532,9 +532,9 @@ For example, lights having greenish and bluish chromaticities can never produce 
 <input id="sliderLocusGamutTwoIntensity0" type="range">546nm<br>
 <input id="sliderLocusGamutTwoIntensity1" type="range">435nm<br>
 
-{% tangent(summary="Chromaticity of two lights", open=true) %}
+{% <tangent summary="Chromaticity of two lights" open={true}> %}
 Colours created by combining two (monochromatic) lights will have a chromaticity that lies on the line connecting the chromaticity points of the two lights in the chromaticity diagram. In this case, the 546nm and 435nm lights can never create colours with chromaticities lying outside this line.
-{% end %}
+{% </tangent> %}
 
 Until now, all the visualizations used the ratios of two monochromatic lights to calculate the chromaticity of colours. However, the chromaticity can be calculated using three monochromatic lights as well. The chromaticity will then be a linear combination of three chromaticity values.
 
@@ -550,9 +550,9 @@ Consider three monochromatic lights — the CIE RGB primaries, for example. The 
 +<span id="spanLocusGamutCIEIntensity2"></span> × (0.166r + 0.008g)<br>
 = <span id="spanLocusGamutCIEChromaticity"></span>
 
-{% tangent(summary="Chromaticity of three primaries", open=true) %}
+{% <tangent summary="Chromaticity of three primaries" open={true}> %}
 The chromaticity of colours produced using the CIE RGB primaries will always lie inside the triangle formed by the three primaries — since it uses a linear combination of non-negative scalars coefficients (intensity values).
-{% end %}
+{% </tangent> %}
 
 The chromaticity of the colours which can be physically created using the RGB primaries will lie inside the [convex polygon](https://en.wikipedia.org/wiki/Convex_polygon) formed by the primaries. This range of colours (or chromaticities) that the primaries can produce is called its [gamut](https://en.wikipedia.org/wiki/Gamut). Points lying outside the polygon cannot be physically created (at least with the same three primaries), since it would require a linear combination with negative coefficients — creating colours with chromaticities that lie outside this polygon would require some negative intensities of the primaries, which is physically not possible.
 
@@ -566,19 +566,19 @@ Using more primaries would result in a convex polygon with more vertices (corner
 
 <select id="selectLocusGamutMultipleSpace"></select>
 
-{% tangent(summary="Gamut & Colour space", open=true) %}
+{% <tangent summary="Gamut & Colour space" open={true}> %}
 Gamut refers to the set of colours that can be physically recreated by an output device, while a colour space is simply a mathematical model used to describe colours. Colour spaces like [sRGB](https://en.wikipedia.org/wiki/SRGB) and [DCI-P3](https://en.wikipedia.org/wiki/DCI-P3) may arbitrarily restrict itself to certain values to more accurately represent physical and economic constraints. Others like the [Pro Photo](https://en.wikipedia.org/wiki/ProPhoto_RGB_color_space) use imaginary primaries (like the CIE XYZ colour space) to be able to represent a broader set of perceivable colours.
-{% end %}
+{% </tangent> %}
 
 The sRGB colour space underpins another popular way of quantifying colours — [colour hexcodes](https://en.wikipedia.org/wiki/Web_colors#Hex_triplet). These hex codes represent the intensity of the sRGB primaries. Usually, the first two hex numbers (same as one byte, or eight bits) correspond to the intensity of the reddish primary. The next two hex values represent the intensity of the greenish primary and the next two hex numbers describe the intensity of the bluish primary.
 
 <canvas id="canvasHexDeconstruction"></canvas>
 
-{% tangent(summary="Colour depth", open=true) %}
+{% <tangent summary="Colour depth" open={true}> %}
 In hex notation, a colour is usually represented using 24 bits. The number of bits assigned for representing a colour is called the [bit depth or colour depth](https://en.wikipedia.org/wiki/Color_depth). These 24-bit colours are sometimes also called true colours, and can represent a total of 2^24 values or 16,777,216 colours. Similarly, there are also 8-bit colours and 30-bit colours, which can represent fewer and more shades of colours respectively. There are also other colour depths like 3-bit colours, etc.
 
 The colour depth in a way represents the 'precision' of colours that can be produced, but does not represent the 'range' of colours. The colours are still constrained by their primaries — colours outside the gamut of the primaries can never be recreated even if more bits are assigned to control their intensity more precisely.
-{% end %}
+{% </tangent> %}
 
 So far multiple ways of quantifying colours have been discussed. It might feel like that these are more than enough for most applications, but there is one more important thing to consider when quantifying and reproducing colours.
 
@@ -592,39 +592,39 @@ Back to some physical science — all bodies radiate photons, due to [blackbody 
 <div id="divBlackbodyColor" class="cBox"></div>
 <input id="sliderBlackbodyColorTemperature" type="range">Temperature<br>
 
-{% tangent(summary="Blackbody", open=true) %}
+{% <tangent summary="Blackbody" open={true}> %}
 A blackbody is an idealized body that emits only blackbody radiation (radiation is only a function of temperature). Most bodies in the universe are not perfect blackbodies, but approximating it as such can still be useful. The sun is an example of a blackbody — its surface is around 5500K, and emits the highest intensity radiation around the visible wavelengths (visible light).
-{% end %}
+{% </tangent> %}
 
 The colours above have a corresponding chromaticity — and when mapped on the CIE xy chromaticity diagram, together form the [Planckian locus](https://en.wikipedia.org/wiki/Planckian_locus).
 
 <canvas id="canvasLocusPlanckian"></canvas>
 
-{% tangent(summary="Planckian locus", open=true) %}
+{% <tangent summary="Planckian locus" open={true}> %}
 The chromaticity of the colours of blackbodies at different temperatures when mapped on a chromaticity diagram forms the Planckian locus. Try changing the previous temperature slider to see how temperature affects the spectral power distribution of a blackbody, and how that in turn affects its chromaticity.
-{% end %}
+{% </tangent> %}
 
 The [colour temperature](https://en.wikipedia.org/wiki/Color_temperature) is another way to quantify certain colours and chromaticities — mostly different types of white. It is a common way to do it, as most physical sources of illumination have a chromaticity close to these values. Daylight, for example, has a chromaticity similar to a blackbody at temperatures ranging from 5000K to 6500K, and incandescent bulbs emit light having a colour temperature close to 2700K.
 
-{% tangent(summary="Daylight colour temperature", open=false) %}
+{% <tangent summary="Daylight colour temperature" open={false}> %}
 Incandescent bulbs have filaments heated to about 2000K to 2700K and thus have colour temperature close to that temperature. But the same is not true for sunlight as its colour temperature depends on the time of day. Due to [Rayleigh scattering](https://en.wikipedia.org/wiki/Rayleigh_scattering), shorter wavelengths of sunlight get scattered making it appear redder, while making skies and overcast light appear bluer. During mornings and evenings when the sun is lower in the sky, more light gets scattered causing sunlight to appear even redder (have a lower colour temperature). Daylight is the combination of all direct and indirect sunlight, and thus also depends on the time of day.
-{% end %}
+{% </tangent> %}
 
 Most illuminants have chromaticity values that lie close to the Planckian locus, but do not lie exactly on it — as most bodies are not perfect blackbodies. Other light sources like [fluorescent lights](https://en.wikipedia.org/wiki/Fluorescent_lamp#Color_temperature) and [LEDs](https://en.wikipedia.org/wiki/Light-emitting_diode#White_LEDs), do not even use blackbody radiation to emit light, and thus also do not necessarily lie on the Planckian locus.
 
 <canvas id="canvasLocusPlanckianLED"></canvas>
 
-{% tangent(summary="White illuminants", open=true) %}
+{% <tangent summary="White illuminants" open={true}> %}
 Daylight and other light sources usually appear white, and may have chromaticities that lie near the Planckian locus, but need not lie exactly on it.
-{% end %}
+{% </tangent> %}
 
 While the chromaticity values of these illuminants do not lie on the Planckian locus, they are still close enough to be perceptually similar to a blackbody, to be meaningfully attributed to a colour temperature. These colours can be assigned a [correlated colour temperature](https://en.wikipedia.org/wiki/Correlated_color_temperature) depending on the colour temperature it most closely resembles.
 
 <canvas id="canvasLocusPlanckianCCT"></canvas>
 
-{% tangent(summary="Correlated colour temperature lines", open=true) %}
+{% <tangent summary="Correlated colour temperature lines" open={true}> %}
 The lines intersecting the Planckian locus represent correlated colour temperatures. Two points on a correlated colour temperature line have the same correlated correlated colour temperature.
-{% end %}
+{% </tangent> %}
 
 Correlated colour temperature can describe non-ideal blackbodies and other sources of white light. But since a single correlated colour temperature can correspond to multiple chromaticity values, it is not a very precise way to describe white light.
 
@@ -634,9 +634,9 @@ Instead, to represent different types of white light in an unambiguous and preci
 <div id="divLocusIlluminants" class="cBox"></div>
 <select id="selectLocusIlluminants"></select>
 
-{% tangent(summary="Standard illuminants", open=true) %}
+{% <tangent summary="Standard illuminants" open={true}> %}
 Some of <a id="linkLocusIlluminants" class="linkSwitch">these illuminants</a> have defined to represent common sources of illumination (light). For example, the D65 illuminant represents daylight with a colour temperature of around 6500K, while Illuminant A represents an incandescent light with a specific spectral power distribution.
-{% end %}
+{% </tangent> %}
 
 All this effort just to define certain chromaticities of white light might seem excessive, but its importance is more apparent when you consider that most colours are visible not because they emit their own light, but because they reflect the light of an illuminant. That illuminant is usually daylight (white), or some other illuminant trying to replicate daylight.
 
@@ -649,13 +649,13 @@ Since a non-emissive body does not emit its own light, its spectral power distri
 <div id="divReflectance" class="cBox"></div>
 <select id="selectReflectanceIlluminants"></select>
 
-{% tangent(summary="Spectral reflectance", open=true) %}
+{% <tangent summary="Spectral reflectance" open={true}> %}
 The spectral reflectance describes how much light is reflected based on its wavelength. More precisely, it defines the fraction of light that gets reflected, as a function of wavelength.
 
 The first graph shows the spectral reflectance of an object, the second graph shows the spectral power distribution of the illuminant, and the third shows the resultant spectral power distribution of this reflected radiation (the product of the above two curves).
 
 As can be seen, the colour of a non-emissive body is dependent on its 'own colour' as well as the light illuminating it. For example, here, changing the above illuminant to <a id="linkReflectanceIlluminantA" class="linkSwitch">Illuminant A</a> or <a id="linkReflectanceD65" class="linkSwitch">D65</a> makes the resultant colours appear warmer or colder, even if the 'inherent colours' — <a id="linkReflectanceSPDGrey" class="linkSwitch">greys</a>, <a id="linkReflectanceSPDWhite" class="linkSwitch">whites</a>, <a id="linkReflectanceSPDPink" class="linkSwitch">pinks</a>, <a id="linkReflectanceSPDPurple" class="linkSwitch">purples</a>, <a id="linkReflectanceSPDOlive" class="linkSwitch">greens</a>, etc — do not change at all.
-{% end %}
+{% </tangent> %}
 
 The colour distortions due to differences in illumination can be seen more clearly in this example — the same objects here are lit up by different types of illuminants.
 
@@ -663,15 +663,15 @@ The colour distortions due to differences in illumination can be seen more clear
 <div id="divWhitePointsCompareA" class="cBox"></div>
 <div id="divWhitePointsCompareB" class="cBox"></div>
 
-{% tangent(summary="Colour picker", open=true) %}
+{% <tangent summary="Colour picker" open={true}> %}
 Hover over the pictures to compare the 'same colour' under different illumination.
-{% end %}
+{% </tangent> %}
 
-{% tangent(summary="Colour distortion", open=true) %}
+{% <tangent summary="Colour distortion" open={true}> %}
 The left colour box shows colours under warm lighting, while the right colour box shows how it would appear under cool lighting. Here, the 'same colours' get distorted because of inconsistent illumination.
 
 Image sourced from [Good Free Photos](https://www.goodfreephotos.com/other-photos/rooms/classroom-and-blackboard.jpg.php), under [CC0](https://creativecommons.org/public-domain/cc0/).
-{% end %}
+{% </tangent> %}
 
 The change in colour because of differences in illumination also affects its chromaticity. Consider a 'white' object (reflects all wavelengths of light equally) under an equal energy illuminant (emits equal energy of radiation/light for all wavelengths). The resultant spectral power distribution of this body will be a straight line — ie. equal energy across all wavelengths. Its chromaticity will lie at (0.333, 0.333) in the xy chromaticity space. Now consider the same object under the illuminant D65. The spectral power distribution of the body will now be the same as the D65 illuminant, and will lie at (0.313, 0.329) in the xy space. The chromaticity of a 'white' object will similarly vary for other illuminants.
 
@@ -687,15 +687,15 @@ So a display that emits its own light, trying to mimic 'white' will need to take
 <select id="selectLocusWhitePoint1"></select><select id="selectLocusWhitePoint2"></select><br>
 <select id="selectLocusWhitePointSpace"></select><br>
 
-{% tangent(summary="White point as reference", open=true) %}
+{% <tangent summary="White point as reference" open={true}> %}
 The chromaticity of a colour that is being lit by the first illuminant (or how it would roughly appear, under that illuminant) is shown in black, while the chromaticity of the same colour being lit by the second illuminant is shown in gray.
 
 The chromaticity correction can be approximated by linearly transforming the colour space, such that when the colour space primaries are at their maximum intensity (or equal intensities, in the case of chromaticity), the chromaticity of the colour will be the same as the required illuminant. This acts as a reference [white] point for other colours — they are scaled using the same transformation that was used to transform the original white point to match the chromaticity of the other illuminant.
-{% end %}
+{% </tangent> %}
 
-{% tangent(summary="True chromaticity", open=true) %}
+{% <tangent summary="True chromaticity" open={true}> %}
 The true chromaticity of a non-emissive object is hard to define, since it is dependent on illumination. Instead, it can be defined using its spectral reflectance, which is independent of illumination. Since an equal energy illuminant has equal energy across wavelengths, it will not distort the spectral reflectance of the object, and so the chromaticity when lit by an equal energy illuminant can be considered its 'exact colour'.
-{% end %}
+{% </tangent> %}
 
 Take another look at the images of the classroom from earlier. Despite the colours being different (because of the different illuminants), they might appear similar because of [chromatic adaptation](https://en.wikipedia.org/wiki/Chromatic_adaptation). Human colour perception adjusts for differences in illumination to preserve colours of objects — by using clues from the surrounding environment. For the classroom images, the white walls may 'feel' white despite their chromaticity values being closer to those of yellows and blues. Other colours also can also appear 'original' despite being distorted by the illuminant, because of chromatic adaptation.
 
@@ -703,27 +703,27 @@ Take another look at the images of the classroom from earlier. Despite the colou
 <div id="divChromaticAdaptationA" class="cBox"></div>
 <div id="divChromaticAdaptationB" class="cBox"></div>
 
-{% tangent(summary="Chromatic adaptation", open=true) %}
+{% <tangent summary="Chromatic adaptation" open={true}> %}
 Notice how the whites (as well as other colours) still 'feel' white (or their original colour) despite having distorted chromaticities.
-{% end %}
+{% </tangent> %}
 
 However sometimes, chromatic adaptation can also trick the brain into perceiving wrong colours. A relatively famous, but extreme example of this is [the dress](https://en.wikipedia.org/wiki/The_dress). The same colours of the dress can be perceived as blue and black, or white and gold — depending on how the brain perceives the white point of the light illuminating the dress. If the brain assumes the dress is lit by a bluish light, it tries to correct for it, making the dress look white and gold. Conversely, if the brain assumes a warmer illuminant, the brain tries correcting the colour distortion, making the dress appear blue and black.
 
 <canvas id="canvasChromaticAdaptationDressBlue"></canvas>
 
-{% tangent(summary="Chromatic adaptation: Blue and black dress", open=true) %}
+{% <tangent summary="Chromatic adaptation: Blue and black dress" open={true}> %}
 The above graphic shows how the colours of a blue and black dress would look if it is distorted by a yellowish illuminant. If the brain assumes the illuminant is indeed yellowish, it would try to 'correct' the colours to their 'original' hues, which in this case would be blue and black.
 
 Image sourced [Tumblr (archived)](https://web.archive.org/web/20150227014959/http://swiked.tumblr.com/post/112073818575/guys-please-help-me-is-this-dress-white-and), under fair use.
-{% end %}
+{% </tangent> %}
 
 <canvas id="canvasChromaticAdaptationDressGold"></canvas>
 
-{% tangent(summary="Chromatic adaptation: White and gold dress", open=true) %}
+{% <tangent summary="Chromatic adaptation: White and gold dress" open={true}> %}
 Similarly here, how the colours of a white and gold dress might get distorted by a bluish illuminant is shown above. The brain, assuming the illuminant is tinted blue, would try to correct the colours back to white and gold.
 
 Notice that the colours of the right image in both the above and below graphic are the exact same. But how the colours are perceived by the brain depends on whether it assumed a warm or cool illuminant. In very ambiguous cases like these, it might be equally likely for people to perceive it as either of the two.
-{% end %}
+{% </tangent> %}
 
 The above scenario is an example of what happens when colours are quantified without correcting for the white point (illumination) — it can look out of place, and in extreme cases like the dress, even lead to completely wrong colour description and reproduction. If the colours of the dress are mapped on the chromaticity diagram directly without any corrections, it will not always describe the 'real' chromaticity of the dress.
 
@@ -732,9 +732,9 @@ For example, here, the colours of two pixels with blue/white and black/gold are 
 
 <canvas id="canvasChromaticAdaptationDressChroma"></canvas>
 
-{% tangent(summary="Chromaticity of the dress colours", open=true) %}
+{% <tangent summary="Chromaticity of the dress colours" open={true}> %}
 The chromaticity of the dress on the xy chromaticity diagram maps to values that correspond to (somewhat) bluish and yellowish chromaticities. But the actual colours of the dress are blue and black. Setting the white point to a <a id="linkChromaticAdaptationDressChromaWarm" class="linkSwitch">warmer colour</a> and then <a id="linkChromaticAdaptationDressChromaCool" class="linkSwitch">transforming it to the equal energy illuminant</a> would transform the chromaticity values to result in more accurate approximations of the 'true' colours of the dress.
-{% end %}
+{% </tangent> %}
 
 For accurate colour quantification and reproduction, the illumination of the environment needs to be taken into account too — when quantifying colours of non-emissive objects, which are most of objects around us.
 
@@ -755,7 +755,7 @@ The subject of colours is vast — spanning scientific domains from quantum phys
 * Douglas A. Kerr: [The CIE XYZ and xyY Color Spaces](https://graphics.stanford.edu/courses/cs148-10-summer/docs/2010--kerr--cie_xyz.pdf)
 
 <script>
-{{ loadData(path="/scripts/quantifying-colour.js") }}
+{{ <loadData path="/scripts/quantifying-colour.js" /> }}
 </script>
 <style>
 progress {width: 5rem;}

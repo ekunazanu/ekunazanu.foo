@@ -32,5 +32,5 @@ As for other things, The Plan™ got derailed. Of course, it did. But to be fair
 Cya next week.
 
 <script>
-{{ loadData(path="/scripts/10-calculating-collisions.js") }}
+{{ <loadData path="/scripts/10-calculating-collisions.js" /> }}
 </script>

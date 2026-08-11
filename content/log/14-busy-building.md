@@ -29,5 +29,5 @@ If you don't want to read what partridge tiling is, here's the gist: [the sum of
 Not much else for this month. Cya next month.
 
 <script>
-{{ loadData(path="/scripts/14-busy-building.js") }}
+{{ <loadData path="/scripts/14-busy-building.js" /> }}
 </script>

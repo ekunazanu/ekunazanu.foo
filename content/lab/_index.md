@@ -14,5 +14,5 @@ thumbnailalt = "Doodle of a person with glass tubes gazing at an explosion."
 +++
 
 <style>
-{{ loadData(path="/static/misc/animations.css") }}
+{{ <loadData path="/static/misc/animations.css" /> }}
 </style>

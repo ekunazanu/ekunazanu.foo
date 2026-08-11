@@ -46,7 +46,7 @@
 
             {% if current_path == "/log/" %}
             <li>Log &LongRightArrow;</li>
-            {% elif current_path is matching("/log/") %}
+            {% elif current_path is starting_with(pat="/log/") %}
             <li><a href="{{ config.base_url }}/log">Log</a> &LongLeftArrow;</li>
             {% else %}
             <li><a href="{{ config.base_url }}/log">Log</a></li>
@@ -54,7 +54,7 @@
 
             {% if current_path == "/lab/" %}
             <li>Lab &LongRightArrow;</li>
-            {% elif current_path is matching("/lab/") %}
+            {% elif current_path is starting_with(pat="/lab/") %}
             <li><a href="{{ config.base_url }}/lab">Lab</a> &LongLeftArrow;</li>
             {% else %}
             <li><a href="{{ config.base_url }}/lab">Lab</a></li>

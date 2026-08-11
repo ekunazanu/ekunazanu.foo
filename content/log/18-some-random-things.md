@@ -35,5 +35,5 @@ Speaking of work, I got a job offer that I **have** to accept — not because of
 Been a slow month otherwise. Cya next month.
 
 <script>
-{{ loadData(path="/scripts/18-some-random-things.js") }}
+{{ <loadData path="/scripts/18-some-random-things.js" /> }}
 </script>

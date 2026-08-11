@@ -14,11 +14,11 @@ Week went by quick. Had quizzes, cleaned some of my digital library but I still 
 
 In other news, I tried to generate [Perlin noise](https://en.wikipedia.org/wiki/Perlin_noise#Algorithm_detail), and that led to me experimenting with pixel coloring. Surprisingly good looking patterns can arise from very simple bitwise and arithmetic operations. I colored the pixels based on their position — the intensity for each channel for a pixel is a function of its spatial coordinates — and that was enough for generating some very interesting images. I want to show a few nice ones:
 
-{% tangent(summary="Enable JavaScript", open=false) %}
+{% <tangent summary="Enable JavaScript" open={false}> %}
 If the images are not visible, JavaScript is probably disabled; you will need to enable JavaScript to render the patterns. The images are rendered on the browser because compression algorithms distort the patterns and lossless formats take up too much space — and I really don't want to pollute my Git history with big binary files, even with LFS enabled.
 
 On a side note, I don't like how JavaScript has no native support for 8-bit unsigned integers. I initially wrote this in Go, and it felt ugly adding extra logic in JavaScript just to recreate 8-bit overflows and underflows.
-{% end %}
+{% </tangent> %}
 
 1. Gradients — (x, y, !x). The pixels become redder towards the right, greener towards the bottom, and bluer towards the left. It is an 8-bit image so the pattern repeats after every 256 pixels.
 
@@ -85,6 +85,6 @@ Watching a tutorial on how to use a solder properly seems like the saner (and ob
 Anyway that is all for this week. Cya next week.
 
 <script>
-{{ loadData(path="/scripts/8-pretty-pixel-patterns.js") }}
+{{ <loadData path="/scripts/8-pretty-pixel-patterns.js" /> }}
 </script>
 <style>canvas {image-rendering: pixelated;}</style>

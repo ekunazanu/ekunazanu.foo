@@ -16,9 +16,9 @@ More seriously though, I don't feel the holiday spirit this year. Maybe because 
 
 ![a lego lamborghini with a cartoon doodle driving it](/media/log/yellow-lambo.avif)
 
-{% tangent(summary="Not my image", open=true) %}
+{% <tangent summary="Not my image" open={true}> %}
 Original image by [Jan Hammershaug](https://flickr.com/photos/hammershaug/4236899570/) features a cuter puppy instead.
-{% end %}
+{% </tangent> %}
 
 Anyhow, I haven't done much. To be fair, besides the [regular puzzles](https://www.janestreet.com/puzzles/current-puzzle/), I did do [Advent of Code](https://adventofcode.com/) earlier this month for a while — before ending prematurely and just enjoying my last few days in college with the few people still around (I left roughly two weeks after the end of the semester; the majority of people still there till then were in all my year, and all mostly friends).
 
@@ -63,7 +63,7 @@ In other meta-news, I am thinking about writing less casual blog-style updates, 
 So cya when I cya.
 
 <script>
-{{ loadData(path="/scripts/19-convoluting-things.js") }}
+{{ <loadData path="/scripts/19-convoluting-things.js" /> }}
 </script>
 <style>
 .audioSeeker {margin: 0.125rem 0;}

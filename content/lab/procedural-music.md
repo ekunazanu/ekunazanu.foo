@@ -40,9 +40,9 @@ The above sound has a singular frequency, and may sound simple. While introducin
 
 <button id="playButtonWaveTwo">Play sound</button>
 
-{% tangent(summary="Sound distortion", open=false) %}
+{% <tangent summary="Sound distortion" open={false}> %}
 If the sum of the amplitudes exceeds some maximum amplitude, the sounds may become distorted. The addition of the sound waves produces an amplitude that is greater than the maximum value, and gets [clipped](https://en.wikipedia.org/wiki/Clipping_(signal_processing)#/media/File:Clipping.svg). This creates a square like wave instead of a sine wave, producing a [distinct buzz sound](https://aatishb.com/synthesine/examples/square/index.html).
-{% end %}
+{% </tangent> %}
 
 The addition of the two 'simple' sounds, can make it sound relatively more complex and textured. But something even more interesting happens if the frequency of the sounds are in some specific ratio. Try changing the frequency of the second sound to <a id="switchFrequencyDouble" style="cursor: pointer;">twice</a> that of the other. Now try it again with <a id="switchFrequencyOneHalf" style="cursor: pointer;">one and a half times</a> the other one. Try it using other frequencies too, and notice when they sound pleasant. When the frequency of the two sounds are in simple ratios, they sound harmonious.
 
@@ -69,17 +69,17 @@ Based around these interval ratios, music theory has standardized frequencies as
 
 <canvas id="canvasNotesOneOctave"></canvas>
 
-{% tangent(summary="Sharps and Flats", open=false) %}
+{% <tangent summary="Sharps and Flats" open={false}> %}
 [Sharps](https://en.wikipedia.org/wiki/Accidental_(music)) (denoted using a #) can also be alternatively be written as flats (denoted with a ♭). Sharps indicate the sharper (higher) pitch variant of a note while flats indicate the flatter (lower) pitch variant of a note. For example, C# and D♭ is the same note. Certain notes do not have a sharp or flat variant; the naming convention is purely arbitrary. So all the notes can also be rewritten as: A, B♭, B, C, D♭, D, E♭, E, F, G♭, G, A♭. Using seven letters to describe twelve notes has to do with the [origins of music theory](https://www.reddit.com/r/musictheory/wiki/faq/history/alphabet/) and [western music](https://www.reddit.com/r/musictheory/wiki/faq/history/whytwelve/).
-{% end %}
+{% </tangent> %}
 
 The mentioned twelve notes are used to describe pitches up to one [octave](https://en.wikipedia.org/wiki/Octave) high. To describe pitches that are beyond this range, the same notes are used — with numbers to differentiate them. A note with one number greater indicates a pitch that is an octave higher than the same note with one number lower. Generally, A4 has a pitch of 440Hz, so A5 is 880Hz and A3 is 220Hz. Other notes follow a similar convention.
 
 <canvas id="canvasNotesAllOctaves"></canvas>
 
-{% tangent(summary="Similarity across octaves", open=false) %}
+{% <tangent summary="Similarity across octaves" open={false}> %}
 Due to the note nomenclature, the names of notes will repeat after every twelve notes. This is intentional. Because of the equal temperament interval structure, notes double in frequency after every twelve notes, or an octave. Notes with frequencies that are binary multiples (half, double, quarter, etc) of itself sound similar to each other. So all the notes in an octave sound similar to the respective notes in higher and lower octaves. For example, A4 (440Hz) will sound similar to A5 (880Hz), A3 (220Hz), A2 (110Hz) and so on. Similarly, all other notes will sound similar to their respective notes in higher and lower octaves.
-{% end %}
+{% </tangent> %}
 
 The twelve notes exist as a standard way to represent frequencies, but the 'feel' of the sound still comes from the interval structure of the sounds. By only selecting sounds with consonant interval ratios — perfect fifths, perfect fourths, major thirds, etc — music can be created that sound relatively harmonious. Similarly, by selecting notes with dissonant interval ratios, disharmony and tension can be created.
 
@@ -183,5 +183,5 @@ All throughout, only a simple composition of [pure tones](https://en.wikipedia.o
 This is all for now though.
 
 <script>
-{{ loadData(path="/scripts/procedural-music.js") }}
+{{ <loadData path="/scripts/procedural-music.js" /> }}
 </script>

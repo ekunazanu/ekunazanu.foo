@@ -29,9 +29,9 @@ Consider addition: If a point or number is taken, and an addend `d` is added to 
 <canvas id="canvasNumberlineAdd"></canvas>
 <input id="sliderAdd" type="range"> `d`: <span id="spanNumberlineAdd">0.00</span>
 
-{% tangent(summary="Transforming number lines", open=true) %}
+{% <tangent summary="Transforming number lines" open={true}> %}
 The numbers on the transformed number line (below) is the result of the addition operation when `d` is added to the numbers on the old numbers line (above). A single point (zero) is highlighted to make it easier to keep track of how the new number line numbers above is transformed.
-{% end %}
+{% </tangent> %}
 
 Just as addition morphed the number line by shifting it, multiplication morphs the number by scaling, or **stretching** it — by the amount specified by the multiplier. Multiplication by a negative value stretches and also **flips** the number line around zero.
 
@@ -54,9 +54,9 @@ Visualizing the square root function to a number line transformation is tricky a
 <input id="sliderSqrt" type="range"><br>
 Square root of <span id="spanNumberlineSqrtRes">1.00</span> <span id="spanNumberlineSqrtEqu">is</span> <span id="spanNumberlineSqrt">1.00</span>
 
-{% tangent(summary="Finding square roots", open=true) %}
+{% <tangent summary="Finding square roots" open={true}> %}
 Finding a square root using this transformation involves specifying a number, and then using trial and error to find another number that squares to the number selected earlier — to get the square root.
-{% end %}
+{% </tangent> %}
 
 There is a problem however. It is impossible to find the square root of negative numbers, since the output of the square function is always mapped to a non-negative number.
 
@@ -163,9 +163,9 @@ But `√-1` was defined as `i` as an assumption. Does `√i` need to be defined 
 `=> a = 1/√2, b = 1/√2`\
 `=> √i = 1/√2 + i/√2`
 
-{% tangent(summary="Alternate solutions", open=false) %}
+{% <tangent summary="Alternate solutions" open={false}> %}
 The above equation also has another solution: `a = -1/√2,  b = -1/√2`. However for simplicity, it has been excluded for now.
-{% end %}
+{% </tangent> %}
 
 Analytically, `√i` is equivalent to `1/√2 + i/√2`, and multiplying a number by `1/√2 + i/√2` rotates it by 45° — somehow the analytically derived value of `√i` is consistent with its geometric properties which was only *assumed* to be true.
 
@@ -289,22 +289,22 @@ Although not *absolutely* necessary (in applied math), complex numbers are nonet
 
 <canvas id="canvasFourier"></canvas>
 
-{% tangent(summary="The Fourier and Laplace transform", open=true) %}
+{% <tangent summary="The Fourier and Laplace transform" open={true}> %}
 The [Fourier transform](https://en.wikipedia.org/wiki/Fourier_transform) transforms a function to another function describing the intensity of various frequencies present in the original function. The [Laplace transform](https://en.wikipedia.org/wiki/Laplace_transform) is a more generalized form of the Fourier transform which also describes the rate of [decay](https://en.wikipedia.org/wiki/Exponential_decay) of a function.
-{% end %}
+{% </tangent> %}
 
 The necessity of complex numbers is even more significant in [pure mathematics](https://en.wikipedia.org/wiki/Complex_number#Algebraic_number_theory) — they form the algebraically closed field for real numbers.
 
 <canvas id="canvasFields"></canvas>
 
-{% tangent(summary="Algebraically Closed Fields", open=true) %}
+{% <tangent summary="Algebraically Closed Fields" open={true}> %}
 In mathematics, an [algebraic structure](https://en.wikipedia.org/wiki/Algebraic_structure) is a set of elements and operations, that satisfies certain [rules](https://en.wikipedia.org/wiki/Axiom#Non-logical_axioms). A [field](https://en.wikipedia.org/wiki/Field_(mathematics)) is an algebraic structure that satisfies [the **properties** of addition, subtraction, multiplication, and division](https://en.wikipedia.org/wiki/Field_(mathematics)#Alternative_definition). Real numbers are fields. An [algebraically closed field](https://en.wikipedia.org/wiki/Algebraically_closed_field) is a field that must have roots for a [non-constant polynomial](https://en.wikipedia.org/wiki/Polynomial#Classification) in that field — if the coefficients of the polynomial are elements of that field.
 
 For example, `x^2 + 1 = 0` does not have its roots defined in real numbers even though its coefficients are real — so real numbers are not algebraically closed. However, the roots are defined for all complex numbers, and thus the set of complex numbers form an algebraically closed field.
-{% end %}
+{% </tangent> %}
 
 So now the question arises: Does it warrant redefining the number system to describe rotations? Absolutely. But does it make sense that a number system that is intuitive, and is used to [describe reality](https://en.wikipedia.org/wiki/Wave_function) are called imaginary? Absolutely not. Would anyone describe negative numbers as 'unnatural' because they are not a part of natural numbers?
 
 <script>
-{{ loadData(path="/scripts/complex-rotations.js") }}
+{{ <loadData path="/scripts/complex-rotations.js" /> }}
 </script>

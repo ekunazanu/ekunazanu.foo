@@ -106,7 +106,7 @@ int main(void){
 
 [External site](https://ivanceras.github.io/svgbob-editor) for converting ASCII to SVG. Store externally and use `loadData` shortcode to keep content page organized but inline the SVGs. Also use `loadData` for in lining interactive JS visuals.
 
-{{ loadData(path="/static/media/something.svg") }}
+{{ <loadData path="/static/media/something.svg" /> }}
 
 Some random words. And some other random words, to pad out this paragraph. It's not enough text so adding more here. I guess this is enough. Okay it's not, so here I am adding more. It's repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.
 
@@ -131,11 +131,11 @@ And an ordered list:
 
 Some random words. And some other random words, to pad out this paragraph. It's not enough text so adding more here. I guess this is enough. Okay it's not, so here I am adding more. It's repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.
 
-{% tangent(summary="Disclaimer", open=true) %}
+{% <tangent summary="Disclaimer" open={true}> %}
 Some random words. And some other random words, to pad out this paragraph. It's not enough text so adding more here. I guess this is enough. A [random link](link). Okay it's not, so here I am adding more. It's repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.
 
 Some random words. And some other random words, to pad out this paragraph. It's not enough text so adding more here. I guess this is enough. A [random external link](https://foo.bar). Okay it's not, so here I am adding more. It's repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.
-{% end %}
+{% </tangent> %}
 
 Some random words. And some other random words, to pad out this paragraph. It's not enough text so adding more here. I guess this is enough. Okay it's not, so here I am adding more. It's repetitive, but it is what is is. Okay maybe this is enough. Yeah it is. And then something here to end the article.
 

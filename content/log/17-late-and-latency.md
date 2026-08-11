@@ -14,7 +14,7 @@ Okay I am making this post only because my classmate asked me to do it. The inte
 
 <canvas id="canvasLatencyGraph0" aria-label="a chart showing an inconsitent ping latency, with time on x axis and latency on y axis" role="img"></canvas>
 
-{% tangent(summary="Ping tests", open=true) %}
+{% <tangent summary="Ping tests" open={true}> %}
 I just wrote a quick dirty script to store the start pings every thirty seconds, and log the start and end times, and latency values. Cleaned the data using some basic python, and visualized it by re-using code from another [lab post](/lab/quantifying-colour).
 
 ```
@@ -30,7 +30,7 @@ while true; do
     sleep $WAIT
 done
 ```
-{% end %}
+{% </tangent> %}
 
 There are some big spikes whenever a new ping session begins. The number of people on campus increased by quite a lot recently, so maybe it's the ISP struggling to handle new demand? Or maybe intentional throttling? I don't know. But one thing was clear: The latency spikes and dropped packets happen the most frequently at the beginning of new 'connections'. I am not sure how ICMP works but I think it's pretty similar in how I have been experiencing it — starting new TCP connections aka. opening new tabs and sites feel ridiculously slow, but downloads and bandwidth is otherwise fine.
 
@@ -47,5 +47,5 @@ In other news, the grind for jobs is going decent. Cleared the initial rounds fo
 Cya next month.
 
 <script>
-{{ loadData(path="/scripts/17-late-and-latency.js") }}
+{{ <loadData path="/scripts/17-late-and-latency.js" /> }}
 </script>
