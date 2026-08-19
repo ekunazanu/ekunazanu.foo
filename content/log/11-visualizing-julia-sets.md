@@ -10,7 +10,7 @@ thumbnail = "log.11.julia.avif"
 thumbnailalt = "Doodle of unfolding space."
 +++
 
-This week, I again played with fractals. In one of the [previous posts](/log/9-fractional-dimensional-shapes), I explored the [Mandelbrot](https://en.wikipedia.org/wiki/Mandelbrot_set) and the [Burning Ship](https://en.wikipedia.org/wiki/Burning_Ship_fractal). Continuing this theme, I experimented with Julia sets (for the quadratic map) — this time with domain coloring.
+This week, I again played with fractals. In one of the [previous posts](/log/09-fractional-dimensional-shapes), I explored the [Mandelbrot](https://en.wikipedia.org/wiki/Mandelbrot_set) and the [Burning Ship](https://en.wikipedia.org/wiki/Burning_Ship_fractal). Continuing this theme, I experimented with Julia sets (for the quadratic map) — this time with domain coloring.
 
 Now the quadratic Julia set is defined very similar to the Mandelbrot — z^2+c. The only difference is that the Mandelbrot is defined in the parametric space (c), while the Julia set is defined on the complex plane itself (z). This distinction actually makes it a lot more intuitive to visualize Julia sets, compared to the Mandelbrot set.
 

@@ -34,7 +34,7 @@ done
 
 There are some big spikes whenever a new ping session begins. The number of people on campus increased by quite a lot recently, so maybe it's the ISP struggling to handle new demand? Or maybe intentional throttling? I don't know. But one thing was clear: The latency spikes and dropped packets happen the most frequently at the beginning of new 'connections'. I am not sure how ICMP works but I think it's pretty similar in how I have been experiencing it — starting new TCP connections aka. opening new tabs and sites feel ridiculously slow, but downloads and bandwidth is otherwise fine.
 
-So if I could just route all connections via a single connection — ie. set up a tunnel — it should make the internet slightly less rage inducing. I already run a [tunnel via Cloudflare for my RPi server](/log/6-back-on-track/). I don't want to run a CF service running on my personal PC though. I already have a WireGuard config set up, and so all I need to go is turn that on.
+So if I could just route all connections via a single connection — ie. set up a tunnel — it should make the internet slightly less rage inducing. I already run a [tunnel via Cloudflare for my RPi server](/log/06-back-on-track/). I don't want to run a CF service running on my personal PC though. I already have a WireGuard config set up, and so all I need to go is turn that on.
 
 <canvas id="canvasLatencyGraph1" aria-label="a chart showing consitent latency, with time on x axis and latency on y axis" role="img"></canvas>
 
