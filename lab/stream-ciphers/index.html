@@ -1,0 +1,1658 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1" name=viewport><meta content=ekunazanu name=author><meta content="Exploring stream ciphers, mostly ChaCha20-Poly1305." name=description><meta content="Stream Ciphers" property=og:title><meta content=article property=og:type><meta content="Exploring stream ciphers, mostly ChaCha20-Poly1305." property=og:description><meta content=https://ekunazanu.foo/lab/stream-ciphers/ property=og:url><meta content=https://ekunazanu.foo/thumbnails/lab.bits.svg.png property=og:image><meta content="Lines of dashes of variable width representing bits." property=og:image:alt><meta content=image/png property=og:image:type><meta content=1200 property=og:image:width><meta content=900 property=og:image:height><meta content=en_US property=og:locale><meta content=ekunazanu.foo property=og:site_name><title>Stream Ciphers ~ ekunazanu.foo</title><link href=https://ekunazanu.foo/lab/stream-ciphers/ rel=cannonical><link href=https://ekunazanu.foo/atom.xml rel=alternate type=application/atom+xml><link href=https://ekunazanu.foo/misc/main.css rel=stylesheet><link href=https://ekunazanu.foo/misc/favicon.png rel=icon><meta content=Zola name=generator><body><nav><ul><li><h2><a href=https://ekunazanu.foo>ekunazanu.foo</a></h2><li><a href=https://ekunazanu.foo/log>Log</a><li><a href=https://ekunazanu.foo/lab>Lab</a> ⟵</ul></nav><div class=print>https://ekunazanu.foo</div><main><article><h1>Stream Ciphers</h1><p>Every day, billions of messages are exchanged over the internet, including very sensitive messages like financial transactions and private user data. All this information often travels across untrusted networks, and so it must be protected from anyone attempting to intercept the communication. One way to securely exchange data is by <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Encryption target=_blank>encrypting</a> the data before sending it over any network.<p>Encryption is a way to encode data so that only people who have ‘keys’ to the encoded data can ‘unlock’ or decrypt it. Depending on the type of keys used, encryption schemes can be broadly classified into two main categories. The first kind uses the same key for both encryption and decryption, and is called <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Symmetric-key_algorithm target=_blank>symmetric key cryptography</a>. The second type is called <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Public-key_cryptography target=_blank>asymmetric key cryptography</a>, which instead uses different keys — one for encryption and a separate one for decryption.<p>This post is about symmetric key cryptography. More specifically, it is about how using even seemingly very simple operations like additions and multiplications is enough to secure the entire internet. To be even more specific, it is about the ChaCha20-Poly1305 cipher (an algorithm for encryption-decryption) actually works.<h2 id=Caesar_Cipher>Caesar Cipher</h2><p>One of the simplest encryption techniques includes the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Caesar_cipher target=_blank>Caesar cipher</a>, a type of <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Substitution_cipher#Simple target=_blank>simple substitution cipher</a>. The message to be encrypted (called plaintext) is encoded by substituting its letters with the corresponding letters from an alphabet that is ‘shifted’ or ‘rotated’ by some amount:<p><canvas id=canvasCaesar></canvas> <input id=inputCaesar><br> <input id=sliderCaesar type=range>Shift: <span id=spanCaesar></span><p>If the letters are encoded as a number determined by its position in the alphabet, then the encrypted letter for a plaintext letter <code>m</code> is <code>E(m) = (m + k) mod 26</code>, where <code>k</code> is the shift value. The encrypted message is often referred to as the ciphertext. Decryption has to reverse the encryption operation. So the decrypted letter for the ciphertext letter <code>c</code> is then <code>D(c) = (c - k) mod 26</code>.<p><canvas id=canvasCaesarDecrypt></canvas><details open><summary>Modulo Operation</summary> <p>The <code>mod</code> or <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Modulo target=_blank>modulo operator</a> returns the remainder after division by a number. The divisor in this case is 26, or the numbers of letters in the Latin alphabet.</p></details><p><a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/ROT13 target=_blank>ROT13</a> is a special case of a Caesar cipher, having a shift value of 13. The Latin alphabet has 26 letters; shifting the alphabet up by 13 positions is the same as shifting it down by 13 positions — so decryption is effectively the same as encryption. That is, for a plaintext message <code>m</code> and ciphertext <code>c</code>:<p><code>E(m) = (m + 13) mod 26 = (m - 13) mod 26 = c</code><br> <code>D(c) = (c + 13) mod 26 = (c - 13) mod 26 = m</code><p>The only difference between encryption and decryption is the domain of the operators. While one operates on plaintexts, the other operates on ciphertexts — but that difference is purely in semantics.<p><canvas id=canvasRot13></canvas> <input id=inputRot13><br> <input disabled id=sliderRot13 type=range> Shift: <span id=spanRot13></span><details open><summary>Same operation for encryption and decryption</summary> <p>Since shifting the alphabet by thirteen letters upwards (addition) is the same as shifting it downwards (subtraction) by thirteen letters, the process for encryption and decryption is effectively the same. So, both encryption and decryption can be performed using the same operation <code>(m + 13) mod 26</code>.</p></details><p>The shift parameter in the Caesar cipher determines how a message gets encrypted and decrypted — it acts as a ‘key’ for encrypting and decrypting the data. Only parties who have the knowledge about the keys can decrypt the messages encrypted with that key. While this is the main goal of symmetric encryption, the Caesar cipher is not a very good way to achieve this goal. This is because single-alphabet substitution ciphers like the Caesar cipher are not secure. They can be easily broken using brute force and frequency analysis attacks.<details open><summary>Brute force attacks</summary> <p>A <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Brute-force_attack target=_blank>brute force attack</a> refers to systematically trying all possible combinations for a key, until a correct key is found. For single-alphabet substitution ciphers (eg. the Caesar cipher), trying all combinations takes a trivial amount of time and thus the cipher is easily broken.</p></details><details open><summary>Frequency analysis attacks</summary> <p>In <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Frequency_analysis#Frequency_analysis_for_simple_substitution_ciphers target=_blank>frequency analysis attacks</a>, the distribution of letters in a language is studied to find likely candidates for keys. It will be discussed in slightly more detail below.</p></details><h2 id=One-Time_Pad>One-Time Pad</h2><p>In the Caesar cipher, all the letters of the plaintext are shifted by the same amount, which is determined by a single-valued key. However, it can be argued that using <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Polyalphabetic_cipher target=_blank>separate shift values</a> for each letter is more secure. The <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher target=_blank>Vigenère cipher</a> does exactly that — it is a cipher that employs multiple shift values for encrypting messages. The key here is multi-valued, and the each letter of the plaintext is shifted based on the values of the key. When the key is shorter than the message, the key is repeated until it matches the length of the message.<p><canvas id=canvasVignere></canvas> <input id=inputVignere><br> <input id=inputVignereKey><br> Key: <span id=spanVignere></span><details><summary>Multi-valued key</summary> <p>Each letter in the plaintext is shifted by a different amount, based on the key values. Here, since the key is shorter than the message, the key (ie. the shift values) is repeated until it matches the length of message.</p></details><p>Again, decryption involves the reverse operation — subtracting the key values from the ciphertext.<p><canvas id=canvasVignereDecrypt></canvas><p>We started with an assumption that using multiple shift values is somehow more secure than a single value. To understand why, imagine some random plaintext message. The distribution of letters in message would likely follow the frequency distribution of letters used in the language. Now imagine if the plaintext letters are shifted by a singular value. The distribution of the ciphertext would be similar to the plaintext, except only shifted by the value amount.<p><canvas id=canvasLetterFrequencyStatic0></canvas><details open><summary>Distribution distortion</summary> <p>This is how the frequency distribution for letters for an English plaintext message will get distorted by a single-valued key — which in this case is <code>1</code>.</p> <p>The top distribution is frequency letter distribution for the plaintext, while the one below that shows the frequency letter distribution for the ciphertext. Some of the bars (the first five) are coloured to make it easier to keep track of where letters in the plaintext end up in the ciphertext. Here for example, all the plaintext ’A’s will end up as ciphertext ’B’s, ’B’s will end up as ’C’s, ’C’s will end up as ’D’s, etc.</p> <p>Conversely, all the ciphertext ’C’s definitively correspond to plaintext ’B’s, ’B’s correspond to ’A’s, etc. Every ciphertext letter corresponds to a plaintext letter, and by simply trying to match the frequency distributions and find a mapping, the entire cipher can be broken.</p></details><p>From the ciphertext distribution it easy to understand why a single-alphabet substitution cipher (eg. Caesar) is so insecure. Since each ciphertext letter corresponds to a single plaintext letter, it is very easy to break the encryption if any corresponding plaintext letter is found — and it can be found easily by trying to match up the frequency distributions.<p>But now imagine if there are now two different shift values. Half of the plaintext letters would get shifted by one value, and half of them by the other value. The distribution of the ciphertext would look slightly more ‘diffused’, and each ciphertext letter would now correspond to two possible plaintext letters.<p><canvas id=canvasLetterFrequencyStatic1></canvas><details open><summary>Distribution distortion</summary> <p>This is how the frequency distribution would get distorted by a multi-valued key — which in this case is <code>1, 2</code>.</p> <p>Here, all the plaintext ’A’s will end up as either ciphertext ’B’s or ’C’s, ’B’s will end up as ’C’s or ’D’s, and plaintext ’C’s will end up as ‘D’ or ’E’s, etc. Conversely, a ciphertext ‘C’ could refer to a plaintext ‘B’, but could also refer to an ‘A’.</p> <p>Firstly, it creates a more uniform distribution, which already makes frequency analysis more difficult. Second and more importantly, each ciphertext letter can now refer to two (or more) possible letters rather than a definitive one.</p></details><p>So, using more shift values spreads the likelihood of a ciphertext letter corresponding to a plaintext letter over more letters. It means using more shift values increases the range of plaintext possibilities, and thus make it less likely to correctly guess the plaintext from the ciphertext.<p><canvas id=canvasLetterFrequency></canvas> <input id=inputLetterFrequencyKey><br> Key: <span id=spanLetterFrequencyKey></span><details open><summary>Custom key</summary> <p>Try experimenting with the key to understand how the plaintext letters are distributed in the final ciphertext after being shifted by the values in the key. Using more values spreads the plaintext over more ciphertext values. Notice how using <a class=linkSwitch id=linkLetterFrequencyGaussian>less uniform</a> values makes it more likely to guess the plaintext letter from the ciphertext, and less likely when the keys are <a class=linkSwitch id=linkLetterFrequencyUniform>more uniformly distributed</a>. More on that in the following section.</p></details><p>Judging from the above example, one might assume the key only needs to be <a class=linkSwitch id=linkLetterFrequencyPerfect>26 values long</a> (or the size of the chosen alphabet) to achieve maximum diffusion. Except it is not the case; the graph is misleading because it does not show the inherent structure of the entire key (and ciphertext) and only shows the aggregate values — the bars represent the total aggregated frequencies, but fail to show anything about the position of the keys and ciphertext.<p>Eagle-eyed readers may have already raised some eyebrows in the previous example that used keys of length two. If an attacker knew that the key repeats every <em>n</em> letters, then instead of a ciphertext letter corresponding to multiple possible plaintext letters, it would map to only one possible letter — ciphertext letters that appear after every <em>n</em> letters will all have the same shift value (since the key also repeats), and hence the ciphertext letters will have a singular, definitive mapping.<p>And finding the original key is not particularly difficult. If the length of the key is somehow known, then <em>n</em> separate distributions can be constructed — one distribution for all the letters appearing after every <em>n</em> intervals in the ciphertext. These <em>n</em> frequency distributions can be viewed as <em>n</em> Caesar ciphertexts, all of which can be individually broken <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher#Cryptanalysis target=_blank>using the same method as the frequency analysis</a> attack using a single distribution.<p><canvas id=canvasLetterFrequencyStaticMultiple></canvas><details open><summary>Separating frequency distributions</summary> <p>The above graphic illustrates how information can be extracted with a key that repeats, when its length is known. The coloured dots at the top represent ciphertext letters, ‘encrypted’ using the key [9, 18, 1]. The distribution coloured black is the overall frequency distribution of the ciphertext letters — and is relatively uniform, which might make frequency analysis attacks somewhat difficult.</p> <p>However if the key length (three) is known, then three separate frequency distributions can be constructed using letters appearing after every three intervals in the ciphertext (coloured green, pink, and blue here). Here, letters at position 3N (coloured green) will all be shifted by the same amount (9) since the key repeats after every three intervals, and thus will form a distribution that is shifted by nine places. The same applies for letters at positions 3N+1 and 3N+2, where the letters gets shifted by eighteen units and one unit respectively — since the key is [9, 18, 1].</p></details><p>However this attack is not possible if the key does not repeat. In fact, removing repetition or any structure from the key makes it impossible to break the cipher, other than by brute-forcing all combinations. This effectively means that entire key must be random. Using a key which is at least as long as the plaintext, and is <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Random_number_generation#True_vs._pseudo-random_numbers target=_blank>truly random</a> will be <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Information-theoretic_security target=_blank>perfectly secure</a>. The <a rel="noopener nofollow noreferrer external" href=https://www.math.umd.edu/~lcw/OneTimePad.pdf target=_blank>proof</a> is somewhat simple — it is impossible to exploit structures to find keys if there <em>is no</em> structure; every key is as likely as all the other possible combinations.<p><canvas id=canvasOneTimePad></canvas> <input id=inputOneTimePad><br> Key: <span id=spanOneTimePad></span><details open><summary>Random key</summary> <p>The plaintext here is encrypted with keys that are randomly generated, and thus the ciphertext is effectively random as well. The ciphertext will map to a plaintext of the same length, but since the key is uniformly random, every possible combination of letters in the plaintext is as equally likely as all the other possible combinations of letters. This effectively means every plaintext message is equally likely, so no information can be extracted from the ciphertext.</p></details><p>This cipher scheme is called the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/One-time_pad target=_blank>one-time pad</a>. The only information that can possibly be leaked is the maximum length of a message.<p>But there is an important caveat: The one-time pad is only secure if the key is kept secret and is <strong>never</strong> reused. The moment the same key is used more than once, all its security benefits vanish. To understand why, consider two different messages that are encrypted with the same key. An attacker can subtract the ciphertext of one message from the other to find the plaintext (or more accurately, the differences between the plaintext). For example, if <code>m1</code> and <code>m2</code> are messages that are both encrypted with key <code>k</code> then:<p><code>c1 = (m1 + k) mod 26</code><br> <code>c2 = (m2 + k) mod 26</code><p>Subtracting ciphertext <code>c1</code> from <code>c2</code> eliminates <code>k</code> and leaves <code>m2 - m1 (mod 26)</code>. It might feel like the plaintext difference would be a garbled mess, but even the differences in plaintexts can expose structures within the individual plaintexts — which might end up leaking information about the original plaintexts.<p><canvas id=canvasOTPReuse></canvas><details open><summary>Visualizing ciphertext differences</summary> <p>The above graphic shows how the difference in ciphertexts can leak plaintext information. Consider two plaintext messages with some structure — visualized above as two grayscale images (top row). Earlier, the numbers mapped to letters; here they are mapped to brightness values. This is simply to make the patterns in data easier to see.</p> <p>Both the plaintexts are encrypted (padded/shifted) with the same key (middle row). Even if the key is truly random, the ciphertexts (bottom row) are not at all secure since both are padded using the same key — even if the ciphertexts individually look random and secure. An attacker here can subtract one ciphertext from the other to find the difference in plaintext, which can expose structures in the plaintexts, and possibly even leak the individual plaintexts if slightly more advanced techniques are used.</p></details><p>It also goes without saying that the key must be kept secret. It should only be known by the communicating parties, and no one else.<h2 id=Vernam_Cipher>Vernam Cipher</h2><p>Another thing to note for the one-time pad is that the cardinality of key symbols must be equal (or greater than) the cardinality of the plaintext symbols — ie. if the size of alphabet of the plaintext is 26 symbols (letters) then the key must also contain at least 26 symbols, which map all the plaintext symbols to all the ciphertext symbols with equal probability. If the cardinality of the key is larger than the plaintext, then it must be ensured that the surplus key symbols do <strong>not</strong> break the uniform randomness constraint. All of the plaintext symbols must still map to the all ciphertext symbols with equal probability.<p>If the cardinality of key is smaller than the plaintext, then some of the ciphertext symbols are unreachable for a given plaintext symbol. For example, if the key cardinality is two (eg. the key values are 1, 2), but the plaintext cardinality is 26 (eg. English alphabet), then 24 of the letters are always unreachable for a given plaintext symbol. That is, ‘A’ will never map to any letter other than ‘B’ or ‘C’ (when the key values are 1, 2). This, as <a href=https://ekunazanu.foo/lab/stream-ciphers/#canvasLetterFrequencyStatic1>shown earlier</a>, is not secure.<p><canvas id=canvasMapPlainCipher></canvas> <input id=sliderMapPlainCipher type=range> Key Cardinality: <span id=spanMapPlainCipher></span><br><details open><summary>Weak keys</summary> <p>Since the key cardinality is much smaller than that of the plaintext, each plaintext symbol only maps to a subset of the ciphertext symbols. Conversely, this means a given ciphertext symbol will only map to a subset of plaintext symbols as well. This can greatly reduce the combinations of possible plaintexts, making it insecure.</p> <p>In the above example notice how many different plaintext letters the ciphertext letter ‘M’ can correspond to, depending on the cardinality of the key. When the cardinality of the key is equal to the cardinality of the plaintext, a ciphertext symbol corresponds to all of the plaintext symbols with equal probability — making any type of attack impossible. This would not be the case if a ciphertext symbol does not map to all the plaintext symbols with equal probability; some of the symbols will have zero probability, and attackers may use that information to break the cipher.</p></details><p>So the key cardinality should never be smaller than the plaintext cardinality, and ideally both should be of the same size. The <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Gilbert_Vernam#The_Vernam_cipher target=_blank>Vernam cipher</a> is a type of one-time pad, that uses keys and plaintexts of cardinality two (binary plaintexts and binary keys). That is:<p><code>c = (m + k) mod 2</code><br> <code>m = (c - k) mod 2</code><p>Where <code>c</code> is the ciphertext for the binary plaintext message <code>m</code> encrypted using binary key <code>k</code>. The padding (addition/subtraction) operations are performed using modulo-two arithmetic. Consequently, the ciphertext <code>c</code> is also binary.<p>An interesting property of modulo-two arithmetic is that addition and subtraction is the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/GF(2)#Properties target=_blank>same operation</a>, so similar to ROT13, the same operation can be used for encryption and decryption.<p><code>c = (m + k) mod 2</code><br> <code>m = (c + k) mod 2</code><p><canvas id=canvasVernam></canvas> <input id=inputVernam><br> Key: <span id=spanVernam></span><details><summary>Same operation for encryption and decryption</summary> <p>The above example shows a binary plaintext being padded using a binary key to get the ciphertext. Since addition and subtraction is the same, the same operation can be performed on the ciphertext to get back the plaintext.</p> <p>Similar to <a href=#canvasRot13>ROT13</a> — where shifting the symbols upwards and downwards (addition/subtraction) by 13 in modulo-26 arithmetic is same — here, in modulo-2 arithmetic, shifting the symbols upwards and downwards (addition/subtraction) by 1 is the same. So encryption and decryption is the same; both can be done using <code>(m + k) mod 2</code>.</p></details><p>The Vernam cipher is useful because computers naturally store messages in binary, and more importantly, modulo two addition can be performed very quickly and efficiently by processors using <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/XOR_gate target=_blank>XOR gates</a>. So ciphertexts can be generated by combining the plaintext with a key using the XOR operation.<p><code>c = (m + k) mod 2 = m ^ k</code><br> <code>m = (c + k) mod 2 = c ^ k</code><p><canvas id=canvasVernamXOR></canvas> Key: <span id=spanVernamXOR></span><details open><summary>The XOR operation</summary> <p>The <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Exclusive_or target=_blank>XOR operator</a> <code>^</code> takes two binary inputs and returns one if and only if one of the inputs is one, otherwise it returns zero — same as modulo two addition using binary numbers.</p></details><p>The binary key of the Vernam cipher is referred to as a keystream, as it is a stream of bits that is XOR’ed with the stream of plaintext bits to generate the ciphertext stream.<p>The Vernam cipher keystream must have the same properties as the one-time pad key to have the same security guarantees. It must be at least as long as the plaintext stream, and should be truly random. The key must also <strong>never</strong> be reused as otherwise it can leak information about the plaintext.<p><canvas id=canvasVernamReuse></canvas><details open><summary>XOR self inverse</summary> <p>Here the bits are coloured white for 0 and black for 1. The top row represents two different plaintext messages, with some structure. The middle row has two identical randomized keystreams — which are used for padding the above two plaintexts to get the ciphertexts (on the bottom row). When the two ciphertexts are XOR’ed with each other, it reveals some of the original structure of the two plaintexts (rightmost graphic, on the bottom row).</p> <p>In XOR, a number is its own inverse. That is <code>x ^ x = 0</code>, so <code>y ^ x ^ x</code> = <code>y ^ 0</code> = <code>y</code>. The XOR operations are also <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Associative_property target=_blank>associative</a> and <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Commutative_property target=_blank>commutative</a>. These properties can be exploited to leak plaintext data by XOR’ing two ciphertexts encrypted with the same key:</p> <p><code>c1 ^ c2</code><br> <code>= (m1 ^ k) ^ (m2 ^ k)</code><br> <code>= m1 ^ k ^ m2 ^ k</code><br> <code>= m1 ^ m2 ^ k ^ k</code><br> <code>= m1 ^ m2</code></p> <p>As discussed earlier, even recovering the combined structure of plaintexts can be enough to leak information about the individual ciphertexts — as is already somewhat evident in the visual example above.</p></details><p>So the keystream, just like the one-time pad, must be kept secret and truly random, and must never be repeated for it to be perfectly secure.<h2 id=ChaCha20_Cipher>ChaCha20 Cipher</h2><p>Although the Vernam cipher enables extremely fast and efficient encryption/decryption (since it is just a single XOR operation), and is perfectly secure, it is impractical as it relies on the secure and secret distribution of keys. If a key (which is at least the size of the message) can be securely transmitted, it makes more sense to simply send the message itself instead.<p>The impracticality arises from needing to exchange keys that are (at least) as long as the message. If there was a way to compress the key to a more practical size, the Vernam cipher would have been a lot more useful. Fortunately, there are ways to do this — well to be more accurate, there are <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Pseudorandom_number_generator target=_blank>ways</a> to generate identical streams of random bits from identical seed (initial) values. So the communicating parties can exchange only the small seed values and generate the same keys, instead of exchanging keystreams that are as long as the plaintext. This makes this cipher a lot more practical.<p><canvas id=canvasKeyExchange></canvas><details open><summary>Keystream from a small seed</summary> <p>Small initial values (shown on the left in the above graphic) can be exchanged securely between the communicating parties — which can be used to generate much longer keystreams (shown right of the seed values in the graphic). Since the seed values will be identical, both parties A and B will have identical keystreams as well. Party A can pad the plaintext (the bitstream at the top) to get the ciphertext (the third bitstream). Party B can use the identical keystream to decrypt the ciphertext sent by party A (the fourth bitstream) to get back the plaintext (the bottom bitstream).</p></details><p>The bad news: If the same keystream is generated from the same initial value, then the keystream is essentially tied to the seed value — it is not really random, it is deterministic. But here’s the good news: The key does not need to be truly random. It needs to be truly random for perfect security, but sometimes good-enough security is more than sufficient especially if it makes the cipher practical and actually usable.<details open><summary>Pseudorandomness</summary> <p>The random numbers generated this way are not actually random since they are generated from a seed, but still appear and behave like true random numbers. This is called <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Pseudorandomness target=_blank>pseudorandomness</a>.</p></details><p>So what differentiates perfect security from good enough security? What differentiates a truly random bitstream from a pseudorandom bitstream? The first question is easier to answer; the second will be <a href=https://ekunazanu.foo/lab/stream-ciphers/#canvasChaChaDiffusion>discussed later</a>. For the first question: If perfect security is defined as impossible to break, then ‘good enough’ security can be defined as the level of security that requires an unfeasibly large number of brute-force attempts to break the cipher, making any practical attack effectively impossible.<p>This ‘good enough’ security can be ensured if the generated randomness has no hidden patterns that can be exploited or reverse-engineered; and by ensuring all the possible values for the seed is big enough to deter brute-force attacks. For example, a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/One-way_function target=_blank>one-way</a> function that takes a 256-bit number as its input and then outputs a random bitstream for each of its possible inputs can be considered secure enough — if the random stream generator function is secure. This is because brute-forcing a hundred quattorvigintillion seed values (2^256) is practically infeasible.<p>This is the central idea behind the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Salsa20#ChaCha_variant target=_blank>ChaCha20</a> cipher. In this cipher, a 512-bit seed is used for generating (pseudo)random keystreams — multiple rounds of <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Block_cipher#ARX_(add%E2%80%93rotate%E2%80%93XOR) target=_blank>ARX (add-rotate-XOR) operations</a> are performed on the initial seed value to generate streams of pseudorandom values. These streams are then used to pad (XOR) the plaintext to get the ciphertext, and vice versa — padding the ciphertext to get the plaintext.<p><canvas id=canvasKeyExchangeChaCha></canvas><details open><summary>The ChaCha20 cipher</summary> <p>A 512-bit seed value is exchanged securely between the communicating parties, which is used for generating much longer pseudorandom keystreams. The ChaCha function <code>f</code> consists of ARX operations and transforms the seed to a stream of pseudorandom values, which is then used for padding the plaintexts and ciphertexts.</p></details><p>This ChaCha20 function <code>f</code> is fundamental in transforming the initial seed to a stream of random bits. But to understand how this function works, we first need to understand how exactly are the additions, rotations and XORs performed on the seed.<h3 id=ARX_Operations>ARX Operations</h3><p>In ChaCha20, a pseudorandom stream is generated from a 512-bit seed by first dividing the seed into a 4x4 block of 32-bit <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Word_(computer_architecture) target=_blank>words</a>.<p><canvas id=canvasChaChaPartition></canvas><details open><summary>Seed block</summary> <p>A 512-bit seed is first logically divided into sixteen 32-bit words (segments). Each word is represented here as a block, and each bit in the 32-bit word is represented as a unit square in the illustration above. Squares are coloured gray if the bit is 1, and white if the bit is 0.</p></details><p>These words are then rotated, added and XOR’ed with each other in a specific manner to generate a random block from the seed block. The sequence of addition, rotation, and XOR operations is strictly defined. The primary operation in this sequence is the quarter round function — it operates on four words at a time, and is defined as:<p><code>a += b; d ^= a; d &lt;&lt;&lt;= 16;</code><br> <code>c += d; b ^= c; b &lt;&lt;&lt;= 12;</code><br> <code>a += b; d ^= a; d &lt;&lt;&lt;=  8;</code><br> <code>c += d; b ^= c; b &lt;&lt;&lt;=  7;</code><p>Where <code>a</code>, <code>b</code>, <code>c</code>, <code>d</code> are four 32-bit words from the 4x4 block. And <code>a += b</code> means adding a and b, and storing the result in a; <code>b ^= c</code> means XOR’ing b and c, and storing the result in c; <code>d &lt;&lt;&lt;= 8</code> means <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Circular_shift#/media/File:Rotate_left.svg target=_blank>left rotating</a> d by 8 bits. Performing the above twelve operations completes one quarter round; performing four quarter rounds makes up one full round.<p>Twenty of these rounds are performed in ChaCha20 — these twenty rounds are divided into odd and even rounds. On odd rounds (the first round, third round, fifth round, and so on), the quarter rounds are performed on the four columns of the block. While on even rounds (the second, fourth round etc), the quarter rounds are performed on the four left diagonals of the block.<p><canvas id=canvasChaChaARX></canvas> <button id=buttonChaChaARXNext>Perform Quarter Round</button> <button id=buttonChaChaARXReset>Reset</button><br> Round: <span id=spanChaChaARXRounds>0</span><details open><summary>ChaCha20 rounds</summary> <p>The above example shows a quarter round being performed on four words. Four words <code>a</code>, <code>b</code>, <code>c</code>, <code>d</code> are selected out of the sixteen words, based on the current iteration of the current round. The above twelve ARX operations are then performed on these four words. The specific set of four words very based on the type of round:</p> <p>On odd rounds the operations are performed on the four columns of the 4x4 block — so performing the quarter round function on words [0, 4, 8, 12], and then on words [1, 5, 9, 13], then on [2, 6, 10, 12], and finally on words [3, 7, 11, 15] makes up one full odd round. While on even rounds, the quarter round functions are performed on the diagonals — so the quarter rounds are performed on words [0, 5, 10, 15], then [1, 6, 11, 12], then [2, 7, 8, 13], and then [3, 4, 9, 14].</p></details><p>These operations effectively <a rel="noopener nofollow noreferrer external" href=https://cr.yp.to/snuffle/diffusion.html target=_blank>‘diffuse’</a> the bits of the words with each other, generating a pseudorandom 512-bit block. However this pseudorandom block is not the final keystream. This block is first added to the original block, and only does it become (a part of) the final pseudorandom keystream.<p><canvas id=canvasChaChaAddition></canvas><details open><summary>Addition of final and initial state</summary> <p>The pseudorandom block obtained after performing twenty full rounds of the ARX operations is then added to original seed block, to generate the final pseudorandom block. The addition of the blocks is performed word-by-word, so each output word in final block is the sum of the corresponding words from the two input blocks.</p></details><p>The addition step is important since the mixing rounds are invertible. That is, it is possible to apply the reverse operations on the pseudorandom block to get the seed block. The ARX operations and this addition step together, however, make it practically impossible to derive the original seed block from an output pseudorandom block.<h3 id=Counter_&_Nonce>Counter & Nonce</h3><p>So the ChaCha20 operations transform a 512-bit seed block to a 512-bit pseudorandom block. But these 512 random bits can only be used to encrypt 512 bits of a plaintext message. What is actually required, is a long stream of pseudorandom bits — a lot more than just 512 pseudorandom bits.<p><canvas id=canvasChaChaSingle></canvas><details open><summary>Insufficient bits</summary> <p>A pseudorandom block of 512 bits can encrypt 512 bits of plaintext data. More pseudorandom bits (or pseudorandom blocks) are needed to encrypt longer plaintext messages.</p></details><p>To encrypt longer messages, more pseudorandom blocks are required. And these blocks must not repeat and must not be related to each other. If attackers find some correlation between the pseudorandom blocks, they can leverage it to find patterns in the ciphertext and possibly even break the cipher.<p>However, producing different blocks from the same initial state block is impossible. Since the ARX operations are deterministic, the same seed blocks will always produce the same pseudorandom blocks. The only way to generate different pseudorandom blocks is by altering the seed block itself.<p>Luckily, ChaCha20 already defines a standardized of altering the seed block to generate new pseudorandom blocks — the last four words (128 bits) of original 512-bit block are reserved for the sole purpose of modifying the initial state block, and generating new pseudorandom blocks. The four words are logically separated into two parts — a counter and a nonce. These are incremented to generate new pseudorandom blocks.<p><canvas id=canvasChaChaPartitionSequence></canvas> <button id=buttonChaChaPartitionSequenceDecrement>Decrement Counter</button> <button id=buttonChaChaPartitionSequenceIncrement>Increment Counter</button><details open><summary>Introducing variation</summary> <p>The last four words in the seed block are reserved for modifying the seed block — for generating new pseudorandom blocks. Incrementing the counter changes the seed block, and performing the ChaCha rounds on the altered seed block will generate a new pseudorandom block that is different from the original pseudorandom block (generated with the older seed block with the older counter value).</p> <p>The new pseudorandom blocks generated by incrementing the counter can be used to encrypt much longer plaintext messages. As for the nonce, its meaning and purpose will be discussed slightly later.</p></details><p>Incrementing the counter changes the seed block — sometimes, by only a single bit. But because of the diffusion introduced by the ARX operations, even a single bit difference cascades through the rounds and completely changes the output pseudorandom blocks. The output blocks are <em>practically</em> completely random and unrelated, preventing attackers from inferring correlations and breaking the cipher.<p><canvas id=canvasChaChaAvalanche></canvas> <button id=buttonChaChaAvalancheNext>Perform Quarter Round</button> <button id=buttonChaChaAvalancheReset>Reset</button><br> Round: <span id=spanChaChaAvalancheRounds>0</span><details open><summary>Avalanche effect</summary> <p>The above illustration shows how even a single bit change in the seed block propagates through the entire block via the ARX operations and completely changes the output. The seed block on the left has its counter value set to zero, while the seed block on the right has its counter set to one. The block at the bottom highlights the bit differences between the above two blocks in blue.</p> <p>The same ARX operations are performed on both the blocks, but because of the initial difference in the seed block, the outputs start diverging. The difference in output is already significant after just a few rounds; after twenty rounds, there is virtually no indication that the output blocks originated from similar seed blocks.</p></details><p>The new output blocks generated by incrementing the counter together form a stream of pseudorandom bits — which can be used to encrypt data longer than just 512 bits.<p>To encrypt longer messages, the counter is incremented and new pseudorandom blocks are generated. This way, the counter also keeps track of the current block’s position in the keystream. To encrypt/decrypt a specfic section of a message, only that specific part of the keystream can be generated — by using the counter values corresponding to that portion of the keystream.<p><canvas id=canvasChaChaCounter></canvas> <button id=buttonChaChaCounterDecrement>Decrement Counter</button> <button id=buttonChaChaCounterIncrement>Increment Counter</button><br> Counter: <span id=spanChaChaCounter></span><details open><summary>ChaCha20 counter</summary> <p>The counter can be incremented to generate more pseudorandom blocks, which together form a keystream that can be used to encrypt/decrypt (XOR) longer plaintexts.</p> <p>With this design, decrypting (as well as encrypting) only certain portions of ciphertext (or plaintext) also becomes very simple. Instead of needing to decrypt the entire ciphertext, specific sections can also be selectively decrypted — by finding the corresponding counter values (offset / 512 bits), and then generating the pseudorandom blocks with those counters, and then XOR’ing it with the ciphertext to decrypt it.</p></details><p>However there is an issue when the counters represent/rely on the positional information of a message. For newer messages, the counter will reset to zero and start repeating values. So the initial blocks will be identical, even for different messages. This means the pseudorandom blocks and keystreams will also be identical.<p>As <a href=https://ekunazanu.foo/lab/stream-ciphers/#canvasVernamReuse>shown earlier</a>, encrypting different data using the same keys (pseudorandom blocks, or pseudorandom keystreams) is very dangerous as it leaks plaintext data.<p><canvas id=canvasChaChaCounterRepeat></canvas> <button id=buttonChaChaCounterRepeatDecrement>Decrement Counter</button> <button id=buttonChaChaCounterRepeatIncrement>Increment Counter</button><details open><summary>Reusing keystreams</summary> <p>Consider two different plaintext messages (shown above). If the aforementioned technique is used for generating keystreams for encrypting the plaintexts, then the same keystreams is produced for both the plaintexts — because the seed blocks are the same and the counters are always incremented the same way, the keystreams will end up being the exact same as well.</p> <p>As discussed, XOR’ing two ciphertexts that were encrypted with the same key(stream) leaks information about both the plaintexts. In the above example, the last row shows when the two above ciphertexts are XOR’ed with each other — it leaks plaintext information (more accurately, it is the XOR of the two plaintexts). So keystreams <strong>must</strong> not repeat.</p></details><p>A simple solution to ensure seed blocks do not repeat is to use another ‘counter’ to keep track of messages as well. Instead of just having one counter that tracks positions of blocks inside messages, there can be another counter that tracks messages itself — this counter increments for every new message.<p>This way, even when the ‘positional’ counter resets and repeats for newer messages, the seed blocks still remain unique — since the new ‘message counter’ now has different (incremented) values. To prevent identical seed blocks and keystreams, this message counter must never repeat. This new ‘counter’ is called the nonce — Number used Once. Using the nonce only once ensures that keystreams are never identical.<p><canvas id=canvasChaChaNonce></canvas><div class=containerButtonChaChaNonce><button id=buttonChaChaNonceCounterDecrement>Decrement Counter</button><button id=buttonChaChaNonceCounterIncrement>Increment Counter</button><button id=buttonChaChaNonceDecrement>Decrement Nonce</button><button id=buttonChaChaNonceIncrement>Increment Nonce</button></div> Nonce: <span id=spanChaChaNonce></span>, Counter: <span id=spanChaChaNonceCounter></span><details open><summary>ChaCha20 nonce</summary> <p>The above example is similar to the previous one, except here, the nonce can be changed as well. Notice how entirely different keystreams are generated when the nonce is different. These different keystreams can be used for encrypting and decrypting multiple additional plaintext messages, not just one message.</p> <p>Since they keystreams are different, XOR’ing the ciphertexts (as shown in the bottom row) does not leak plaintext data unlike last time. This is also why nonce values must <strong>never</strong> be reused — otherwise the same keystreams are generated, which risks leaking plaintext data.</p></details><p>The counter and nonce provide a simple yet powerful way to transform the seed block to generate enough pseudorandom bits to encrypt <em>lots</em> of <em>really</em> long messages — all from a single seed block.<details><summary>Theoretical limits for keystream size</summary> <p>The size of the counter in ChaCha20 is two words (64 bits). So 2^64 new blocks can be generated by incrementing the counter. Since each block is 512-bits, the keystream can be up to 1 ZiB. So a 64-bit counter can encrypt up to 1 ZiB long plaintext messages. Similarly, the nonce is also two words (64 bits). Thus, a total of 2^64 messages, each of size 1 ZiB can be encrypted.</p></details><h3 id=Bit_Constants>Bit Constants</h3><p>While extremely rare, there is a case when the entire seed block is all zeroes. Diffusing bits that are all zeroes with each other does not generate a pseudorandom block, instead it simply produces an all-zero block. Encrypting data with the all-zero block is dangerous as it does not encrypt the data at all since <code>m ^ 0 = m</code>.<p><canvas id=canvasChaChaZeroBlock></canvas><details open><summary>Zero block</summary> <p>Performing the ChaCha20 ARX operations on an all-zero seed block <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Fixed_point_(mathematics) target=_blank>does nothing</a> — the output block will also be all zeroes. The subsequent output blocks after the first output block (the rest of the keystream) will not be all-zero blocks however because the counter will have non-zero values.</p> <p>But even then, the first 512 bits of the keystream will be all zeroes, and so the first 512 bits of the plaintext does not get encrypted. If an attacker correctly guesses the seed block was all zeroes from this, they can easily generate the rest of the keystream (by incrementing the counter) and recover the entire message.</p></details><p>To prevent the all-zero block, certain bits of the seed block are always non-zero. More specifically, the first four words (128 bits) of the seed block are specific constants, so the seed block is never all zeroes.<p><canvas id=canvasChaChaPartitionConstants></canvas><details open><summary>ChaCha20 constants</summary> <p>The first four words in the ChaCha20 seed block have certain fixed values.</p></details><p>The constant values avoid the all-zero block, but really more importantly these constants <a href="https://cr.yp.to/snuffle/security.pdf#page=5" rel="noopener nofollow noreferrer external" target=_blank>introduce asymmetry</a> if their values are chosen wisely. ChaCha20 has some rotational symmetry — different seed blocks can generate the same, <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Group_action target=_blank>rotated versions</a> of the output block, if the seed blocks are specific rotated versions of itself. Having fixed asymmetrical values for certain words eliminates the possibility of this shift/rotate structure, preventing attackers from exploiting relationships between related seeds.<p>The constants in ChaCha20 do introduce asymmetry, and have the values 0x61707865, 0x3320646e, 0x79622d32, 0x6b206574. There is <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Nothing-up-my-sleeve_number target=_blank>nothing special</a> about these constants as they simply spell “expand 32-byte k” in <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/ASCII target=_blank>ASCII</a> in <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Endianness#/media/File:32bit-Endianess.svg target=_blank>little endian</a>.<h3 id=Shared_Key>Shared Key</h3><p>The constants do not <em>need</em> to be exchanged securely; these are public and standardized. Similarly, exchanging the counter and nonce values securely would be very impractical as keep changing frequently. And in fact, in ChaCha20, these do not need to be securely exchanged either — the cipher is still secure.<p>The cipher remains secure because even if the constants, the counter and the nonce are non-secret, the remaining eight words (256 bits) are not. Attackers will need to brute force an average of 2^255 possible combinations to find the original seed block — which is completely impractical. These remaining eight words are used for the ‘actual key’ and need to be exchanged securely between the communicating parties.<p><canvas id=canvasChaChaPartitionKey></canvas><details open><summary>ChaCha20 key</summary> <p>The remaining eight words in a ChaCha20 seed block are reserved for the ‘actual key’ — in the sense that it needs to be secret; no one apart from the communicating parties should know the values of these 256 bits.</p></details><p>So two parties need to securely exchange only one 256-bit key to be able to encrypt and decrypt virtually unlimited number of messages. The other values do not need to be exchanged, or at least exchanged securely. The values of the counter always increment the same, predictable way — they do not need to be shared. The constants are public. The nonce, which varies per message, is needed to generate the correct keystream, but does not need to be securely transmitted.<p>In effect, just the key and nonce need to be shared, and moreover only the key needs to be securely transmitted.<p><canvas id=canvasStructuredKeyExchange></canvas><details open><summary>Seed transmission</summary> <p>The communicating parties only need to securely share the 256-bit key; the nonce can be shared publicly. When both the parties have the same key and nonce (and the public constants), they effectively have the same seed blocks — and so will generate identical keystreams when the counters are incremented. These identical keystreams can then be used to encrypt and decrypt messages. Attackers cannot reproduce the keystream as they do not have 256 bits of the original seed block, and it would be impractical to brute force all combinations.</p></details><p>All of this is ChaCha20 — a practical adaptation of the one-time pad (or more specifically the Vernam cipher). Rather than requiring an entire keystream to be shared securely, it only requires a 256-bit key to be shared securely. However, this practicality comes at the cost of perfect security, as the generated keystreams are not truly random. This tradeoff is acceptable though, as the cipher is still reasonably secure.<h2 id=Authenticated_Encryption>Authenticated Encryption</h2><p>While ChaCha20 provides a way for securely encrypting and decrypting data, it does not have any built-in mechanism to prevent attackers from tampering with the ciphertext itself. In fact, if an attacker knows a certain message always appear at a certain position in the plaintext stream (eg. the payment amount information always appearing at some fixed offset in a transaction message), then attackers can <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Bit-flipping_attack target=_blank>modify that specific section of the ciphertext</a> to modify the same section of the plaintext as well.<p>For example, an attacker might know the message contains “…owes $100…” at a specific section in the plaintext. They can XOR “…owes $100…” with “…owes $999…” , and then XOR it with the corresponding section of the ciphertext. When the receiver decrypts the modified ciphertext, they would get the tampered “…owes $999…” message.<p><canvas id=canvasBitFlip></canvas><details open><summary>Bit flip attacks</summary> <p>If an attacker knows a certain string <code>m</code> occurs at some position, they can modify it by replacing the ciphertext at that position by XOR-ing it with the original string and the modified string. So, if a part of original ciphertext is <code>c = m ^ k</code>, it can be replaced with <code>c' = c ^ m ^ m'</code>.</p> <p>Decrypting <code>c'</code> results in <code>c' ^ k</code> = <code>((m ^ k) ^ m ^ m') ^ k</code> = <code>m ^ m ^ k ^ k ^ m'</code> = <code>m'</code> — the modified message, without ever knowing the original key <code>k</code>.</p></details><p>ChaCha20 is not designed to detect nor protect against tampered ciphertexts. Because bit-flipping attacks can render the entire cipher useless, ChaCha20 is usually paired with an authenticator to detect tampered ciphertexts. This type of encryption scheme that simultaneously encrypts a message as well as validates its authenticity is referred to as <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Authenticated_encryption target=_blank>authenticated encryption</a>.<h3 id=Hashing>Hashing</h3><p>There are multiple ways to verify the authenticity of a message. A simple (but naive) way is to very simply compare the sum of all the bytes of the ciphertext — comparing their <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Checksum target=_blank>checksums</a>. The checksum is usually calculated using modular arithmetic to prevent the numbers from getting too big. The checksum of a ciphertext with bytes <code>C1</code>, <code>C2</code>, … <code>Cq</code> and some relatively big integer <code>p</code> is:<p><code>(C1 + C2 + ... + Cq-1 + Cq) mod p</code><p><canvas id=canvasChecksum></canvas> Current Byte Block: <span class=hexTextBox id=spanChecksumByte></span><br> Checksum: <span class=hexTextBox id=spanChecksumHash></span><br><p><button id=buttonChecksumIncrement>Goto Next Byte Block</button><details open><summary>Simple checksum</summary> <p>The checksum (shown right of the ciphertext) is calculated by simply adding together the values of all the bytes of the ciphertext. The terms in the checksum expression below the graphic represent the current accumulated checksum value, the previous accumulated checksum value, and the current byte respectively. The additions are performed using modular arithmetic so the checksum values remain bounded. The modulus <code>p</code> here is 2^32, so the (check)sums here only shows the last 32 bits, or 8 hex digits.</p></details><p>A sender can encrypt a message, calculate its checksum, and then send the encrypted text along with its checksum. The receiver calculates the checksum of the ciphertext, and then can compare it with the one presented by the sender to verify the authenticity of the ciphertext.<p><canvas id=canvasAuthentication></canvas><details open><summary>Checksums in practice</summary> <p>The sender calculates the checksum of the encrypted text and then sends it with the ciphertext. The receiver will then calculate the checksum of the ciphertext as well, and then compare it with the checksum sent by the sender. If there is any mismatch, the receiver can deduce that either the ciphertext or the checksum (or both) were modified.</p></details><p>However it is not secure at all. Attackers can modify a few bits of the ciphertext and still have a very high probability that the checksum of a <strong>modified</strong> ciphertext will produce the same checksum as the original ciphertext. For example, both the messages “…owes $209…” and “…owes $920…” will have the same checksum — since their bytes sum up to the same value.<p>Even in cases when the checksums differ, attackers can easily recalculate the checksum of the modified ciphertext, and send the altered checksum with the altered ciphertext.<p><canvas id=canvasMalhash></canvas><details open><summary>Forging checksums</summary> <p>Instead of modifying only the ciphertext, an attacker can intercept and modify the checksum as well. The attacker can calculate the checksum of the block the needs to be modified, then subtract it from the original checksum, and then calculate the checksum of the modified block and add it to this difference, to get the new checksum. When the receiver receiver calculates the checksum of the modified ciphertext, it would match the newly forged checksum.</p></details><p>For the authenticator to be secure, the checksum must not output same (colliding) values if its input message is different. In other words, a checksum must have adequate collision resistance. Checksums also need to be secure against forgery attempts.<p>Both of these problems come up because checksums are calculated by naively adding all the bytes of the plaintext message — this makes it trivial to recalculate the checksum since changes to the ciphertext result in predictable changes to the checksum. Collisions are also very likely because byte positions do not matter, and there is a high probability that small changes cancel each other out, leaving the checksum completely unchanged. Ideally, checksums should have very different values even for small input changes. Even better, they should output random-ish values to prevent attackers from finding the relationship between the checksum and the ciphertext and then using that information to create forged checksums.<p>A simple way to make the checksums collision resistant and sensitive to small changes is by performing a multiplication after every addition. This causes small changes to be multiplied, literally — and makes it difficult to predict how a checksum changes when its input changes (when the multiplier is not known, at least). Performing the multiplications and additions over a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Finite_field target=_blank>prime field</a> further reduces the probability of collisions.<p><canvas id=canvasPrimeField></canvas> <input id=sliderPrimeFieldModulus type=range> Modulus: <span id=spanPrimeFieldModulus></span><br> <input id=sliderPrimeFieldMultiplier type=range> Multiplier: <span id=spanPrimeFieldMultiplier></span><details open><summary>Multiplication over prime fields for collision resistance</summary> <p>The modulo operation limits the results to a finite set of elements/numbers. These elements form a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Finite_field target=_blank>finite field</a>. A finite field is a prime field if the number of elements is in it prime — ie. when the modulus is prime.</p> <p>The above example shows how elements are mapped when multiplied over finite fields — that is, for some input <code>n</code> its output is <code>(n * x) % N</code> , where <code>%</code> is the modulo operation <code>x</code> is the multiplier and <code>N</code> is the modulus. When the modulus is <a class=linkSwitch id=linkPrimeFieldComposite>composite</a>, some multipliers map different inputs to the same output, causing collisions. However when the modulus is <a class=linkSwitch id=linkPrimeFieldPrime>prime</a>, there are never any collisions regardless of the multiplier. In the case of repeated operations, prime fields ensure the outputs do not get stuck to <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Periodic_point target=_blank>only a fixed subset of values</a>. Moreover in prime fields, every multiplier has a unique input-output mapping for all the non-zero elements, which means multipliers can be chosen randomly without affecting its collision resistance.</p> <p>So multiplication amplifies small differences, making the correlation between the input and output unpredictable. While performing the operations over a prime field increases the likelihood that every output checksum is equally likely.</p></details><p>Since calculating the checksum now involves repeated multiplication and addition, it is basically equivalent to evaluating a polynomial, where its coefficients are the bytes of the message. That is, the checksum for a message having bytes <code>C1</code>, <code>C2</code>, … <code>Cq</code> is:<p><code>(C1·x^q + C2·x^(q-1) + ... + Cq-1·x^2 + Cq·x^1) mod p</code><p><canvas id=canvasKeyedhash></canvas> Current Byte Block: <span class=hexTextBox id=spanKeyedhashByte></span><br> Checksum: <span class=hexTextBox id=spanKeyedhash></span><br></p><input id=inputKeyedhashKey><button id=buttonKeyedhashIncrement>Goto Next Byte Block</button><details open><summary>Polynomial checksum</summary> <p>The above graphic is a slightly modified version of the previous simple checksum graphic; this one has multiplication as well. The value of the checksum (shown right of the ciphertext) now depends on the multiplier (shown above and left of the checksum graphic, and the last term in the checksum expression) as well. The other terms in the checksum expression represent the values as the previous simple checksum example — the current accumulated checksum, the previous accumulated checksum, and the current byte.</p> <p>As mentioned, the checksum is also multiplied each time after every addition. The current byte is added to the existing checksum (like earlier), but it is then also multiplied by the chosen multiplier. The calculation structure is the same as that of a polynomial, and can be evaluated as such — where the multiplier is the indeterminate of the polynomial and the message bytes are its coefficients. Also the example here uses a non-prime modulus to keep things simpler; actual implementations use a prime modulus.</p></details><p>This is a type of <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Rolling_hash#Polynomial_rolling_hash target=_blank>polynomial rolling hash</a>, and the checksum here is called a hash. These hashes have much lower chances of collisions than the simple checksum method, for an integer multiplier <code>x</code> and a big prime <code>p</code>.<details><summary>Hashes</summary> <p>A <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Hash_function target=_blank>hash function</a> is any function that maps an input to a fixed sized output, called the hash. Both the simple addition checksum and the polynomial hash use modular addition and thus always map to fixed range outputs. So technically both are hash functions.</p></details><p>While the rolling polynomial hashes make collisions a lot less likely, it does not solve the forgery issue. If an attacker know the multiplier <code>x</code> they can easily recalculate the hash of a modified ciphertext and send that instead. In fact, attackers can find the multiplier rather easily — the multiplier is simply the root in the polynomial hash expression, which can be calculated using <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Cantor%E2%80%93Zassenhaus_algorithm target=_blank>existing algorithms</a>.<p><canvas id=canvasPolyhash></canvas><details open><summary>Forging polynomial hashes</summary> <p>In the above example, two parties secretly exchange the multiplier. However, attackers can still forge hashes because extracting the multiplier is somewhat trivial. Since the attackers have access to the hash and the original ciphertext, they can use this information to construct a polynomial (its coefficients are simply the bytes of the ciphertext), and then solve for the root — the multiplier. With the knowledge of multiplier, the attackers can now recalculate the hash for any modified ciphertext, and just send the new forged hash instead.</p></details><p>The above attack relies on being able to find the root of the polynomial. One way to block these type of attacks is by masking the constant term (the hash) to prevent the attackers from finding the root. That is, for a polynomial [hash] expression:<p><code>(C1·x^q + C2·x^(q-1) + ... + Cq-1·x^2 + Cq·x^1) ≡ y (mod p)</code><p>The constant <code>y</code> (the output hash) is needed to quickly solve for the root. So, if the hash values are not made public, attackers will not be able to find the the root efficiently. Without the multiplier (the root), attackers cannot forge hashes for modified ciphertexts, while the probability of a collision remains close to zero.<p>A way to mask the hash value is to simply encrypt them before sending it. This can be done using a one-time pad — padding the real value with a random value. In effect, the value that is sent to the receiver is then:<p><code>(H(C, x) + k) mod N</code><br> <code>H(C, x) = (C1·x^q + C2·x^(q-1) + ... + Cq-1·x^2 + Cq·x^1) mod p</code><p>Where the addition of <code>k</code> over mod <code>N</code> acts as the one-time pad, used for padding and masking the polynomial hash <code>H(C, r)</code>. So the complete hashing scheme now takes in <em>two</em> secret values: a secret multiplier <code>x</code> and a secret one-time pad <code>k</code>.<p><canvas id=canvasMachash></canvas> Current Byte Block: <span class=hexTextBox id=spanMachashByte></span><br> Keyed Hash: <span class=hexTextBox id=spanMachashHashKeyed></span><br> Padded Hash: <span class=hexTextBox id=spanMachashHashPadded></span><br><p><input id=inputMachashKey><br> <input id=inputMachashKeyPad><button id=buttonMachashIncrement>Goto Next Byte Block</button><details open><summary>Masked polynomial hash</summary> <p>The above input text boxes are for the multiplier and one-time pad respectively. The hash calculation in here is very similar to the polynomial rolling hash — the only difference is that the output hash is now padded with a secret one-time pad as well, in order to mask the ‘real’ polynomial hash.</p></details><p>Since the hash is now masked, the actual value of the constant term in the polynomial is hidden from attackers, preventing them from finding its root to create forgeries.<p><canvas id=canvasFailhash></canvas><details open><summary>Failed forgery</summary> <p>If the communicating parties secretly exchange both the multiplier and the one-time pad, an attacker will not be able to extract the multiplier since the constant term (the hash) is now masked by the one-time pad. The attacker only has access to the padded hash. Without the knowledge of the multiplier, the attacker cannot recalculate/forge hashes, and the probability of collision remains close to zero.</p> <p>The receiver, who has both the multiplier and the one-time pad, can easily calculate the hash of the ciphertext — and then verify the authenticity of the ciphertext by comparing the calculated hash with the received hash. If both hashes match, the receiver can be reasonably confident that the ciphertext was not modified.</p></details><p>There aren’t many ways to break this hashing scheme. In fact, it is provably secure for a big enough prime <code>p</code> and modulus <code>N</code>, and for a random pad <code>k</code> sampled from a finite field of size <code>N</code>. In short, the above hashing technique prevents attackers from tampering with ciphertexts — or more accurately, it ensures that any tampering with the ciphertext is easily detected.<p>But the above solution does not actually ‘solve’ the problem. It simply shifts the problem from the secure exchange of the hash to the secure exchange of the multiplier and the one-time pad. In other words, this method relies on the secret exchange of the multiplier and the one-time pad — data that is at least as long as the hash itself (since the one-time pad needs to be at least as long as the hash; the multiplier is ideally of the same size as well). Which then begs the question: Why not send the hash secretly, instead of secretly sending the one-time pad and multiplier?<p>This is a very valid question in isolation, but as discussed, these authenticators are often paired with stream ciphers — which usually have an already existing mechanism for generating pseudorandom numbers from a small seed. So, the seed used for encrypting plaintexts can also be used to derive a random multiplier and one-time pad; there is no separate need for securely exchanging the multiplier and pad.<p><canvas id=canvasSecretsExchange></canvas><details open><summary>Reusing secrets</summary> <p>There is no separate need to exchange the hash (or the multiplier and pad) secretly; the seed used for encrypting data can also be used for authentication. The seed usually generates a stream of pseudorandom numbers — some of which can be used for the random multiplier <code>x</code> and the one-time pad <code>k</code> for calculating and padding the hash. The padded hash <code>H</code> can then be sent publicly.</p> <p>Assuming the seed is exchanged securely, both the sender and receiver will generate the same multiplier and one-time pad, while they remain unknown to everyone else. So attackers cannot easily create forgeries since they only have knowledge of the publicly sent <strong>padded</strong> hashes, while the communicating parties can easily authenticate ciphertexts as they all have the same multiplier and one-time pad.</p></details><p>So, the ciphertexts and the (padded) hashes can be sent publicly without leaking the original plaintexts, and making forgeries infeasible — as long as the initial seed values are exchanged securely. But how <em>exactly</em> do these hashes integrate with ChaCha20?<h2 id=ChaCha20-Poly1305>ChaCha20-Poly1305</h2><p>A widely used polynomial rolling hash function is <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Poly1305 target=_blank>Poly1305</a>. It uses the same construction as the hash functions outlined above, and is frequently used alongside ChaCha20 as a ciphertext authenticator. As its name suggests, the hash is evaluated over a prime field with modulus 2^130 - 5. The hash, if used as an authenticator, is then also masked using a one-time pad; and then (usually) reduced to 128-bits. That is:<p><code>H(C, x) = (C1·x^q + C2·x^(q-1) + ... + Cq·x^1) mod 2^130-5</code><br> <code>T = (H(C, x) + k) mod 2^128</code><p>Where <code>H(C, x)</code> is a polynomial rolling hash, in which the bytes of the ciphertext <code>C</code> are as its coefficients, and <code>x</code> is the multiplier — evaluated over the prime field 2^130-5. Meanwhile <code>k</code> is a one-time pad (a random number). The tag <code>T</code> is the modular addition of the two numbers over the integer 2^128.<p><canvas id=canvasPoly1305></canvas> Current Block: <span class=hexTextBox id=spanPoly1305Byte></span><br> Keyed Hash: <span class=hexTextBox id=spanPoly1305HashKeyed></span><br> Padded Hash (Tag): <span class=hexTextBox id=spanPoly1305HashPadded></span><br><p><button id=buttonPoly1305NewKeys>Generate New Keys</button><button id=buttonPoly1305Increment>Goto Next Byte Block</button><details open><summary>Poly1305</summary> <p>While the previous constructions used a 32-bit multiplier and one-time pad, Poly1305 defines using a 128-bit multiplier and a 128-bit pad. The operations are same as any other polynomial rolling hash — the 128-bit chunks of the ciphertext are (after slight modification) multiplied with the 128-bit multiplier, and then added to the accumulated sum, and evaluated over the prime field 2^130-5. Poly1305 also specifies more details — how the 128-bit ciphertext segments is modified to form the coefficients, and how the 128-bit multiplier is constructed. This is described in more detail later.</p> <p>Conventionally, the Poly1305 multiplier is denoted by <code>r</code> while the one-time pad is denoted as <code>s</code>.</p></details><details open><summary>Tags and MACs</summary> <p>Because the above hash outputs can be used for verifying the authenticity of messages, they are aptly called <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Message_authentication_code target=_blank>message authentication codes</a> or MACs. These are also sometimes referred to as tags.</p> <p>Not all hashes can be considered MACs; the simple checksum hash and the polynomial rolling hash without the keys and one-time pad are technically not MACs as they are not considered to be secure against forgeries. Generally, MACs use some shared secret information to verify the authenticity of messages.</p></details><p>If you observe the illustration above, you will notice a few things. First, the coefficients of the polynomial <code>C1</code>, <code>C2</code>, … <code>Cq</code> are not 16 bytes (128 bits), but 17 bytes. Poly1305 defines interpreting the 16-byte ciphertext chunks as 17-byte coefficients by appending a byte with value <code>0x01</code> to each of the 16-byte chunks of the ciphertext. If the final chunk is smaller than 16 bytes, then <code>0x01</code> is appended to the last chunk, and the remaining bits are zero padded to 17 bytes.<details open><summary>One-padding rationale</summary> <p>The added <code>0x01</code> makes the block length unambiguous. For example, the byte strings <code>01</code> and <code>01 00</code> are different, but would return the same hash — since both have the same coefficient values <code>0x010000...</code> and <code>0x010000...</code>. When they are padded with a one, the coefficients become <code>0x01010000...</code> and <code>0x01000100...</code>. Since the coefficients themselves are different, the hashes would be different as well — eliminating any ambiguity and reducing collisions.</p></details><p>Second, the 128-bit multiplier has some structure. Poly1305 specifies the multiplier as a 16-byte integer where the top four bits of bytes of <code>r[3]</code>, <code>r[7]</code>, <code>r[11]</code>, and <code>r[15]</code>, as well as the bottom two bits of <code>r[4]</code>, <code>r[8]</code>, <code>r[12]</code> are all zeroes. This is not for security. In fact, this sacrifices <em>some</em> security, but this restriction was chosen (alongside the prime 2^130 - 5), because it <a rel="noopener nofollow noreferrer external" href=https://loup-vaillant.fr/tutorials/poly1305-design#poly1305s-prime-2130---5 target=_blank>makes calculations faster</a>.<p>The rest of Poly1305 is similar to the padded hash function described above. The output from the polynomial evaluation (the multiplications-additions of the ciphertext with <code>r</code>) is reduced using modulo 2^128. A 128-bit (16-byte) one-time pad <code>s</code> masks the polynomial output, and results in a 128 bit tag or MAC.<p>Poly1305 is typically used alongside ChaCha20, and there is a specification defining how the two interact. The ChaCha20-Poly1305 specification defines reserving the first block of the ChaCha keystream (block with counter value zero) to derive <code>r</code> and <code>s</code>. The rest of the keystream (generated using non-zero counter values) can be used for encrypting the plaintext message.<p><canvas id=canvasChaChaPolyIntegrated></canvas><details open><summary>ChaCha20-Poly1305 specification</summary> <p>The 128-bit values for <code>r</code> and <code>s</code> for Poly1305 are derived from the first block of a ChaCha keystream. Only the initial 256 bits of the block are used; the remaining bits are discarded. The first 128 bits form <code>r</code> while the next 128-bits are used for <code>s</code>. Additionally, some of the bits of <code>r</code> are clamped as mentioned earlier — the top four and bottom two bits of specific bytes are set to zero.</p></details><p>So a single 256-bit ChaCha key is enough for both encryption and authentication — it derives both the pseudorandom keystream as well as the secrets for Poly1305. Since the ChaCha keystream is pseudorandom and non-recurring across different messages, the pad <code>s</code> of Poly1305 inherits these properties, and thus remains secure.<p>It is worth noting that there are slight differences between ChaCha20 and the ChaCha20 used in ChaCha20-Poly1305. Unlike ChaCha20, the initial state in ChaCha20-Poly1305 uses a 32-bit counter and 96-bit nonce instead of a 64-bit counter and 64-bit nonce.<p><canvas id=canvasChaChaPolySequence></canvas><p>This allows more messages to be encrypted using the same key, albeit shorter ones. But it is not a problem, since a 32-bit counter still allows for encryption of messages up to 256 GiB in size.<h3 id=Associated_Data>Associated Data</h3><p>Sometimes ciphertexts can be paired with some associated plaintext data, which do not need or should not be encrypted, but still need to be verified — data such as message timestamps, addresses, protocol versions, etc. This cleartext data is often sent alongside the ciphertext, and both are authenticated using a single MAC. This additional data is called associated data, and the authenticated encryption scheme that authenticates the associated data alongside the ciphertext, is referred to as <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Authenticated_encryption#Authenticated_encryption_with_associated_data target=_blank>authenticated encryption with associated data</a>, or AEAD.<p><canvas id=canvasAssociatedData></canvas><p>ChaCha20-Poly1305 can authenticate ciphertext <code>C</code> along with some associated data <code>AD</code> by concatenating together, and treating them as a single unit to generate the MAC. The ChaCha20-Poly1305 specification defines <code>AD</code> and <code>C</code> to be separately padded to make their total sizes an even multiple of sixteen bytes. The padded <code>AD</code> and <code>C</code> as well as two other 64-bit fields, <code>len(AD)</code> and <code>len(C)</code>, are concatenated. Poly1305 then produces the MAC of this concatenated string.<details><summary>Message size limit</summary> <p>While Poly1305 can be used for authenticating messages of arbitrary length, the 64-bit fields for <code>len(AD)</code> and <code>len(C)</code> restricts the possible size of the associated data <code>AD</code> and the ciphertext message <code>C</code> to 2^64 bits, or 16 EiB. But ciphertext <code>C</code> is further bottlenecked by the 32-bit counter of the ChaCha20 initial state — limiting message sizes to only 256 GiB. If required however, the ChaCha20-Poly1305 specification permits changing the counter to be set to its original size of 64 bits to allow encrypting and authenticating longer messages.</p></details><p>This is basically the entirety of <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/ChaCha20-Poly1305 target=_blank>ChaCha20-Poly1305</a>, a stream cipher used for encrypting messages, and authenticating the encrypted messages along with optional associated data. It used in <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3 target=_blank>TLS</a>, <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Secure_Shell#Algorithms target=_blank>SSH</a>, <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/WireGuard#Protocol target=_blank>WireGuard</a>, and <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/ChaCha20-Poly1305#Use target=_blank>other protocols</a>. It is likely that the data on this webpage was encrypted with ChaCha20 and then verified using Poly1305.<p>The next section is a brief discussion on the security of ChaCha20-Poly1305. Feel free to skip to <a href=https://ekunazanu.foo/lab/stream-ciphers/#Other_Ciphers>the end</a>.<h2 id=Security_Guarantees>Security Guarantees</h2><p>The probability that attackers cannot decrypt a given ciphertext relies on the security of ChaCha20. Meanwhile the possibilities of forgeries depends on the security of Poly1305, as well as ChaCha20.<h3 id=Poly1305_Security>Poly1305 Security</h3><p>Since the output of Poly1305 is combined with a pseudorandom pad, it is as secure as the algorithm used to generate pseudorandom number. However, it does not imply that it is perfectly secure if the pad is purely random — since collisions are still possible as the of the size of the MAC is <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Pigeonhole_principle target=_blank>finite</a>.<p>Consider a prime field <i>GF(p)</i>, taken as <i>x mod p</i> where <i>x ∈ ℤ</i> and <i>p</i> is prime. Then, for some polynomial of degree one, e.g. <i>a·x = h</i> where <i>a,x,h ∈ GF(p)</i> — there exists, at most one solution or root for <i>x</i>. The probability that <i>x</i> will produce <i>h</i> for a given <i>a</i> is <i>1/n</i>, where <i>n</i> is the number of all possible values for <i>x</i>. That is, <i>n = p</i>.<p><input id=sliderPolynomial1Coefficient1 type=range> Coefficient (a): <span id=spanPolynomial1Coefficient1></span><br> <input id=sliderPolynomial1Range type=range> Result (h): <span id=spanPolynomial1Range></span><br><p><span class=hexTextBox id=spanPolynomial1Equation></span><br> <span class=hexTextBox id=spanPolynomial1Root></span><br><p>For a polynomial of degree two, e.g. <i>a·x^2 + b·x = h</i>, there can be at most two solutions for <i>x</i>. The probability that <i>x</i> produces <i>h</i> for a given pair <i>a,b</i> is at most <i>2/n</i>. Where <i>n</i> is the total number of possible values for <i>x</i>. Here again, <i>n = p</i>.<p><input id=sliderPolynomial2Coefficient1 type=range> Coefficient (a): <span id=spanPolynomial2Coefficient1></span><br> <input id=sliderPolynomial2Coefficient2 type=range> Coefficient (b): <span id=spanPolynomial2Coefficient2></span><br> <input id=sliderPolynomial2Range type=range> Result (h): <span id=spanPolynomial2Range></span><br><p><span class=hexTextBox id=spanPolynomial2Equation></span><br> <span class=hexTextBox id=spanPolynomial2Root></span><br><p>Similarly, for a <i>q</i> degree polynomial, e.g. <i>C1·x^q + C2·x^(q-1) + … + Cq·x^1 = h</i>, <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Finite_field#Roots_of_unity target=_blank>there are at most</a> <i>q</i> number of roots for <i>x</i>, such that <i>x ∈ GF(p)</i>. The probability that <i>x</i> produces <i>h</i> for some given coefficients is, at most <i>q/n</i> — where <i>n</i> is again the number of possible values for <i>x</i>.<p><code>If deg(f(x)) = Q</code><br> <code>=> x can have at most Q roots</code><p>Now assume a message <i>m</i> has a polynomial hash <i>h</i>. The probability of another distinct message <i>m’</i> having the same hash digest <i>h</i> will then depend on the on the degree of its polynomial. The polynomial in Poly1305 is of the form C1·r^q + C2·r^(q-1) + … + Cq·r^1. The coefficients of the polynomial are constructed from 16-byte chunks of a message, and thus, the degree of the polynomial is <i>⌈L/16⌉</i> — where <i>L</i> is the length of the message. So the probability of a message <i>m’</i> having the (same) hash <i>h</i> is at most <i>⌈L/16⌉/n</i>.<p><code>If bytes(m) = L</code><br> <code>=> deg(f(x)) = ⌈L/16⌉</code><br> <code>=> x can have, at most, ⌈L/16⌉ roots</code><p>Since the indeterminate of the polynomial in Poly1305 <i>r</i> is a 128-bit number with 22 bits always set to zero, the total number of possible values for <i>r</i> is 2^106. Thus, the probability of a message having a specific hash is at most <i>⌈L/16⌉/2^106</i>.<p><code>Let m != m' be two messages of length up to L bytes</code><br> <code>If h(m) ≡ h(m') (mod p)</code><br> <code>=> h(m) - h(m') ≡ 0 (mod p)</code><br> <code>=> f(x) = h(m) - h(m')</code><br> <code>=> deg(f(x)) = ⌈L/16⌉</code><br> <code>=> x can have, at most, ⌈L/16⌉ roots</code><p>However, the polynomial is evaluated in <i>GF(p)</i> — the result is <i>h ∈ [0, 2^130 - 5)</i>, while the hash in Poly1305 is designed to be of 128 bits. So <i>h</i> is reduced modulo 2^128. Discarding two bits from <i>h</i> causes some outputs to be <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Modular_arithmetic#Congruence target=_blank>congruent</a> to others. More specifically, there are eight congruent values (mod 2^128) for <i>H(m)</i> - <i>H(m’)</i> ≡ 0.<p>This increases the differential probability to <i>8·⌈L/16⌉/2^106</i>, at most — because there are now eight times as many possibilities for two messages to have the same hash.<p>Now if <i>D</i> forgery attempts are made, then the probability of a single successful forgery is at most <i>D·8·⌈L/16⌉/2^106</i>. The probability of forgeries is <a rel="noopener nofollow noreferrer external" href=https://cr.yp.to/mac/poly1305-20050329.pdf target=_blank>independent</a> of the number of messages authenticated — if the pad is <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Discrete_uniform_distribution target=_blank>uniformly random</a>.<details><summary>Influence of the pad on probability of forgeries</summary> <p>Generally, the pad is generated by a function <i>f</i> that maps a smaller nonce to a larger output space. If <i>f</i> has a uniform random distribution, then the probability that the pad is some specific number is <i>1/G</i>, where <i>G</i> is the total number of elements in the output space. If the probability the pad is a specific number is <i>1/G</i>, the probability that the pads are <i>C</i> specific numbers — or the probability that <i>f</i> interpolates <i>C</i> specific points is, at most <i>1/G · 1/G · … · 1/G = 1/(G^C)</i>.</p> <p>A uniform random <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Injective_function target=_blank>injective function</a> that has non-repeating nonces as its input can also be used for generating the pad. Then, the pad will not also repeat. The probability that it interpolates <i>C</i> number of distinct points is then <i>1/G · 1/(G-1) · 1/(G-2) · … · 1/(G-(C-1))</i>. This can be simplified to <i>((1 - (C - 1)/G)^-(C/2))/(G)^C</i>. This can be used for evaluating the probability when <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Advanced_Encryption_Standard target=_blank>AES</a> is used as <i>f</i> — e.g. in Poly1305-AES.</p> <p>If <i>f</i> has a maximum C-interpolation probability at most <i>δ/(G^C)</i> and a maximum (C + 1)-interpolation probability at most <i>δε/(G^C)</i>, then the <a href="https://cr.yp.to/antiforgery/securitywcs-20050227.pdf#page=9" rel="noopener nofollow noreferrer external" target=_blank>probability of a successful forgery</a> using <i>C</i> distinct messages is <i>Dδε</i>, where <i>ε</i> is the probability of two messages having the same hash.</p> <p>The pad in Poly1305 of ChaCha20-Poly1305 is generated using a ChaCha20 block, and can be assumed to have an interpolation probability of <i>1/(G^C)</i> as there is no restriction on pad repetition. So the probability of a successful forgery using <i>C</i> messages is at most <i>Dε</i>, or <i>D·8·⌈L/16⌉/2^106</i> — it is independent of the number of message authentications.</p> <p>It is important to note that ChaCha20 blocks may still be distinguished from true random numbers with some different probability <i>δ</i>, which affects the overall probability of successful forgeries.</p></details><p>However, the Poly1305 pad in ChaCha20-Poly1305 is generated using a pseudorandom ChaCha20 block — it is not guaranteed to be truly uniformly random. If the probability of distinguishing a ChaCha20 block from a truly random keystream is <i>δ</i>, then the probability of a successful forgery is, at most <i>δ + D·8·⌈L/16⌉/2^106</i>.<h3 id=ChaCha20_Security>ChaCha20 Security</h3><p>The randomness of the ChaCha20 output stream determines its security, as well as the security of Poly1305. This can be tested statistically.<p>Changing the initial state of a ChaCha20 block (<a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Avalanche_effect#Strict_avalanche_criterion target=_blank>even by a single bit flip</a>) should ideally create a new uniform random block of bits. That is, the individual probability of all the bits of the output block flipping should be half — on average, <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Confusion_and_diffusion#Diffusion target=_blank>half the bits should flip</a> for a change in the initial state. Or more specifically, the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Hamming_distance target=_blank>number of bit flips</a> due to changes the initial state should form a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Binomial_distribution target=_blank>binomial distribution</a> centered around half the bit length of the output block.<p><canvas id=canvasChaChaDiffusion></canvas> <button id=buttonChaChaDiffusion>Random Block</button> <button id=buttonChaChaDiffusion1000>Thousand Random Blocks</button> <button id=buttonChaChaDiffusionReset>Reset</button><details open><summary>Testing randomness statistically</summary> <p>Changing the initial state of a ChaCha20 block — even by a single bit flip — should ideally create a new output state where each bit has equal chances of being either one or zero. This means roughly half of all the bits in a block should should flip. Since a ChaCha block consists of 512 bits, on average 256 of the bits should flip.</p> <p>The above example charts the number of bit flips in the output ChaCha20 block, for a (single) bit flip in the initial state block. Note how the number of bit flips is close to 256, suggesting strong randomness.</p></details><p>Empirical evidence suggests that it is the case. ChaCha20 generates blocks that appear uniformly random. Evaluating the randomness analytically is much more difficult however, because the interaction between the bits of the block quickly grows complex with each round. While there are ways to <a href="https://webdoc.sub.gwdg.de/ebook/dissts/Bochum/Daum2005.pdf#page=57" rel="noopener nofollow noreferrer external" target=_blank>measure the avalanche effect</a> — small changes flipping roughly half the bits, there is no proof that ChaCha20 blocks blocks can be distinguished (or not) from truly uniform random bitstreams.<p>There are however other ways to test its security — for example, using <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Linear_cryptanalysis target=_blank>linear</a>, <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Differential_cryptanalysis target=_blank>differential</a> or <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Rotational_cryptanalysis target=_blank>rotational</a> <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Cryptanalysis target=_blank>cryptanlysis</a>. ChaCha with six rounds has been <a rel="noopener nofollow noreferrer external" href=https://cr.yp.to/streamciphers/attacks.html#chacha6 target=_blank>broken</a>, but there have been no successful attacks on twenty rounds of ChaCha.<p>ChaCha20-Poly1305, therefore is generally <a rel="noopener nofollow noreferrer external" href=https://www.cryptrec.go.jp/exreport/cryptrec-ex-2601-2016.pdf target=_blank>considered secure</a>.<h2 id=Other_Ciphers>Other Ciphers</h2><p>Although <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Stream_cipher#Comparison target=_blank>other stream ciphers</a> exist, ChaCha20 is the most widely used cipher currently. Other types of symmetric encryption, such as <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Block_cipher target=_blank>block ciphers</a> are also widely used for encryption and decryption. These generally use <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/S-box target=_blank>substitution</a> and <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Permutation_box target=_blank>permutation</a> boxes to diffuse the data blocks in place, instead of generating a keystream.<p>Another detail that was glossed over was the secure exchange of the 256-bit keys. This entire cryptosystem relies on the secure distribution of the shared keys. It is achieved using <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Public-key_cryptography target=_blank>asymmetric key cryptography</a>. This field of cryptography is quite different from the ciphers mentioned above — usually relying on the properties of <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Number_theory target=_blank>number theory</a> and <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Group_theory target=_blank>group theory</a> instead — but is equally interesting.<hr><h2 id=References>References</h2><ul><li>Daniel J. Bernstein: <a rel="noopener nofollow noreferrer external" href=https://cr.yp.to/chacha/chacha-20080128.pdf target=_blank>ChaCha, a variant of Salsa20</a><li>Daniel J. Bernstein: <a rel="noopener nofollow noreferrer external" href=https://cr.yp.to/mac/poly1305-20050329.pdf target=_blank>The Poly1305-AES message-authentication code</a><li>Moxie Marlinspike : <a rel="noopener nofollow noreferrer external" href=https://moxie.org/2011/12/13/the-cryptographic-doom-principle.html target=_blank>The Cryptographic Doom Principle</a><li>IRTF RFC 8439: <a rel="noopener nofollow noreferrer external" href=https://datatracker.ietf.org/doc/html/rfc8439 target=_blank>ChaCha20 and Poly1305 for IETF Protocols</a></ul><script>const WIDTH = 1280;
+const LINEWIDTH = 2
+const LETTERS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+const LETTERBOXLENGTH = 16;
+const LETTERBOXHEIGHT = 100;
+const LETTERBOXWIDTH = 76;
+const LETTERINDEXOFFSETX = 5;
+const LETTERINDEXOFFSETY = 5;
+const CHACHAWORDLABELS = ["a", "b", "c", "d"];
+const CHACHACONSTANTS = [0x61707865, 0x3320646e, 0x79622d32, 0x6b206574];
+const CHACHAWORDPERMS = [[[0, 5, 10, 15], [1, 6, 11, 12], [2, 7, 8, 13], [3, 4, 9, 14]],
+                         [[0, 4, 8, 12], [1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15]]];
+const CHACHASAT = new Array(16).fill(0xFFFFFFFF);
+const CHACHAZRO = new Array(16).fill(0x00000000);
+const GRAY = "#555";
+const LGRAY = "#888";
+const BLACK = "#000";
+const DIFFCOLOR = "#8bd";
+const HIGHCOLOR = "#f08";
+const DISTCOLORS = ["#000", "#fc9", "#9cf", "#eaf", "#7a9", "#bbb"];
+const PARTYLABELS = ["A", "B", "C", "D", "E"];
+const HEXCHECKER = 0xCCCC3333;
+const HEXVSTRIPE = 0xAAAAAAAA;
+const HEXVSTRIPE2 = 0xF0F0F0F0;
+const HEXHSTRIPE = 0xFF00FF00;
+const HEXHSTRIPE2 = 0xFF000000;
+const HEXHSTRIPE3 = 0xFF0000FF;
+// example chacha IV with key = 0xAAAAAAAA, and counter, nonce = 0
+// as well as example data and xor streams for creating diagrams
+const EG_CHACHAKEY = new Array(8).fill(HEXVSTRIPE);
+const EG_CHACHAINITBLOCK = createChaChaInitBlock(EG_CHACHAKEY);
+const EG_CHACHASTRUCT = createEncryptionStreams(EG_CHACHAINITBLOCK, 5);
+const EG_CHACHADATASTREAM = EG_CHACHASTRUCT.dataStream;
+const EG_CHACHAKEYSTREAM = EG_CHACHASTRUCT.chachaStream;
+const EG_CHACHACIPHERSTREAM = EG_CHACHASTRUCT.xorStream;
+const EG_DATA_STREAMS = [HEXCHECKER, HEXVSTRIPE2, HEXHSTRIPE2, HEXHSTRIPE3];
+const LETTERPROBDIST = [0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015, 0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749, 0.07507, 0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758, 0.00978, 0.02360, 0.00150, 0.01974, 0.00074];
+
+
+let varCaesarKey = [1];
+let varCaesarText = "Encrypting stuff";
+const canvasCaesar = initializeCanvas("canvasCaesar", 390);
+const canvasCaesarDecrypt = initializeCanvas("canvasCaesarDecrypt", 390);
+const sliderCaesar = initializeSliders("sliderCaesar", 0, 25, 1, varCaesarKey);
+const inputCaesar = document.getElementById("inputCaesar");
+const spanCaesar = document.getElementById("spanCaesar");
+initializeCanvasText(canvasCaesar);
+inputCaesar.value = varCaesarText;
+sliderCaesar.addEventListener("input", updateCaesar);
+inputCaesar.addEventListener("input", updateCaesar);
+function updateCaesar() {
+    canvasCaesar.clearRect(0, 0, WIDTH, 390);
+    canvasCaesarDecrypt.clearRect(0, 0, WIDTH, 390);
+    varCaesarKey = [Number(sliderCaesar.value)];
+    let varCaesarCiphertext = drawLetterShift(canvasCaesar, varCaesarKey, inputCaesar.value, false);
+    drawLetterShift(canvasCaesarDecrypt, varCaesarKey, varCaesarCiphertext, spanCaesar, -1);
+}
+updateCaesar();
+
+
+let varRot13Text = "Encrypting stuff";
+const canvasRot13 = initializeCanvas("canvasRot13", 650);
+const inputRot13 = document.getElementById("inputRot13");
+const spanRot13 = document.getElementById("spanRot13");
+initializeCanvasText(canvasRot13);
+inputRot13.value = varRot13Text;
+inputRot13.addEventListener("input", updateRot13);
+function updateRot13() {
+    canvasRot13.clearRect(0, 0, WIDTH, 650);
+    let varRot13Ciphertext = drawLetterShift(canvasRot13, [13], inputRot13.value, false, 1);
+    drawLetterShift(canvasRot13, [13], varRot13Ciphertext, spanRot13, 1, true, 275);
+}
+updateRot13();
+
+
+let varVignereKey = [0, 1, 2];
+let varVignereText = "Encrypting stuff";
+const canvasVignere = initializeCanvas("canvasVignere", 390);
+const canvasVignereDecrypt = initializeCanvas("canvasVignereDecrypt", 390);
+const inputVignere = document.getElementById("inputVignere");
+const spanVignere = document.getElementById("spanVignere");
+initializeCanvasText(canvasVignere);
+inputVignere.value = varVignereText;
+inputVignereKey.value = varVignereKey;
+inputVignere.addEventListener("input", updateVignere);
+inputVignereKey.addEventListener("input", updateVignere);
+function updateVignere() {
+    canvasVignere.clearRect(0, 0, WIDTH, 390);
+    canvasVignereDecrypt.clearRect(0, 0, WIDTH, 390);
+    varVignereKey = getArrayFromString(inputVignereKey.value);
+    let varVignereCiphertext = drawLetterShift(canvasVignere, varVignereKey, inputVignere.value, false);
+    drawLetterShift(canvasVignereDecrypt, varVignereKey, varVignereCiphertext, spanVignere, -1);
+}
+updateVignere();
+
+
+const LETTERPROBDIST_SEPARATE = getDisparateDistributions([4, 0, 1, 2, 3]);
+const arrayLetterFrequencyStaticKey = [[1], [1, 2]];
+const canvasLetterFrequencyStatic = [];
+for (let i = 0; i < 2; i++) {
+    canvasLetterFrequencyStatic[i] = initializeCanvas(`canvasLetterFrequencyStatic${i}`, 870)
+    drawDistribution(canvasLetterFrequencyStatic[i], LETTERPROBDIST_SEPARATE);
+    drawDistribution(canvasLetterFrequencyStatic[i], getFrequencyDistributionFromKey(LETTERPROBDIST_SEPARATE, arrayLetterFrequencyStaticKey[i]), 15, 445);
+}
+
+
+let varLetterFrequencyKey = Array.from({ length: 26 }, (_, i) => i);
+let arrayLetterFrequencyTDistribution = [];
+const linkLetterFrequencyUniform = document.getElementById("linkLetterFrequencyUniform");
+const linkLetterFrequencyGaussian = document.getElementById("linkLetterFrequencyGaussian");
+const linkLetterFrequencyPerfect = document.getElementById("linkLetterFrequencyPerfect");
+const canvasLetterFrequency = initializeCanvas("canvasLetterFrequency", 870);
+const inputLetterFrequencyKey = document.getElementById("inputLetterFrequencyKey");
+const spanLetterFrequencyKey = document.getElementById("spanLetterFrequencyKey");
+inputLetterFrequencyKey.value = varLetterFrequencyKey;
+drawDistribution(canvasLetterFrequency, LETTERPROBDIST_SEPARATE);
+inputLetterFrequencyKey.addEventListener("input", updateLetterFrequency);
+linkLetterFrequencyGaussian.addEventListener("click", () => {
+    inputLetterFrequencyKey.value = returnGaussianValues(25);
+    updateLetterFrequency();
+});
+linkLetterFrequencyUniform.addEventListener("click", () => {
+    inputLetterFrequencyKey.value = Array.from({ length: 25 }, () => Math.floor(Math.random() * 26));
+    updateLetterFrequency();
+});
+linkLetterFrequencyPerfect.addEventListener("click", () => {
+    inputLetterFrequencyKey.value = Array.from({ length: 26 }, (_, i) => i);
+    updateLetterFrequency();
+});
+function updateLetterFrequency() {
+    canvasLetterFrequency.clearRect(0, 440, WIDTH, 430);
+    varLetterFrequencyKey = getArrayFromString(inputLetterFrequencyKey.value);
+    arrayLetterFrequencyTDistribution = getFrequencyDistributionFromKey(LETTERPROBDIST_SEPARATE, varLetterFrequencyKey);
+    drawDistribution(canvasLetterFrequency, arrayLetterFrequencyTDistribution, 15, 445);
+    spanLetterFrequencyKey.innerHTML = varLetterFrequencyKey;
+}
+updateLetterFrequency();
+
+
+const arrayLetterFrequencyStaticMultipleDistributions = [];
+const arrayLetterFrequencyStaticMultipleKeys = [[9], [18], [1]];
+const arrayLetterFrequencyStaticMultipleColors = [["#9b8"], ["#c9d"], ["#7ce"]];
+const canvasLetterFrequencyStaticMultiple = initializeCanvas("canvasLetterFrequencyStaticMultiple", 850);
+arrayLetterFrequencyStaticMultipleDistributionC = getFrequencyDistributionFromKey(LETTERPROBDIST_SEPARATE, arrayLetterFrequencyStaticMultipleKeys.flat());
+drawCipherRects(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleColors);
+drawDistribution(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleDistributionC, 15, 155, LETTERS, 9, ["#000"], 32, 140);
+for (let i = 0; i < arrayLetterFrequencyStaticMultipleKeys.length; i++) {
+    arrayLetterFrequencyStaticMultipleDistributions[i] = getFrequencyDistributionFromKey(LETTERPROBDIST_SEPARATE, arrayLetterFrequencyStaticMultipleKeys[i]);
+    drawDistribution(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleDistributions[i], 15, 330 + i * 170, LETTERS, 7, arrayLetterFrequencyStaticMultipleColors[i], 32, 140);
+}
+
+
+let varMapPlainCipherCardinality = 2;
+let arrayMapPlainCipherKey = [];
+let arrayMapPlainCipherPlaintextSymbols = [];
+const varMapPlainCipherCiphertextSymbol = 12;
+const canvasMapPlainCipher = initializeCanvas("canvasMapPlainCipher", 370);
+const sliderMapPlainCipher = initializeSliders("sliderMapPlainCipher", 1, 26, 1, varMapPlainCipherCardinality);
+const spanMapPlainCipher = document.getElementById("spanMapPlainCipher");
+sliderMapPlainCipher.addEventListener("input", updateMapPlainCipher);
+function updateMapPlainCipher() {
+    canvasMapPlainCipher.clearRect(0, 0, WIDTH, 420);
+    drawDistributionLabels(canvasMapPlainCipher, LETTERS, 37, 85);
+    drawDistributionLabels(canvasMapPlainCipher, LETTERS, 37, 205);
+    initializeCanvasText(canvasMapPlainCipher, "left");
+    canvasMapPlainCipher.fillText("Plaintext Symbols", 25, 35);
+    canvasMapPlainCipher.fillText("Ciphertext Symbols", 25, 255);
+    varMapPlainCipherCardinality = sliderMapPlainCipher.value;
+    arrayMapPlainCipherKey = generateKeysUnique(varMapPlainCipherCardinality);
+    arrayMapPlainCipherPlaintextSymbols = getSymbols(varMapPlainCipherCiphertextSymbol, arrayMapPlainCipherKey);
+    for (let symbol = 0; symbol < 26; symbol++)
+        drawFunctionMap(canvasMapPlainCipher, arrayMapPlainCipherKey, symbol);
+    drawFunctionMap(canvasMapPlainCipher, arrayMapPlainCipherKey, varMapPlainCipherCiphertextSymbol, "#000");
+    canvasMapPlainCipher.fillText(`${LETTERS[varMapPlainCipherCiphertextSymbol]} ← ${arrayMapPlainCipherPlaintextSymbols}`, 25, 345);
+    spanMapPlainCipher.innerHTML = varMapPlainCipherCardinality + " [" + (arrayMapPlainCipherKey.length > 8 ? arrayMapPlainCipherKey.slice(0, 8).join(", ") + ", ..." : arrayMapPlainCipherKey.join(", ")) + "]";
+}
+updateMapPlainCipher();
+
+
+let varOneTimePadText = "Encrypting stuff";
+let varOneTimePadKey = generateKey(varOneTimePadText.length, 26);
+const canvasOneTimePad = initializeCanvas("canvasOneTimePad", 390);
+const inputOneTimePad = document.getElementById("inputOneTimePad");
+const spanOneTimePad = document.getElementById("spanOneTimePad");
+initializeCanvasText(canvasOneTimePad);
+inputOneTimePad.value = varOneTimePadText;
+inputOneTimePad.addEventListener("input", updateOneTimePad);
+function updateOneTimePad() {
+    canvasOneTimePad.clearRect(0, 0, WIDTH, 390);
+    varOneTimePadKey = generateKey((inputOneTimePad.value).length, 26);
+    drawLetterShift(canvasOneTimePad, varOneTimePadKey, inputOneTimePad.value, spanOneTimePad);
+}
+updateOneTimePad();
+
+
+const canvasOTPReuse = initializeCanvas("canvasOTPReuse", 1124);
+const arrayOTPReuseData1 = Array.from({ length: 32 }, (_, row) => Array.from({ length: 32 }, (_, col) => ((row + col) % 8)));
+const arrayOTPReuseData2 = Array.from({ length: 32 }, (_, row) => Array.from({ length: 32 }, (_, col) => (((row % 2) * col) % 8)));
+const arrayOTPReuseKey = Array.from({ length: 32 }, () => Array.from({ length: 32 }, () => Math.floor(Math.random() * 8)));
+const arrayOTPReuseCipher1 = shiftBits2D(arrayOTPReuseData1, arrayOTPReuseKey, 8);
+const arrayOTPReuseCipher2 = shiftBits2D(arrayOTPReuseData2, arrayOTPReuseKey, 8);
+const arrayOTPReuseDifference = shiftBits2D(arrayOTPReuseCipher1, arrayOTPReuseCipher2, 8, true);
+const arrayOTPReuseColors = ["#fff", "#ddd", "#bbb", "#999", "#777", "#555", "#333", "#000"];
+const arrayOTPReuseBlocks = [[arrayOTPReuseData1, 15, 15], [arrayOTPReuseData2, 375, 15], [arrayOTPReuseKey, 15, 375], [arrayOTPReuseKey, 375, 375], [arrayOTPReuseCipher1, 15, 785], [arrayOTPReuseCipher2, 375, 785], [arrayOTPReuseDifference, 885, 785]];
+for (let i = 0; i < arrayOTPReuseBlocks.length; i++)
+    drawBits2D(canvasOTPReuse, arrayOTPReuseBlocks[i][0], arrayOTPReuseBlocks[i][1], arrayOTPReuseBlocks[i][2], arrayOTPReuseColors, 10);
+drawArrow(canvasOTPReuse, true, 1, 175, 715, 765);
+drawArrow(canvasOTPReuse, true, 1, 535, 715, 765);
+drawArrow(canvasOTPReuse, false, 1, 945, 755, 825);
+
+
+let varVernamText = "0000000011111111";
+let varVernamKey = generateKey(varVernamText.length, 2);
+const canvasVernam = initializeCanvas("canvasVernam", 650);
+const canvasVernamXOR = initializeCanvas("canvasVernamXOR", 650);
+const inputVernam = document.getElementById("inputVernam");
+const spanVernam = document.getElementById("spanVernam");
+const spanVernamXOR = document.getElementById("spanVernamXOR");
+const arrayVernamOperators = ["+", "^"];
+const arrayVernamCanvases = [canvasVernam, canvasVernamXOR];
+const arrayVernamSpans = [spanVernam, spanVernamXOR];
+initializeCanvasText(canvasVernam);
+initializeCanvasText(canvasVernamXOR);
+inputVernam.value = varVernamText;
+inputVernam.addEventListener("input", updateVernam);
+function updateVernam() {
+    varVernamText = (inputVernam.value).replace(/[^01]/g, '');
+    varVernamKey = generateKey(varVernamText.length, 2);
+    let varVernamCiphertext = XORStringArray(varVernamText, varVernamKey);
+    for (let i = 0; i < 2; i++) {
+        arrayVernamCanvases[i].clearRect(0, 0, WIDTH, 650);
+        drawLetterChain(arrayVernamCanvases[i], varVernamText);
+        drawLetterChain(arrayVernamCanvases[i], varVernamCiphertext, 275);
+        drawLetterChain(arrayVernamCanvases[i], varVernamText, 535);
+        drawShiftArrows(arrayVernamCanvases[i], varVernamKey, Math.min(varVernamText.length, LETTERBOXLENGTH), arrayVernamOperators[i]);
+        drawShiftArrows(arrayVernamCanvases[i], varVernamKey, Math.min(varVernamText.length, LETTERBOXLENGTH), arrayVernamOperators[i], 395);
+        arrayVernamSpans[i].innerHTML = varVernamKey;
+    }
+}
+updateVernam();
+
+
+const canvasVernamReuse = initializeCanvas("canvasVernamReuse", 1124);
+const arrayVernamReuseKey = EG_CHACHAKEYSTREAM.slice(0, 32);
+const arrayVernamReuseData1 = new Array(32).fill(HEXVSTRIPE2);
+const arrayVernamReuseData2 = new Array(32).fill(HEXHSTRIPE2);
+const arrayVernamReuseXOR1 = createXORStream(arrayVernamReuseData1, arrayVernamReuseKey);
+const arrayVernamReuseXOR2 = createXORStream(arrayVernamReuseData2, arrayVernamReuseKey);
+const arrayVernamReuseLeak = createXORStream(arrayVernamReuseXOR1, arrayVernamReuseXOR2);
+const arrayVernamReuseBlocks = [[arrayVernamReuseData1, 15, 15], [arrayVernamReuseData2, 375, 15], [arrayVernamReuseKey, 15, 375], [arrayVernamReuseKey, 375, 375], [arrayVernamReuseXOR1, 15, 785], [arrayVernamReuseXOR2, 375, 785], [arrayVernamReuseLeak, 885, 785]];
+for (let i = 0; i < arrayVernamReuseBlocks.length; i++)
+    drawChaChaBlocks(canvasVernamReuse, arrayVernamReuseBlocks[i][0], arrayVernamReuseBlocks[i][1], arrayVernamReuseBlocks[i][2], 10, "#000", "#000", "#000", 2);
+drawArrow(canvasVernamReuse, true, 1, 175, 715, 765);
+drawArrow(canvasVernamReuse, true, 1, 535, 715, 765);
+drawArrow(canvasVernamReuse, false, 1, 945, 755, 825);
+
+
+const canvasKeyExchange = initializeCanvas("canvasKeyExchange", 1080);
+const canvasKeyExchangeChaCha = initializeCanvas("canvasKeyExchangeChaCha", 1080);
+drawArrow(canvasKeyExchange, true, 1, 143, 325, 737);
+drawChaChaEncryptionFromKey(canvasKeyExchange, EG_CHACHAINITBLOCK, EG_CHACHADATASTREAM, EG_CHACHAKEYSTREAM, EG_CHACHACIPHERSTREAM);
+drawChaChaEncryptionFromKey(canvasKeyExchange, EG_CHACHAINITBLOCK, EG_CHACHACIPHERSTREAM, EG_CHACHAKEYSTREAM, EG_CHACHADATASTREAM, 15, 615);
+drawArrow(canvasKeyExchange, true, 1, 869, 495, 567);
+drawLock(canvasKeyExchange, 175, 533);
+canvasKeyExchangeChaCha.drawImage(canvasKeyExchange.canvas, 0, 0);
+initializeCanvasText(canvasKeyExchange, "left");
+initializeCanvasText(canvasKeyExchangeChaCha, "left");
+for (let i = 0; i < 2; i++) {
+    canvasKeyExchange.fillText(PARTYLABELS[i], 15, 135 + i * 600);
+    canvasKeyExchangeChaCha.fillText("Seed", 15, 135 + i * 600);
+    canvasKeyExchangeChaCha.fillText("f", 329, 209 + i * 600);
+}
+
+
+const canvasChaChaSingle = initializeCanvas("canvasChaChaSingle", 480);
+const arrayChaChaSingle = EG_CHACHAKEYSTREAM.slice(0, 16);
+const arrayChaChaSingleXOR = createXORStream(EG_CHACHADATASTREAM, arrayChaChaSingle);
+drawChaChaEncryptionFromKey(canvasChaChaSingle, EG_CHACHAINITBLOCK, EG_CHACHADATASTREAM, arrayChaChaSingle, arrayChaChaSingleXOR);
+
+
+const canvasChaChaPartition = initializeCanvas("canvasChaChaPartition", 606);
+const arrayChaChaPartitionIndices = [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]];
+const arrayChaChaPartitionLabels = [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]];
+drawChaChaBlock(canvasChaChaPartition, EG_CHACHAINITBLOCK, 15, 15, 8, "#000", "#000");
+drawChaChaBlock(canvasChaChaPartition, EG_CHACHAINITBLOCK, 15, 205);
+for (let i = 0; i < 4; i++)
+    drawChaChaLables(canvasChaChaPartition, arrayChaChaPartitionIndices[i], arrayChaChaPartitionLabels[i], 15, 205);
+
+
+let varChaChaARXRound = 1;
+let varChaChaARXOperation = 0;
+let arrayChaChaARXBlock = [...EG_CHACHAINITBLOCK];
+const canvasChaChaARX = initializeCanvas("canvasChaChaARX", 414);
+const buttonChaChaARXNext = document.getElementById("buttonChaChaARXNext");
+const buttonChaChaARXReset = document.getElementById("buttonChaChaARXReset");
+const spanChaChaARXRounds = document.getElementById("spanChaChaARXRounds");
+buttonChaChaARXNext.addEventListener("click", updateChaChaARX);
+buttonChaChaARXReset.addEventListener("click", resetChaChaARX);
+function resetChaChaARX() {
+    canvasChaChaARX.clearRect(0, 0, WIDTH, 415);
+    arrayChaChaARXBlock = [...EG_CHACHAINITBLOCK];
+    drawChaChaBlock(canvasChaChaARX, arrayChaChaARXBlock);
+    spanChaChaARXRounds.innerHTML = 0;
+    varChaChaARXOperation = 0;
+    varChaChaARXRound = 1;
+}
+function updateChaChaARX() {
+    if (varChaChaARXOperation >= 80) return
+    varChaChaARXRound = 1 + Math.floor(varChaChaARXOperation / 4);
+    canvasChaChaARX.clearRect(0, 0, WIDTH, 415);
+    updateChaChaBlockQTRound(arrayChaChaARXBlock, CHACHAWORDPERMS[varChaChaARXRound % 2][varChaChaARXOperation % 4]);
+    drawChaChaBlock(canvasChaChaARX, arrayChaChaARXBlock);
+    drawChaChaLables(canvasChaChaARX, CHACHAWORDPERMS[varChaChaARXRound % 2][varChaChaARXOperation % 4], CHACHAWORDLABELS);
+    spanChaChaARXRounds.innerHTML = varChaChaARXRound;
+    varChaChaARXOperation++;
+}
+resetChaChaARX();
+
+
+const canvasChaChaAddition = initializeCanvas("canvasChaChaAddition", 720);
+const arrayChaChaAdditionBlock = [...EG_CHACHAINITBLOCK];
+drawChaChaBlock(canvasChaChaAddition, arrayChaChaAdditionBlock, 695, 15, 18);
+updateChaChaBlockTWRound(arrayChaChaAdditionBlock);
+drawChaChaBlock(canvasChaChaAddition, arrayChaChaAdditionBlock, 15, 15, 18);
+updateChaChaBlockARound(arrayChaChaAdditionBlock, EG_CHACHAINITBLOCK);
+drawChaChaBlock(canvasChaChaAddition, arrayChaChaAdditionBlock, 355, 415, 18, "#000", "#000");
+drawArrow(canvasChaChaAddition, true, 1, 645, 335, 375);
+initializeCanvasText(canvasChaChaAddition);
+canvasChaChaAddition.fillText("+", 645, 161);
+
+
+let varChaChaAvalancheRound = 1;
+let varChaChaAvalancheOperation = 0;
+let arrayChaChaAvalancheDifference= [];
+const arrayChaChaAvalancheBlock = [];
+const canvasChaChaAvalanche = initializeCanvas("canvasChaChaAvalanche", 670);
+const buttonChaChaAvalancheNext = document.getElementById("buttonChaChaAvalancheNext");
+const buttonChaChaAvalancheReset = document.getElementById("buttonChaChaAvalancheReset");
+const spanChaChaAvalancheRounds = document.getElementById("spanChaChaAvalancheRounds");
+buttonChaChaAvalancheNext.addEventListener("click", updateChaChaAvalanche);
+buttonChaChaAvalancheReset.addEventListener("click", resetChaChaAvalanche);
+function resetChaChaAvalanche() {
+    canvasChaChaAvalanche.clearRect(0, 0, WIDTH, 670);
+    for (let i = 0; i < 2; i++) {
+        arrayChaChaAvalancheBlock[i] = createChaChaInitBlock(EG_CHACHAKEY, i);
+        drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheBlock[i], 15 + i * 670, 15, 18);
+    }
+    arrayChaChaAvalancheDifference = createXORStream(arrayChaChaAvalancheBlock[0], arrayChaChaAvalancheBlock[1]);
+    drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheDifference, 15, 365, 18, DIFFCOLOR);
+    spanChaChaAvalancheRounds.innerHTML = 0;
+    varChaChaAvalancheOperation = 0;
+    varChaChaAvalancheRound = 1;
+}
+function updateChaChaAvalanche() {
+    if (varChaChaAvalancheOperation >= 80) return
+    varChaChaAvalancheRound = 1 + Math.floor(varChaChaAvalancheOperation / 4);
+    canvasChaChaAvalanche.clearRect(0, 0, WIDTH, 670);
+    for (let i = 0; i < 2; i++) {
+        updateChaChaBlockQTRound(arrayChaChaAvalancheBlock[i], CHACHAWORDPERMS[varChaChaAvalancheRound % 2][varChaChaAvalancheOperation % 4]);
+        drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheBlock[i], 15 + i * 670, 15, 18);
+        drawChaChaLables(canvasChaChaAvalanche, CHACHAWORDPERMS[varChaChaAvalancheRound % 2][varChaChaAvalancheOperation % 4], CHACHAWORDLABELS, 15 + i * 670, 15, 18);
+    }
+    arrayChaChaAvalancheDifference = createXORStream(arrayChaChaAvalancheBlock[0], arrayChaChaAvalancheBlock[1]);
+    drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheDifference, 15, 365, 18, DIFFCOLOR);
+    spanChaChaAvalancheRounds.innerHTML = varChaChaAvalancheRound;
+    varChaChaAvalancheOperation++;
+}
+resetChaChaAvalanche();
+
+
+const arrayChaChaPartitionSequenceInit = [...EG_CHACHAINITBLOCK];
+const canvasChaChaPartitionSequence = initializeCanvas("canvasChaChaPartitionSequence", 414);
+const buttonChaChaPartitionSequenceIncrement = document.getElementById("buttonChaChaPartitionSequenceIncrement");
+const buttonChaChaPartitionSequenceDecrement = document.getElementById("buttonChaChaPartitionSequenceDecrement");
+buttonChaChaPartitionSequenceIncrement.addEventListener("click", () => {
+    arrayChaChaPartitionSequenceInit[13] += 1;
+    updateChaChaPartitionSequence(); });
+buttonChaChaPartitionSequenceDecrement.addEventListener("click", () => {
+    if (arrayChaChaPartitionSequenceInit[13] <= 0) return;
+    arrayChaChaPartitionSequenceInit[13] -= 1;
+    updateChaChaPartitionSequence(); });
+function updateChaChaPartitionSequence() {
+    canvasChaChaPartitionSequence.clearRect(0, 0, WIDTH, 414);
+    drawChaChaBlock(canvasChaChaPartitionSequence, arrayChaChaPartitionSequenceInit);
+    drawChaChaLables(canvasChaChaPartitionSequence, [12, 13, 14, 15], ["Counter", "Counter", "Nonce", "Nonce"], 15, 15, 24, "bold 36px JetBrains Mono");
+}
+updateChaChaPartitionSequence();
+
+
+let varChaChaCounter = 0;
+const varChaChaCounterBlockLength = 7;
+const canvasChaChaCounter = initializeCanvas("canvasChaChaCounter", 590);
+const buttonChaChaCounterIncrement = document.getElementById("buttonChaChaCounterIncrement");
+const buttonChaChaCounterDecrement = document.getElementById("buttonChaChaCounterDecrement");
+const spanChaChaCounter = document.getElementById("spanChaChaCounter");
+const structChaChaCounter = [createEncryptionStreams(EG_CHACHAINITBLOCK, varChaChaCounterBlockLength)];
+buttonChaChaCounterIncrement.addEventListener("click", () => {
+    varChaChaCounter += 1;
+    updateChaChaCounter(); });
+buttonChaChaCounterDecrement.addEventListener("click", () => {
+    if (varChaChaCounter <= 0) return;
+    varChaChaCounter -= 1;
+    updateChaChaCounter(); });
+function updateChaChaCounter() {
+    canvasChaChaCounter.clearRect(0, 0, WIDTH, 610);
+    drawChaChaCountNonce(canvasChaChaCounter, EG_CHACHAKEY, structChaChaCounter, varChaChaCounter);
+    spanChaChaCounter.innerHTML = varChaChaCounter;
+}
+updateChaChaCounter();
+
+
+let varChaChaRepeatCounter = 0;
+let structChaChaCounterRepeat = [];
+const canvasChaChaCounterRepeat = initializeCanvas("canvasChaChaCounterRepeat", 1140);
+const buttonChaChaCounterRepeatIncrement = document.getElementById("buttonChaChaCounterRepeatIncrement");
+const buttonChaChaCounterRepeatDecrement = document.getElementById("buttonChaChaCounterRepeatDecrement");
+for (let i = 0; i < 2; i++) structChaChaCounterRepeat[i] = createEncryptionStreams(EG_CHACHAINITBLOCK, 7, EG_DATA_STREAMS[i + 1]);
+const arrayChaChaCounterRepeatXOR = createXORStream(structChaChaCounterRepeat[0].xorStream, structChaChaCounterRepeat[1].xorStream);
+buttonChaChaCounterRepeatIncrement.addEventListener("click", () => {
+    varChaChaRepeatCounter += 1;
+    updateChaChaCounterRepeat(); });
+buttonChaChaCounterRepeatDecrement.addEventListener("click", () => {
+    if (varChaChaRepeatCounter <= 0) return;
+    varChaChaRepeatCounter -= 1;
+    updateChaChaCounterRepeat(); });
+function updateChaChaCounterRepeat() {
+    canvasChaChaCounterRepeat.clearRect(0, 0, WIDTH, 1140);
+    drawChaChaCountNonce(canvasChaChaCounterRepeat, EG_CHACHAKEY, structChaChaCounterRepeat, varChaChaRepeatCounter, 0, 15, 15, 6, 220, 66);
+    drawChaChaBlocks(canvasChaChaCounterRepeat, arrayChaChaCounterRepeatXOR, 15, 1027, 6);
+    if (varChaChaRepeatCounter < structChaChaCounterRepeat[0].length) drawRectangle(canvasChaChaCounterRepeat, 15 + varChaChaRepeatCounter * 32 * 6, 745, 32 * 6, 16 * 6, HIGHCOLOR, 6);
+}
+updateChaChaCounterRepeat();
+
+
+let varChaChaNonce = 0;
+let varChaChaNonceCounter = 0;
+const canvasChaChaNonce = initializeCanvas("canvasChaChaNonce", 1136);
+const spanChaChaNonce = document.getElementById("spanChaChaNonce");
+const spanChaChaNonceCounter = document.getElementById("spanChaChaNonceCounter");
+const buttonChaChaNonceIncrement = document.getElementById("buttonChaChaNonceIncrement");
+const buttonChaChaNonceDecrement = document.getElementById("buttonChaChaNonceDecrement");
+const buttonChaChaNonceCounterIncrement = document.getElementById("buttonChaChaNonceCounterIncrement");
+const buttonChaChaNonceCounterDecrement = document.getElementById("buttonChaChaNonceCounterDecrement");
+const structChaChaNonce = [];
+for (let i = 0; i < 2; i++) {
+    const arrayInitBlock = createChaChaInitBlock(EG_CHACHAKEY, 0, i);
+    structChaChaNonce[i] = createEncryptionStreams(arrayInitBlock, 7, EG_DATA_STREAMS[i]);
+}
+const arrayChaChaNonceXOR = createXORStream(structChaChaNonce[0].xorStream, structChaChaNonce[1].xorStream);
+buttonChaChaNonceIncrement.addEventListener("click", () => {
+    varChaChaNonce += 1;
+    updateChaChaNonce(); });
+buttonChaChaNonceDecrement.addEventListener("click", () => {
+    if (varChaChaNonce <= 0) return;
+    varChaChaNonce -= 1;
+    updateChaChaNonce(); });
+buttonChaChaNonceCounterIncrement.addEventListener("click", () => {
+    varChaChaNonceCounter += 1;
+    updateChaChaNonce(); });
+buttonChaChaNonceCounterDecrement.addEventListener("click", () => {
+    if (varChaChaNonceCounter <= 0) return;
+    varChaChaNonceCounter -= 1;
+    updateChaChaNonce(); });
+function updateChaChaNonce() {
+    canvasChaChaNonce.clearRect(0, 0, WIDTH, 1140);
+    drawChaChaCountNonce(canvasChaChaNonce, EG_CHACHAKEY, structChaChaNonce, varChaChaNonceCounter, varChaChaNonce, 15, 15, 6, 220, 66);
+    drawChaChaBlocks(canvasChaChaNonce, arrayChaChaNonceXOR, 15, 1027, 6);
+    spanChaChaNonce.innerHTML = varChaChaNonce;
+    spanChaChaNonceCounter.innerHTML = varChaChaNonceCounter;
+}
+updateChaChaNonce();
+
+
+const canvasChaChaZeroBlock = initializeCanvas("canvasChaChaZeroBlock", 480);
+const arrayChaChaZeroEncryption = createEncryptionStreams(CHACHAZRO, 4);
+drawChaChaEncryptionFromKey(canvasChaChaZeroBlock, CHACHAZRO, arrayChaChaZeroEncryption.dataStream, arrayChaChaZeroEncryption.chachaStream, arrayChaChaZeroEncryption.xorStream);
+
+
+const canvasChaChaPartitionConstants = initializeCanvas("canvasChaChaPartitionConstants", 414);
+drawChaChaBlock(canvasChaChaPartitionConstants, EG_CHACHAINITBLOCK);
+drawChaChaLables(canvasChaChaPartitionConstants, [0, 1, 2, 3], ["Constant", "Constant", "Constant", "Constant"], 15, 15, 24, "bold 32px JetBrains Mono");
+
+
+const canvasChaChaPartitionKey = initializeCanvas("canvasChaChaPartitionKey", 414);
+drawChaChaBlock(canvasChaChaPartitionKey, EG_CHACHAINITBLOCK);
+drawChaChaLables(canvasChaChaPartitionKey, [4, 5, 6, 7], ["Key", "Key", "Key", "Key"]);
+drawChaChaLables(canvasChaChaPartitionKey, [8, 9, 10, 11], ["Key", "Key", "Key", "Key"]);
+
+
+const canvasStructuredKeyExchange = initializeCanvas("canvasStructuredKeyExchange", 1080);
+const arrayStructuredKeyExchangeLabels = ["Key", "Nonce"];
+initializeCanvasText(canvasStructuredKeyExchange, "left");
+for (let i = 0; i < 2; i++) {
+    canvasStructuredKeyExchange.fillText(arrayStructuredKeyExchangeLabels[i], 145, 503 + i * 60);
+    canvasStructuredKeyExchange.fillText(PARTYLABELS[i], 25, 135 + i * 600);
+    drawArrow(canvasStructuredKeyExchange, true, (i === 0) ? 1 : -1, 93, (i === 0) ? 325 : 737, (i === 0) ? 737 : 325);
+    drawLock(canvasStructuredKeyExchange, 125, 503 + i * 60, i === 0);
+}
+drawChaChaEncryptionFromKey(canvasStructuredKeyExchange, EG_CHACHAINITBLOCK, EG_CHACHADATASTREAM, EG_CHACHAKEYSTREAM, EG_CHACHACIPHERSTREAM);
+drawChaChaEncryptionFromKey(canvasStructuredKeyExchange, EG_CHACHAINITBLOCK, EG_CHACHACIPHERSTREAM, EG_CHACHAKEYSTREAM, EG_CHACHADATASTREAM, 15, 615);
+
+
+// for the next few illustrations
+const AUTH_MESSAGE_ORIG = EG_CHACHADATASTREAM.slice(16 * 3, 16 * 4);
+const AUTH_CIPHER_ORIG = EG_CHACHACIPHERSTREAM.slice(16 * 3, 16 * 4);
+const AUTH_MESSAGE_MODF = new Array(16).fill(HEXHSTRIPE3);
+const AUTH_XOR_ORIG_MODF = createXORStream(AUTH_MESSAGE_ORIG, AUTH_MESSAGE_MODF);
+const AUTH_CIPHER_MODF = createXORStream(AUTH_XOR_ORIG_MODF, AUTH_CIPHER_ORIG);
+const AUTH_CIPHERSTREAM_MODF = EG_CHACHACIPHERSTREAM.slice(0, 16 * 3).concat(AUTH_CIPHER_MODF);
+const AUTH_CIPHERSTREAM_MODF_LONG = AUTH_CIPHERSTREAM_MODF.concat(EG_CHACHACIPHERSTREAM.slice(16 * 4));
+const AUTH_DATASTREAM_MODF_LONG = createXORStream(AUTH_CIPHERSTREAM_MODF_LONG, EG_CHACHAKEYSTREAM);
+const AUTH_DATASTREAM_MODF = AUTH_DATASTREAM_MODF_LONG.slice(0, 16 * 4);
+const AUTH_DATASTREAM_ORIG = EG_CHACHADATASTREAM.slice(0, 16 * 4)
+const AUTH_CIPHERSTREAM_ORIG = EG_CHACHACIPHERSTREAM.slice(0, 16 * 4);
+const AUTH_KEYSTREAM = EG_CHACHAKEYSTREAM.slice(0, 16 * 4);
+const AUTH_DATASTREAM_ORIG_SHORT = EG_CHACHADATASTREAM.slice(0, 16 * 2)
+const AUTH_CIPHERSTREAM_ORIG_SHORT = EG_CHACHACIPHERSTREAM.slice(0, 16 * 2);
+const AUTH_KEYSTREAM_SHORT = EG_CHACHAKEYSTREAM.slice(0, 16 * 2);
+const AUTH_CHECKSUM_ORIG = calculateHash(AUTH_CIPHERSTREAM_ORIG);
+const AUTH_CHECKSUM_MODF = calculateHash(AUTH_CIPHERSTREAM_MODF);
+const AUTH_CHECKSUM_CIPHER_ORIG = calculateHash(AUTH_CIPHER_ORIG);
+const AUTH_CHECKSUM_CIPHER_MODF = calculateHash(AUTH_CIPHER_MODF);
+const AUTH_POLYNOMIAL_ORIG = getPolynomialExpression(AUTH_CIPHERSTREAM_ORIG);
+const AUTH_POLYNOMIAL_MODF = getPolynomialExpression(AUTH_CIPHERSTREAM_MODF);
+const AUTH_POLYNOMIAL_EQNS = [[AUTH_POLYNOMIAL_ORIG + " ≡ ", 740, 569], ["=> x = ", 740, 609], [AUTH_POLYNOMIAL_MODF + " ≡ ", 740, 837]];
+const AUTH_UNIT_BLOCKS = [[AUTH_MESSAGE_ORIG, 15, 495, "m"], [AUTH_MESSAGE_MODF, 15, 639, "m'"], [AUTH_XOR_ORIG_MODF, 15, 783, "m^m'"], [AUTH_CIPHER_ORIG, 399, 495, "c"], [AUTH_XOR_ORIG_MODF, 399, 639, "m^m'"], [AUTH_CIPHER_MODF, 399, 783, "c^m^m'"]];
+const SEEDHASHARROWS = [[[405, 157], [661, 157], [533, 157], [533, 3], [1229, 3], [1229, 269]], [[405, 757], [661, 757], [533, 757], [533, 603], [1199, 603]]];
+
+
+const canvasBitFlip = initializeCanvas("canvasBitFlip", 1410);
+const arrayBitFlipBlockRects = [[15, 495, "#f81"], [783, 15, "#f81"], [15, 639, "#69f"], [783, 1263, "#69f"], [399, 495, "#e9f"], [783, 319, "#e9f"], [399, 783, "#8d8"], [783, 959, "#8d8"]];
+initializeCanvasText(canvasBitFlip, "right");
+canvasBitFlip.fillText("Sender", 1275, 477);
+canvasBitFlip.fillText("Receiver", 1275, 929);
+canvasBitFlip.textAlign = "left";
+drawChaChaEncryption(canvasBitFlip, EG_CHACHADATASTREAM, EG_CHACHAKEYSTREAM, EG_CHACHACIPHERSTREAM, 15, 15, 8);
+drawChaChaEncryption(canvasBitFlip, AUTH_CIPHERSTREAM_MODF_LONG, EG_CHACHAKEYSTREAM, AUTH_DATASTREAM_MODF_LONG, 15, 959, 8);
+for (let i = 0; i < AUTH_UNIT_BLOCKS.length; i++) {
+    drawChaChaBlocks(canvasBitFlip, AUTH_UNIT_BLOCKS[i][0], AUTH_UNIT_BLOCKS[i][1], AUTH_UNIT_BLOCKS[i][2], 8);
+    canvasBitFlip.fillText(AUTH_UNIT_BLOCKS[i][3], AUTH_UNIT_BLOCKS[i][1] + 270, AUTH_UNIT_BLOCKS[i][2] + 120);
+}
+for (let i = 0; i < arrayBitFlipBlockRects.length; i++)
+    drawRectangle(canvasBitFlip, arrayBitFlipBlockRects[i][0], arrayBitFlipBlockRects[i][1], 256, 128, arrayBitFlipBlockRects[i][2], 6);
+drawOrthoArrow(canvasBitFlip, [[911, 467], [911, 559], [675, 559]]);
+drawOrthoArrow(canvasBitFlip, [[675, 847], [911, 847], [911, 941]]);
+drawOrthoArrow(canvasBitFlip, [[291, 847], [335, 847], [335, 705], [379, 705]]);
+
+
+let arrayChecksumPointers = [0, 0, 0, 0, 1, 0, 0];
+arrayChecksumPointers[6] = calculateHash(AUTH_CIPHERSTREAM_ORIG_SHORT);
+const canvasChecksum = initializeCanvas("canvasChecksum", 460);
+const spanChecksumByte = document.getElementById("spanChecksumByte");
+const spanChecksumHash = document.getElementById("spanChecksumHash");
+const buttonChecksumIncrement = document.getElementById("buttonChecksumIncrement");
+buttonChecksumIncrement.addEventListener("click", updateChecksum);
+function updateChecksum() {
+    if (arrayChecksumPointers[0] >= AUTH_CIPHERSTREAM_ORIG_SHORT.length) return;
+    updateHashGeneral(canvasChecksum, arrayChecksumPointers);
+    spanChecksumByte.innerHTML = toHexString(arrayChecksumPointers[1]);
+    spanChecksumHash.innerHTML = `${toHexString(arrayChecksumPointers[2])} [${toHexString(arrayChecksumPointers[3])} + ${toHexString(arrayChecksumPointers[1])}]`;
+    arrayChecksumPointers[0]++;
+}
+updateChecksum();
+
+
+const canvasAuthentication = initializeCanvas("canvasAuthentication", 1410);
+drawChaChaEncryption(canvasAuthentication, AUTH_DATASTREAM_ORIG, AUTH_KEYSTREAM, AUTH_CIPHERSTREAM_ORIG, 15, 15, 8);
+drawChaChaEncryption(canvasAuthentication, AUTH_CIPHERSTREAM_MODF, AUTH_KEYSTREAM, AUTH_DATASTREAM_MODF, 15, 959, 8);
+drawHash(canvasAuthentication, AUTH_CHECKSUM_ORIG);
+drawHash(canvasAuthentication, AUTH_CHECKSUM_MODF, 1119, 1023);
+canvasAuthentication.fillText(toHexString(AUTH_CHECKSUM_ORIG), 1119, 973);
+for (let i = 0; i < AUTH_UNIT_BLOCKS.length; i++) {
+    drawChaChaBlocks(canvasAuthentication, AUTH_UNIT_BLOCKS[i][0], AUTH_UNIT_BLOCKS[i][1], AUTH_UNIT_BLOCKS[i][2], 8);
+    canvasAuthentication.fillText(AUTH_UNIT_BLOCKS[i][3], AUTH_UNIT_BLOCKS[i][1] + 270, AUTH_UNIT_BLOCKS[i][2] + 120);
+}
+drawOrthoArrow(canvasAuthentication, [[911, 467], [911, 559], [675, 559]]);
+drawOrthoArrow(canvasAuthentication, [[675, 847], [911, 847], [911, 941]]);
+drawOrthoArrow(canvasAuthentication, [[291, 847], [335, 847], [335, 705], [379, 705]]);
+drawArrow(canvasAuthentication, true, 1, 1189, 423, 933);
+
+
+const canvasMalhash = initializeCanvas("canvasMalhash", 1410);
+const varMalhashDifference = (AUTH_CHECKSUM_ORIG >>> 0) - (AUTH_CHECKSUM_CIPHER_ORIG >>> 0);
+const arrayMalhashTexts = [[AUTH_CHECKSUM_ORIG, 740, 519], [varMalhashDifference, 740, 599], [varMalhashDifference, 740, 807], [AUTH_CHECKSUM_MODF, 740, 887], [AUTH_CHECKSUM_MODF, 1119, 973]];
+const arrayMalhashHashes = [[AUTH_CHECKSUM_ORIG, 1119, 383], [AUTH_CHECKSUM_MODF, 1119, 1023]];
+const arrayMalhashHashesRaw = [[toHexString(AUTH_CHECKSUM_CIPHER_ORIG) + " (-)", 740, 559], [toHexString(AUTH_CHECKSUM_CIPHER_MODF) + " (+)", 740, 847]];
+drawChaChaEncryption(canvasMalhash, AUTH_DATASTREAM_ORIG, AUTH_KEYSTREAM, AUTH_CIPHERSTREAM_ORIG, 15, 15, 8);
+drawChaChaEncryption(canvasMalhash, AUTH_CIPHERSTREAM_MODF, AUTH_KEYSTREAM, AUTH_DATASTREAM_MODF, 15, 959, 8);
+for (let i = 0; i < AUTH_UNIT_BLOCKS.length; i++)
+    drawChaChaBlocks(canvasMalhash, AUTH_UNIT_BLOCKS[i][0], AUTH_UNIT_BLOCKS[i][1], AUTH_UNIT_BLOCKS[i][2], 8);
+for (let i = 0; i < arrayMalhashHashes.length; i++)
+    drawHash(canvasMalhash, arrayMalhashHashes[i][0], arrayMalhashHashes[i][1], arrayMalhashHashes[i][2]);
+for (let i = 0; i < arrayMalhashHashesRaw.length; i++)
+    drawHash(canvasMalhash, arrayMalhashHashesRaw[i][0], arrayMalhashHashesRaw[i][1], arrayMalhashHashesRaw[i][2], [], false, true);
+for (let i = 0; i < arrayMalhashTexts.length; i++)
+    canvasMalhash.fillText(toHexString(arrayMalhashTexts[i][0]), arrayMalhashTexts[i][1], arrayMalhashTexts[i][2]);
+drawOrthoArrow(canvasMalhash, [[1189, 423], [1189, 519], [913, 519]]);
+drawOrthoArrow(canvasMalhash, [[913, 887], [1189, 887], [1189, 933]]);
+drawArrow(canvasMalhash, true, 1, 815, 637, 769);
+
+
+let arrayKeyedhashPointers = [0, 0, 0, 0, 1, 0, 0];
+arrayKeyedhashPointers[4] = Math.floor(Math.random() * 0xFFFFFFFF);
+arrayKeyedhashPointers[6] = calculateHash(AUTH_CIPHERSTREAM_ORIG_SHORT, arrayKeyedhashPointers[4]);
+const canvasKeyedhash = initializeCanvas("canvasKeyedhash", 460);
+const spanKeyedhashByte = document.getElementById("spanKeyedhashByte");
+const spanKeyedhash = document.getElementById("spanKeyedhash");
+const inputKeyedhashKey = document.getElementById("inputKeyedhashKey");
+const buttonKeyedhashIncrement = document.getElementById("buttonKeyedhashIncrement");
+inputKeyedhashKey.value = toHexString(arrayKeyedhashPointers[4]);
+buttonKeyedhashIncrement.addEventListener("click", updateKeyedhash);
+inputKeyedhashKey.addEventListener("input", () => { resetHashGeneral(updateKeyedhash, arrayKeyedhashPointers, inputKeyedhashKey) });
+function updateKeyedhash() {
+    if (arrayKeyedhashPointers[0] >= AUTH_CIPHERSTREAM_ORIG_SHORT.length) return;
+    updateHashGeneral(canvasKeyedhash, arrayKeyedhashPointers);
+    spanKeyedhashByte.innerHTML = toHexString(arrayKeyedhashPointers[1]);
+    spanKeyedhash.innerHTML = `${toHexString(arrayKeyedhashPointers[2])} [(${toHexString(arrayKeyedhashPointers[3])} + ${toHexString(arrayKeyedhashPointers[1])}) * ${toHexString(arrayKeyedhashPointers[4])}]`;
+    arrayKeyedhashPointers[0]++;
+}
+updateKeyedhash();
+
+
+const varPolyhashKey = Math.floor(Math.random() * 0xFFFFFFFF);
+const canvasPolyhash = initializeCanvas("canvasPolyhash", 1410);
+const varPolyhashOrig = calculateHash(AUTH_CIPHERSTREAM_ORIG, varPolyhashKey);
+const varPolyhashModf = calculateHash(AUTH_CIPHERSTREAM_MODF, varPolyhashKey);
+const arrayPolyhashTexts = [[varPolyhashOrig, 740, 569], [varPolyhashKey, 740, 609], [varPolyhashModf, 740, 837], [varPolyhashModf, 1119, 973]];
+drawChaChaEncryption(canvasPolyhash, AUTH_DATASTREAM_ORIG, AUTH_KEYSTREAM, AUTH_CIPHERSTREAM_ORIG, 15, 15, 8);
+drawChaChaEncryption(canvasPolyhash, AUTH_CIPHERSTREAM_MODF, AUTH_KEYSTREAM, AUTH_DATASTREAM_MODF, 15, 959, 8);
+drawHash(canvasPolyhash, varPolyhashOrig, 1119, 383, [varPolyhashKey]);
+drawHash(canvasPolyhash, varPolyhashModf, 1119, 1023);
+for (let i = 0; i < arrayPolyhashTexts.length; i++)
+    canvasPolyhash.fillText(toHexString(arrayPolyhashTexts[i][0]), arrayPolyhashTexts[i][1], arrayPolyhashTexts[i][2]);
+initializeCanvasText(canvasPolyhash, "right");
+for (let i = 0; i < AUTH_POLYNOMIAL_EQNS.length; i++)
+    canvasPolyhash.fillText(AUTH_POLYNOMIAL_EQNS[i][0], AUTH_POLYNOMIAL_EQNS[i][1], AUTH_POLYNOMIAL_EQNS[i][2]);
+drawOrthoArrow(canvasPolyhash, [[1189, 423], [1189, 569], [913, 569]]);
+drawOrthoArrow(canvasPolyhash, [[913, 837], [1189, 837], [1189, 933]]);
+drawOrthoArrow(canvasPolyhash, [[527, 469], [527, 539]]);
+drawOrthoArrow(canvasPolyhash, [[527, 939], [527, 867]]);
+drawOrthoArrow(canvasPolyhash, [[721, 639], [721, 715], [455, 715], [455, 807]]);
+drawLock(canvasPolyhash, 1101, 702);
+canvasPolyhash.moveTo(1073, 383); canvasPolyhash.lineTo(1073, 1023);
+canvasPolyhash.stroke();
+canvasPolyhash.beginPath();
+canvasPolyhash.arc(1073, 1023, 6, 0, 2 * Math.PI);
+canvasPolyhash.fill();
+canvasPolyhash.strokeStyle = "#fff"; canvasPolyhash.lineWidth = 6;
+canvasPolyhash.beginPath();
+canvasPolyhash.moveTo(1069, 393); canvasPolyhash.lineTo(1069, 1013);
+canvasPolyhash.moveTo(1077, 393); canvasPolyhash.lineTo(1077, 1013);
+canvasPolyhash.stroke();
+
+
+const varFailhashKey = Math.floor(Math.random() * 0xFFFFFFFF);
+const varFailhashPad = Math.floor(Math.random() * 0xFFFFFFFF);
+const canvasFailhash = initializeCanvas("canvasFailhash", 1410);
+const varFailhashOrig = calculateHash(AUTH_CIPHERSTREAM_ORIG, varFailhashKey, varFailhashPad);
+const varFailhashModf = calculateHash(AUTH_CIPHERSTREAM_MODF, varFailhashKey, varFailhashPad);
+const arrayFailhashTexts = [["??????????", 740, 569], ["??????????", 740, 609], ["??????????", 740, 837], ["??????????", 1119, 973]];
+drawChaChaEncryption(canvasFailhash, AUTH_DATASTREAM_ORIG, AUTH_KEYSTREAM, AUTH_CIPHERSTREAM_ORIG, 15, 15, 8);
+drawChaChaEncryption(canvasFailhash, AUTH_CIPHERSTREAM_MODF, AUTH_KEYSTREAM, AUTH_DATASTREAM_MODF, 15, 959, 8);
+drawHash(canvasFailhash, varFailhashOrig, 1119, 383, [varFailhashKey, varFailhashPad]);
+drawHash(canvasFailhash, varFailhashModf, 1119, 1023);
+for (let i = 0; i < arrayFailhashTexts.length; i++)
+    canvasFailhash.fillText(arrayFailhashTexts[i][0], arrayFailhashTexts[i][1], arrayFailhashTexts[i][2]);
+initializeCanvasText(canvasFailhash, "right");
+for (let i = 0; i < AUTH_POLYNOMIAL_EQNS.length; i++)
+    canvasFailhash.fillText(AUTH_POLYNOMIAL_EQNS[i][0], AUTH_POLYNOMIAL_EQNS[i][1], AUTH_POLYNOMIAL_EQNS[i][2]);
+drawOrthoArrow(canvasFailhash, [[1189, 423], [1189, 569], [913, 569]]);
+drawOrthoArrow(canvasFailhash, [[913, 837], [1189, 837], [1189, 933]]);
+drawOrthoArrow(canvasFailhash, [[527, 469], [527, 539]]);
+drawOrthoArrow(canvasFailhash, [[527, 939], [527, 867]]);
+drawOrthoArrow(canvasFailhash, [[721, 639], [721, 715], [455, 715], [455, 807]]);
+drawLock(canvasFailhash, 1101, 702);
+canvasFailhash.moveTo(1073, 383); canvasFailhash.lineTo(1073, 1023);
+canvasFailhash.stroke();
+canvasFailhash.beginPath();
+canvasFailhash.arc(1073, 1023, 6, 0, 2 * Math.PI);
+canvasFailhash.fill();
+canvasFailhash.strokeStyle = "#fff"; canvasFailhash.lineWidth = 6;
+canvasFailhash.beginPath();
+canvasFailhash.moveTo(1069, 393); canvasFailhash.lineTo(1069, 1013);
+canvasFailhash.moveTo(1077, 393); canvasFailhash.lineTo(1077, 1013);
+canvasFailhash.stroke();
+
+
+let arrayMachashPointers = [0, 0, 0, 0, 1, 0, 0];
+arrayMachashPointers[4] = Math.floor(Math.random() * 0xFFFFFFFF) >>> 0;
+arrayMachashPointers[5] = Math.floor(Math.random() * 0xFFFFFFFF) >>> 0;
+arrayMachashPointers[6] = calculateHash(AUTH_CIPHERSTREAM_ORIG_SHORT, arrayMachashPointers[4], arrayMachashPointers[5]);
+const canvasMachash = initializeCanvas("canvasMachash", 460);
+const spanMachashByte = document.getElementById("spanMachashByte");
+const spanMachashChecksum = document.getElementById("spanMachashChecksum");
+const spanMachashHashKeyed = document.getElementById("spanMachashHashKeyed");
+const spanMachashHashPadded = document.getElementById("spanMachashHashPadded");
+const inputMachashKey = document.getElementById("inputMachashKey");
+const inputMachashKeyPad = document.getElementById("inputMachashKeyPad");
+const buttonMachashIncrement = document.getElementById("buttonMachashIncrement");
+spanMachashHashPadded.innerHTML = "...";
+inputMachashKey.value = toHexString(arrayMachashPointers[4]);
+inputMachashKeyPad.value = toHexString(arrayMachashPointers[5]);
+buttonMachashIncrement.addEventListener("click", updateMachash);
+inputMachashKey.addEventListener("input", () => { resetHashGeneral(updateMachash, arrayMachashPointers, inputMachashKey, inputMachashKeyPad, spanMachashHashPadded) });
+inputMachashKeyPad.addEventListener("input", () => { resetHashGeneral(updateMachash, arrayMachashPointers, inputMachashKey, inputMachashKeyPad, spanMachashHashPadded) });
+function updateMachash() {
+    if (arrayMachashPointers[0] >= AUTH_CIPHERSTREAM_ORIG_SHORT.length) return;
+    updateHashGeneral(canvasMachash, arrayMachashPointers);
+    spanMachashByte.innerHTML = toHexString(arrayMachashPointers[1]);
+    spanMachashHashKeyed.innerHTML = `${toHexString(arrayMachashPointers[2])} [(${toHexString(arrayMachashPointers[3])} + ${toHexString(arrayMachashPointers[1])})) * ${toHexString(arrayMachashPointers[4])}]`;
+    if (arrayMachashPointers[0] == AUTH_CIPHERSTREAM_ORIG_SHORT.length - 1)
+        spanMachashHashPadded.innerHTML = `${toHexString(arrayMachashPointers[2] + arrayMachashPointers[5])} [${toHexString(arrayMachashPointers[2])} + ${toHexString(arrayMachashPointers[5])}]`;
+    arrayMachashPointers[0]++;
+}
+updateMachash();
+
+
+let varPoly1305Pointer = 0;
+let varPoly1305CurrentHash = 0n;
+let varPoly1305CurrentBlock = 0n;
+let varPoly1305KeyS = getPoly1305Key();
+let varPoly1305KeyR = getPoly1305Key(true);
+let varPoly1305Hash = calculatePoly1305(AUTH_CIPHERSTREAM_ORIG_SHORT, varPoly1305KeyR, varPoly1305KeyS);
+const canvasPoly1305 = initializeCanvas("canvasPoly1305", 460);
+const spanPoly1305Byte = document.getElementById("spanPoly1305Byte");
+const spanPoly1305Checksum = document.getElementById("spanPoly1305Checksum");
+const spanPoly1305HashKeyed = document.getElementById("spanPoly1305HashKeyed");
+const spanPoly1305HashPadded = document.getElementById("spanPoly1305HashPadded");
+const buttonPoly1305Increment = document.getElementById("buttonPoly1305Increment");
+const buttonPoly1305NewKeys = document.getElementById("buttonPoly1305NewKeys");
+spanPoly1305HashPadded.innerHTML = "...";
+buttonPoly1305Increment.addEventListener("click", updatePoly1305);
+buttonPoly1305NewKeys.addEventListener("click", () => {
+    varPoly1305KeyS = getPoly1305Key();
+    varPoly1305KeyR = getPoly1305Key(true);
+    varPoly1305Pointer = 0;
+    varPoly1305CurrentHash = 0n;
+    varPoly1305Hash = calculatePoly1305(AUTH_CIPHERSTREAM_ORIG_SHORT, varPoly1305KeyR, varPoly1305KeyS);
+    spanPoly1305HashPadded.innerHTML = "...";
+    updatePoly1305();
+});
+function updatePoly1305() {
+    if (varPoly1305Pointer * 4 >= AUTH_CIPHERSTREAM_ORIG_SHORT.length) return;
+    varPoly1305CurrentBlock = toBigInt(AUTH_CIPHERSTREAM_ORIG_SHORT.slice(varPoly1305Pointer * 4, varPoly1305Pointer * 4 + 4));
+    varPoly1305CurrentHash = calculatePoly1305Block(varPoly1305CurrentBlock, varPoly1305CurrentHash, varPoly1305KeyR);
+    canvasPoly1305.clearRect(0, 0, WIDTH, 460);
+    drawChaChaEncryption(canvasPoly1305, AUTH_DATASTREAM_ORIG_SHORT, AUTH_KEYSTREAM_SHORT, AUTH_CIPHERSTREAM_ORIG_SHORT, 15, 15, 8);
+    drawHash(canvasPoly1305, varPoly1305Hash, 607, 383, [varPoly1305KeyR, varPoly1305KeyS], true);
+    drawRectangle(canvasPoly1305, 15 + Math.floor(varPoly1305Pointer / 4) * 256, 319 + (varPoly1305Pointer % 4) * 32, 256, 32, HIGHCOLOR, 6);
+    spanPoly1305Byte.innerHTML = "0x(01)" + varPoly1305CurrentBlock.toString(16).padStart(32, '0');
+    spanPoly1305HashKeyed.innerHTML = toHexStringBigInt(varPoly1305CurrentHash) + " [((h + m) * x) mod p]";
+    if (varPoly1305Pointer * 4 == AUTH_CIPHERSTREAM_ORIG_SHORT.length - 4)
+        spanPoly1305HashPadded.innerHTML = toHexStringBigInt(BigInt.asUintN(128, varPoly1305CurrentHash + varPoly1305KeyS)) + " [h + k]";
+    varPoly1305Pointer++;
+}
+updatePoly1305();
+
+
+let varPrimeFieldModulus = 24;
+let varPrimeFieldMultiplier = 6;
+let arrayPrimeFieldLabels = [];
+let arrayPrimeFieldDist = [];
+let arrayPrimeFieldUDist = [];
+const canvasPrimeField = initializeCanvas("canvasPrimeField", 430);
+const sliderPrimeFieldModulus = initializeSliders("sliderPrimeFieldModulus", 2, 31, 1, varPrimeFieldModulus);
+const sliderPrimeFieldMultiplier = initializeSliders("sliderPrimeFieldMultiplier", 1, 31, 1, varPrimeFieldMultiplier);
+const spanPrimeFieldModulus = document.getElementById("spanPrimeFieldModulus");
+const spanPrimeFieldMultiplier = document.getElementById("spanPrimeFieldMultiplier");
+const linkPrimeFieldComposite = document.getElementById("linkPrimeFieldComposite");
+const linkPrimeFieldPrime = document.getElementById("linkPrimeFieldPrime");
+sliderPrimeFieldModulus.addEventListener("input", updatePrimeField);
+sliderPrimeFieldModulus.addEventListener("input", updatePrimeField);
+sliderPrimeFieldMultiplier.addEventListener("input", updatePrimeField);
+linkPrimeFieldComposite.addEventListener("click", () => {
+    sliderPrimeFieldModulus.value = 30;
+    sliderPrimeFieldMultiplier.value = 6;
+    updatePrimeField();
+});
+linkPrimeFieldPrime.addEventListener("click", () => {
+    sliderPrimeFieldModulus.value = 31;
+    sliderPrimeFieldMultiplier.value = 6;
+    updatePrimeField();
+});
+function updatePrimeField() {
+    varPrimeFieldModulus = parseInt(sliderPrimeFieldModulus.value);
+    varPrimeFieldMultiplier = parseInt(sliderPrimeFieldMultiplier.value);
+    varPrimeFieldMultiplier = Math.min(varPrimeFieldMultiplier, varPrimeFieldModulus - 1);
+    sliderPrimeFieldMultiplier.value = varPrimeFieldMultiplier;
+    varPrimeFieldMultiplier = parseInt(sliderPrimeFieldMultiplier.value);
+    arrayPrimeFieldLabels = getNumberLabels(0, varPrimeFieldModulus);
+    arrayPrimeFieldDist = getModuloDistribution(varPrimeFieldModulus, varPrimeFieldMultiplier);
+    arrayPrimeFieldUDist = getModuloDistribution(varPrimeFieldModulus, 1);
+    canvasPrimeField.clearRect(0, 0, WIDTH, 430);
+    drawDistribution(canvasPrimeField, [arrayPrimeFieldUDist], 15, 15, arrayPrimeFieldLabels, 1, DISTCOLORS, 32, 130);
+    drawDistribution(canvasPrimeField, [arrayPrimeFieldDist], 15, 255, arrayPrimeFieldLabels, 1, DISTCOLORS, 32, 130);
+    drawMultiplyModuloMap(canvasPrimeField, varPrimeFieldModulus, varPrimeFieldMultiplier);
+    spanPrimeFieldModulus.innerHTML = varPrimeFieldModulus;
+    spanPrimeFieldMultiplier.innerHTML =  varPrimeFieldMultiplier;
+}
+updatePrimeField();
+
+
+const canvasSecretsExchange = initializeCanvas("canvasSecretsExchange", 1080);
+const arrayChaChaPolyKeystream0 = createChaChaStream(EG_CHACHAINITBLOCK, 1, 0);
+const arrayChaChaPolyKeystream1 = createChaChaStream(EG_CHACHAINITBLOCK, 2, 1);
+const arrayChaChaPolyCipherstream = EG_CHACHACIPHERSTREAM.slice(16, 48);
+initializeCanvasText(canvasSecretsExchange, "left");
+drawChaChaEncryptionFromKey(canvasSecretsExchange, EG_CHACHAINITBLOCK, AUTH_DATASTREAM_ORIG_SHORT, arrayChaChaPolyKeystream1, arrayChaChaPolyCipherstream, 15, 15, 646);
+drawChaChaEncryptionFromKey(canvasSecretsExchange, EG_CHACHAINITBLOCK, arrayChaChaPolyCipherstream, arrayChaChaPolyKeystream1, AUTH_DATASTREAM_ORIG_SHORT, 15, 615, 646);
+drawLock(canvasSecretsExchange, 125, 533);
+canvasSecretsExchange.fillText("Seed", 145, 533);
+drawLock(canvasSecretsExchange, 1231, 503, 0);
+drawOrthoArrow(canvasSecretsExchange, [[1263, 405], [1263, 645]]);
+for (let i = 0; i < 2; i++) {
+    canvasSecretsExchange.fillText(PARTYLABELS[i], 25, 135 + i * 600);
+    drawArrow(canvasSecretsExchange, true, (i === 0) ? 1 : -1, 93, (i === 0) ? 325 : 737, (i === 0) ? 737 : 325);
+    drawHash(canvasSecretsExchange, "H", 1255, 383 + i * 296, ["x", "k"], true, true);
+    drawChaChaBlock(canvasSecretsExchange, arrayChaChaPolyKeystream0, 405, 167 + i * 600, 8, "#000", "#000", "#000");
+    drawRectangle(canvasSecretsExchange, 405, 167 + i * 600, 256, 32, "#f81", 6);
+    drawRectangle(canvasSecretsExchange, 405, 199 + i * 600, 256, 32, "#e9f", 6);
+    drawOrthoArrow(canvasSecretsExchange, SEEDHASHARROWS[i]);
+}
+
+
+const canvasChaChaPolyIntegrated = initializeCanvas("canvasChaChaPolyIntegrated", 1080);
+const arrayChaChaPolyIntegratedLabels = ["ChaCha Key", "Nonce, Hash"];
+initializeCanvasText(canvasChaChaPolyIntegrated, "left");
+drawChaChaEncryptionFromKey(canvasChaChaPolyIntegrated, EG_CHACHAINITBLOCK, AUTH_DATASTREAM_ORIG_SHORT, arrayChaChaPolyKeystream1, arrayChaChaPolyCipherstream, 15, 15, 646);
+drawChaChaEncryptionFromKey(canvasChaChaPolyIntegrated, EG_CHACHAINITBLOCK, arrayChaChaPolyCipherstream, arrayChaChaPolyKeystream1, AUTH_DATASTREAM_ORIG_SHORT, 15, 615, 646);
+drawLock(canvasChaChaPolyIntegrated, 1231, 509, 0);
+drawOrthoArrow(canvasChaChaPolyIntegrated, [[1263, 405], [1263, 645]]);
+for (let i = 0; i < 2; i++) {
+    canvasChaChaPolyIntegrated.fillText(arrayChaChaPolyIntegratedLabels[i], 145, 509 + i * 48);
+    canvasChaChaPolyIntegrated.fillText(PARTYLABELS[i], 25, 135 + i * 600);
+    drawArrow(canvasChaChaPolyIntegrated, true, (i === 0) ? 1 : -1, 93, (i === 0) ? 325 : 737, (i === 0) ? 737 : 325);
+    drawLock(canvasChaChaPolyIntegrated, 125, 509 + i * 48, i === 0);
+    drawHash(canvasChaChaPolyIntegrated, "H", 1255, 383 + i * 296, ["r", "s"], true, true);
+    drawChaChaBlock(canvasChaChaPolyIntegrated, arrayChaChaPolyKeystream0, 405, 167 + i * 600, 8, "#000", "#000", "#000");
+    drawRectangle(canvasChaChaPolyIntegrated, 405, 167 + i * 600, 256, 32, "#f81", 6);
+    drawRectangle(canvasChaChaPolyIntegrated, 405, 199 + i * 600, 256, 32, "#e9f", 6);
+    drawOrthoArrow(canvasChaChaPolyIntegrated, SEEDHASHARROWS[i]);
+}
+
+
+const canvasChaChaPolySequence = initializeCanvas("canvasChaChaPolySequence", 370);
+const arrayChaChaPolySequenceLabels = ["Normal ChaCha20 Block", "ChaCha20 Block in ChaCha20-Poly1305"];
+const arrayChaChaPolySequenceBlockLabels = [["Counter", "Counter", "Nonce", "Nonce"], ["Counter", "Nonce", "Nonce", "Nonce"]];
+for (let i = 0; i < 2; i++) {
+    drawChaChaBlock(canvasChaChaPolySequence, EG_CHACHAINITBLOCK, 15 + i * 630, 15, 18);
+    drawChaChaLables(canvasChaChaPolySequence, [12, 13, 14, 15], arrayChaChaPolySequenceBlockLabels[i], 15 + i * 630, 15, 18, "bold 28px JetBrains Mono");
+    initializeCanvasText(canvasChaChaPolySequence, "left");
+    canvasChaChaPolySequence.fillText(arrayChaChaPolySequenceLabels[i], 15 + i * 630, 341);
+}
+
+
+const canvasAssociatedData = initializeCanvas("canvasAssociatedData", 460);
+const arrayAssociatedDataCipherstream = AUTH_CIPHERSTREAM_ORIG_SHORT.concat(new Array(16).fill(HEXHSTRIPE));
+drawChaChaEncryption(canvasAssociatedData, AUTH_DATASTREAM_ORIG_SHORT, AUTH_KEYSTREAM_SHORT, arrayAssociatedDataCipherstream, 15, 15, 8);
+drawHash(canvasAssociatedData, "H", 863, 383, ["r", "s"], true, true);
+initializeCanvasText(canvasAssociatedData);
+canvasAssociatedData.fillText("Associated Data", 655, 299);
+canvasAssociatedData.fillText("(Unencrypted)", 655, 269);
+
+
+const POLYMODULUS = 31;  // ensure p % 4 = 3
+let arrayPolynomial1Values = [];
+const arrayPolynomial1Sliders = ["sliderPolynomial1Coefficient1", "sliderPolynomial1Range"];
+const arrayPolynomial1Spans = ["spanPolynomial1Coefficient1", "spanPolynomial1Range"];
+const arrayPolynomial1Objects = initializePolynomialIllustration(arrayPolynomial1Sliders, arrayPolynomial1Spans, updatePolynomial1, POLYMODULUS);
+function updatePolynomial1() {
+    arrayPolynomial1Values = getSetPolynomialValues(arrayPolynomial1Objects);
+    spanPolynomial1Equation.innerHTML = `${arrayPolynomial1Values[0]}⋅x ≡ ${arrayPolynomial1Values[1]} (mod) ${POLYMODULUS}`;
+    spanPolynomial1Root.innerHTML = `=> x = [${getRootLinear(arrayPolynomial1Values[0], -arrayPolynomial1Values[1], POLYMODULUS)}]`;
+}
+updatePolynomial1();
+
+
+let arrayPolynomial2Values = [];
+const arrayPolynomial2Sliders = ["sliderPolynomial2Coefficient1", "sliderPolynomial2Coefficient2", "sliderPolynomial2Range"];
+const arrayPolynomial2Spans = ["spanPolynomial2Coefficient1", "spanPolynomial2Coefficient2", "spanPolynomial2Range"];
+const arrayPolynomial2Objects = initializePolynomialIllustration(arrayPolynomial2Sliders, arrayPolynomial2Spans, updatePolynomial2, POLYMODULUS);
+function updatePolynomial2() {
+    arrayPolynomial2Values = getSetPolynomialValues(arrayPolynomial2Objects);
+    spanPolynomial2Equation.innerHTML = `${arrayPolynomial2Values[0]}⋅x^2 + ${arrayPolynomial2Values[1]}⋅x ≡ ${arrayPolynomial2Values[2]} (mod) ${POLYMODULUS}`;
+    spanPolynomial2Root.innerHTML = `=> x = [${getRootQuadratic(arrayPolynomial2Values[0], arrayPolynomial2Values[1], -arrayPolynomial2Values[2], POLYMODULUS)}]`;
+}
+updatePolynomial2();
+
+
+let varChaChaDiffusionDistHeightFactor = 1;
+const varChaChaDiffusionDistBars = 78;
+const varChaChaDiffusionDistStart = 256 - varChaChaDiffusionDistBars / 2;
+const arrayChaChaDiffusionDistLables = getNumberLabels(varChaChaDiffusionDistStart, varChaChaDiffusionDistBars, 7, 4);
+const arrayChaChaDiffusionDistribution = new Array(varChaChaDiffusionDistBars).fill(0);
+const canvasChaChaDiffusion = initializeCanvas("canvasChaChaDiffusion", 750);
+const buttonChaChaDiffusion = document.getElementById("buttonChaChaDiffusion");
+const buttonChaChaDiffusion1000 = document.getElementById("buttonChaChaDiffusion1000");
+const buttonChaChaDiffusionReset = document.getElementById("buttonChaChaDiffusionReset");
+const arrayChaChaDiffusionBlocks = [createChaChaInitBlock(0), createChaChaInitBlock(0)];
+buttonChaChaDiffusion.addEventListener("click", () => { updateChaChaDiffusionBlocks(); updateChaChaDiffusionCanvas(); });
+buttonChaChaDiffusion1000.addEventListener("click", () => {
+    for (let i = 0; i < 1000; i++)
+        updateChaChaDiffusionBlocks();
+    updateChaChaDiffusionCanvas();
+});
+buttonChaChaDiffusionReset.addEventListener("click", () => {
+    varChaChaDiffusionDistHeightFactor = 0;
+    for (let i = 0; i < arrayChaChaDiffusionDistribution.length; i++)
+        arrayChaChaDiffusionDistribution[i] = 0;
+    updateChaChaDiffusionCanvas();
+});
+function updateChaChaDiffusionBlocks() {
+    for (let i = 4; i < 16; i++) {
+        arrayChaChaDiffusionBlocks[0][i] = (Math.random() * 0xFFFFFFFF) >>> 0;
+        arrayChaChaDiffusionBlocks[1][i] = arrayChaChaDiffusionBlocks[0][i];
+    }
+    arrayChaChaDiffusionBlocks[1][Math.floor(Math.random() * 12) + 4] ^= (1 << Math.floor(Math.random() * 32));
+    arrayChaChaDiffusionBlocks[2] = createChaChaStream(arrayChaChaDiffusionBlocks[0], 1);
+    arrayChaChaDiffusionBlocks[3] = createChaChaStream(arrayChaChaDiffusionBlocks[1], 1);
+    arrayChaChaDiffusionBlocks[4] = createXORStream(arrayChaChaDiffusionBlocks[0], arrayChaChaDiffusionBlocks[1]);
+    arrayChaChaDiffusionBlocks[5] = createXORStream(arrayChaChaDiffusionBlocks[2], arrayChaChaDiffusionBlocks[3]);
+    updateChaChaDistribution(arrayChaChaDiffusionDistribution, arrayChaChaDiffusionBlocks[5], varChaChaDiffusionDistStart);
+    varChaChaDiffusionDistHeightFactor++;
+}
+function updateChaChaDiffusionCanvas() {
+    canvasChaChaDiffusion.clearRect(0, 0, WIDTH, 750);
+    for (let i = 0; i < 4; i++)
+        drawChaChaBlocks(canvasChaChaDiffusion, arrayChaChaDiffusionBlocks[i], (Math.floor(i / 2) != 1) ? 15 : 705, (i % 2 == 0) ? 15 : 173, 8);
+    drawChaChaBlock(canvasChaChaDiffusion, arrayChaChaDiffusionBlocks[4], 301, 95, 8, HIGHCOLOR);
+    drawChaChaBlock(canvasChaChaDiffusion, arrayChaChaDiffusionBlocks[5], 991, 95, 8, DIFFCOLOR);
+    drawArrow(canvasChaChaDiffusion, false, 1, 49, 291, 665);
+    drawArrow(canvasChaChaDiffusion, false, 1, 267, 291, 665);
+    drawDistribution(canvasChaChaDiffusion, [arrayChaChaDiffusionDistribution], 15, 335, arrayChaChaDiffusionDistLables, Math.pow(varChaChaDiffusionDistHeightFactor, -0.65), [DIFFCOLOR], 10);
+};
+updateChaChaDiffusionBlocks();
+updateChaChaDiffusionCanvas();
+
+
+// functions
+
+function updateChaChaDistribution(distribution, blocks, start) {
+    const bits = countActiveBitsBlock(blocks);
+    if (bits >= start && bits < start + distribution.length)
+        distribution[bits - start] += 1;
+}
+
+function countActiveBits(number) {
+    let ones = 0;
+    while (number) {
+        ones += number & 1;
+        number >>>= 1;
+    }
+    return ones;
+}
+
+function countActiveBitsBlock(blocks) {
+    let ones = 0;
+    for (let i = 0; i < blocks.length; i++)
+        ones += countActiveBits(blocks[i]);
+    return ones;
+}
+
+function getRootQuadratic(a, b, c, prime) {
+    let discriminant = ((((b * b) - (4 * a * c)) % prime) + prime) % prime;
+    let inverseA = getFieldInverse(2 * a, prime);
+    if (discriminant == 0)
+        return [((prime - b) * inverseA) % prime]
+    let sqroots = getSquareRootField(discriminant, prime);
+    if ((sqroots[0] * sqroots[0]) % prime != discriminant)
+        return [];
+    return [((((sqroots[0] - b) * inverseA) % prime) + prime) % prime, ((((sqroots[1] - b) * inverseA) % prime) + prime) % prime];
+}
+
+function getRootLinear(a, b, prime) {
+    return ((prime - b) * getFieldInverse(a, prime)) % prime;
+}
+
+function getFieldInverse(number, prime) {
+    let inverse = number;
+    for (let i = 1; i < prime - 2; i++)
+        inverse = (inverse * number) % prime;
+    return inverse;
+}
+
+function getSquareRootField(number, prime) { // use p % 4 = 3
+    let root = number;
+    for (let i = 1; i < (prime + 1)/4; i++)
+        root = (root * number) % prime;
+    return [root, (((prime - root) % prime) + prime) % prime];
+}
+
+function getNumberLabels(start, total, gap = 1, offset = 0) {
+    const labels = new Array(total).fill("");
+    for (let i = 0; i < total; i++)
+        if ((i + offset) % gap == 0) labels[i] = String(i + start);
+    return labels;
+}
+
+function getPolynomialExpression(bytes, length = 2, indeterminate = "x") {
+    let equation = "...";
+    let end = bytes.length - 1;
+    for (let i = length - 1; i >= 0; i--)
+        equation += " + " + toHexString(bytes[end - i]) + "*" + indeterminate + "^" + (i + 1);
+    return equation;
+}
+
+function initializePolynomialIllustration(sliderIDs, spanIDs, updateFunction, modulus) {
+    const sliders = [];
+    const spans = [];
+    for (let i = 0; i < sliderIDs.length; i++) {
+        const slider = initializeSliders(sliderIDs[i], (i === 0 || i === sliderIDs.length - 1) ? 1 : 0, modulus - 1, 1, Math.floor(Math.random() * modulus));
+        slider.addEventListener("input", updateFunction);
+        sliders.push(slider);
+    }
+    for (let i = 0; i < spanIDs.length; i++) {
+        const span = document.getElementById(spanIDs[i]);
+        spans.push(span);
+    }
+    return [sliders, spans];
+}
+
+function getSetPolynomialValues(objects) {
+    const values = [];
+    for (let i = 0; i < objects[0].length; i++)
+        values[i] = parseInt(objects[0][i].value);
+    for (let i = 0; i < objects[1].length; i++)
+        objects[1][i].innerHTML = values[i];
+    return values;
+}
+
+function calculatePoly1305(blocks, r, s) {
+    let hash = 0n;
+    let block = 0n;
+    for (let i = 0; i < blocks.length; i += 4) {
+        block = toBigInt(blocks.slice(i, i + 4));
+        hash = calculatePoly1305Block(block, hash, r);
+    }
+    hash = hash + s;
+    return BigInt.asUintN(128, hash);
+}
+
+function calculatePoly1305Block(block, prev, key) {
+    const message = block + (1n << 128n);
+    const hash = ((prev + message) * key) % ((1n << 130n) - 5n);
+    return BigInt.asUintN(128, hash);
+}
+
+function getPoly1305Key(r = false) {
+    const key = new Array(4);
+    for (let i = 0; i < key.length; i++)
+        key[i] = Math.floor(Math.random() * 0xFFFFFFFF) >>> 0;
+    if (r) {
+        for (let i = 0; i < 4; i++)
+            key[i] &= 0x0FFFFFFF;
+        for (let i = 1; i < 4; i++)
+            key[i] &= 0xFFFFFFFC;
+    }
+    return toBigInt(key);
+}
+
+function resetHashGeneral(updateFunction, pointers, inputKey = false, inputPad = false, spanPad = false) {
+    pointers[0] = 0; pointers[1] = 0; pointers[2] = 0; pointers[3] = 0;
+    if (inputKey) pointers[4] = parseInt(inputKey.value, 16) >>> 0;
+    if (inputPad) pointers[5] = parseInt(inputPad.value, 16) >>> 0;
+    pointers[6] = calculateHash(AUTH_CIPHERSTREAM_ORIG_SHORT, pointers[4], pointers[5]);
+    if (spanPad) spanPad.innerHTML = "...";
+    updateFunction();
+}
+
+function updateHashGeneral(canvas, pointers) {
+    // pointers = [pointer, current byte, current hash, previous byte, key, pad, hash]
+    const keys = [];
+    if (pointers[4] != 1) keys.push(pointers[4]);
+    if (pointers[5] != 0) keys.push(pointers[5]);
+    canvas.clearRect(0, 0, WIDTH, 460);
+    drawChaChaEncryption(canvas, AUTH_DATASTREAM_ORIG_SHORT, AUTH_KEYSTREAM_SHORT, AUTH_CIPHERSTREAM_ORIG_SHORT, 15, 15, 8);
+    drawHash(canvas, pointers[6], 607, 383, keys, false);
+    drawRectangle(canvas, 15 + (pointers[0] % 4) * 64 + Math.floor(pointers[0] / 16) * 256, 319 + (Math.floor(pointers[0] / 4) % 4) * 32, 64, 32, HIGHCOLOR, 6);
+    pointers[1] = AUTH_CIPHERSTREAM_ORIG_SHORT[pointers[0]] >>> 0;
+    pointers[3] = pointers[2] >>> 0;
+    pointers[2] = Math.imul(pointers[1] + (pointers[3]), pointers[4]) >>> 0;
+}
+
+function drawHash(canvas, hash, x = 1119, y = 383, keys = [], bigInt = false, raw = false) {
+    const xOffset = 46;
+    let toHexFunction = bigInt ? toHexStringBigInt : toHexString;
+    if (raw) toHexFunction = val => val;
+    initializeCanvasText(canvas, "left");
+    drawArrow(canvas, false, 1, y, x - 65, x - 15);
+    canvas.fillText(toHexFunction(hash), x, y);
+    if (keys.length == 0) return;
+    canvas.beginPath();
+    for (let i = 0; i < keys.length; i++) {
+        canvas.moveTo(x - xOffset, y);
+        canvas.lineTo(x - xOffset, y - 60 - (30 * i));
+        canvas.lineTo(x - xOffset + 10, y - 60 - (30 * i));
+        canvas.fillText(toHexFunction(keys[i]), x - xOffset + 15, y - 60 - (30 * i));
+    }
+    canvas.stroke();
+    canvas.beginPath();
+    canvas.arc(x - xOffset, y, 6, 0, 2 * Math.PI);
+    canvas.fill();
+}
+
+function calculateHash(array, key = 1, pad = 0) {
+    let hash = 0;
+    for (let i = 0; i < array.length; i++)
+        hash = Math.imul(array[i] + hash, key) >>> 0;
+    hash = hash + (pad >>> 0);
+    return hash;
+}
+
+function toHexStringBigInt(number) {
+    return "0x" + number.toString(16).padStart(32, '0');
+}
+
+function toHexString(number) {
+    const hexString = (number >>> 0).toString(16);
+    return "0x" + hexString.padStart(8, '0');
+}
+
+function toLittleEndian(number) {
+    number &= 0xFFFFFFFF;
+    const byte1 = (number & 0xFF);
+    const byte2 = (number >> 8) & 0xFF;
+    const byte3 = (number >> 16) & 0xFF;
+    const byte4 = (number >> 24) & 0xFF;
+    const littleEndian = (byte1 << 24) | (byte2 << 16) | (byte3 << 8) | byte4;
+    return littleEndian;
+}
+
+function toBigInt(array) {
+    const length = array.length;
+    let multiplier = 1n;
+    let number = 0n;
+    for (let i = 0; i < length; i++) {
+        number += BigInt(array[i]) * multiplier;
+        multiplier *= 0x100000000n;
+    }
+    return BigInt.asUintN(length * 32, number);
+}
+
+function shiftBits2D(array1, array2, modulus = 2, subtract = false) {
+    const shiftedArray = Array.from({ length: array1.length }, () => new Array(array1[0].length).fill(0));
+    for (let i = 0; i < array1.length; i++) {
+        for (j = 0; j < array1[0].length; j++) {
+            if (subtract) {
+                shiftedArray[i][j] = (((array1[i][j] - array2[i][j]) % modulus) + modulus) % modulus;
+            } else {
+                shiftedArray[i][j] = (array1[i][j] + array2[i][j]) % modulus;
+            }
+        }
+    }
+    return shiftedArray;
+}
+
+function drawBits2D(canvas, array, x = 15, y = 15, colors = ["#fff", "#000"], size = 10) {
+    let dimensionX = array[0].length;
+    let dimensionY = array.length;
+    for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < array[0].length; j++) {
+            canvas.fillStyle = colors[array[i][j]];
+            canvas.fillRect(x + j * size, y + i * size, size, size);
+        }
+    }
+    canvas.lineWidth = LINEWIDTH;
+    for (let i = 0; i <= dimensionY; i++) {
+        canvas.moveTo(x, y + i * size);
+        canvas.lineTo(x + size * dimensionX, y + i * size);
+    }
+    for (let i = 0; i <= dimensionX; i++) {
+        canvas.moveTo(x + i * size, y);
+        canvas.lineTo(x + i * size, y + size * dimensionY);
+    }
+    canvas.stroke();
+}
+
+function drawChaChaWithBlockArrow(canvas, block, x = 15, y = 15, size = 10, arrowStart = 415, arrowEnd = 575, color = "#000", inline = "#000", outline = "#000") {
+    drawChaChaBlock(canvas, block, x, y, size, color, inline, outline);
+    drawArrow(canvas, false, 1, y + 8 * size, arrowStart, arrowEnd);
+}
+
+function drawChaChaCountNonce(canvas, key, encryptionStreams, counter = 0, nonce = 0, x = 15, y = 15, sizeStream = 6, streamsOffset = 240, streamGroupOffset = 70, blockOffset = 640, sizeBlock = 10, lineWidth = 6) {
+    const initBlock = createChaChaInitBlock(key, counter, nonce);
+    drawChaChaWithBlockArrow(canvas, initBlock, x, y, sizeBlock, x + 32 * sizeBlock + 80, x + blockOffset - 80);
+    updateChaChaBlockFLRound(initBlock);
+    drawChaChaBlocks(canvas, initBlock, x + blockOffset, y, sizeBlock);
+    for (let i = 0; i < encryptionStreams.length; i++)
+        drawChaChaEncryption(canvas, encryptionStreams[i].dataStream, encryptionStreams[i].chachaStream, encryptionStreams[i].xorStream, x, y + streamsOffset + i * sizeStream * streamGroupOffset, sizeStream);
+    drawRectangle(canvas, x + blockOffset, y, 32 * sizeBlock, 16 * sizeBlock, HIGHCOLOR, lineWidth);
+    if (counter < encryptionStreams[0].length) drawRectangle(canvas, 15 + counter * 32 * sizeStream, y + streamsOffset + 19 * sizeStream + nonce * streamGroupOffset * sizeStream, 32 * sizeStream, 16 * sizeStream, HIGHCOLOR, lineWidth);
+}
+
+function createEncryptionStreams(initBlock, length, hexDataPattern = HEXCHECKER, counterStart = 0) {
+    const data = new Array(16 * length).fill(hexDataPattern);
+    const chacha = createChaChaStream(initBlock, length, counterStart);
+    const xor = createXORStream(data, chacha);
+    return { dataStream: data, chachaStream: chacha, xorStream: xor, length: length};
+}
+
+function drawCipherRects(canvas, colors, yDots = 10, xDots = 101, size = 12, gap = 4, xOffset = 36, yOffset = 16) {
+    let color = 0;
+    for (let y = 0; y < yDots; y++) {
+        for (let x = 0; x < xDots; x++) {
+            canvas.fillStyle = colors[color % colors.length];
+            canvas.fillRect(x * size + xOffset, y * size + yOffset, size - gap, size - gap);
+            color++;
+            if (Math.random() < 0.3) x++;
+        }
+    }
+}
+
+function drawRectangle(canvas, x, y, width, height, color = "#000", lineWidth = 4) {
+    canvas.strokeStyle = color;
+    canvas.lineWidth = lineWidth;
+    canvas.beginPath();
+    canvas.moveTo(x, y);
+    canvas.lineTo(x + width, y);
+    canvas.lineTo(x + width, y + height);
+    canvas.lineTo(x, y + height);
+    canvas.lineTo(x, y);
+    canvas.lineTo(x + width, y);
+    canvas.stroke();
+    canvas.strokeStyle = "#000";
+    canvas.lineWidth = LINEWIDTH;
+}
+
+function createChaChaInitBlock(key, counterStart = 0, nonce = 0) {
+    return CHACHACONSTANTS.concat(key, 0, counterStart, 0, nonce);
+}
+
+function createChaChaStream(initBlock, blocksLength, counterStart = 0) {
+    const finalBlocks = [];
+    for (let i = counterStart; i < blocksLength + counterStart; i++) {
+        const tempBlock = [...initBlock];
+        tempBlock[13] += i;
+        updateChaChaBlockFLRound(tempBlock);
+        finalBlocks.push(...tempBlock);
+    }
+    return finalBlocks;
+}
+
+function createXORStream(block1, block2) {
+    const arrayLength = Math.max(block1.length, block2.length);
+    const XORArray = new Array(arrayLength).fill(0);
+    for (let i = 0; i < arrayLength; i++)
+            XORArray[i] = block1[i] ^ block2[i];
+    return XORArray;
+}
+
+function updateChaChaBlockFLRound(block) {
+    const initBlock = [...block];
+    updateChaChaBlockTWRound(block);
+    updateChaChaBlockARound(block, initBlock);
+}
+
+function updateChaChaBlockARound(block, initialBlock) {
+    for (let i = 0; i < 16; i++)
+        block[i] = (block[i] + initialBlock[i]) >>> 0;
+}
+
+function updateChaChaBlockTWRound(block) {
+    for (let round = 1; round <= 20; round++) {
+        for (let quarterRound = 0; quarterRound < 4; quarterRound++) {
+            updateChaChaBlockQTRound(block, CHACHAWORDPERMS[round % 2][quarterRound]);
+        }
+    }
+}
+
+function updateChaChaBlockQTRound(block, words) {
+    block[words[0]] = (block[words[0]] + block[words[1]]) >>> 0; // extra shifts since
+    block[words[3]] = (block[words[3]] ^ block[words[0]]) >>> 0; // no native 32-bit in js
+    block[words[3]] = ((block[words[3]] << 16) | (block[words[3]] >>> (32 - 16))) >>> 0;
+    block[words[2]] = (block[words[2]] + block[words[3]]) >>> 0;
+    block[words[1]] = (block[words[1]] ^ block[words[2]]) >>> 0;
+    block[words[1]] = ((block[words[1]] << 12) | (block[words[1]] >>> (32 - 12))) >>> 0;
+    block[words[0]] = (block[words[0]] + block[words[1]]) >>> 0;
+    block[words[3]] = (block[words[3]] ^ block[words[0]]) >>> 0;
+    block[words[3]] = ((block[words[3]] << 8) | (block[words[3]] >>> (32 - 8))) >>> 0;
+    block[words[2]] = (block[words[2]] + block[words[3]]) >>> 0;
+    block[words[1]] = (block[words[1]] ^ block[words[2]]) >>> 0;
+    block[words[1]] = ((block[words[1]] << 7) | (block[words[1]] >>> (32 - 7))) >>> 0;
+}
+
+function drawChaChaEncryptionFromKey(canvas, initBlock, dataStream, chachaStream, xorStream, x = 15, y = 15, keyOffset = 390, arrowOffset = 390, size = 8) {
+    drawChaChaWithBlockArrow(canvas, initBlock, x, y + size * 19, size, x + size * 32 + 20, x + arrowOffset - 20);
+    drawChaChaEncryption(canvas, dataStream, chachaStream, xorStream, x + keyOffset, y, size);
+}
+
+function drawChaChaEncryption(canvas, dataStream, chachaStream, xorStream, x = 15, y = 15, size = 8) {
+    drawChaChaBlocks(canvas, dataStream, x, y, size, "#000", "#000");
+    drawChaChaBlocks(canvas, chachaStream, x, y + size * 19, size, "#000", "#000");
+    drawChaChaBlocks(canvas, xorStream, x, y + size * 38, size, "#000", "#000");
+}
+
+function drawChaChaLables(canvas, indices, labels = CHACHAWORDLABELS, x = 15, y = 15, size = 24, font = "bold 40px JetBrains Mono") {
+    initializeCanvasText(canvas, "center", font);
+    for (let i = 0; i < 4; i++) {
+        canvas.fillText(labels[i], 
+            x + size * 4 + size * 8 * (indices[i] % 4),
+            y + size * 2 + size * 4 * Math.floor(indices[i] / 4),
+        );
+    }
+}
+
+function drawBitBlockOutline(canvas, x, y, sizeX, sizeY, dimensionX, dimensionY, color = "#000") {
+    canvas.lineWidth = LINEWIDTH;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    for (let i = 0; i <= dimensionY; i++) {
+        canvas.moveTo(x, y + i * sizeY);
+        canvas.lineTo(x + sizeX * dimensionX, y + i * sizeY);
+    }
+    for (let i = 0; i <= dimensionX; i++) {
+        canvas.moveTo(x + i * sizeX, y);
+        canvas.lineTo(x + i * sizeX, y + sizeY * dimensionY);
+    }
+    canvas.stroke();
+}
+
+function drawChaChaWord(canvas, word, x, y, size, color) {
+    canvas.fillStyle = color;
+    for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 8; col++) {
+            const bitIndex = 31 - (row * 8 + col);
+            if ((word >>> bitIndex) & 1) canvas.fillRect(x + col * size, y + row * size, size, size);
+        }
+    }
+}
+
+function drawChaChaBlock(canvas, block, x = 15, y = 15, size = 24, color = "#ccc", inline = "#999", outline = "#000") {
+    for (let i = 0; i < 4; i++)
+        for (let j = 0; j < 4; j++)
+            drawChaChaWord(canvas, block[i * 4 + j], x + j * size * 8, y + i * size * 4, size, color);
+    drawBitBlockOutline(canvas, x, y, size, size, 32, 16, inline);
+    drawBitBlockOutline(canvas, x, y, size * 8, size * 4, 4, 4, outline);
+}
+
+function drawChaChaBlocks(canvas, block, x = 15, y = 15, size = 10, color = "#000", inline = "#000", outline = "#000", rows = 1) {
+    for (let i = 0; i < Math.floor(block.length / 16); i++)
+        drawChaChaBlock(canvas, block.slice(i * 16, i * 16 + 16), x + size * 32 * Math.floor(i / rows), y + size * 16 * (i % rows), size, color, inline, outline);
+}
+
+function drawLock(canvas, x, y, lock = true, size = 10) {
+    canvas.lineWidth = LINEWIDTH;
+    canvas.beginPath();
+    canvas.moveTo(x - size, y - size);
+    canvas.lineTo(x + size, y - size);
+    canvas.lineTo(x + size, y + 0.8 * size);
+    canvas.lineTo(x - size, y + 0.8 * size);
+    canvas.lineTo(x - size, y - size);
+    canvas.lineTo(x + size, y - size);
+    canvas.fill();
+    canvas.moveTo(x - 0.6 * size, y - size);
+    canvas.arc(x, y - 1.8 * size, 0.6 * size, Math.PI, 0);
+    if (lock) canvas.lineTo(x + 0.6 * size, y - size);
+    canvas.stroke();
+}
+
+function drawLetterShift(canvas, key, text, spanKey, direction = 1, secondChain = true, y = 15) {
+    let ciphertext = shiftLetters(text, key, direction);
+    drawLetterChain(canvas, text, y);
+    if (secondChain) drawLetterChain(canvas, ciphertext, y + 260);
+    drawShiftArrows(canvas, key, Math.min(text.length, LETTERBOXLENGTH), sign(direction), y + 120);
+    if (spanKey) spanKey.innerHTML = key;
+    return ciphertext;
+}
+
+function drawDistributionAxes(canvas, x, y, height) {
+    canvas.lineWidth = LINEWIDTH;
+    canvas.beginPath();
+    canvas.moveTo(x, y);
+    canvas.lineTo(x, y + height);
+    canvas.lineTo(x + 1250, y + height);
+    canvas.stroke();
+}
+
+function drawDistributionLabels(canvas, labels, x, y) {
+    initializeCanvasText(canvas);
+    for (let i = 0; i < labels.length; i++)
+        canvas.fillText(labels[i], x + i * 1248 / labels.length, y);
+}
+
+function drawDistributionBar(canvas, x, y, width, height) {
+    canvas.beginPath();
+    canvas.moveTo(x, y);
+    canvas.lineTo(x + width, y);
+    canvas.lineTo(x + width, y - height);
+    canvas.lineTo(x, y - height);
+    canvas.fill();
+}
+
+function drawDistribution(canvas, distributions, x = 15, y = 15, labels = LETTERS, scaleFactor = 7, colors = DISTCOLORS, widthBar = 32, height = 370) {
+    const items = distributions[0].length;
+    const offset = 624 / items - 13;
+    const cumulative = new Array(items).fill(0);
+    for (let distribution = 0; distribution < distributions.length; distribution++) {
+        canvas.fillStyle = colors[distribution];
+        for (let item = 0; item < items; item++) {
+            drawDistributionBar(canvas, x + offset + item * 1248 / items, y + height - cumulative[item] * height * scaleFactor, widthBar, distributions[distribution][item] * height * scaleFactor);
+            cumulative[item] += distributions[distribution][item];
+        }
+    }
+    drawDistributionAxes(canvas, x, y, height);
+    drawDistributionLabels(canvas, labels, x + offset + 15, y + height + 22);
+}
+
+function getModuloDistribution(modulus, key) {
+    const distribution = new Array(modulus).fill(0);
+    const increment = 1 / modulus;
+    for (let i = 0; i < modulus; i++)
+        distribution[(i * key) % modulus] += increment;
+    return distribution;
+}
+
+function getDisparateDistributions(arrayIndices, originalDistribution = LETTERPROBDIST) {
+    const distributions = [[...originalDistribution]];
+    for (let i = 0; i < arrayIndices.length; i++) {
+        const newDistribution = new Array(26).fill(0);
+        newDistribution[arrayIndices[i]] = originalDistribution[arrayIndices[i]];
+        distributions.push(newDistribution);
+        distributions[0][arrayIndices[i]] = 0;
+    }
+    return distributions;
+}
+
+function getFrequencyDistributionFromKey(oldDistributions, key) {
+    const transformedDistributions = [];
+    for (let i = 0; i < oldDistributions.length; i++) {
+        const newDistribution = new Array(26).fill(0);
+        for (let letter = 0; letter < 26; letter++) {
+            for (let k = 0; k < key.length; k++)
+                newDistribution[(letter + key[k]) % 26] += oldDistributions[i][letter] / key.length;
+        }
+        transformedDistributions.push(newDistribution);
+    }
+    return transformedDistributions;
+}
+
+function XORStringArray(binaryString, binaryArray) {
+    let result = '';
+    for (let i = 0; i < binaryString.length; i++) {
+        const bitString = parseInt(binaryString[i], 10);
+        const bitArray = binaryArray[i];
+        result += (bitString ^ bitArray).toString();
+    }
+    return result;
+}
+
+function getArrayFromString(string) {
+    const numbers = string.split(',').map(num => parseInt(num.trim()))
+        .filter(num => num >= 0 && num < 26 && Number.isInteger(num));
+    if (numbers.length == 0)
+        return [0];
+    return numbers;
+}
+
+function generateKeysUnique(count, range = 26) {
+    const numbers = Array.from({ length: range }, (_, i) => i);
+    for (let i = 0; i < range; i++) {
+        const j = i + Math.floor(Math.random() * (range - i));
+        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+    }
+    return numbers.slice(0, count);
+}
+
+function generateKey(length, modulus) {
+    return Array.from({ length: length }, () => Math.floor(Math.random() * modulus));
+}
+
+function drawOrthoArrow(canvas, coordinates) {
+    const last = coordinates.length - 1;
+    canvas.beginPath();
+    canvas.moveTo(coordinates[0][0], coordinates[0][1]);
+    for (let i = 1; i < last; i++)
+        canvas.lineTo(coordinates[i][0], coordinates[i][1]);
+    canvas.stroke();
+    const vertical = coordinates[last - 1][0] == coordinates[last][0];
+    const direction = (coordinates[last - 1][0] < coordinates[last][0] || coordinates[last - 1][1] < coordinates[last][1]) ? 1 : -1;
+    const offset = vertical ? coordinates[last][0] : coordinates[last][1];
+    const start = vertical ? coordinates[last - 1][1] : coordinates[last - 1][0];
+    const end = vertical ? coordinates[last][1] : coordinates[last][0];
+    drawArrow(canvas, vertical, direction, offset, start, end);
+}
+
+function drawShiftArrows(canvas, key, length, sign = "+", y = 135, x = 15, color = LGRAY) {
+    initializeCanvasText(canvas);
+    canvas.lineWidth = LINEWIDTH;
+    drawLetterChain(canvas, ' '.repeat(length), y + 10, x, color);   // kinda ugly hack; last minute changes 
+    initializeCanvasText(canvas, undefined, undefined, undefined, color);
+    for (let i = 0; i < length; i++) {
+        let xOffset = x + i * LETTERBOXWIDTH + LETTERBOXWIDTH / 2;
+        canvas.fillText(sign + key[i % key.length], xOffset, y + 60);
+        canvas.beginPath();
+        canvas.moveTo(xOffset, y - 5);
+        canvas.lineTo(xOffset, y + 10);
+        canvas.stroke();
+        drawArrow(canvas, true, 1, xOffset, y + 110, y + 130);
+    }
+}
+
+function drawArrow(canvas, vertical, downright, offset, start, end) {
+    canvas.beginPath();
+    if (vertical) {
+        canvas.moveTo(offset, start);
+        canvas.lineTo(offset, end);
+        canvas.moveTo(offset - 10, end - downright * 10);
+        canvas.lineTo(offset, end);
+        canvas.lineTo(offset + 10, end - downright * 10);
+    } else {
+        canvas.moveTo(start, offset);
+        canvas.lineTo(end, offset);
+        canvas.moveTo(end - downright * 10, offset - 10);
+        canvas.lineTo(end, offset);
+        canvas.lineTo(end - downright * 10, offset + 10);
+    }
+    canvas.stroke();
+}
+
+function drawMultiplyModuloMap(canvas, modulus, multiplier, height = 120, xOffset = 15, yOffset = 185, color = "#aaa") {
+    const offset = xOffset + 2 + 624 / modulus;
+    canvas.lineWidth = LINEWIDTH;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    for (let i = 0; i < modulus; i++) {
+        const output = (i * multiplier) % modulus;
+        canvas.moveTo(offset + i * 1248 / modulus, yOffset);
+        canvas.lineTo(offset + output * 1248 / modulus, yOffset + height);
+    }
+    canvas.stroke();
+}
+
+function drawFunctionMap(canvas, key, symbol, color = "#ccc", cardinality = 26, y1 = 105, y2 = 185) {
+    const xOffset = 624 / cardinality + 13;
+    const gap = 1248 / cardinality;
+    canvas.lineWidth = LINEWIDTH;
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    for (let i = 0; i < key.length; i++) {
+        canvas.moveTo(symbol * gap + xOffset, y2);
+        canvas.lineTo(((((symbol - key[i]) % cardinality) + cardinality) % cardinality) * gap + xOffset, y1);
+    }
+    canvas.stroke();
+}
+
+function getSymbols(text, key, sign = -1) {
+    const symbols = [];
+    for (i = 0; i < key.length; i++) {
+        symbol = LETTERS[(((text + sign * key[i]) % 26) + 26) % 26];
+        symbols.push(symbol);
+    }
+    return symbols;
+}
+
+function shiftLetters(plaintext, key, sign = 1) {
+    let ciphertext = '';
+    plaintext = plaintext.toUpperCase();
+    for (let i = 0; i < plaintext.length; i++) {
+        let currentChar = plaintext[i];
+        let currentShift = key[i % key.length];
+        let encryptedChar = ' ';
+        if (currentChar.charCodeAt(0) >= 65 && currentChar.charCodeAt(0) < 91)
+            encryptedChar = LETTERS[(((currentChar.charCodeAt(0) - 65 + sign * currentShift) % 26) + 26) % 26];
+        ciphertext += encryptedChar;
+    }
+    return ciphertext;
+}
+
+function getLetterPosition(letter) {
+    letter = letter.toUpperCase();
+    let position = letter.charCodeAt(0) - 64;
+    if (position >= 1 && position <= 26)
+        return position;
+    else
+        return " ";
+}
+
+function drawLetterChainBackground(canvas, text, x = 15, y = 15, color = "#666") {
+    canvas.fillStyle = color;
+    for (let i = 0; i < LETTERBOXLENGTH; i++) {
+        if (text[i] == '1') {
+            canvas.beginPath();
+            canvas.moveTo(x + (i * LETTERBOXWIDTH), y);
+            canvas.lineTo(x + (i * LETTERBOXWIDTH), y + LETTERBOXHEIGHT);
+            canvas.lineTo(x + (i * LETTERBOXWIDTH) + LETTERBOXWIDTH, y + LETTERBOXHEIGHT);
+            canvas.lineTo(x + (i * LETTERBOXWIDTH) + LETTERBOXWIDTH, y);
+            canvas.lineTo(x + (i * LETTERBOXWIDTH), y);
+            canvas.fill();
+        }
+    }
+    canvas.fillStyle = "#000";
+}
+
+function drawLetterChain(canvas, text, y = 15, x = 15, color = BLACK) {
+    canvas.lineWidth = LINEWIDTH;
+    for (let i = 0; i < LETTERBOXLENGTH; i++)
+        if (text[i]) drawLetterBox(canvas, text[i], x + (i * LETTERBOXWIDTH), y, color);
+}
+
+function drawLetterBox(canvas, letter, x, y, color) {
+    initializeCanvasText(canvas, "center", "32px JetBrains Mono", "middle", color);
+    canvas.fillText(letter, x + LETTERBOXWIDTH / 2, y + LETTERBOXHEIGHT / 2);
+    initializeCanvasText(canvas, "right","20px JetBrains Mono", "ideographic", color);
+    canvas.fillText(getLetterPosition(letter), x + LETTERBOXWIDTH - LETTERINDEXOFFSETX, y + LETTERBOXHEIGHT - LETTERINDEXOFFSETY)
+    canvas.strokeStyle = color;
+    canvas.beginPath();
+    canvas.moveTo(x, y);
+    canvas.lineTo(x, y + LETTERBOXHEIGHT);
+    canvas.lineTo(x + LETTERBOXWIDTH, y + LETTERBOXHEIGHT);
+    canvas.lineTo(x + LETTERBOXWIDTH, y);
+    canvas.lineTo(x, y);
+    canvas.stroke();
+}
+
+function returnGaussianValues(values, range = 26, iterations = 8) {
+    const array = new Array(values).fill(0);
+    for (let i = 0; i < values; i++) {
+        let value = 0;
+        for (let iter = 0; iter < iterations; iter++)
+            value += Math.random();
+        array[i]= Math.floor(value * range / iterations);
+    }
+    return array;
+}
+
+function sign(number) {
+    if (number < 0)
+        return "-";
+    return "+";
+}
+
+function initializeProgressBar(bar, maximum, value) {
+    bar.max = maximum;
+    bar.value = value;
+}
+
+function initializeSliders(sliderID, minimum, maximum, step, value) {
+    const slider = document.getElementById(sliderID);
+    slider.min = minimum;
+    slider.max = maximum;
+    slider.step = step;
+    slider.value = value;
+    return slider;
+}
+
+function initializeCanvas(canvasID, height, width = WIDTH) {
+    const canvas = document.getElementById(canvasID).getContext("2d");
+    canvas.canvas.width = width;
+    canvas.canvas.height = height;
+    return canvas;
+}
+
+function initializeCanvasText(canvas, horizontal = "center", font = "25px JetBrains Mono", vertical = "middle", color = "#000") {
+    canvas.font = font;
+    canvas.textBaseline = vertical;
+    canvas.textAlign = horizontal;
+    canvas.fillStyle = color;
+}</script><style>.hexTextBox{font-family:var(--monospace);background-color:var(--gray4);border-radius:.125rem;padding:.0625rem .3125rem}.linkSwitch{cursor:pointer;text-decoration-style:dotted}.containerButtonChaChaNonce{grid-template-columns:repeat(2,max-content);gap:.125rem .375rem;display:grid}.containerButtonChaChaNonce button{width:100%}</style></article></main><footer><a href=https://ekunazanu.foo/more#Terms_of_Use>© 2026</a> <a href=https://ekunazanu.foo/about>ekunazanu</a> · <a rel="noopener nofollow noreferrer" href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC BY 4.0</a> · <a rel="noopener nofollow noreferrer" href=https://github.com/ekunazanu/ekunazanu.foo target=_blank>Source</a> · <a rel="noopener nofollow noreferrer" href=https://ko-fi.com/ekunazanu target=_blank>Support</a></footer>
