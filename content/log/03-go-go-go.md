@@ -6,7 +6,7 @@ draft = false
 template = "article.html"
 [extra]
 type = "article"
-thumbnail = "log.3.gopher.avif"
+thumbnail = "log.03.gopher.avif"
 thumbnailalt = "Doodle of a gopher."
 +++
 

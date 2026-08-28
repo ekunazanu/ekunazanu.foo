@@ -6,7 +6,7 @@ draft = false
 template = "article.html"
 [extra]
 type = "article"
-thumbnail = "log.1.goals.avif"
+thumbnail = "log.01.goals.avif"
 thumbnailalt = "Doodle of a map with a convoluted path to a goals endpoint."
 +++
 

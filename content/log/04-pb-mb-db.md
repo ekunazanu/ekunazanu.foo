@@ -6,7 +6,7 @@ draft = false
 template = "article.html"
 [extra]
 type = "article"
-thumbnail = "log.4.pigeonhole.avif"
+thumbnail = "log.04.pigeonhole.avif"
 thumbnailalt = "Doodle showing the pigeonhole principle."
 +++
 

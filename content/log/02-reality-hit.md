@@ -6,7 +6,7 @@ draft = false
 template = "article.html"
 [extra]
 type = "article"
-thumbnail = "log.2.downfall.avif"
+thumbnail = "log.02.downfall.avif"
 thumbnailalt = "Doodle of a downward chart."
 +++
 

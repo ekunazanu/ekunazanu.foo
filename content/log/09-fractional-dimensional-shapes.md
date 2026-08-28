@@ -6,7 +6,7 @@ draft = false
 template = "article.html"
 [extra]
 type = "article"
-thumbnail = "log.9.fractal.avif"
+thumbnail = "log.09.fractal.avif"
 thumbnailalt = "Doodle of a low iteration Sierpinski triangle."
 +++
 

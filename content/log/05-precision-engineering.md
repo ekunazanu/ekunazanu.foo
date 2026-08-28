@@ -6,7 +6,7 @@ draft = false
 template = "article.html"
 [extra]
 type = "article"
-thumbnail = "log.5.cnc.avif"
+thumbnail = "log.05.cnc.avif"
 thumbnailalt = "Doodle of a CNC drilling circles on a flat plate."
 +++
 

@@ -6,7 +6,7 @@ draft = false
 template = "article.html"
 [extra]
 type = "article"
-thumbnail = "log.8.pixels.avif"
+thumbnail = "log.08.pixels.avif"
 thumbnailalt = "Doodle of pixels and functions."
 +++
 
