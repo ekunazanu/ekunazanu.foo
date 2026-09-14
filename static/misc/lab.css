@@ -100,11 +100,42 @@
 @keyframes juliaAnimMove2 {95% {transform: translate(1rem);}}
 @keyframes juliaAnimMove3 {95% {transform: translate(2rem);}}
 
-#qubitEllpMain {transform-origin: center center; animation: qubitAnimRotate linear infinite paused 5s;}
-#qubitEllpMask {transform-origin: center center; animation: qubitAnimRotate linear infinite paused 5s;}
-#qubitSVG:hover > ellipse {animation-play-state: running;}
-@keyframes qubitAnimRotate {100% {transform: rotate(360deg)}}
+#electronEllpMain {transform-origin: center center; animation: electronAnimRotate linear infinite paused 5s;}
+#electronEllpMask {transform-origin: center center; animation: electronAnimRotate linear infinite paused 5s;}
+#electronSVG:hover > ellipse {animation-play-state: running;}
+@keyframes electronAnimRotate {100% {transform: rotate(360deg)}}
 
-#convolutionPathKernel {animation: convolutionAnimMove steps(32, jump-end) infinite paused 8s -2s;}
-#convolutioSVG:hover path {animation-play-state: running;}
+#convolutionPathKernel {animation: convolutionAnimMove steps(32, jump-end) infinite paused 8s -1.5s;}
+#convolutionSVG:hover > path {animation-play-state: running;}
 @keyframes convolutionAnimMove {0% {transform: translate(-3rem);} 100% {transform: translate(13rem);}}
+
+#marketGroupCircles0 {animation: marketAnimBlink0 step-end infinite paused 0.2s;}
+#marketGroupCircles1 {animation: marketAnimBlink1 step-end infinite paused 0.2s;}
+#marketSVG:hover > g {animation-play-state: running;}
+@keyframes marketAnimBlink0 {50% {fill: #58c;}}
+@keyframes marketAnimBlink1 {50% {fill: #a45;}}
+
+@media (prefers-color-scheme: dark) {
+    #airwavesBG, #wordsBG, #convolutionBG, #bitsBG, #spotifyBG, #rotationBG, #juliaBG, #marketBG { fill: var(--bg) }
+    #airwavesGroupParticles { stroke: var(--gray1); } #airwavesPathWave { stroke: var(--fg); }
+    #wordsGroupCloud { fill: var(--gray3); }
+    #juliaPathGrid { stroke: var(--gray3); } #juliaPathSet { fill: var(--gray2); }
+    #juliaCircDot1, #juliaCircDot2, #juliaCircDot3 { fill: var(--bg); }
+    #bitsGroupLines { stroke: var(--gray3); }
+    #marketGroupCircles0 { fill: var(--gray1); } #marketGroupCircles1 { fill: var(--gray3); }
+    #convolutionPathGrid { stroke: var(--gray3) } #convolutionPathKernel { stroke: var(--fg) }
+    #convolutionPathShape1 { fill: var(--gray1); } #convolutionPathShape3 { fill: var(--gray2); }
+    #convolutionPathShape5 { fill: var(--gray3); } #convolutionPathShape7 { fill: var(--gray4); }
+    #spotifyLine1, #spotifyLine2, #spotifyLine3 { stroke: var(--bg); }
+    #dieBG { fill: var(--gray4); } #dieGroupDots { fill: var(--bg); } #dieRectFace { fill: var(--gray1); }
+    #rotationPathGridBG { stroke: var(--gray4); } #rotationPathGridFG, #rotationPathAxes { stroke: var(--gray3); }
+    #rotationCircUtCr1, #rotationCircUtCr2, #rotationCircUtCr3, #rotationCircUtCr4, #rotationCircUtCr5 { stroke: var(--gray2); }
+    #rotationCircPoRe, #rotationCircNeRe, #rotationCircPoIm, #rotationCircNeIm, #rotationCircCntr { fill: var(--gray1); }
+    #rotationLineNum1, #rotationLineNum2 { stroke: var(--gray2); }
+    #rotationCircNum1 { fill: var(--fg); } #rotationCircNum2 { fill: var(--fg); }
+    #spotifyGroupCircles { fill: #666a } #spotifyCircMain { fill: #aaae }
+    #colorsPathRed { stroke: #644; } #colorsPathGreen { stroke: #464; } #colorsPathBlue { stroke: #446; }
+    @keyframes wordsAnimBlink {20% {fill: var(--gray1);}}
+    @keyframes marketAnimBlink0 {50% {fill: var(--gray3);}}
+    @keyframes marketAnimBlink1 {50% {fill: var(--gray1);}}
+}

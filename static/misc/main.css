@@ -4,14 +4,18 @@
   --gray2: #888; /* highlight gray: hover, should be distict from --fg */
   --gray3: #aaa; /* faint but visible: non-significant separator lines */
   --gray4: #ddd; /* background gray: behind text: inline codes etc */
+  --light0: #fff; --dark0: #000;
+  --dark1: var(--fg); --dark2: var(--fg);
+  --dark3: var(--fg); --dark4: var(--fg);
   --yellow: #fe8; --blue: #37a; --green: #ce7;
   --red: #e98; --purple: #dae; /* #69a #bef #048 */
   --sans: Inter, sans-serif; --serif: Playfair, serif;
   --monospace: 'JetBrains Mono', monospace;
-} /* @media (prefers-color-scheme: dark) { :root {
-  --fg: #fff; --bg: #000; --gray1: #aaa; --gray2: #999; --gray3: #555; --gray4: #444;
+} @media (prefers-color-scheme: dark) { :root {
+  --fg: #ddd; --bg: #222; --gray1: #aaa; --gray2: #999; --gray3: #555; --gray4: #444;
   --blue: #67d; --green: #164; --yellow: #880; --red: #932; --purple: #703;
-}}
+  --dark1: var(--gray1); --dark2: var(--gray2); --dark3: var(--gray3); --dark4: var(--gray4);
+}} /*
 @font-face {
   font-family: 'Inter-stripped'; font-display: swap;
   font-style: normal; font-weight: 100 900;
@@ -106,8 +110,8 @@ pre {
 /* inputs, buttons */
 input, button, select {font: 400 1rem var(--sans); padding: 0.5rem 1rem; margin: 0.125rem 0.125rem; border: 0.0625rem solid var(--fg);}
 input, select {color: var(--fg); background-color: var(--bg);} input::placeholder {color: var(--gray1); opacity: 1;}
-input[type="range"], input[type="checkbox"], progress {accent-color: var(--fg); vertical-align: middle; padding: 0; margin: 0.125rem 0.5rem; outline: none;}
-button {color: var(--bg); background-color: var(--fg);} button:active {color: var(--fg); background-color: var(--bg);}
+input[type="range"], input[type="checkbox"], progress {accent-color: var(--dark3); vertical-align: middle; padding: 0; margin: 0.125rem 0.5rem; outline: none;}
+button {color: var(--light0); background-color: var(--dark3);} button:active {color: var(--fg); background-color: var(--bg);}
 
 /* log */
 .logs {display: grid; grid-gap: 0.5rem; grid-template-columns: 1fr min-content; align-items: center;}
