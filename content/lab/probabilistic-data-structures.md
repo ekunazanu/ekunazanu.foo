@@ -127,11 +127,6 @@ Hash: <code id="bfOutputSaturatedHash">44, 38, 180</code> <span id="bfOutputSatu
 
 Other than using a large number of hashing functions, a bloom filter can also be quickly saturated if the number elements to be hashed (added) is huge. The only solution to decreasing the number of false positives then, is by increasing the size of the bloom filter itself. Increasing the size of the bloom filter bit-array equates to a larger output space for the hash functions, reducing the probability for collisions.
 
-<canvas id="bfCanvasBigger"></canvas>
-<input id="bfInputBiggerAdd" value="hello"><button id="bfButtonBiggerAdd">Add</button><button id="bfButtonBiggerAddRandom">Add Random</button><br>
-<span style="display: none" id="bfOutputBiggerMessage"></span>
-<code style="display:none" id="bfOutputBiggerHash"></code> <!-- acts as /dev/null -->
-
 In effect, the false positive rate is also dependent on the **size of the bloom filter** and the **number of (unique) elements** to be added.
 
 ### Space Efficiency
@@ -207,7 +202,7 @@ Compare that to a counting bloom filter, where every collision increases the val
 Notice how collisions do not affect the bits that are already set in the bloom filter, but affects the bits of the counting bloom filter:
 
 <canvas id="cmsCanvasComparisonErrors"></canvas>
-<input id="cmsInputComparisonErrorsAdd" value="hello"><button id="cmsButtonComparisonErrorsAdd">Add</button><br>
+<input id="cmsInputComparisonErrorsAdd" value="foo"><button id="cmsButtonComparisonErrorsAdd">Add</button><br>
 <code style="display: none" id="cmsOutputComparisonErrorsHash">44, 242, 77</code>
 <span style="display: none" id="cmsOutputComparisonErrorsMessage">&nbsp;</span>
 <span style="display: none" id="cmsOutputComparisonErrorsValues">0, 0, 0</span>
@@ -296,7 +291,6 @@ A multiset is segregated into different subsets using '[buckets](https://en.wiki
 Here, the bucket is chosen from the first four bits of the hash.
 
 <canvas id="hllCanvasBucket"></canvas>
-<canvas id="hllCanvasBucketCounters"></canvas>
 Bucket: <span id="hllOutputBucketNumber">0</span><br>
 Leading zeros: <span id="hllOutputBucketZeros">0</span><br>
 Max. leading zeros: <span id="hllOutputBucketZerosMax">0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br>
@@ -314,14 +308,13 @@ The harmonic mean is used for averaging because it reduces the influence of larg
 
 However, even with the corrective measures, there is a [predictable bias](https://www.moderndescartes.com/essays/hyperloglog/#loglog) towards larger estimates. Scaling the average by a correction factor counteracts this bias. This brings down the [error](https://en.wikipedia.org/wiki/Standard_error) to 1.04/√m, where m is the number of buckets.
 
-Thirty two buckets are used here, and so the standard error is approximately 0.18.
+Sixteen buckets are used here, and so the standard error is approximately 0.26.
 
 <canvas id="hllCanvasMain"></canvas>
-<canvas id="hllCanvasMainCounters"></canvas>
 Bucket: <span id="hllOutputMainNumber">0</span><br>
 Leading zeros: <span id="hllOutputMainZeros">0</span><br>
-<span style="display: none;" id="hllOutputMainZerosMax"></span>
-<span style="display: none;" id="hllOutputMainEstimates"></span>
+Max. leading zeros: <span id="hllOutputMainZerosMax">0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br>
+Estimated cardinalities: <span id="hllOutputMainEstimates">1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1</span><br>
 Average estimate: <span id="hllOutputMainMean">0</span><br>
 Scaled estimate: <span id="hllOutputMainScaled">0</span><br>
 Actual cardinality: <span id="hllOutputMainCardinality">0</span><br>
@@ -365,5 +358,5 @@ There are other probabilistic data structures too, each with their own advantage
 <style>
 .setContainer {font: normal 0.875rem var(--monospace); line-height: 1.25rem; overflow: auto; padding: 1rem; margin: 1rem 0rem; border: 0.0625rem solid var(--fg);}
 .highlight {font-weight: 800;}
-.found {font-weight: 800; background-color: var(--green);
+.found {font-weight: 800; background-color: var(--yellow);
 </style>
