@@ -221,22 +221,22 @@ cmsButtonComparisonAdd.onclick = async() => {
     await BFMSHelper(cmsArrayComparison, bloomFilterAdd, "cmsInputComparisonAdd", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3);
     cmsCanvasComparison.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
     drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
-    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLOR_FG, 341);
+    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
 };
 cmsButtonComparisonQuery.onclick = async() => {
     const varComparisonFound = await BFMSHelper(cmsArrayComparison, bloomFilterQuery, "cmsInputComparisonAdd", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison);
     drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
-    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLOR_FG, 341);
+    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
     document.getElementById("cmsOutputComparisonMessage").innerHTML = varComparisonFound ? "<b>Element found</b>." : "Element not found.";
-    const frequency = await BFMSHelper(cmsArrayComparison, bloomFilterCountQuery, "cmsInputComparisonAdd", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison, COLOR_BLUE, 341);
+    const frequency = await BFMSHelper(cmsArrayComparison, bloomFilterCountQuery, "cmsInputComparisonAdd", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison, COLORS.BLUE, 341);
     document.getElementById("cmsOutputComparisonMessage").innerHTML = varComparisonFound ? "<b>Element found</b>." : "Element not found.";
     document.getElementById("cmsOutputComparisonValues").innerHTML = frequency;
     cmsCanvasComparison.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
     drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
-    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLOR_FG, 341);
+    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
 }
 drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
-drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLOR_FG, 341);
+drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
 
 
 const cmsArrayMain = new Array(256).fill(0);
@@ -271,15 +271,15 @@ cmsButtonComparisonErrorsAdd.onclick = async() => {
     await BFMSHelper(cmsArrayComparisonErrors, bloomFilterAdd, "cmsInputComparisonErrorsAdd", "cmsOutputComparisonErrorsHash", "cmsOutputComparisonErrorsMessage", cmsVarComparisonErrorsHashDepth);
     cmsCanvasComparisonErrors.clearRect(0, 0, WIDTH, cmsCanvasComparisonErrors.canvas.height)
     drawGridBlocks(cmsCanvasComparisonErrors, cmsArrayComparisonErrors);
-    drawBitsAll(cmsCanvasComparisonErrors, cmsArrayComparisonErrors, COLOR_FG, 341);
+    drawBitsAll(cmsCanvasComparisonErrors, cmsArrayComparisonErrors, COLORS.FG, 341);
 };
 drawGridBlocks(cmsCanvasComparisonErrors, cmsArrayComparisonErrors);
-drawBitsAll(cmsCanvasComparisonErrors, cmsArrayComparisonErrors, COLOR_FG, 341);
+drawBitsAll(cmsCanvasComparisonErrors, cmsArrayComparisonErrors, COLORS.FG, 341);
 
 
 const cmsCanvasDifferentRange = initializeCanvas("cmsCanvasDifferentRange", 710);
-drawBitsAll(cmsCanvasDifferentRange, [], COLOR_FG, 5, 613);
-drawBitsAll(cmsCanvasDifferentRange, [], COLOR_FG, 405, 613);
+drawBitsAll(cmsCanvasDifferentRange, [], COLORS.FG, 5, 613);
+drawBitsAll(cmsCanvasDifferentRange, [], COLORS.FG, 405, 613);
 cmsCanvasDifferentRange.beginPath();
 initializeCanvasText(cmsCanvasDifferentRange, "left");
 for (let i = 0; i < 2; i++)
@@ -515,7 +515,7 @@ for (let i = 0; i < 3; i++) {
 }
 hllCanvasLogSpace.font = "50px JetBrains Mono";
 hllCanvasLogSpace.fillText("0000000", 641, 125);
-drawBitsAll(hllCanvasLogSpace, [0], COLOR_FG, 71, 1071, 1, 1, 100);
+drawBitsAll(hllCanvasLogSpace, [0], COLORS.FG, 71, 1071, 1, 1, 100);
 hllCanvasLogSpace.beginPath();
 hllCanvasLogSpace.moveTo(290, 121); hllCanvasLogSpace.lineTo(500, 121);
 hllCanvasLogSpace.moveTo(780, 121); hllCanvasLogSpace.lineTo(1000, 121);
@@ -607,7 +607,7 @@ async function binarySearch(setContainer, inputText, setArray, setOutput, setFun
     return reportResult(false, setOutput, button);
 }
 
-function drawCoins(canvas, number, coins = 8, radius = 70, colorFG = COLOR_FG, stroke = COLOR_FG, lineWidth = LINEWIDTH, width = WIDTH, height = 200) {
+function drawCoins(canvas, number, coins = 8, radius = 70, colorFG = COLORS.FG, stroke = COLORS.FG, lineWidth = LINEWIDTH, width = WIDTH, height = 200) {
     canvas.strokeStyle = stroke;
     canvas.lineWidth = lineWidth;
     const y = height / 2;
@@ -623,7 +623,7 @@ function drawCoins(canvas, number, coins = 8, radius = 70, colorFG = COLOR_FG, s
     }
 }
 
-function drawBitArray(canvas, number, xOffset = 5, yOffset = 5, color = COLOR_FG, length = GRID_COLS, cellSize = GRID_CELL_SIZE, cellPadding = GRID_CELL_PADDING, stroke = COLOR_FG, lineWidth = LINEWIDTH) {
+function drawBitArray(canvas, number, xOffset = 5, yOffset = 5, color = COLORS.FG, length = GRID_COLS, cellSize = GRID_CELL_SIZE, cellPadding = GRID_CELL_PADDING, stroke = COLORS.FG, lineWidth = LINEWIDTH) {
     const bits = new Array(length).fill(0);
     for (let i = 0; i < length; i++)
         if (((number >> i) & 1) == 0)
@@ -688,13 +688,13 @@ async function HLLHelper(buckets, estimates, hllSet, canvas, inputElementID, out
 }
 
 function drawBitBuckets(canvas, buckets, bucket, bucketBits, yOffsetBits, yOffsetBuckets, cellSizeBits, cellSizeBuckets, trianglePad = 10, xOffset = GRID_X_OFFSET) {
-    drawBitsAll(canvas, buckets, COLOR_FG, yOffsetBuckets, xOffset, 1, MAX_COUNT, cellSizeBuckets);
+    drawBitsAll(canvas, buckets, COLORS.FG, yOffsetBuckets, xOffset, 1, MAX_COUNT, cellSizeBuckets);
     drawTriangle(canvas, xOffset + cellSizeBuckets / 2 + cellSizeBuckets * bucket, yOffsetBuckets + cellSizeBuckets + trianglePad);
     for (let i = 0; i < bucketBits; i++)
         drawTriangle(canvas, xOffset + cellSizeBits / 2 + cellSizeBits * i, yOffsetBits + cellSizeBits + trianglePad);
 }
 
-function drawTriangle(canvas, xOffset = 10, yOffset = 10, color = COLOR_GRAY, size = ARROW_SIZE) {
+function drawTriangle(canvas, xOffset = 10, yOffset = 10, color = COLORS.FG, size = ARROW_SIZE) {
     canvas.beginPath();
     canvas.moveTo(xOffset, yOffset);
     canvas.lineTo(xOffset - size, yOffset + size);
@@ -717,7 +717,7 @@ function drawArrowBracket(canvas, x1, x2, shaftX, lineY, shaftY, size = ARROW_SI
     canvas.stroke();
 }
 
-function drawGrid(canvas, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, color = COLOR_FG, lineWidth = LINEWIDTH) {
+function drawGrid(canvas, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, color = COLORS.FG, lineWidth = LINEWIDTH) {
     canvas.strokeStyle = color;
     canvas.lineWidth = lineWidth;
     canvas.beginPath();
@@ -734,7 +734,7 @@ function drawGrid(canvas, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, grid
 
 }
 
-function drawGridBlocks(canvas, blocks, color = COLOR_FG, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellPadding = GRID_CELL_PADDING, gridColor = COLOR_FG, lineWidth = LINEWIDTH) {
+function drawGridBlocks(canvas, blocks, color = COLORS.FG, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellPadding = GRID_CELL_PADDING, gridColor = COLORS.FG, lineWidth = LINEWIDTH) {
     canvas.fillStyle = color;
     for (let block = 0; block < blocks.length; block++) {
         if (blocks[block] === 0) continue;
@@ -745,19 +745,19 @@ function drawGridBlocks(canvas, blocks, color = COLOR_FG, yOffset = GRID_Y_OFFSE
     drawGrid(canvas, yOffset, xOffset, gridRows, gridCols, cellSize, gridColor, lineWidth);
 }
 
-function drawBits(canvas, number, xOffset, yOffset, color = COLOR_FG, cellLength = GRID_SUB_CELL_LENGTH, cellSize = GRID_SUB_CELL_SIZE) {
+function drawBits(canvas, number, xOffset, yOffset, color = COLORS.FG, cellLength = GRID_SUB_CELL_LENGTH, cellSize = GRID_SUB_CELL_SIZE) {
     const binaryArraySize = cellLength * cellLength;
     const binaryString = number.toString(2).padStart(binaryArraySize, '0');
     const binaryArray = [...binaryString].map(Number);
     drawGridBlocks(canvas, binaryArray, color, yOffset, xOffset, cellLength, cellLength, cellSize);
 }
 
-function drawBitsGrid(canvas, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellLength = GRID_SUB_CELL_LENGTH, cellPadding = GRID_CELL_PADDING, colorMain = COLOR_FG, colorSub = COLOR_GRAY, lineWidth = LINEWIDTH) {
+function drawBitsGrid(canvas, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellLength = GRID_SUB_CELL_LENGTH, cellPadding = GRID_CELL_PADDING, colorMain = COLORS.FG, colorSub = COLORS.GRAY, lineWidth = LINEWIDTH) {
     drawGrid(canvas, yOffset, xOffset, gridRows * cellLength, gridCols * cellLength, cellSize / cellLength, colorSub, lineWidth);
     drawGrid(canvas, yOffset, xOffset, gridRows, gridCols, cellSize, colorMain, lineWidth);
 }
 
-function drawBitsAll(canvas, counters, color = COLOR_FG, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellLength = GRID_SUB_CELL_LENGTH, cellPadding = GRID_CELL_PADDING, gridColor = COLOR_FG, gridColorSub = COLOR_GRAY, lineWidth = LINEWIDTH) {
+function drawBitsAll(canvas, counters, color = COLORS.FG, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellLength = GRID_SUB_CELL_LENGTH, cellPadding = GRID_CELL_PADDING, gridColor = COLORS.FG, gridColorSub = COLORS.GRAY, lineWidth = LINEWIDTH) {
     for (let counter = 0; counter < counters.length; counter++) {
         if (counters[counter] == 0) continue;
         const x = (counter % gridCols) * cellSize + xOffset;
@@ -767,7 +767,7 @@ function drawBitsAll(canvas, counters, color = COLOR_FG, yOffset = GRID_Y_OFFSET
     drawBitsGrid(canvas, yOffset, xOffset, gridRows, gridCols, cellSize, cellLength, cellPadding, gridColor, gridColorSub, lineWidth);
 }
 
-async function BFMSHelper(bitArray, mainFunction, inputElementID, hashOutputElementID, messageOutputElementID, hashDepth, message = "Element added.", gridFlash = false, canvas, flashColor = COLOR_BLUE, yOffset = GRID_Y_OFFSET) {
+async function BFMSHelper(bitArray, mainFunction, inputElementID, hashOutputElementID, messageOutputElementID, hashDepth, message = "Element added.", gridFlash = false, canvas, flashColor = COLORS.BLUE, yOffset = GRID_Y_OFFSET) {
     const inputText = document.getElementById(inputElementID).value.trim();
     if (!inputText) return;
     const hashes = (await getHash(inputText)).slice(0, hashDepth);
@@ -840,6 +840,18 @@ function generateRandomString(length) {
     return result;
 }
 
+function getColors() {
+    const styles = getComputedStyle(document.documentElement);
+    const colors = {
+        FG: styles.getPropertyValue("--fg").trim(),
+        BG: styles.getPropertyValue("--bg").trim(),
+        GRAY: styles.getPropertyValue("--gray2").trim(),
+        BLUE: styles.getPropertyValue("--blue").trim(),
+        RED: styles.getPropertyValue("--red").trim(),
+    }
+    return colors;
+}
+
 function initializeSliders(sliderID, minimum, maximum, step, value) {
     const slider = document.getElementById(sliderID);
     slider.min = minimum;
@@ -856,7 +868,7 @@ function initializeCanvas(canvasID, height, width = WIDTH) {
     return canvasObject;
 }
 
-function initializeCanvasText(canvas, horizontal = "center", font = "28px JetBrains Mono", vertical = "middle", color = COLOR_FG) {
+function initializeCanvasText(canvas, horizontal = "center", font = "28px JetBrains Mono", vertical = "middle", color = COLORS.FG) {
     canvas.font = font;
     canvas.textBaseline = vertical;
     canvas.textAlign = horizontal;
