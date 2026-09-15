@@ -24,9 +24,7 @@ const GRID_SQUARES_X = 127;
 const GRID_SQUARES_Y = 32;
 const CELL_SIZE = 10;
 
-const LIGHTMODE = window.matchMedia("(prefers-color-scheme: light)").matches;
-const STYLES = getComputedStyle(document.documentElement);
-const FG_COLOR = STYLES.getPropertyValue(LIGHTMODE ? "--fg" : "--gray1").trim();
+const FG_COLOR = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
 
 const canvasGOL = document.getElementById('canvasGOL').getContext('2d');
 canvasGOL.canvas.width = WIDTH;
