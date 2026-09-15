@@ -2,6 +2,9 @@
 // it can be refactored to be DRY and not use global variables
 // but i am on a time crunch
 
+const WIDTH = 1280;
+const COLORS = getColors();
+
 const svgContainerTop = document.getElementById("svgContainerTop")
 const svgContainerDistribution = document.getElementById("svgContainerDistribution")
 const buttonRefreshTop = document.getElementById("buttonRefreshTop");
@@ -72,8 +75,8 @@ async function postWord(word, url) {
         currentItem.count = data;
         getRank(data);
         drawDistribution(svgDistribution, svgContainerDistribution, countDistribution.distribution, countDistribution.cardinality);
-        createRectangle(svgDistribution, currentItem.rawRank * 5, 0, 5, 600, null, "#fe8");
-        createRectangle(svgDistribution, currentItem.rawRank * 5, 600 - currentItem.count * 600 / countDistribution.distribution[0], 5, currentItem.count * 600 / countDistribution.distribution[0], null, "#000");
+        createRectangle(svgDistribution, currentItem.rawRank * 5, 0, 5, 600, null, COLORS.HIGHLIGHT);
+        createRectangle(svgDistribution, currentItem.rawRank * 5, 600 - currentItem.count * 600 / countDistribution.distribution[0], 5, currentItem.count * 600 / countDistribution.distribution[0], null, COLORS.FG);
         infoDistribution.innerHTML = `Added <mark>${word}</mark>. It appears roughly <strong>${data} times</strong>, at about the <strong>${Math.round(currentItem.rank / 255 * 100)}th percentile</strong>, with an approximate <strong>rank of ${Math.round(currentItem.rank / 255 * countDistribution.cardinality + 1)}</strong>.`;
     })
     .catch(error => { handleServerDisconnect(); });
@@ -123,16 +126,16 @@ function getRank(count, n = 256) {
 
 function drawTop(svg, container, frequencies, words) {
     svg.innerHTML = "";
-    svg.setAttribute("width", 1280);
+    svg.setAttribute("width", WIDTH);
     svg.setAttribute("height", 1050);
-    svg.setAttribute("viewBox", "0 0 1280 1050");
-    var normalizedFrequencies = getNormalizedFrequencies(frequencies, 1280);
+    svg.setAttribute("viewBox", `0 0 ${WIDTH} 1050`);
+    var normalizedFrequencies = getNormalizedFrequencies(frequencies, WIDTH);
     for (let i = 0; i < words.length; i++)
         createRectangle(svg, 0, i * 70 + 10, normalizedFrequencies[i], 50, frequencies[i] + " → " + words[i]);
     container.appendChild(svg);
 }
 
-function createRectangle(svg, x, y, width, height, text = null, color = "#aaa") {
+function createRectangle(svg, x, y, width, height, text = null, color = COLORS.GRAY) {
     const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
     rect.setAttribute("x", x);
@@ -146,7 +149,7 @@ function createRectangle(svg, x, y, width, height, text = null, color = "#aaa") 
         txt.setAttribute("y", y + height / 2 + 10);
         txt.setAttribute("text-anchor", "start");
         txt.setAttribute("font-size", "28");
-        txt.setAttribute("fill", "#000");
+        txt.setAttribute("fill", COLORS.FG);
         txt.textContent = text;
         svg.appendChild(txt);
     }
@@ -154,9 +157,9 @@ function createRectangle(svg, x, y, width, height, text = null, color = "#aaa") 
 
 function drawDistribution(svg, container, frequencies, cardinality) {
     svg.innerHTML = "";
-    svg.setAttribute("width", 1280);
+    svg.setAttribute("width", WIDTH);
     svg.setAttribute("height", 650);
-    svg.setAttribute("viewBox", "0 0 1280 650");
+    svg.setAttribute("viewBox", `0 0 ${WIDTH} 650`);
     var normalizedFrequencies = getNormalizedFrequencies(frequencies, 600);
     for (let i = 0; i < frequencies.length; i++)
         createRectangle(svg, i * 5, 600 - normalizedFrequencies[i], 5, normalizedFrequencies[i]);
@@ -166,16 +169,26 @@ function drawDistribution(svg, container, frequencies, cardinality) {
     txt.setAttribute("alignment-baseline", "middle");
     txt.setAttribute("text-anchor", "middle");
     txt.setAttribute("font-size", "28");
-    txt.setAttribute("fill", "#000");
+    txt.setAttribute("fill", COLORS.FG);
     txt.textContent = "← Approximately "+ cardinality + " total elements →";
     svg.appendChild(txt);
     container.appendChild(svg);
 }
 
-function getNormalizedFrequencies(frequencies, maxValue = 1280) {
+function getNormalizedFrequencies(frequencies, maxValue = WIDTH) {
     let norm = maxValue / frequencies[0];
     let newFrequencies = [];
     for (let i = 0; i < frequencies.length; i++)
         newFrequencies.push(Math.floor(frequencies[i] * norm));
     return newFrequencies;
+}
+
+function getColors() {
+    const styles = getComputedStyle(document.documentElement);
+    const colors = {
+        FG: styles.getPropertyValue("--fg").trim(),
+        BG: styles.getPropertyValue("--bg").trim(),
+        GRAY: styles.getPropertyValue("--gray3").trim()
+    }
+    return colors;
 }
