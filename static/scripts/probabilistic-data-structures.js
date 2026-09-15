@@ -3,12 +3,6 @@
 // So this code might look very ugly; if you think it is the case
 // send PRs, since I am too lazy to return back to refactor it myself
 
-const COLOR_FG = "#000";
-const COLOR_BG = "#fff";
-const COLOR_GRAY = "#999";
-const COLOR_BLUE = "#39a";
-const COLOR_RED = "#f67";
-
 const WIDTH = 1280;
 const LINEWIDTH = 2;
 const ARROW_SIZE = 10;
@@ -22,6 +16,8 @@ const GRID_X_OFFSET = 5;
 const GRID_Y_OFFSET = 5;
 const MAX_CELL_SUBS = GRID_SUB_CELL_LENGTH ** 2;
 const MAX_COUNT = 2 ** (GRID_SUB_CELL_LENGTH ** 2);
+
+const COLORS = getColors();
 
 
 const encoder = new TextEncoder();
@@ -78,8 +74,8 @@ for (let i = 0; i < bfArrayCompareGridsYOffsets.length; i++) {
     bfArrayCompareBlocks[i].forEach(i => { bfArrayCompareBlocksBF[i] = 1; });
     const binaryString = bfArrayCompareNumbers[i].toString(2).padStart(8, '0');
     const binaryArray = [...binaryString].map(Number);
-    drawGridBlocks(bfCanvasCompare, bfArrayCompareBlocksBF, COLOR_FG, bfArrayCompareGridsYOffsets[i], GRID_X_OFFSET, 1);
-    drawGridBlocks(bfCanvasCompare, binaryArray, COLOR_FG, 5, bfArrayCompareGridsXOffsets[i], 1, 8);
+    drawGridBlocks(bfCanvasCompare, bfArrayCompareBlocksBF, COLORS.FG, bfArrayCompareGridsYOffsets[i], GRID_X_OFFSET, 1);
+    drawGridBlocks(bfCanvasCompare, binaryArray, COLORS.FG, 5, bfArrayCompareGridsXOffsets[i], 1, 8);
     bfCanvasCompare.fillText(bfArrayCompareNumbers[i], bfArrayCompareNumberXOffsets[i], 25);
     if (i === 2) bfCanvasCompare.font = "16px JetBrains Mono";
     for (let j = 0; j < 32; j++)
@@ -172,7 +168,7 @@ bfButtonDeletionAdd.onclick = async() => {
     drawGridBlocks(bfCanvasDeletion, bfArrayDeletion);
 };
 bfButtonDeletionRemove.onclick = async() => {
-    await BFMSHelper(bfArrayDeletion, bloomFilterRemove, "bfInputDeletionRemove", "bfOutputDeletionHash", "bfOutputDeletionMessage", 3, "Element removed.", true, bfCanvasDeletion, COLOR_RED);
+    await BFMSHelper(bfArrayDeletion, bloomFilterRemove, "bfInputDeletionRemove", "bfOutputDeletionHash", "bfOutputDeletionMessage", 3, "Element removed.", true, bfCanvasDeletion, COLORS.RED);
     drawGridBlocks(bfCanvasDeletion, bfArrayDeletion);
 }
 bfButtonDeletionQuery.onclick = async() => {
@@ -205,13 +201,13 @@ cmsCanvasComparisonStatic.fillText("...", 1040, 240);
 cmsCanvasComparisonStatic.fillText("15", 1140, 310);
 cmsCanvasComparisonStatic.fillText("0", 220, 75);
 cmsCanvasComparisonStatic.fillText("1", 280, 75);
-drawBitsAll(cmsCanvasComparisonStatic, [0], COLOR_FG, 5, 25, 1, 1, 40, 1);
-drawBitsAll(cmsCanvasComparisonStatic, [0], COLOR_FG, 5, 201, 1, 1, 40, 1);
-drawBitsAll(cmsCanvasComparisonStatic, [1], COLOR_FG, 5, 261, 1, 1, 40, 1);
-drawBitsAll(cmsCanvasComparisonStatic, [0], COLOR_FG, 201, 5, 1, 1, 80);
-drawBitsAll(cmsCanvasComparisonStatic, [15], COLOR_FG, 201, 1101, 1, 1, 80);
+drawBitsAll(cmsCanvasComparisonStatic, [0], COLORS.FG, 5, 25, 1, 1, 40, 1);
+drawBitsAll(cmsCanvasComparisonStatic, [0], COLORS.FG, 5, 201, 1, 1, 40, 1);
+drawBitsAll(cmsCanvasComparisonStatic, [1], COLORS.FG, 5, 261, 1, 1, 40, 1);
+drawBitsAll(cmsCanvasComparisonStatic, [0], COLORS.FG, 201, 5, 1, 1, 80);
+drawBitsAll(cmsCanvasComparisonStatic, [15], COLORS.FG, 201, 1101, 1, 1, 80);
 for (let i = 0; i < 8; i++) {
-    drawBitsAll(cmsCanvasComparisonStatic, [i], COLOR_FG, 201, 201 + i * 100, 1, 1, 80);
+    drawBitsAll(cmsCanvasComparisonStatic, [i], COLORS.FG, 201, 201 + i * 100, 1, 1, 80);
     cmsCanvasComparisonStatic.fillText(i, i * 100 + 240, 310);
 }
 drawArrowBracket(cmsCanvasComparisonStatic, 45, 45, 45, 74, 156);
