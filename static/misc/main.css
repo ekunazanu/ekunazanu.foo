@@ -13,7 +13,7 @@
   --monospace: 'JetBrains Mono', monospace;
 } @media (prefers-color-scheme: dark) { :root {
   --fg: #ddd; --bg: #222; --gray1: #aaa; --gray2: #999; --gray3: #555; --gray4: #444;
-  --blue: #67d; --green: #164; --yellow: #880; --red: #932; --purple: #703;
+  --blue: #67d; --green: #354; --yellow: #880; --red: #932; --purple: #703;
   --dark1: var(--gray1); --dark2: var(--gray2); --dark3: var(--gray3); --dark4: var(--gray4);
 }} /*
 @font-face {
