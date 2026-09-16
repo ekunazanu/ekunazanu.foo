@@ -1,5 +1,7 @@
 const WIDTH = 1280;
 const LINEWIDTH = 2
+const COLORS = getColors();
+
 const LETTERS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
 const LETTERBOXLENGTH = 16;
 const LETTERBOXHEIGHT = 100;
@@ -12,12 +14,7 @@ const CHACHAWORDPERMS = [[[0, 5, 10, 15], [1, 6, 11, 12], [2, 7, 8, 13], [3, 4, 
                          [[0, 4, 8, 12], [1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15]]];
 const CHACHASAT = new Array(16).fill(0xFFFFFFFF);
 const CHACHAZRO = new Array(16).fill(0x00000000);
-const GRAY = "#555";
-const LGRAY = "#888";
-const BLACK = "#000";
-const DIFFCOLOR = "#8bd";
-const HIGHCOLOR = "#f08";
-const DISTCOLORS = ["#000", "#fc9", "#9cf", "#eaf", "#7a9", "#bbb"];
+const DISTCOLORS = [COLORS.FG, COLORS.DIST_A1, COLORS.DIST_A2, COLORS.DIST_A3, COLORS.DIST_A4, COLORS.DIST_A5];
 const PARTYLABELS = ["A", "B", "C", "D", "E"];
 const HEXCHECKER = 0xCCCC3333;
 const HEXVSTRIPE = 0xAAAAAAAA;
@@ -139,11 +136,11 @@ updateLetterFrequency();
 
 const arrayLetterFrequencyStaticMultipleDistributions = [];
 const arrayLetterFrequencyStaticMultipleKeys = [[9], [18], [1]];
-const arrayLetterFrequencyStaticMultipleColors = [["#9b8"], ["#c9d"], ["#7ce"]];
+const arrayLetterFrequencyStaticMultipleColors = [[COLORS.DIST_B1], [COLORS.DIST_B2], [COLORS.DIST_B3]];
 const canvasLetterFrequencyStaticMultiple = initializeCanvas("canvasLetterFrequencyStaticMultiple", 850);
 arrayLetterFrequencyStaticMultipleDistributionC = getFrequencyDistributionFromKey(LETTERPROBDIST_SEPARATE, arrayLetterFrequencyStaticMultipleKeys.flat());
 drawCipherRects(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleColors);
-drawDistribution(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleDistributionC, 15, 155, LETTERS, 9, ["#000"], 32, 140);
+drawDistribution(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleDistributionC, 15, 155, LETTERS, 9, [COLORS.FG], 32, 140);
 for (let i = 0; i < arrayLetterFrequencyStaticMultipleKeys.length; i++) {
     arrayLetterFrequencyStaticMultipleDistributions[i] = getFrequencyDistributionFromKey(LETTERPROBDIST_SEPARATE, arrayLetterFrequencyStaticMultipleKeys[i]);
     drawDistribution(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleDistributions[i], 15, 330 + i * 170, LETTERS, 7, arrayLetterFrequencyStaticMultipleColors[i], 32, 140);
@@ -170,7 +167,6 @@ function updateMapPlainCipher() {
     arrayMapPlainCipherPlaintextSymbols = getSymbols(varMapPlainCipherCiphertextSymbol, arrayMapPlainCipherKey);
     for (let symbol = 0; symbol < 26; symbol++)
         drawFunctionMap(canvasMapPlainCipher, arrayMapPlainCipherKey, symbol);
-    drawFunctionMap(canvasMapPlainCipher, arrayMapPlainCipherKey, varMapPlainCipherCiphertextSymbol, "#000");
     canvasMapPlainCipher.fillText(`${LETTERS[varMapPlainCipherCiphertextSymbol]} ← ${arrayMapPlainCipherPlaintextSymbols}`, 25, 345);
     spanMapPlainCipher.innerHTML = varMapPlainCipherCardinality + " [" + (arrayMapPlainCipherKey.length > 8 ? arrayMapPlainCipherKey.slice(0, 8).join(", ") + ", ..." : arrayMapPlainCipherKey.join(", ")) + "]";
 }
@@ -200,7 +196,7 @@ const arrayOTPReuseKey = Array.from({ length: 32 }, () => Array.from({ length: 3
 const arrayOTPReuseCipher1 = shiftBits2D(arrayOTPReuseData1, arrayOTPReuseKey, 8);
 const arrayOTPReuseCipher2 = shiftBits2D(arrayOTPReuseData2, arrayOTPReuseKey, 8);
 const arrayOTPReuseDifference = shiftBits2D(arrayOTPReuseCipher1, arrayOTPReuseCipher2, 8, true);
-const arrayOTPReuseColors = ["#fff", "#ddd", "#bbb", "#999", "#777", "#555", "#333", "#000"];
+const arrayOTPReuseColors = [COLORS.GRAY0, COLORS.GRAY1, COLORS.GRAY2, COLORS.GRAY3, COLORS.GRAY4, COLORS.GRAY5, COLORS.GRAY6, COLORS.GRAY7];
 const arrayOTPReuseBlocks = [[arrayOTPReuseData1, 15, 15], [arrayOTPReuseData2, 375, 15], [arrayOTPReuseKey, 15, 375], [arrayOTPReuseKey, 375, 375], [arrayOTPReuseCipher1, 15, 785], [arrayOTPReuseCipher2, 375, 785], [arrayOTPReuseDifference, 885, 785]];
 for (let i = 0; i < arrayOTPReuseBlocks.length; i++)
     drawBits2D(canvasOTPReuse, arrayOTPReuseBlocks[i][0], arrayOTPReuseBlocks[i][1], arrayOTPReuseBlocks[i][2], arrayOTPReuseColors, 10);
@@ -249,7 +245,7 @@ const arrayVernamReuseXOR2 = createXORStream(arrayVernamReuseData2, arrayVernamR
 const arrayVernamReuseLeak = createXORStream(arrayVernamReuseXOR1, arrayVernamReuseXOR2);
 const arrayVernamReuseBlocks = [[arrayVernamReuseData1, 15, 15], [arrayVernamReuseData2, 375, 15], [arrayVernamReuseKey, 15, 375], [arrayVernamReuseKey, 375, 375], [arrayVernamReuseXOR1, 15, 785], [arrayVernamReuseXOR2, 375, 785], [arrayVernamReuseLeak, 885, 785]];
 for (let i = 0; i < arrayVernamReuseBlocks.length; i++)
-    drawChaChaBlocks(canvasVernamReuse, arrayVernamReuseBlocks[i][0], arrayVernamReuseBlocks[i][1], arrayVernamReuseBlocks[i][2], 10, "#000", "#000", "#000", 2);
+    drawChaChaBlocks(canvasVernamReuse, arrayVernamReuseBlocks[i][0], arrayVernamReuseBlocks[i][1], arrayVernamReuseBlocks[i][2], 10, COLORS.FG, COLORS.GRID, COLORS.GRID, 2);
 drawArrow(canvasVernamReuse, true, 1, 175, 715, 765);
 drawArrow(canvasVernamReuse, true, 1, 535, 715, 765);
 drawArrow(canvasVernamReuse, false, 1, 945, 755, 825);
@@ -281,7 +277,7 @@ drawChaChaEncryptionFromKey(canvasChaChaSingle, EG_CHACHAINITBLOCK, EG_CHACHADAT
 const canvasChaChaPartition = initializeCanvas("canvasChaChaPartition", 606);
 const arrayChaChaPartitionIndices = [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]];
 const arrayChaChaPartitionLabels = [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]];
-drawChaChaBlock(canvasChaChaPartition, EG_CHACHAINITBLOCK, 15, 15, 8, "#000", "#000");
+drawChaChaBlock(canvasChaChaPartition, EG_CHACHAINITBLOCK, 15, 15, 8, COLORS.FG, COLORS.GRID, COLORS.GRID);
 drawChaChaBlock(canvasChaChaPartition, EG_CHACHAINITBLOCK, 15, 205);
 for (let i = 0; i < 4; i++)
     drawChaChaLables(canvasChaChaPartition, arrayChaChaPartitionIndices[i], arrayChaChaPartitionLabels[i], 15, 205);
@@ -323,7 +319,7 @@ drawChaChaBlock(canvasChaChaAddition, arrayChaChaAdditionBlock, 695, 15, 18);
 updateChaChaBlockTWRound(arrayChaChaAdditionBlock);
 drawChaChaBlock(canvasChaChaAddition, arrayChaChaAdditionBlock, 15, 15, 18);
 updateChaChaBlockARound(arrayChaChaAdditionBlock, EG_CHACHAINITBLOCK);
-drawChaChaBlock(canvasChaChaAddition, arrayChaChaAdditionBlock, 355, 415, 18, "#000", "#000");
+drawChaChaBlock(canvasChaChaAddition, arrayChaChaAdditionBlock, 355, 415, 18, COLORS.FG, COLORS.GRID, COLORS.GRID);
 drawArrow(canvasChaChaAddition, true, 1, 645, 335, 375);
 initializeCanvasText(canvasChaChaAddition);
 canvasChaChaAddition.fillText("+", 645, 161);
@@ -346,7 +342,7 @@ function resetChaChaAvalanche() {
         drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheBlock[i], 15 + i * 670, 15, 18);
     }
     arrayChaChaAvalancheDifference = createXORStream(arrayChaChaAvalancheBlock[0], arrayChaChaAvalancheBlock[1]);
-    drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheDifference, 15, 365, 18, DIFFCOLOR);
+    drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheDifference, 15, 365, 18, COLORS.DIFF);
     spanChaChaAvalancheRounds.innerHTML = 0;
     varChaChaAvalancheOperation = 0;
     varChaChaAvalancheRound = 1;
@@ -361,7 +357,7 @@ function updateChaChaAvalanche() {
         drawChaChaLables(canvasChaChaAvalanche, CHACHAWORDPERMS[varChaChaAvalancheRound % 2][varChaChaAvalancheOperation % 4], CHACHAWORDLABELS, 15 + i * 670, 15, 18);
     }
     arrayChaChaAvalancheDifference = createXORStream(arrayChaChaAvalancheBlock[0], arrayChaChaAvalancheBlock[1]);
-    drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheDifference, 15, 365, 18, DIFFCOLOR);
+    drawChaChaBlock(canvasChaChaAvalanche, arrayChaChaAvalancheDifference, 15, 365, 18, COLORS.DIFF);
     spanChaChaAvalancheRounds.innerHTML = varChaChaAvalancheRound;
     varChaChaAvalancheOperation++;
 }
@@ -427,7 +423,7 @@ function updateChaChaCounterRepeat() {
     canvasChaChaCounterRepeat.clearRect(0, 0, WIDTH, 1140);
     drawChaChaCountNonce(canvasChaChaCounterRepeat, EG_CHACHAKEY, structChaChaCounterRepeat, varChaChaRepeatCounter, 0, 15, 15, 6, 220, 66);
     drawChaChaBlocks(canvasChaChaCounterRepeat, arrayChaChaCounterRepeatXOR, 15, 1027, 6);
-    if (varChaChaRepeatCounter < structChaChaCounterRepeat[0].length) drawRectangle(canvasChaChaCounterRepeat, 15 + varChaChaRepeatCounter * 32 * 6, 745, 32 * 6, 16 * 6, HIGHCOLOR, 6);
+    if (varChaChaRepeatCounter < structChaChaCounterRepeat[0].length) drawRectangle(canvasChaChaCounterRepeat, 15 + varChaChaRepeatCounter * 32 * 6, 745, 32 * 6, 16 * 6, COLORS.HIGH, 6);
 }
 updateChaChaCounterRepeat();
 
@@ -528,7 +524,7 @@ const SEEDHASHARROWS = [[[405, 157], [661, 157], [533, 157], [533, 3], [1229, 3]
 
 
 const canvasBitFlip = initializeCanvas("canvasBitFlip", 1410);
-const arrayBitFlipBlockRects = [[15, 495, "#f81"], [783, 15, "#f81"], [15, 639, "#69f"], [783, 1263, "#69f"], [399, 495, "#e9f"], [783, 319, "#e9f"], [399, 783, "#8d8"], [783, 959, "#8d8"]];
+const arrayBitFlipBlockRects = [[15, 495, COLORS.HIGH1], [783, 15, COLORS.HIGH1], [15, 639, COLORS.HIGH2], [783, 1263, COLORS.HIGH2], [399, 495, COLORS.HIGH3], [783, 319, COLORS.HIGH3], [399, 783, COLORS.HIGH4], [783, 959, COLORS.HIGH4]];
 initializeCanvasText(canvasBitFlip, "right");
 canvasBitFlip.fillText("Sender", 1275, 477);
 canvasBitFlip.fillText("Receiver", 1275, 929);
@@ -645,7 +641,7 @@ canvasPolyhash.stroke();
 canvasPolyhash.beginPath();
 canvasPolyhash.arc(1073, 1023, 6, 0, 2 * Math.PI);
 canvasPolyhash.fill();
-canvasPolyhash.strokeStyle = "#fff"; canvasPolyhash.lineWidth = 6;
+canvasPolyhash.strokeStyle = COLORS.BG; canvasPolyhash.lineWidth = 6;
 canvasPolyhash.beginPath();
 canvasPolyhash.moveTo(1069, 393); canvasPolyhash.lineTo(1069, 1013);
 canvasPolyhash.moveTo(1077, 393); canvasPolyhash.lineTo(1077, 1013);
@@ -678,7 +674,7 @@ canvasFailhash.stroke();
 canvasFailhash.beginPath();
 canvasFailhash.arc(1073, 1023, 6, 0, 2 * Math.PI);
 canvasFailhash.fill();
-canvasFailhash.strokeStyle = "#fff"; canvasFailhash.lineWidth = 6;
+canvasFailhash.strokeStyle = COLORS.BG; canvasFailhash.lineWidth = 6;
 canvasFailhash.beginPath();
 canvasFailhash.moveTo(1069, 393); canvasFailhash.lineTo(1069, 1013);
 canvasFailhash.moveTo(1077, 393); canvasFailhash.lineTo(1077, 1013);
@@ -746,7 +742,7 @@ function updatePoly1305() {
     canvasPoly1305.clearRect(0, 0, WIDTH, 460);
     drawChaChaEncryption(canvasPoly1305, AUTH_DATASTREAM_ORIG_SHORT, AUTH_KEYSTREAM_SHORT, AUTH_CIPHERSTREAM_ORIG_SHORT, 15, 15, 8);
     drawHash(canvasPoly1305, varPoly1305Hash, 607, 383, [varPoly1305KeyR, varPoly1305KeyS], true);
-    drawRectangle(canvasPoly1305, 15 + Math.floor(varPoly1305Pointer / 4) * 256, 319 + (varPoly1305Pointer % 4) * 32, 256, 32, HIGHCOLOR, 6);
+    drawRectangle(canvasPoly1305, 15 + Math.floor(varPoly1305Pointer / 4) * 256, 319 + (varPoly1305Pointer % 4) * 32, 256, 32, COLORS.HIGH, 6);
     spanPoly1305Byte.innerHTML = "0x(01)" + varPoly1305CurrentBlock.toString(16).padStart(32, '0');
     spanPoly1305HashKeyed.innerHTML = toHexStringBigInt(varPoly1305CurrentHash) + " [((h + m) * x) mod p]";
     if (varPoly1305Pointer * 4 == AUTH_CIPHERSTREAM_ORIG_SHORT.length - 4)
@@ -815,9 +811,9 @@ for (let i = 0; i < 2; i++) {
     canvasSecretsExchange.fillText(PARTYLABELS[i], 25, 135 + i * 600);
     drawArrow(canvasSecretsExchange, true, (i === 0) ? 1 : -1, 93, (i === 0) ? 325 : 737, (i === 0) ? 737 : 325);
     drawHash(canvasSecretsExchange, "H", 1255, 383 + i * 296, ["x", "k"], true, true);
-    drawChaChaBlock(canvasSecretsExchange, arrayChaChaPolyKeystream0, 405, 167 + i * 600, 8, "#000", "#000", "#000");
-    drawRectangle(canvasSecretsExchange, 405, 167 + i * 600, 256, 32, "#f81", 6);
-    drawRectangle(canvasSecretsExchange, 405, 199 + i * 600, 256, 32, "#e9f", 6);
+    drawChaChaBlock(canvasSecretsExchange, arrayChaChaPolyKeystream0, 405, 167 + i * 600, 8, COLORS.FG, COLORS.GRID, COLORS.GRID);
+    drawRectangle(canvasSecretsExchange, 405, 167 + i * 600, 256, 32, COLORS.HIGH1, 6);
+    drawRectangle(canvasSecretsExchange, 405, 199 + i * 600, 256, 32, COLORS.HIGH3, 6);
     drawOrthoArrow(canvasSecretsExchange, SEEDHASHARROWS[i]);
 }
 
@@ -835,9 +831,9 @@ for (let i = 0; i < 2; i++) {
     drawArrow(canvasChaChaPolyIntegrated, true, (i === 0) ? 1 : -1, 93, (i === 0) ? 325 : 737, (i === 0) ? 737 : 325);
     drawLock(canvasChaChaPolyIntegrated, 125, 509 + i * 48, i === 0);
     drawHash(canvasChaChaPolyIntegrated, "H", 1255, 383 + i * 296, ["r", "s"], true, true);
-    drawChaChaBlock(canvasChaChaPolyIntegrated, arrayChaChaPolyKeystream0, 405, 167 + i * 600, 8, "#000", "#000", "#000");
-    drawRectangle(canvasChaChaPolyIntegrated, 405, 167 + i * 600, 256, 32, "#f81", 6);
-    drawRectangle(canvasChaChaPolyIntegrated, 405, 199 + i * 600, 256, 32, "#e9f", 6);
+    drawChaChaBlock(canvasChaChaPolyIntegrated, arrayChaChaPolyKeystream0, 405, 167 + i * 600, 8, COLORS.FG, COLORS.GRID, COLORS.GRID);
+    drawRectangle(canvasChaChaPolyIntegrated, 405, 167 + i * 600, 256, 32, COLORS.HIGH1, 6);
+    drawRectangle(canvasChaChaPolyIntegrated, 405, 199 + i * 600, 256, 32, COLORS.HIGH3, 6);
     drawOrthoArrow(canvasChaChaPolyIntegrated, SEEDHASHARROWS[i]);
 }
 
@@ -926,11 +922,11 @@ function updateChaChaDiffusionCanvas() {
     canvasChaChaDiffusion.clearRect(0, 0, WIDTH, 750);
     for (let i = 0; i < 4; i++)
         drawChaChaBlocks(canvasChaChaDiffusion, arrayChaChaDiffusionBlocks[i], (Math.floor(i / 2) != 1) ? 15 : 705, (i % 2 == 0) ? 15 : 173, 8);
-    drawChaChaBlock(canvasChaChaDiffusion, arrayChaChaDiffusionBlocks[4], 301, 95, 8, HIGHCOLOR);
-    drawChaChaBlock(canvasChaChaDiffusion, arrayChaChaDiffusionBlocks[5], 991, 95, 8, DIFFCOLOR);
+    drawChaChaBlock(canvasChaChaDiffusion, arrayChaChaDiffusionBlocks[4], 301, 95, 8, COLORS.HIGH);
+    drawChaChaBlock(canvasChaChaDiffusion, arrayChaChaDiffusionBlocks[5], 991, 95, 8, COLORS.DIFF);
     drawArrow(canvasChaChaDiffusion, false, 1, 49, 291, 665);
     drawArrow(canvasChaChaDiffusion, false, 1, 267, 291, 665);
-    drawDistribution(canvasChaChaDiffusion, [arrayChaChaDiffusionDistribution], 15, 335, arrayChaChaDiffusionDistLables, Math.pow(varChaChaDiffusionDistHeightFactor, -0.65), [DIFFCOLOR], 10);
+    drawDistribution(canvasChaChaDiffusion, [arrayChaChaDiffusionDistribution], 15, 335, arrayChaChaDiffusionDistLables, Math.pow(varChaChaDiffusionDistHeightFactor, -0.65), [COLORS.DIFF], 10);
 };
 updateChaChaDiffusionBlocks();
 updateChaChaDiffusionCanvas();
@@ -1075,7 +1071,7 @@ function updateHashGeneral(canvas, pointers) {
     canvas.clearRect(0, 0, WIDTH, 460);
     drawChaChaEncryption(canvas, AUTH_DATASTREAM_ORIG_SHORT, AUTH_KEYSTREAM_SHORT, AUTH_CIPHERSTREAM_ORIG_SHORT, 15, 15, 8);
     drawHash(canvas, pointers[6], 607, 383, keys, false);
-    drawRectangle(canvas, 15 + (pointers[0] % 4) * 64 + Math.floor(pointers[0] / 16) * 256, 319 + (Math.floor(pointers[0] / 4) % 4) * 32, 64, 32, HIGHCOLOR, 6);
+    drawRectangle(canvas, 15 + (pointers[0] % 4) * 64 + Math.floor(pointers[0] / 16) * 256, 319 + (Math.floor(pointers[0] / 4) % 4) * 32, 64, 32, COLORS.HIGH, 6);
     pointers[1] = AUTH_CIPHERSTREAM_ORIG_SHORT[pointers[0]] >>> 0;
     pointers[3] = pointers[2] >>> 0;
     pointers[2] = Math.imul(pointers[1] + (pointers[3]), pointers[4]) >>> 0;
@@ -1154,7 +1150,7 @@ function shiftBits2D(array1, array2, modulus = 2, subtract = false) {
     return shiftedArray;
 }
 
-function drawBits2D(canvas, array, x = 15, y = 15, colors = ["#fff", "#000"], size = 10) {
+function drawBits2D(canvas, array, x = 15, y = 15, colors = [COLORS.BG, COLORS.FG], size = 10) {
     let dimensionX = array[0].length;
     let dimensionY = array.length;
     for (let i = 0; i < array.length; i++) {
@@ -1175,7 +1171,7 @@ function drawBits2D(canvas, array, x = 15, y = 15, colors = ["#fff", "#000"], si
     canvas.stroke();
 }
 
-function drawChaChaWithBlockArrow(canvas, block, x = 15, y = 15, size = 10, arrowStart = 415, arrowEnd = 575, color = "#000", inline = "#000", outline = "#000") {
+function drawChaChaWithBlockArrow(canvas, block, x = 15, y = 15, size = 10, arrowStart = 415, arrowEnd = 575, color = COLORS.FG, inline = COLORS.GRID, outline = COLORS.GRID) {
     drawChaChaBlock(canvas, block, x, y, size, color, inline, outline);
     drawArrow(canvas, false, 1, y + 8 * size, arrowStart, arrowEnd);
 }
@@ -1187,8 +1183,8 @@ function drawChaChaCountNonce(canvas, key, encryptionStreams, counter = 0, nonce
     drawChaChaBlocks(canvas, initBlock, x + blockOffset, y, sizeBlock);
     for (let i = 0; i < encryptionStreams.length; i++)
         drawChaChaEncryption(canvas, encryptionStreams[i].dataStream, encryptionStreams[i].chachaStream, encryptionStreams[i].xorStream, x, y + streamsOffset + i * sizeStream * streamGroupOffset, sizeStream);
-    drawRectangle(canvas, x + blockOffset, y, 32 * sizeBlock, 16 * sizeBlock, HIGHCOLOR, lineWidth);
-    if (counter < encryptionStreams[0].length) drawRectangle(canvas, 15 + counter * 32 * sizeStream, y + streamsOffset + 19 * sizeStream + nonce * streamGroupOffset * sizeStream, 32 * sizeStream, 16 * sizeStream, HIGHCOLOR, lineWidth);
+    drawRectangle(canvas, x + blockOffset, y, 32 * sizeBlock, 16 * sizeBlock, COLORS.HIGH, lineWidth);
+    if (counter < encryptionStreams[0].length) drawRectangle(canvas, 15 + counter * 32 * sizeStream, y + streamsOffset + 19 * sizeStream + nonce * streamGroupOffset * sizeStream, 32 * sizeStream, 16 * sizeStream, COLORS.HIGH, lineWidth);
 }
 
 function createEncryptionStreams(initBlock, length, hexDataPattern = HEXCHECKER, counterStart = 0) {
@@ -1210,7 +1206,7 @@ function drawCipherRects(canvas, colors, yDots = 10, xDots = 101, size = 12, gap
     }
 }
 
-function drawRectangle(canvas, x, y, width, height, color = "#000", lineWidth = 4) {
+function drawRectangle(canvas, x, y, width, height, color = COLORS.FG, lineWidth = 4) {
     canvas.strokeStyle = color;
     canvas.lineWidth = lineWidth;
     canvas.beginPath();
@@ -1221,7 +1217,7 @@ function drawRectangle(canvas, x, y, width, height, color = "#000", lineWidth = 
     canvas.lineTo(x, y);
     canvas.lineTo(x + width, y);
     canvas.stroke();
-    canvas.strokeStyle = "#000";
+    canvas.strokeStyle = COLORS.FG;
     canvas.lineWidth = LINEWIDTH;
 }
 
@@ -1288,9 +1284,9 @@ function drawChaChaEncryptionFromKey(canvas, initBlock, dataStream, chachaStream
 }
 
 function drawChaChaEncryption(canvas, dataStream, chachaStream, xorStream, x = 15, y = 15, size = 8) {
-    drawChaChaBlocks(canvas, dataStream, x, y, size, "#000", "#000");
-    drawChaChaBlocks(canvas, chachaStream, x, y + size * 19, size, "#000", "#000");
-    drawChaChaBlocks(canvas, xorStream, x, y + size * 38, size, "#000", "#000");
+    drawChaChaBlocks(canvas, dataStream, x, y, size);
+    drawChaChaBlocks(canvas, chachaStream, x, y + size * 19, size);
+    drawChaChaBlocks(canvas, xorStream, x, y + size * 38, size);
 }
 
 function drawChaChaLables(canvas, indices, labels = CHACHAWORDLABELS, x = 15, y = 15, size = 24, font = "bold 40px JetBrains Mono") {
@@ -1303,7 +1299,7 @@ function drawChaChaLables(canvas, indices, labels = CHACHAWORDLABELS, x = 15, y 
     }
 }
 
-function drawBitBlockOutline(canvas, x, y, sizeX, sizeY, dimensionX, dimensionY, color = "#000") {
+function drawBitBlockOutline(canvas, x, y, sizeX, sizeY, dimensionX, dimensionY, color = COLORS.FG) {
     canvas.lineWidth = LINEWIDTH;
     canvas.strokeStyle = color;
     canvas.beginPath();
@@ -1328,7 +1324,7 @@ function drawChaChaWord(canvas, word, x, y, size, color) {
     }
 }
 
-function drawChaChaBlock(canvas, block, x = 15, y = 15, size = 24, color = "#ccc", inline = "#999", outline = "#000") {
+function drawChaChaBlock(canvas, block, x = 15, y = 15, size = 24, color = COLORS.GRAYL, inline = COLORS.GRAYL, outline = COLORS.FG) {
     for (let i = 0; i < 4; i++)
         for (let j = 0; j < 4; j++)
             drawChaChaWord(canvas, block[i * 4 + j], x + j * size * 8, y + i * size * 4, size, color);
@@ -1336,13 +1332,15 @@ function drawChaChaBlock(canvas, block, x = 15, y = 15, size = 24, color = "#ccc
     drawBitBlockOutline(canvas, x, y, size * 8, size * 4, 4, 4, outline);
 }
 
-function drawChaChaBlocks(canvas, block, x = 15, y = 15, size = 10, color = "#000", inline = "#000", outline = "#000", rows = 1) {
+function drawChaChaBlocks(canvas, block, x = 15, y = 15, size = 10, color = COLORS.FG, inline = COLORS.GRID, outline = COLORS.GRID, rows = 1) {
     for (let i = 0; i < Math.floor(block.length / 16); i++)
         drawChaChaBlock(canvas, block.slice(i * 16, i * 16 + 16), x + size * 32 * Math.floor(i / rows), y + size * 16 * (i % rows), size, color, inline, outline);
 }
 
-function drawLock(canvas, x, y, lock = true, size = 10) {
-    canvas.lineWidth = LINEWIDTH;
+function drawLock(canvas, x, y, lock = true, size = 10, color = COLORS.FG, lineWidth = LINEWIDTH) {
+    canvas.lineWidth = lineWidth;
+    canvas.strokeStyle = color;
+    canvas.fillStyle = color;
     canvas.beginPath();
     canvas.moveTo(x - size, y - size);
     canvas.lineTo(x + size, y - size);
@@ -1366,8 +1364,9 @@ function drawLetterShift(canvas, key, text, spanKey, direction = 1, secondChain 
     return ciphertext;
 }
 
-function drawDistributionAxes(canvas, x, y, height) {
+function drawDistributionAxes(canvas, x, y, height, color = COLORS.FG) {
     canvas.lineWidth = LINEWIDTH;
+    canvas.strokeStyle = color;
     canvas.beginPath();
     canvas.moveTo(x, y);
     canvas.lineTo(x, y + height);
@@ -1483,7 +1482,7 @@ function drawOrthoArrow(canvas, coordinates) {
     drawArrow(canvas, vertical, direction, offset, start, end);
 }
 
-function drawShiftArrows(canvas, key, length, sign = "+", y = 135, x = 15, color = LGRAY) {
+function drawShiftArrows(canvas, key, length, sign = "+", y = 135, x = 15, color = COLORS.GRAY) {
     initializeCanvasText(canvas);
     canvas.lineWidth = LINEWIDTH;
     drawLetterChain(canvas, ' '.repeat(length), y + 10, x, color);   // kinda ugly hack; last minute changes 
@@ -1495,11 +1494,13 @@ function drawShiftArrows(canvas, key, length, sign = "+", y = 135, x = 15, color
         canvas.moveTo(xOffset, y - 5);
         canvas.lineTo(xOffset, y + 10);
         canvas.stroke();
-        drawArrow(canvas, true, 1, xOffset, y + 110, y + 130);
+        drawArrow(canvas, true, 1, xOffset, y + 110, y + 130, color);
     }
 }
 
-function drawArrow(canvas, vertical, downright, offset, start, end) {
+function drawArrow(canvas, vertical, downright, offset, start, end, color = COLORS.FG, lineWidth = LINEWIDTH) {
+    canvas.lineWidth = lineWidth;
+    canvas.strokeStyle = color;
     canvas.beginPath();
     if (vertical) {
         canvas.moveTo(offset, start);
@@ -1517,7 +1518,7 @@ function drawArrow(canvas, vertical, downright, offset, start, end) {
     canvas.stroke();
 }
 
-function drawMultiplyModuloMap(canvas, modulus, multiplier, height = 120, xOffset = 15, yOffset = 185, color = "#aaa") {
+function drawMultiplyModuloMap(canvas, modulus, multiplier, height = 120, xOffset = 15, yOffset = 185, color = COLORS.GRAY) {
     const offset = xOffset + 2 + 624 / modulus;
     canvas.lineWidth = LINEWIDTH;
     canvas.strokeStyle = color;
@@ -1530,7 +1531,7 @@ function drawMultiplyModuloMap(canvas, modulus, multiplier, height = 120, xOffse
     canvas.stroke();
 }
 
-function drawFunctionMap(canvas, key, symbol, color = "#ccc", cardinality = 26, y1 = 105, y2 = 185) {
+function drawFunctionMap(canvas, key, symbol, color = COLORS.GRAYL, cardinality = 26, y1 = 105, y2 = 185) {
     const xOffset = 624 / cardinality + 13;
     const gap = 1248 / cardinality;
     canvas.lineWidth = LINEWIDTH;
@@ -1575,23 +1576,7 @@ function getLetterPosition(letter) {
         return " ";
 }
 
-function drawLetterChainBackground(canvas, text, x = 15, y = 15, color = "#666") {
-    canvas.fillStyle = color;
-    for (let i = 0; i < LETTERBOXLENGTH; i++) {
-        if (text[i] == '1') {
-            canvas.beginPath();
-            canvas.moveTo(x + (i * LETTERBOXWIDTH), y);
-            canvas.lineTo(x + (i * LETTERBOXWIDTH), y + LETTERBOXHEIGHT);
-            canvas.lineTo(x + (i * LETTERBOXWIDTH) + LETTERBOXWIDTH, y + LETTERBOXHEIGHT);
-            canvas.lineTo(x + (i * LETTERBOXWIDTH) + LETTERBOXWIDTH, y);
-            canvas.lineTo(x + (i * LETTERBOXWIDTH), y);
-            canvas.fill();
-        }
-    }
-    canvas.fillStyle = "#000";
-}
-
-function drawLetterChain(canvas, text, y = 15, x = 15, color = BLACK) {
+function drawLetterChain(canvas, text, y = 15, x = 15, color = COLORS.FG) {
     canvas.lineWidth = LINEWIDTH;
     for (let i = 0; i < LETTERBOXLENGTH; i++)
         if (text[i]) drawLetterBox(canvas, text[i], x + (i * LETTERBOXWIDTH), y, color);
@@ -1629,9 +1614,39 @@ function sign(number) {
     return "+";
 }
 
-function initializeProgressBar(bar, maximum, value) {
-    bar.max = maximum;
-    bar.value = value;
+function getColors() {
+    const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const styles = getComputedStyle(document.documentElement);
+    const colors = {};
+    colors.FG = styles.getPropertyValue("--fg").trim();
+    colors.BG = styles.getPropertyValue("--bg").trim();
+    colors.DARK = styles.getPropertyValue("--dark0").trim();
+    colors.GRAY = styles.getPropertyValue("--gray2").trim();
+    colors.GRAYL = styles.getPropertyValue("--gray3").trim();
+    colors.GRAY0 = darkMode ? "#333" : "#fff";
+    colors.GRAY1 = darkMode ? "#555" : "#ddd";
+    colors.GRAY2 = darkMode ? "#777" : "#bbb";
+    colors.GRAY3 = darkMode ? "#999" : "#999";
+    colors.GRAY4 = darkMode ? "#aaa" : "#777";
+    colors.GRAY5 = darkMode ? "#bbb" : "#555";
+    colors.GRAY6 = darkMode ? "#ddd" : "#333";
+    colors.GRAY7 = darkMode ? "#fff" : "#000";
+    colors.DIFF = darkMode ? "#78e" : "#8bd";
+    colors.HIGH = darkMode ? "#f08" : "#f08";
+    colors.DIST_A1 = darkMode ? "#ea7" : "#fc9";
+    colors.DIST_A2 = darkMode ? "#7ac" : "#9cf";
+    colors.DIST_A3 = darkMode ? "#dad" : "#eaf";
+    colors.DIST_A4 = darkMode ? "#7a9" : "#7a9";
+    colors.DIST_A5 = darkMode ? "#555" : "#bbb";
+    colors.DIST_B1 = "#9b8";
+    colors.DIST_B2 = "#c9d";
+    colors.DIST_B3 = "#7ce";
+    colors.HIGH1 = "#f81";
+    colors.HIGH2 = "#69f";
+    colors.HIGH3 = "#e9f";
+    colors.HIGH4 = "#8d8";
+    colors.GRID = darkMode ? colors.GRAYL : colors.FG;
+    return colors;
 }
 
 function initializeSliders(sliderID, minimum, maximum, step, value) {
@@ -1650,7 +1665,7 @@ function initializeCanvas(canvasID, height, width = WIDTH) {
     return canvas;
 }
 
-function initializeCanvasText(canvas, horizontal = "center", font = "25px JetBrains Mono", vertical = "middle", color = "#000") {
+function initializeCanvasText(canvas, horizontal = "center", font = "25px JetBrains Mono", vertical = "middle", color = COLORS.FG) {
     canvas.font = font;
     canvas.textBaseline = vertical;
     canvas.textAlign = horizontal;
