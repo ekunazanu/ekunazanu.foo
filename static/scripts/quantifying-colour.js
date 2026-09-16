@@ -4,15 +4,16 @@
 // aslo i gave up on modularity half way through im just tired now
 
 const WIDTH = 1280;
+const COLORS = getColors();
 
 const CONES = ["L", "M", "S"]
 const RGBPM = ["R", "G", "B"]
 const XYZPM = ["X", "Y", "Z"]
-const COLORL = "#000";
-const COLORM = "#000";
-const COLORS = "#000";
-const COLORR = "#000";
-const LMSCOLORS = [COLORL, COLORM, COLORS];
+const COLOR_L = COLORS.FG;
+const COLOR_M = COLORS.FG;
+const COLOR_S = COLORS.FG;
+const COLORR = COLORS.FG;
+const LMSCOLORS = [COLOR_L, COLOR_M, COLOR_S];
 const LMSMEANS = [71, 63, 37];
 const RODMEANS = 48;
 const LMSDEVNS = [34, 35, 20];
@@ -139,8 +140,8 @@ sliderPhotonWavelength.addEventListener("input", updatePhoton);
 function updatePhoton() {
     canvasPhoton.clearRect(0, 0, WIDTH, 400);
     drawPhoton(canvasPhoton, 0.45 - sliderPhotonWavelength.value, 440, 201, 400, 150);
-    drawSpaceLine(canvasPhoton, [0, 201, 0], [440, 201, 0], IDENTITY, "#000", 2);
-    drawSpaceLine(canvasPhoton, [WIDTH, 201, 0], [839, 201, 0], IDENTITY, "#000", 2);
+    drawSpaceLine(canvasPhoton, [0, 201, 0], [440, 201, 0], IDENTITY, COLORS.FG, 2);
+    drawSpaceLine(canvasPhoton, [WIDTH, 201, 0], [839, 201, 0], IDENTITY, COLORS.FG, 2);
     canvasPhoton.stroke();
 }
 updatePhoton();
@@ -344,7 +345,7 @@ drawSpectralBar(canvasBlindBARTP, [LMSMEANS[0], LMSMEANS[1], LMSMEANS[0]], [LMSD
 
 
 const canvasAggregateSSC = initializeCanvas("canvasAggregateSSC", 300);
-const GRAYS = ["#aaa", "#aaa", "#aaa"];
+const GRAYS = [COLORS.GRAY, COLORS.GRAY, COLORS.GRAY];
 drawSSC(canvasAggregateSSC, GRAYS, [72, 64, 36], [33, 35, 20], [0.96, 1, 0.96]);
 drawSSC(canvasAggregateSSC, GRAYS, [71, 62, 38], [34, 38, 19], [0.95, 0.93, 0.98]);
 drawSSC(canvasAggregateSSC, GRAYS, [70, 63, 37], [32, 34, 20], [1.03, 0.95, 1.03]);
@@ -381,12 +382,12 @@ drawLabels(canvasSensitivityUndefinedSSC, ["Undefined"], [[641, 135]]);
 const canvasXYChromaticityDiagram = initializeCanvas("canvasXYChromaticityDiagram", 600);
 function updateXYChromaticityDiagram() {
     drawSpaceChroma(canvasXYChromaticityDiagram);
-    drawSpaceLocus(canvasXYChromaticityDiagram, arrayCHRMATXYZ, PROJMAT);
-    drawSpaceLocus(canvasXYChromaticityDiagram, arrayPLANCKXYZ, PROJMAT);
+    drawSpaceLocus(canvasXYChromaticityDiagram, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
+    drawSpaceLocus(canvasXYChromaticityDiagram, arrayPLANCKXYZ, PROJMAT, COLORS.DARK);
     drawLabels(canvasXYChromaticityDiagram, WAVXYZLABELS, WAVXYZLABELPOS);
-    drawLabels(canvasXYChromaticityDiagram, CCTTEMPS, CCTTEMPSPOS, "#000", "20px JetBrains Mono");
+    drawLabels(canvasXYChromaticityDiagram, CCTTEMPS, CCTTEMPSPOS, COLORS.DARK, "20px JetBrains Mono");
     for (let i = 0; i < CCTLINES.length; i++)
-        drawSpaceLine(canvasXYChromaticityDiagram, CCTLINES[i][0], CCTLINES[i][1], PROJMAT);
+        drawSpaceLine(canvasXYChromaticityDiagram, CCTLINES[i][0], CCTLINES[i][1], PROJMAT, COLORS.DARK);
     for (let i = 0; i < COLSPACES.length; i++)
         drawGamut(canvasXYChromaticityDiagram, COLSPACES[i], [0, 0, 0]);
 }
@@ -692,7 +693,7 @@ function updateColorSpaceXYZLocus() {
     drawSpaceAxes(canvasColorSpaceXYZLocus);
     drawSpaceCube(canvasColorSpaceXYZLocus);
     drawSpaceCube(canvasColorSpaceXYZLocus, arrayColorSpaceXYZTransform, CUBEPOINTS, true);
-    drawSpaceLabels(canvasColorSpaceXYZLocus, RGBPM, arrayColorSpaceXYZTransform, CUBELABELOFF, CUBELABELPOS, "#aaa");
+    drawSpaceLabels(canvasColorSpaceXYZLocus, RGBPM, arrayColorSpaceXYZTransform, CUBELABELOFF, CUBELABELPOS, COLORS.GRAY);
     drawSpaceLocus(canvasColorSpaceXYZLocus, arrayCOLMATXYZ);
     drawSpacePointLines(canvasColorSpaceXYZLocus, arrayColorSpaceXYZLocusRSP)
     drawSpacePoint(canvasColorSpaceXYZLocus, arrayColorSpaceXYZLocusRSP);
@@ -802,11 +803,11 @@ function updateColorSpaceRGBChromaProject() {
     drawSpaceAxes(canvasColorSpaceRGBChromaProject, arrayColorSpaceRGBChromaProjectTransMat);
     drawSpaceSlice(canvasColorSpaceRGBChromaProject, varColorSpaceRGBChromaProjectSum, arrayColorSpaceRGBChromaProjectTransMat);
     drawSpaceTriangle(canvasColorSpaceRGBChromaProject, 1, arrayColorSpaceRGBChromaProjectTransMat);
-    drawSpaceTriangle(canvasColorSpaceRGBChromaProject, varColorSpaceRGBChromaProjectSum, arrayColorSpaceRGBChromaProjectTransMat, "#aaa");
+    drawSpaceTriangle(canvasColorSpaceRGBChromaProject, varColorSpaceRGBChromaProjectSum, arrayColorSpaceRGBChromaProjectTransMat, COLORS.GRAY);
     drawSpaceCube(canvasColorSpaceRGBChromaProject, arrayColorSpaceRGBChromaProjectTransMat);
     drawSpaceLine(canvasColorSpaceRGBChromaProject, arrayColorSpaceRGBChromaProjectNorms, arrayColorSpaceRGBChromaProjectRSP, arrayColorSpaceRGBChromaProjectTransMat);
     drawSpaceLine(canvasColorSpaceRGBChromaProject, arrayColorSpaceRGBChromaProjectNorms, [0, 0, 0], arrayColorSpaceRGBChromaProjectTransMat);
-    drawSpacePoint(canvasColorSpaceRGBChromaProject, arrayColorSpaceRGBChromaProjectRSP, arrayColorSpaceRGBChromaProjectTransMat, "#aaa");
+    drawSpacePoint(canvasColorSpaceRGBChromaProject, arrayColorSpaceRGBChromaProjectRSP, arrayColorSpaceRGBChromaProjectTransMat, COLORS.GRAY);
     drawSpacePoint(canvasColorSpaceRGBChromaProject, arrayColorSpaceRGBChromaProjectNorms, arrayColorSpaceRGBChromaProjectTransMat);
     drawSpaceLabels(canvasColorSpaceRGBChromaProject, RGBPM, arrayColorSpaceRGBChromaProjectTransMat);
     colorBoxRGB(divColorSpaceRGBChromaProject, arrayColorSpaceRGBChromaProjectRSP);
@@ -866,14 +867,14 @@ function updateChromaRGBLocus() {
     getCMFValues(sliderChromaRGBLocusWavelength.value, arrayChromaRGBLocusNorms, arrayCHRMATRGB);
     if (switchChromaRGBLocusSlice.checked) drawSpaceSlice(canvasChromaRGBLocus, 1, arrayChromaRGBLocusTransMat, 2.1);
     drawSpaceAxes(canvasChromaRGBLocus, arrayChromaRGBLocusTransMat);
-    drawSpaceLocus(canvasChromaRGBLocus, arrayCOLMATRGB, arrayChromaRGBLocusTransMat, "#aaa");
+    drawSpaceLocus(canvasChromaRGBLocus, arrayCOLMATRGB, arrayChromaRGBLocusTransMat, COLORS.GRAY);
     drawSpaceTriangle(canvasChromaRGBLocus, 1, arrayChromaRGBLocusTransMat);
     drawSpaceCube(canvasChromaRGBLocus, arrayChromaRGBLocusTransMat);
     drawSpaceLocus(canvasChromaRGBLocus, arrayCHRMATRGB, arrayChromaRGBLocusTransMat);
     drawSpaceLine(canvasChromaRGBLocus, arrayChromaRGBLocusNorms, arrayChromaRGBLocusRSP, arrayChromaRGBLocusTransMat);
     drawSpaceLine(canvasChromaRGBLocus, arrayChromaRGBLocusNorms, [0, 0, 0], arrayChromaRGBLocusTransMat);
     drawSpacePoint(canvasChromaRGBLocus, arrayChromaRGBLocusNorms, arrayChromaRGBLocusTransMat);
-    drawSpacePoint(canvasChromaRGBLocus, arrayChromaRGBLocusRSP, arrayChromaRGBLocusTransMat, "#aaa");
+    drawSpacePoint(canvasChromaRGBLocus, arrayChromaRGBLocusRSP, arrayChromaRGBLocusTransMat, COLORS.GRAY);
     drawSpaceLabels(canvasChromaRGBLocus, RGBPM, arrayChromaRGBLocusTransMat);
 }
 updateChromaRGBLocus();
@@ -885,8 +886,8 @@ const PROJRGBMAT = PROJRGBBASEMAT.map(row => row.slice());
 changeTransformation(PROJRGBMAT, 0, -120, 0.5, -0.33, -0.05, PROJRGBBASEMAT);
 function updateChromaRGUndefined() {
     canvasChromaRGUndefined.clearRect(0, 0, WIDTH, 600);
-    for (let i = 0; i < 75; i++) drawSpaceLine(canvasChromaRGUndefined, [-600 + i * 25, 600], [0 + i * 25, 0], IDENTITY, "#aaa");
-    drawSpaceTriangle(canvasChromaRGUndefined, 1, PROJRGBMAT, "#000", 0, "#fff");
+    for (let i = 0; i < 75; i++) drawSpaceLine(canvasChromaRGUndefined, [-600 + i * 25, 600], [0 + i * 25, 0], IDENTITY, COLORS.GRAY);
+    drawSpaceTriangle(canvasChromaRGUndefined, 1, PROJRGBMAT, COLORS.FG, 0, true);
     drawSpaceSlice(canvasChromaRGUndefined, 1, PROJRGBMAT, 2.1);
     drawSpaceAxes(canvasChromaRGUndefined, PROJRGBMAT);
     drawSpaceLocus(canvasChromaRGUndefined, arrayCHRMATRGB, PROJRGBMAT);
@@ -901,8 +902,8 @@ updateChromaRGUndefined();
 const canvasChromaRGDefined = initializeCanvas("canvasChromaRGDefined", 600);
 function updateChromaRGDefined() {
     canvasChromaRGDefined.clearRect(0, 0, WIDTH, 600);
-    drawSpaceChromaFill(canvasChromaRGDefined, arrayCHRMATRGB, PROJRGBMAT, "#cff");
-    drawSpaceTriangle(canvasChromaRGDefined, 1, PROJRGBMAT, "#000", 0, "#fff");
+    drawSpaceChromaFill(canvasChromaRGDefined, arrayCHRMATRGB, PROJRGBMAT, COLORS.CYAN);
+    drawSpaceTriangle(canvasChromaRGDefined, 1, PROJRGBMAT, COLORS.FG, 0, true);
     drawSpaceSlice(canvasChromaRGDefined, 1, PROJRGBMAT, 2.1);
     drawSpaceAxes(canvasChromaRGDefined, PROJRGBMAT);
     drawSpaceLocus(canvasChromaRGDefined, arrayCHRMATRGB, PROJRGBMAT);
@@ -956,8 +957,8 @@ function updateChromaRGLinear() {
     drawSpaceLabels(canvasChromaRGLinear, RGBPM, PROJRGBMAT);
     drawSpaceLocus(canvasChromaRGLinear, arrayCHRMATRGB, PROJRGBMAT);
     drawSpaceLine(canvasChromaRGLinear, arrayChromaRGLinearCtrlPoints[0], arrayChromaRGLinearCtrlPoints[1], PROJRGBMAT);
-    drawSpacePoint(canvasChromaRGLinear, arrayChromaRGLinearCtrlPoints[0], PROJRGBMAT, "#000", 6);
-    drawSpacePoint(canvasChromaRGLinear, arrayChromaRGLinearCtrlPoints[1], PROJRGBMAT, "#000", 6);
+    drawSpacePoint(canvasChromaRGLinear, arrayChromaRGLinearCtrlPoints[0], PROJRGBMAT, COLORS.FG, 6);
+    drawSpacePoint(canvasChromaRGLinear, arrayChromaRGLinearCtrlPoints[1], PROJRGBMAT, COLORS.FG, 6);
     getChromaticity(arrayChromaRGLinearCtrlPoints, arrayChromaRGLinearIntensities, arrayChromaRGLinearPoint, arrayChromaRGLinearColor);
     drawSpacePoint(canvasChromaRGLinear, arrayChromaRGLinearPoint, PROJRGBMAT);
     colorBoxRGB(divChromaRGLinear, arrayChromaRGLinearColor);
@@ -986,14 +987,14 @@ function updateChromaXYZLocus() {
     arrayChromaXYZLocusRSP.forEach((val, i) => varChromaXYZLocusSum += Number(val));
     getCMFValues(sliderChromaXYZLocusWavelength.value, arrayChromaXYZLocusNorms, arrayCHRMATXYZ);
     drawSpaceAxes(canvasChromaXYZLocus, arrayChromaXYZLocusTransMat);
-    drawSpaceLocus(canvasChromaXYZLocus, arrayCOLMATXYZ, arrayChromaXYZLocusTransMat, "#aaa");
+    drawSpaceLocus(canvasChromaXYZLocus, arrayCOLMATXYZ, arrayChromaXYZLocusTransMat, COLORS.GRAY);
     drawSpaceTriangle(canvasChromaXYZLocus, 1, arrayChromaXYZLocusTransMat);
     drawSpaceCube(canvasChromaXYZLocus, arrayChromaXYZLocusTransMat);
     drawSpaceLocus(canvasChromaXYZLocus, arrayCHRMATXYZ, arrayChromaXYZLocusTransMat);
     drawSpaceLine(canvasChromaXYZLocus, arrayChromaXYZLocusNorms, arrayChromaXYZLocusRSP, arrayChromaXYZLocusTransMat);
     drawSpaceLine(canvasChromaXYZLocus, arrayChromaXYZLocusNorms, [0, 0, 0], arrayChromaXYZLocusTransMat);
     drawSpacePoint(canvasChromaXYZLocus, arrayChromaXYZLocusNorms, arrayChromaXYZLocusTransMat);
-    drawSpacePoint(canvasChromaXYZLocus, arrayChromaXYZLocusRSP, arrayChromaXYZLocusTransMat, "#aaa");
+    drawSpacePoint(canvasChromaXYZLocus, arrayChromaXYZLocusRSP, arrayChromaXYZLocusTransMat, COLORS.GRAY);
     drawSpaceLabels(canvasChromaXYZLocus, XYZPM, arrayChromaXYZLocusTransMat);
 }
 updateChromaXYZLocus();
@@ -1026,12 +1027,12 @@ function updateLocusRatio() {
     drawSpaceChroma(canvasLocusRatio);
     drawSpaceAxes(canvasLocusRatio, PROJMAT);
     drawLabels(canvasLocusRatio, ["x", "y"], [[PROJMAT[0][3] - 30, 31], [PROJMAT[0][0] + 30, PROJMAT[1][3] - 30]]);
-    drawSpaceLocus(canvasLocusRatio, arrayCHRMATXYZ, PROJMAT);
-    drawSpaceLine(canvasLocusRatio, arrayLocusRatioCtrlPoints[0], arrayLocusRatioCtrlPoints[1], PROJMAT);
-    drawSpacePoint(canvasLocusRatio, arrayLocusRatioCtrlPoints[0], PROJMAT, "#000", 6);
-    drawSpacePoint(canvasLocusRatio, arrayLocusRatioCtrlPoints[1], PROJMAT, "#000", 6);
+    drawSpaceLocus(canvasLocusRatio, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
+    drawSpaceLine(canvasLocusRatio, arrayLocusRatioCtrlPoints[0], arrayLocusRatioCtrlPoints[1], PROJMAT, COLORS.DARK);
+    drawSpacePoint(canvasLocusRatio, arrayLocusRatioCtrlPoints[0], PROJMAT, COLORS.DARK, 6);
+    drawSpacePoint(canvasLocusRatio, arrayLocusRatioCtrlPoints[1], PROJMAT, COLORS.DARK, 6);
     getChromaticity(arrayLocusRatioCtrlPoints, arrayLocusRatioIntensities, arrayLocusRatioPoint, arrayLocusRatioColor);
-    drawSpacePoint(canvasLocusRatio, arrayLocusRatioPoint, PROJMAT);
+    drawSpacePoint(canvasLocusRatio, arrayLocusRatioPoint, PROJMAT, COLORS.DARK);
     colorBoxRGB(divLocusRatio, vectorMultiply(MATRIX_XYZ_RGB, arrayLocusRatioColor));
     spanLocusRatiox.innerHTML = "x: " + arrayLocusRatioPoint[0].toFixed(3);
     spanLocusRatioy.innerHTML = "y: " + arrayLocusRatioPoint[1].toFixed(3);
@@ -1054,13 +1055,13 @@ function updateLocusGamutTwo() {
     for (let i = 0; i < 2; i++) arrayLocusGamutTwoIntensities[i] = Number(sliderLocusGamutTwoIntensity[i].value);
     canvasLocusGamutTwo.clearRect(0, 0, WIDTH, 600);
     drawSpaceChroma(canvasLocusGamutTwo);
-    drawSpaceLocus(canvasLocusGamutTwo, arrayCHRMATXYZ, PROJMAT);
-    drawSpaceLine(canvasLocusGamutTwo, arrayLocusGamutTwoCtrlPoints[0], arrayLocusGamutTwoCtrlPoints[1], PROJMAT);
-    drawSpacePoint(canvasLocusGamutTwo, arrayLocusGamutTwoCtrlPoints[0], PROJMAT, "#000", 6);
-    drawSpacePoint(canvasLocusGamutTwo, arrayLocusGamutTwoCtrlPoints[1], PROJMAT, "#000", 6);
+    drawSpaceLocus(canvasLocusGamutTwo, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
+    drawSpaceLine(canvasLocusGamutTwo, arrayLocusGamutTwoCtrlPoints[0], arrayLocusGamutTwoCtrlPoints[1], PROJMAT, COLORS.DARK);
+    drawSpacePoint(canvasLocusGamutTwo, arrayLocusGamutTwoCtrlPoints[0], PROJMAT, COLORS.DARK, 6);
+    drawSpacePoint(canvasLocusGamutTwo, arrayLocusGamutTwoCtrlPoints[1], PROJMAT, COLORS.DARK, 6);
     drawLabels(canvasLocusGamutTwo, WAVXYZLABELS, WAVXYZLABELPOS);
     getChromaticity(arrayLocusGamutTwoCtrlPoints, arrayLocusGamutTwoIntensities, arrayLocusGamutTwoPoint, arrayLocusGamutTwoColor);
-    drawSpacePoint(canvasLocusGamutTwo, arrayLocusGamutTwoPoint, PROJMAT);
+    drawSpacePoint(canvasLocusGamutTwo, arrayLocusGamutTwoPoint, PROJMAT, COLORS.DARK);
     colorBoxRGB(divLocusGamutTwo, vectorMultiply(MATRIX_XYZ_RGB, arrayLocusGamutTwoColor));
 }
 
@@ -1087,10 +1088,10 @@ function updateLocusGamutCIE() {
     }
     canvasLocusGamutCIE.clearRect(0, 0, WIDTH, 600);
     drawSpaceChroma(canvasLocusGamutCIE);
-    drawSpaceLocus(canvasLocusGamutCIE, arrayCHRMATXYZ, PROJMAT);
+    drawSpaceLocus(canvasLocusGamutCIE, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
     drawGamut(canvasLocusGamutCIE, arrayLocusGamutCIECtrlPoints, arrayLocusGamutCIEIntensities);
     getChromaticity(arrayLocusGamutCIECtrlPoints, arrayLocusGamutCIEIntensities, arrayLocusGamutCIEPoint, arrayLocusGamutCIEColor);
-    drawSpacePoint(canvasLocusGamutCIE, arrayLocusGamutCIEPoint, PROJMAT);
+    drawSpacePoint(canvasLocusGamutCIE, arrayLocusGamutCIEPoint, PROJMAT, COLORS.DARK);
     drawLabels(canvasLocusGamutCIE, WAVXYZLABELS, WAVXYZLABELPOS);
     colorBoxRGB(divLocusGamutCIE, vectorMultiply(MATRIX_XYZ_RGB, arrayLocusGamutCIEColor));
     spanLocusGamutCIEChromaticity.innerHTML = ((sliderLocusGamutCIEIntensity[0].value * 0.733 + sliderLocusGamutCIEIntensity[1].value * 0.266 + sliderLocusGamutCIEIntensity[2].value * 0.166) / 3).toFixed(2) + "r + " + ((sliderLocusGamutCIEIntensity[0].value * 0.267 + sliderLocusGamutCIEIntensity[1].value * 0.724 + sliderLocusGamutCIEIntensity[2].value * 0.008) / 3).toFixed(2) + "g";
@@ -1129,10 +1130,10 @@ function updateLocusGamutMultiple() {
     for (let i = 0; i < 3; i++) arrayLocusGamutMultipleIntensities[i] = sliderLocusGamutMultipleIntensity[i].value * arrayLocusGamutMultipleWhitePoint[i];
     canvasLocusGamutMultiple.clearRect(0, 0, WIDTH, 600);
     drawSpaceChroma(canvasLocusGamutMultiple);
-    drawSpaceLocus(canvasLocusGamutMultiple, arrayCHRMATXYZ, PROJMAT);
+    drawSpaceLocus(canvasLocusGamutMultiple, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
     drawGamut(canvasLocusGamutMultiple, arrayLocusGamutMultipleCtrlPoints, arrayLocusGamutMultipleIntensities);
     getChromaticity(arrayLocusGamutMultipleCtrlPoints, arrayLocusGamutMultipleIntensities, arrayLocusGamutMultiplePoint, arrayLocusGamutMultipleColor);
-    drawSpacePoint(canvasLocusGamutMultiple, arrayLocusGamutMultiplePoint, PROJMAT);
+    drawSpacePoint(canvasLocusGamutMultiple, arrayLocusGamutMultiplePoint, PROJMAT, COLORS.DARK);
     drawLabels(canvasLocusGamutMultiple, WAVXYZLABELS, WAVXYZLABELPOS);
     drawLabels(canvasLocusGamutMultiple, varLocusGamutMultipleCurrentName, [[801, 151]]);
     colorBoxRGB(divLocusGamutMultiple, vectorMultiply(MATRIX_XYZ_RGB, arrayLocusGamutMultipleColor));
@@ -1140,8 +1141,8 @@ function updateLocusGamutMultiple() {
 
 
 const canvasHexDeconstruction = initializeCanvas("canvasHexDeconstruction", 250);
-drawLabels(canvasHexDeconstruction, ["A49D2F"], [[641, 130]], "#000", "192px JetBrains Mono");
-drawLabels(canvasHexDeconstruction, ["#"], [[250, 86]], "#000", "96px JetBrains Mono");
+drawLabels(canvasHexDeconstruction, ["A49D2F"], [[641, 130]], COLORS.FG, "192px JetBrains Mono");
+drawLabels(canvasHexDeconstruction, ["#"], [[250, 86]], COLORS.FG, "96px JetBrains Mono");
 drawLabels(canvasHexDeconstruction, ["10100100"], [[406, 221]], "#a00", "36px JetBrains Mono");
 drawLabels(canvasHexDeconstruction, ["10011101"], [[641, 221]], "#080", "36px JetBrains Mono");
 drawLabels(canvasHexDeconstruction, ["00101111"], [[876, 221]], "#00e", "36px JetBrains Mono");
@@ -1154,7 +1155,7 @@ const canvasLocusPlanckian = initializeCanvas("canvasLocusPlanckian", 600);
 const sliderBlackbodyColorTemperature = document.getElementById("sliderBlackbodyColorTemperature");
 const spanBlackbodyColor = document.getElementById("spanBlackbodyColor");
 const arrayBlackbodyColorSPD = new Array(126).fill(0);
-var arrayLocusPlanckianPoint = [0, 0, 0];
+let arrayLocusPlanckianPoint = [0, 0, 0];
 let arrayBlackbodyColorRSP = [0, 0, 0];
 initializeSliders(sliderBlackbodyColorTemperature, 0.02, 0.9, 0.02, 0.54);
 sliderBlackbodyColorTemperature.addEventListener("input", updateBlackbodyColor);
@@ -1168,9 +1169,9 @@ function updateBlackbodyColor() {
     drawSPD(canvasBlackbodyColorSPD, arrayBlackbodyColorSPD);
     arrayBlackbodyColorRSP = drawRSP(canvasBlackbodyColorRSP, arrayBlackbodyColorSPD);
     drawSpaceChroma(canvasLocusPlanckian);
-    drawSpaceLocus(canvasLocusPlanckian, arrayCHRMATXYZ, PROJMAT);
-    drawSpaceLocus(canvasLocusPlanckian, arrayPLANCKXYZ, PROJMAT);
-    drawSpacePoint(canvasLocusPlanckian, arrayLocusPlanckianPoint, PROJMAT);
+    drawSpaceLocus(canvasLocusPlanckian, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
+    drawSpaceLocus(canvasLocusPlanckian, arrayPLANCKXYZ, PROJMAT, COLORS.DARK);
+    drawSpacePoint(canvasLocusPlanckian, arrayLocusPlanckianPoint, PROJMAT, COLORS.DARK);
     drawLabels(canvasLocusPlanckian, WAVXYZLABELS, WAVXYZLABELPOS);
     colorBoxRGB(divBlackbodyColor, vectorMultiply(MATRIX_TEMP_SRGB, arrayBlackbodyColorRSP));
 }
@@ -1180,11 +1181,11 @@ const canvasLocusPlanckianLED = initializeCanvas("canvasLocusPlanckianLED", 600)
 const arrayLocusPlanckianLEDPoints = [[0.330, 0.320, 0], [0.355, 0.385, 0], [0.345, 0.355, 0], [0.355, 0.325, 0], [0.308, 0.305, 0], [0.313, 0.345, 0]];
 function updateLocusPlanckianLED() {
     drawSpaceChroma(canvasLocusPlanckianLED);
-    drawSpaceLocus(canvasLocusPlanckianLED, arrayCHRMATXYZ, PROJMAT);
-    drawSpaceLocus(canvasLocusPlanckianLED, arrayPLANCKXYZ, PROJMAT);
+    drawSpaceLocus(canvasLocusPlanckianLED, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
+    drawSpaceLocus(canvasLocusPlanckianLED, arrayPLANCKXYZ, PROJMAT, COLORS.DARK);
     drawLabels(canvasLocusPlanckianLED, WAVXYZLABELS, WAVXYZLABELPOS);
     for (let i = 0; i < arrayLocusPlanckianLEDPoints.length; i++)
-        drawSpacePoint(canvasLocusPlanckianLED, arrayLocusPlanckianLEDPoints[i], PROJMAT, "#000", 6);
+        drawSpacePoint(canvasLocusPlanckianLED, arrayLocusPlanckianLEDPoints[i], PROJMAT, COLORS.DARK, 6);
 }
 
 
@@ -1193,12 +1194,12 @@ const arrayLocusPlanckianCCTWavelengths =  [...WAVXYZLABELS.slice(0, 3), ...WAVX
 const arrayLocusPlanckianCCTWavelengthsPos =  [...WAVXYZLABELPOS.slice(0, 3), ...WAVXYZLABELPOS.slice(4)];
 function updateLocusPlanckianCCT() {
     drawSpaceChroma(canvasLocusPlanckianCCT);
-    drawSpaceLocus(canvasLocusPlanckianCCT, arrayCHRMATXYZ, PROJMAT);
-    drawSpaceLocus(canvasLocusPlanckianCCT, arrayPLANCKXYZ, PROJMAT);
+    drawSpaceLocus(canvasLocusPlanckianCCT, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
+    drawSpaceLocus(canvasLocusPlanckianCCT, arrayPLANCKXYZ, PROJMAT, COLORS.DARK);
     drawLabels(canvasLocusPlanckianCCT, arrayLocusPlanckianCCTWavelengths, arrayLocusPlanckianCCTWavelengthsPos);
-    drawLabels(canvasLocusPlanckianCCT, CCTTEMPS, CCTTEMPSPOS, "#000", "20px JetBrains Mono");
+    drawLabels(canvasLocusPlanckianCCT, CCTTEMPS, CCTTEMPSPOS, COLORS.DARK, "20px JetBrains Mono");
     for (let i = 0; i < CCTLINES.length; i++)
-        drawSpaceLine(canvasLocusPlanckianCCT, CCTLINES[i][0], CCTLINES[i][1], PROJMAT);
+        drawSpaceLine(canvasLocusPlanckianCCT, CCTLINES[i][0], CCTLINES[i][1], PROJMAT, COLORS.DARK);
 }
 
 
@@ -1219,13 +1220,13 @@ function updateLocusIlluminants() {
     canvasLocusIlluminants.clearRect(0, 0, WIDTH, 600);
     varLocusIlluminantsCurrent = arrayXYILLS[selectLocusIlluminants.value];
     drawSpaceChroma(canvasLocusIlluminants);
-    drawSpaceLocus(canvasLocusIlluminants, arrayCHRMATXYZ, PROJMAT);
-    drawSpaceLocus(canvasLocusIlluminants, arrayPLANCKXYZ, PROJMAT);
-    drawSpacePoint(canvasLocusIlluminants, varLocusIlluminantsCurrent, PROJMAT, "#000", 6);
+    drawSpaceLocus(canvasLocusIlluminants, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
+    drawSpaceLocus(canvasLocusIlluminants, arrayPLANCKXYZ, PROJMAT, COLORS.DARK);
+    drawSpacePoint(canvasLocusIlluminants, varLocusIlluminantsCurrent, PROJMAT, COLORS.DARK, 6);
     drawLabels(canvasLocusIlluminants, WAVXYZLABELS, WAVXYZLABELPOS);
     colorBoxRGB(divLocusIlluminants, vectorMultiply([[3, 0, 0], [0, 3, 0], [0, 0, 3]], vectorMultiply(MATRIX_XYZ_RGB, varLocusIlluminantsCurrent)));
     for (let i = 0; i < CCTLINES.length; i++)
-        drawSpaceLine(canvasLocusIlluminants, CCTLINES[i][0], CCTLINES[i][1], PROJMAT);
+        drawSpaceLine(canvasLocusIlluminants, CCTLINES[i][0], CCTLINES[i][1], PROJMAT, COLORS.DARK);
 }
 
 
@@ -1334,15 +1335,15 @@ function updateLocusWhitePoint() {
     drawSpaceChroma(canvasLocusWhitePoint);
     for (let i = 0; i < 3; i++) arrayLocusWhitePointIntensities[i] = sliderLocusWhitePointIntensity[i].value * arrayLocusWhitePointWhitePoint2[i];
     getChromaticity(arrayLocusWhitePointCtrlPoints, arrayLocusWhitePointIntensities, arrayLocusWhitePointPoint, arrayLocusWhitePointColor);
-    drawGamut(canvasLocusWhitePoint, arrayLocusWhitePointCtrlPoints, arrayLocusWhitePointIntensities, PROJMAT, "#999");
-    drawSpacePoint(canvasLocusWhitePoint, arrayLocusWhitePointPoint, PROJMAT, "#999");
+    drawGamut(canvasLocusWhitePoint, arrayLocusWhitePointCtrlPoints, arrayLocusWhitePointIntensities, PROJMAT, COLORS.GRAY);
+    drawSpacePoint(canvasLocusWhitePoint, arrayLocusWhitePointPoint, PROJMAT, COLORS.GRAY);
     colorBoxRGB(divLocusWhitePoint2, vectorMultiply(MATRIX_XYZ_RGB, arrayLocusWhitePointColor));
     for (let i = 0; i < 3; i++) arrayLocusWhitePointIntensities[i] = sliderLocusWhitePointIntensity[i].value * arrayLocusWhitePointWhitePoint1[i];
     getChromaticity(arrayLocusWhitePointCtrlPoints, arrayLocusWhitePointIntensities, arrayLocusWhitePointPoint, arrayLocusWhitePointColor);
     drawGamut(canvasLocusWhitePoint, arrayLocusWhitePointCtrlPoints, arrayLocusWhitePointIntensities);
-    drawSpacePoint(canvasLocusWhitePoint, arrayLocusWhitePointPoint, PROJMAT);
+    drawSpacePoint(canvasLocusWhitePoint, arrayLocusWhitePointPoint, PROJMAT, COLORS.DARK);
     colorBoxRGB(divLocusWhitePoint1, vectorMultiply(MATRIX_XYZ_RGB, arrayLocusWhitePointColor));
-    drawSpaceLocus(canvasLocusWhitePoint, arrayCHRMATXYZ, PROJMAT);
+    drawSpaceLocus(canvasLocusWhitePoint, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
     drawLabels(canvasLocusWhitePoint, WAVXYZLABELS, WAVXYZLABELPOS);
     drawLabels(canvasLocusWhitePoint, varLocusWhitePointCurrentName, [[801, 151]]);
 }
@@ -1393,18 +1394,18 @@ linkChromaticAdaptationDressChromaWarm.addEventListener("click", () => {
     updateChromaticAdaptationDressChroma(); });
 function updateChromaticAdaptationDressChroma() {
     drawSpaceChroma(canvasChromaticAdaptationDressChroma);
-    drawSpaceLocus(canvasChromaticAdaptationDressChroma, arrayCHRMATXYZ, PROJMAT);
+    drawSpaceLocus(canvasChromaticAdaptationDressChroma, arrayCHRMATXYZ, PROJMAT, COLORS.DARK);
     drawLabels(canvasChromaticAdaptationDressChroma, WAVXYZLABELS, WAVXYZLABELPOS);
     arrayChromaticAdaptationDressChromaChroma1 = getXYPixel(canvasChromaticAdaptationDressChroma, varChromaticAdaptationDressChromaX1, varChromaticAdaptationDressChromaY1, 880, 0);
     arrayChromaticAdaptationDressChromaChroma2 = getXYPixel(canvasChromaticAdaptationDressChroma, varChromaticAdaptationDressChromaX2, varChromaticAdaptationDressChromaY2, 880, 0);
     arrayChromaticAdaptationDressChromaChroma1 = vectorMultiply(PROJMAT, arrayChromaticAdaptationDressChromaChroma1.concat(1));
     arrayChromaticAdaptationDressChromaChroma2 = vectorMultiply(PROJMAT, arrayChromaticAdaptationDressChromaChroma2.concat(1));
-    drawSpaceLine(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaChroma1, arrayChromaticAdaptationDressChromaPoint1, IDENTITY);
-    drawSpaceLine(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaChroma2, arrayChromaticAdaptationDressChromaPoint2, IDENTITY);
-    drawSpacePoint(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaChroma1, IDENTITY);
-    drawSpacePoint(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaChroma2, IDENTITY);
-    drawSpacePoint(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaPoint1, IDENTITY);
-    drawSpacePoint(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaPoint2, IDENTITY);
+    drawSpaceLine(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaChroma1, arrayChromaticAdaptationDressChromaPoint1, IDENTITY, COLORS.DARK);
+    drawSpaceLine(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaChroma2, arrayChromaticAdaptationDressChromaPoint2, IDENTITY, COLORS.DARK);
+    drawSpacePoint(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaChroma1, IDENTITY, COLORS.DARK);
+    drawSpacePoint(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaChroma2, IDENTITY, COLORS.DARK);
+    drawSpacePoint(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaPoint1, IDENTITY, COLORS.DARK);
+    drawSpacePoint(canvasChromaticAdaptationDressChroma, arrayChromaticAdaptationDressChromaPoint2, IDENTITY, COLORS.DARK);
 }
 
 
@@ -1497,14 +1498,14 @@ function getSPDBlackbody(temperature, spdArray) {
 //        spdArray[i - 100] = k / (((i / 600) ** 5) * (2.72 ** (600 / (i * temperature))));
 }
 
-function drawCircles(canvas, x, y, color = "#000", radius = 100) {
+function drawCircles(canvas, x, y, color = COLORS.FG, radius = 100) {
     canvas.fillStyle = color;
     canvas.beginPath();
     canvas.arc(x, y, radius, 0, 2 * Math.PI);
     canvas.fill();
 }
 
-function drawGamut(canvas, points, intensities, projection = PROJMAT, color = "#000") {
+function drawGamut(canvas, points, intensities, projection = PROJMAT, color = COLORS.DARK) {
     let endPoints = [[0, 0, 0], [0, 0, 0]];
     let median = [0, 0, 0];
     let endIntensities = [0, 0];
@@ -1521,7 +1522,8 @@ function drawGamut(canvas, points, intensities, projection = PROJMAT, color = "#
 
 function drawSpaceChroma(canvas, diagram = CHRDIAGRAM, locus = arrayCHRMATXYZ, projection = PROJMAT) {
     canvas.drawImage(diagram, 130, 10, 550, 590);
-    canvas.fillStyle = "#fff";
+    canvas.save();
+    canvas.globalCompositeOperation = "destination-out";
     canvas.beginPath();
     canvas.moveTo(120, 10);
     canvas.lineTo(690, 10);
@@ -1530,7 +1532,8 @@ function drawSpaceChroma(canvas, diagram = CHRDIAGRAM, locus = arrayCHRMATXYZ, p
     canvas.moveTo(locus[0][0] * projection[0][0] + projection[0][3], locus[1][0] * projection[1][1] + projection[1][3])
     for (let i = 1; i < locus[0].length; i++)
         canvas.lineTo(locus[0][i] * projection[0][0] + projection[0][3], locus[1][i] * projection[1][1] + projection[1][3])
-    canvas.fill('evenodd');
+    canvas.fill("evenodd");
+    canvas.restore();
 }
 
 function drawSpaceChromaFill(canvas, locus = arrayCHRMATRGB, projection = PROJMAT, color = "#fff") {
@@ -1569,7 +1572,7 @@ function normalizeSliders(sliderArray, current, total = 1) {
     sliderArray[(current + i) % sliders].value *= norm;
 }
 
-function drawSpaceMatrix(canvas, matrix, offsetX = 861, offsetY = 151, color = "#000", width = 2) {
+function drawSpaceMatrix(canvas, matrix, offsetX = 861, offsetY = 151, color = COLORS.FG, width = 2) {
     let bracketX = [[-45, -60], [245, 260]];
     let bracketY = [-40, 136];
     let labels = [];
@@ -1589,7 +1592,7 @@ function drawSpaceMatrix(canvas, matrix, offsetX = 861, offsetY = 151, color = "
     } canvas.stroke();
 }
 
-function drawSpaceLabels(canvas, labels = RGBPM, transformation = TRANSFMAT, offsets = CUBELABELOFF, endpoints = CUBELABELPOS, color = "#000") {
+function drawSpaceLabels(canvas, labels = RGBPM, transformation = TRANSFMAT, offsets = CUBELABELOFF, endpoints = CUBELABELPOS, color = COLORS.FG) {
     let coordinates = [];
     let vertex = [];
     for (let i = 0; i < labels.length; i++) {
@@ -1601,7 +1604,7 @@ function drawSpaceLabels(canvas, labels = RGBPM, transformation = TRANSFMAT, off
     drawLabels(canvas, labels, coordinates, color);
 }
 
-function drawSpaceLocus(canvas, locus = arrayCOLMATRGB, transformation = TRANSFMAT, color = "#000", width = 2) {
+function drawSpaceLocus(canvas, locus = arrayCOLMATRGB, transformation = TRANSFMAT, color = COLORS.FG, width = 2) {
     let coordinates = [locus[0][0], locus[1][0], locus[2][0], 1];
     let points = vectorMultiply(transformation, coordinates);
     canvas.lineWidth = width;
@@ -1616,7 +1619,7 @@ function drawSpaceLocus(canvas, locus = arrayCOLMATRGB, transformation = TRANSFM
     canvas.stroke();
 }
 
-function drawSpaceLine(canvas, pointA, pointB, transformation = TRANSFMAT, color = "#000", width = 2) {
+function drawSpaceLine(canvas, pointA, pointB, transformation = TRANSFMAT, color = COLORS.FG, width = 2) {
     canvas.lineWidth = width;
     canvas.strokeStyle = color;
     pointA = vectorMultiply(transformation, pointA.concat(1));
@@ -1627,10 +1630,9 @@ function drawSpaceLine(canvas, pointA, pointB, transformation = TRANSFMAT, color
     canvas.stroke();
 }
 
-function drawSpaceTriangle(canvas, k = 1, transformation = TRANSFMAT, color = "#000", width = 2, fill = null) {
-    let points = [[k, 0, 0, 1], [0, k, 0, 1], [0, 0, k, 1], [k, 0, 0, 1]];
+function drawSpaceTriangle(canvas, k = 1, transformation = TRANSFMAT, color = COLORS.FG, width = 2, clear = false) {
+    const points = [[k, 0, 0, 1], [0, k, 0, 1], [0, 0, k, 1], [k, 0, 0, 1]];
     let vertex = vectorMultiply(transformation, points[0]);
-    if (fill) canvas.fillStyle = fill;
     canvas.strokeStyle = color;
     canvas.lineWidth = width;
     canvas.beginPath();
@@ -1639,8 +1641,13 @@ function drawSpaceTriangle(canvas, k = 1, transformation = TRANSFMAT, color = "#
         vertex = vectorMultiply(transformation, points[i]);
         canvas.lineTo(vertex[0], vertex[1]);
     }
-    if (fill) canvas.fill();
     canvas.stroke();
+    if (clear) {
+        canvas.save();
+        canvas.globalCompositeOperation = "destination-out";
+        canvas.fill();
+        canvas.restore();
+    }
 }
 
 function drawSpaceSlice(canvas, k = 1, transformation = TRANSFMAT, res = 1) {
@@ -1687,19 +1694,19 @@ function drawSpacePlane(canvas, values, colorTransform = identityTransform, tran
 
 function LMStoRGBClip(lmsArray) {
     let rgb = vectorMultiply(MATRIX_LMS_SRGB, lmsArray);
-    if (rgb[0] > 1 || rgb[1] > 1.1 || rgb[2] > 1) rgb[0] = rgb[1] = rgb[2] = 0;
-    if (rgb[0] < 0 || rgb[1] < 0 || rgb[2] < 0) rgb[0] = rgb[1] = rgb[2] = 0;
+    if (rgb[0] > 1 || rgb[1] > 1.1 || rgb[2] > 1) rgb[0] = rgb[1] = rgb[2] = COLORS.GRAY_RAW;
+    if (rgb[0] < 0 || rgb[1] < 0 || rgb[2] < 0) rgb[0] = rgb[1] = rgb[2] = COLORS.GRAY_RAW;
     return rgb;
 }
 
 function RGBtoXYZClip(rgbArray) {
     let xyz = vectorMultiply(MATRIX_XYZ_RGB, rgbArray);
-    if (xyz[0] > 1 || xyz[1] > 1 || xyz[2] > 1) xyz[0] = xyz[1] = xyz[2] = 0.85;
-    if (xyz[0] < 0 || xyz[1] < 0 || xyz[2] < 0) xyz[0] = xyz[1] = xyz[2] = 0.85;
+    if (xyz[0] > 1 || xyz[1] > 1 || xyz[2] > 1) xyz[0] = xyz[1] = xyz[2] = COLORS.GRAY_RAW;
+    if (xyz[0] < 0 || xyz[1] < 0 || xyz[2] < 0) xyz[0] = xyz[1] = xyz[2] = COLORS.GRAY_RAW;
     return xyz;
 }
 
-function drawSpaceCube(canvas, transformation = TRANSFMAT, oppVertex = CUBEPOINTS, inner = false, color = "#999", width = 2) {
+function drawSpaceCube(canvas, transformation = TRANSFMAT, oppVertex = CUBEPOINTS, inner = false, color = COLORS.GRAY, width = 2) {
     let verticesShell = [[oppVertex[0], 0, 0, 1], [oppVertex[0], oppVertex[1], 0, 1], [0, oppVertex[1], 0, 1], [0, oppVertex[1], oppVertex[2], 1], [0, 0, oppVertex[2], 1], [oppVertex[0], 0, oppVertex[2], 1], [oppVertex[0], 0, 0, 1]];
     let vertexOpp = [0, 0, 0, 0];
     let vertex = vectorMultiply(transformation, verticesShell[0]);
@@ -1732,7 +1739,7 @@ function drawSpaceCube(canvas, transformation = TRANSFMAT, oppVertex = CUBEPOINT
     canvas.stroke();
 }
 
-function drawSpacePointLines(canvas, coordinates, transformation = TRANSFMAT, color = "#000", width = 6) {
+function drawSpacePointLines(canvas, coordinates, transformation = TRANSFMAT, color = COLORS.FG, width = 6) {
     let points = vectorMultiply(transformation, coordinates.concat(1));
     let vertex = coordinates.concat(1);
     canvas.lineWidth = width;
@@ -1746,7 +1753,7 @@ function drawSpacePointLines(canvas, coordinates, transformation = TRANSFMAT, co
     canvas.stroke();
 }
 
-function drawSpacePoint(canvas, coordinates, transformation = TRANSFMAT, color = "#000", radius = 8) {
+function drawSpacePoint(canvas, coordinates, transformation = TRANSFMAT, color = COLORS.FG, radius = 8) {
     let coords = vectorMultiply(transformation, coordinates.concat(1));
     canvas.fillStyle = color;
     canvas.beginPath();
@@ -1768,7 +1775,7 @@ function drawSpaceAxes(canvas, transformation = TRANSFMAT, axes = BASEAXES, colo
     }
 }
 
-function drawLabels(canvas, labels, positions, color = "#000", font = "25px JetBrains Mono", horizontal = "center", vertical = "middle") {
+function drawLabels(canvas, labels, positions, color = COLORS.FG, font = "25px JetBrains Mono", horizontal = "center", vertical = "middle") {
     initializeCanvasText(canvas, color, horizontal, vertical, font);
     for (let i = 0; i < labels.length; i++)
         canvas.fillText(labels[i], positions[i][0], positions[i][1]);
@@ -1804,7 +1811,7 @@ function getSPD(canvas, spdArray, evt) {
     spdArray[wavelengthBin] = intensity;
 }
 
-function drawCMF(canvas, wavelength, cmfArray = arrayCOLMATRGB, colors = LMSCOLORS, color = "#000", width = 2) {
+function drawCMF(canvas, wavelength, cmfArray = arrayCOLMATRGB, colors = LMSCOLORS, color = COLORS.FG, width = 2) {
     for (let i = 0; i < cmfArray.length; i++)
         drawSPD(canvas, cmfArray[i], colors[i]);
     canvas.lineWidth = width;
@@ -1833,7 +1840,7 @@ function drawSpectralBar(canvas, means = LMSMEANS, deviations = LMSDEVNS, correc
 
 function drawRSP(canvas, values = arraySPDSaturated, colors = LMSCOLORS, means = LMSMEANS, deviations = LMSDEVNS, magnitudes = LMSMAGNS, norms = LMSNORMS, cones = CONES, correction = 1, y = 200, width = 2) {
     canvas.lineWidth = width;
-    initializeCanvasText(canvas, "#000", "right");
+    initializeCanvasText(canvas, COLORS.FG, "right");
     let responseSum = new Array(colors.length).fill(0);
     let valueSum = new Array(colors.length).fill(0);
     let y_n = 0;
@@ -1868,10 +1875,10 @@ function drawSSC(canvas, colors = LMSCOLORS, means = LMSMEANS, deviations = LMSD
             canvas.lineTo(i * 10 + 15, y * (1 - 0.76 * magnitudes[c] * (2.7 ** -(((i - means[c])/deviations[c]) ** 2))) - 49);
         canvas.stroke();
     }
-    drawWavelengthAxes(canvas, y, "#000", 2);
+    drawWavelengthAxes(canvas, y, COLORS.FG, 2);
 }
 
-function drawSPD(canvas, values, color = "#000", colorAxes = "#000", y = 300, width = 2) {
+function drawSPD(canvas, values, color = COLORS.FG, colorAxes = COLORS.FG, y = 300, width = 2) {
     canvas.lineWidth = width;
     canvas.strokeStyle = color;
     canvas.beginPath();
@@ -1882,7 +1889,7 @@ function drawSPD(canvas, values, color = "#000", colorAxes = "#000", y = 300, wi
     drawWavelengthAxes(canvas, y, colorAxes, 2);
 }
 
-function drawWavelengthAxes(canvas, y = 300, color = "#000", width = 2) {
+function drawWavelengthAxes(canvas, y = 300, color = COLORS.FG, width = 2) {
     canvas.lineWidth = width;
     canvas.strokeStyle = color;
     canvas.beginPath();
@@ -1895,7 +1902,7 @@ function drawWavelengthAxes(canvas, y = 300, color = "#000", width = 2) {
         canvas.fillText(i * 50 + 400 + "nm", i * 180 + 100, y - 25);
 }
 
-function drawPhoton(canvas, wavelength, x, y, length = 200, amplitude = 75, color = "#000", width = 2) {
+function drawPhoton(canvas, wavelength, x, y, length = 200, amplitude = 75, color = COLORS.FG, width = 2) {
     canvas.lineWidth = width;
     canvas.strokeStyle = color;
     canvas.beginPath();
@@ -1962,6 +1969,20 @@ function vectorMultiply(matrix, vector) {
     return result;
 }
 
+function getColors() {
+    const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const styles = getComputedStyle(document.documentElement);
+    const colors = {
+        FG: styles.getPropertyValue("--fg").trim(),
+        BG: styles.getPropertyValue("--bg").trim(),
+        GRAY: styles.getPropertyValue("--gray3").trim(),
+        DARK: styles.getPropertyValue("--dark0").trim(),
+        CYAN: darkMode ? "#255" : "#cff",
+        GRAY_RAW: darkMode ? 0.25 : 0.85,
+    }
+    return colors;
+}
+
 function initializeCanvas(canvasID, height, width = WIDTH) {
     const canvas = document.getElementById(canvasID).getContext("2d");
     canvas.canvas.width = width;
@@ -1969,7 +1990,7 @@ function initializeCanvas(canvasID, height, width = WIDTH) {
     return canvas;
 }
 
-function initializeCanvasText(canvas, color = "#000", horizontal = "center", vertical = "middle", font = "25px JetBrains Mono") {
+function initializeCanvasText(canvas, color = COLORS.FG, horizontal = "center", vertical = "middle", font = "25px JetBrains Mono") {
     canvas.font = font;
     canvas.textBaseline = vertical;
     canvas.textAlign = horizontal;
