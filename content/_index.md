@@ -24,7 +24,7 @@ const GRID_SQUARES_X = 127;
 const GRID_SQUARES_Y = 32;
 const CELL_SIZE = 10;
 
-const FG_COLOR = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
 
 const canvasGOL = document.getElementById('canvasGOL').getContext('2d');
 canvasGOL.canvas.width = WIDTH;
@@ -64,7 +64,7 @@ function initializeLogo(grid, xOffset = 4, yOffset = 4, scale = 2) {
 }
 
 function drawSquares(canvas, grid) {
-    canvas.fillStyle = FG_COLOR;
+    canvas.fillStyle = COLOR_FG;
     for (let y = 0; y < GRID_SQUARES_Y; y++)
         for (let x = 0; x < GRID_SQUARES_X; x++)
             if (grid[y][x] === 1)
@@ -72,7 +72,7 @@ function drawSquares(canvas, grid) {
 }
 
 function drawGrid(canvas, xOffset = 1, yOffset = 1) {
-    canvas.strokeStyle = FG_COLOR;
+    canvas.strokeStyle = COLOR_FG;
     canvas.lineWidth = 2;
     canvas.beginPath();
     for (let i = 0; i <= GRID_SQUARES_X; i++) {
