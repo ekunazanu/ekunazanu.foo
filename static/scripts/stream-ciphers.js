@@ -199,7 +199,7 @@ const arrayOTPReuseDifference = shiftBits2D(arrayOTPReuseCipher1, arrayOTPReuseC
 const arrayOTPReuseColors = [COLORS.GRAY0, COLORS.GRAY1, COLORS.GRAY2, COLORS.GRAY3, COLORS.GRAY4, COLORS.GRAY5, COLORS.GRAY6, COLORS.GRAY7];
 const arrayOTPReuseBlocks = [[arrayOTPReuseData1, 15, 15], [arrayOTPReuseData2, 375, 15], [arrayOTPReuseKey, 15, 375], [arrayOTPReuseKey, 375, 375], [arrayOTPReuseCipher1, 15, 785], [arrayOTPReuseCipher2, 375, 785], [arrayOTPReuseDifference, 885, 785]];
 for (let i = 0; i < arrayOTPReuseBlocks.length; i++)
-    drawBits2D(canvasOTPReuse, arrayOTPReuseBlocks[i][0], arrayOTPReuseBlocks[i][1], arrayOTPReuseBlocks[i][2], arrayOTPReuseColors, 10);
+    drawBits2D(canvasOTPReuse, arrayOTPReuseBlocks[i][0], arrayOTPReuseBlocks[i][1], arrayOTPReuseBlocks[i][2], arrayOTPReuseColors);
 drawArrow(canvasOTPReuse, true, 1, 175, 715, 765);
 drawArrow(canvasOTPReuse, true, 1, 535, 715, 765);
 drawArrow(canvasOTPReuse, false, 1, 945, 755, 825);
@@ -641,11 +641,8 @@ canvasPolyhash.stroke();
 canvasPolyhash.beginPath();
 canvasPolyhash.arc(1073, 1023, 6, 0, 2 * Math.PI);
 canvasPolyhash.fill();
-canvasPolyhash.strokeStyle = COLORS.BG; canvasPolyhash.lineWidth = 6;
-canvasPolyhash.beginPath();
-canvasPolyhash.moveTo(1069, 393); canvasPolyhash.lineTo(1069, 1013);
-canvasPolyhash.moveTo(1077, 393); canvasPolyhash.lineTo(1077, 1013);
-canvasPolyhash.stroke();
+canvasPolyhash.clearRect(1066, 393, 6, 620);
+canvasPolyhash.clearRect(1074, 393, 6, 620);
 
 
 const varFailhashKey = Math.floor(Math.random() * 0xFFFFFFFF);
@@ -674,11 +671,8 @@ canvasFailhash.stroke();
 canvasFailhash.beginPath();
 canvasFailhash.arc(1073, 1023, 6, 0, 2 * Math.PI);
 canvasFailhash.fill();
-canvasFailhash.strokeStyle = COLORS.BG; canvasFailhash.lineWidth = 6;
-canvasFailhash.beginPath();
-canvasFailhash.moveTo(1069, 393); canvasFailhash.lineTo(1069, 1013);
-canvasFailhash.moveTo(1077, 393); canvasFailhash.lineTo(1077, 1013);
-canvasFailhash.stroke();
+canvasFailhash.clearRect(1066, 393, 6, 620);
+canvasFailhash.clearRect(1074, 393, 6, 620);
 
 
 let arrayMachashPointers = [0, 0, 0, 0, 1, 0, 0];
@@ -1150,7 +1144,7 @@ function shiftBits2D(array1, array2, modulus = 2, subtract = false) {
     return shiftedArray;
 }
 
-function drawBits2D(canvas, array, x = 15, y = 15, colors = [COLORS.BG, COLORS.FG], size = 10) {
+function drawBits2D(canvas, array, x, y, colors, size = 10, colorGrid = COLORS.GRID, lineWidth = LINEWIDTH) {
     let dimensionX = array[0].length;
     let dimensionY = array.length;
     for (let i = 0; i < array.length; i++) {
@@ -1159,7 +1153,8 @@ function drawBits2D(canvas, array, x = 15, y = 15, colors = [COLORS.BG, COLORS.F
             canvas.fillRect(x + j * size, y + i * size, size, size);
         }
     }
-    canvas.lineWidth = LINEWIDTH;
+    canvas.lineWidth = lineWidth;
+    canvas.strokeStyle = colorGrid;
     for (let i = 0; i <= dimensionY; i++) {
         canvas.moveTo(x, y + i * size);
         canvas.lineTo(x + size * dimensionX, y + i * size);
