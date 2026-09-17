@@ -1,5 +1,11 @@
 // could be more efficient, but works decently fast
 
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
+const COLOR_BG = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim();
+const COLOR_GRAY = getComputedStyle(document.documentElement).getPropertyValue("--gray1").trim();
+const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const darkBase = parseInt(COLOR_BG.slice(1, 2).repeat(2), 16);
+
 const WIDTH = 1280;
 const HEIGHT = 640;
 
@@ -34,8 +40,8 @@ let col1, col2;
 updateCanvas();
 
 function updateCanvas() {
-    col1 = 255 - Math.floor(sliderAmpl1.value * 5);
-    col2 = 255 - Math.floor(sliderAmpl2.value * 5);
+    col1 = darkMode ? darkBase + sliderAmpl1.value * 4 : 255 - Math.floor(sliderAmpl1.value * 5);
+    col2 = darkMode ? darkBase + sliderAmpl2.value * 4 : 255 - Math.floor(sliderAmpl2.value * 5);
     canvasWaves.clearRect(0, 0, WIDTH, HEIGHT);
     drawCircles(canvasWaves, Number(sliderWavl1.value), sliderPhas1.value * sliderWavl1.value, Number(sliderDistance.value), `rgb(${col1} ${col1} ${col1})`);
     drawCircles(canvasWaves, Number(sliderWavl2.value), sliderPhas2.value * sliderWavl2.value, Number(-sliderDistance.value), `rgb(${col2} ${col2} ${col2})`);
@@ -44,7 +50,7 @@ function updateCanvas() {
     drawWaves(canvasWaves, Number(sliderWavl1.value), Number(sliderAmpl1.value), Number(sliderPhas1.value), Number(sliderWavl2.value), Number(sliderAmpl2.value), Number(sliderPhas2.value), Number(sliderDistance.value));
 }
 
-function drawWaves(canvas, wavelengthA, amplitudeA, phaseA, wavelengthB, amplitudeB, phaseB, distance, color = "#000", x = 1000) {
+function drawWaves(canvas, wavelengthA, amplitudeA, phaseA, wavelengthB, amplitudeB, phaseB, distance, color = COLOR_FG, x = 1000) {
     let argA, argB, val;
     canvas.lineWidth = 2;
     canvas.strokeStyle = color;
@@ -59,7 +65,7 @@ function drawWaves(canvas, wavelengthA, amplitudeA, phaseA, wavelengthB, amplitu
     canvas.stroke();
 }
 
-function drawCircles(canvas, wavelength, phase, distance, color = "#000") {
+function drawCircles(canvas, wavelength, phase, distance, color = COLOR_FG) {
     canvas.lineWidth = 2;
     canvas.strokeStyle = color;
     canvas.beginPath();
@@ -70,7 +76,7 @@ function drawCircles(canvas, wavelength, phase, distance, color = "#000") {
     canvas.stroke();
 }
 
-function drawLine(canvas, x1, y1, x2, y2, color = "#aaa"){
+function drawLine(canvas, x1, y1, x2, y2, color = COLOR_GRAY){
     canvas.lineWidth = 2;
     canvas.strokeStyle = color;
     canvas.beginPath();

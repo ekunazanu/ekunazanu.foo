@@ -1,6 +1,7 @@
 const WIDTH = 1280
-const COLORS = getColorPalette(0.7, -0.6, 0.7, 0.9, 0.05, 0.95);
-// const COLORS = getColorPalette(2.6, 0.4, 0.7, 0.9, 0.05, 0.95);
+const COLORS = getColorPalette(0.2, -0.3, 0.7, 0.8, 0.12, 0.8);
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
+// const COLORS = getColorPalette(2.6, 0.4, 0.7, 0.7, 0.1, 0.95);
 
 const altRandomFunctions = {
     "Random": () => Math.random(),
@@ -15,7 +16,7 @@ const altRandomFunctions = {
 };
 
 const canvasDistributions = initializeCanvas("canvasDistributions", 1530);
-initializeCanvasText(canvasDistributions, "#000", "left");
+initializeCanvasText(canvasDistributions, COLOR_FG, "left");
 canvasDistributions.fillText("Normalized Values", 785, 25);
 drawColorBar(canvasDistributions);
 drawFunctionDistributions(canvasDistributions, altRandomFunctions);
@@ -87,23 +88,21 @@ function getColor(rgbArray) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-function getColorPalette(start, rotation, hue = 1, gamma = 1, dark = 0, light = 1, stops = 128) {
+function getColorPalette(start, rotation, hue = 1, gamma = 1, dark = 0, light = 1, offset = 0, stops = 128) {
     const colors = [];
-    let phi = 0;
-    let stop = 0;
     for (let i = dark; i < light; i += (light - dark) / stops) {
-        phi = 2 * Math.PI * (start / 3 + rotation * stop);
-        stop = Math.pow(i, gamma);
-        amplitude = hue * stop * (1 - stop) / 2;
+        const stop = Math.pow(i, gamma);
+        const phi = 2 * Math.PI * (start / 3 + rotation * stop);
+        const amplitude = hue * stop * (1 - stop) / 2;
+        const base = offset > 0 ? offset - stop : stop;
         colors.push([
-            stop + amplitude * (-0.14861 * Math.cos(phi) + 1.78277 * Math.sin(phi)),
-            stop + amplitude * (-0.29227 * Math.cos(phi) - 0.90649 * Math.sin(phi)),
-            stop + amplitude * (+1.97294 * Math.cos(phi))
+            base + amplitude * (-0.14861 * Math.cos(phi) + 1.78277 * Math.sin(phi)),
+            base + amplitude * (-0.29227 * Math.cos(phi) - 0.90649 * Math.sin(phi)),
+            base + amplitude * (+1.97294 * Math.cos(phi))
         ]);
     }
     return colors;
 }
-
 
 function initializeCanvas(canvasID, height, width = WIDTH) {
     const canvas = document.getElementById(canvasID).getContext("2d");

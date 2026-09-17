@@ -1,6 +1,8 @@
 // change dimensions
 // show outline on hover
 
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
+
 const cellSize = 28;
 const gridN = 9;
 const gridSize = (gridN * (gridN + 1)) / 2;
@@ -51,7 +53,7 @@ function drawSelection(canvas = canvasPartridgeSelection, cardinality = partridg
     canvas.font = "32px JetBrains Mono";
     canvas.textAlign = "center";
     canvas.textBaseline = "middle";
-    canvas.strokeStyle = "#000";
+    canvas.strokeStyle = COLOR_FG;
     canvas.clearRect(0, 0, canvas.canvas.width, canvas.canvas.height);
     for (let i = 1; i <= gridN; i++) {
         canvas.lineWidth = 2;
@@ -74,7 +76,7 @@ function drawSquares(canvas, squares = partridgeSquares) {
     canvas.font = "32px JetBrains Mono";
     canvas.textAlign = "center";
     canvas.textBaseline = "middle";
-    canvas.strokeStyle = "#000";
+    canvas.strokeStyle = COLOR_FG;
     canvas.lineWidth = 4;
     for (let i = 0; i < squares.length; i++) {
         if (squares[i][2] == 0) continue;
@@ -87,7 +89,7 @@ function drawSquares(canvas, squares = partridgeSquares) {
 }
 
 function drawGridLines(canvas) {
-    canvas.strokeStyle = "#000";
+    canvas.strokeStyle = COLOR_FG;
     canvas.lineWidth = 2;
     canvas.beginPath();
     for (let i = 0; i <= gridSize; i++) { canvas.moveTo(0, i * cellSize + 1); canvas.lineTo(cellSize * gridSize, i * cellSize + 1); }

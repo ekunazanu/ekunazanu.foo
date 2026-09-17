@@ -1,5 +1,7 @@
+const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
 const WIDTH = 1280;
-const graphColors = ["#922", "#6a8", "#22d", "#777"];
+const graphColors = darkMode ? ["#f44", "#8fa", "#56f", "#ccc"] : ["#922", "#6a8", "#22d", "#777"];
 const pingLatencies = [
     [ // without wireguard
         [1864, 19.4, 18.8, 43.1, 20.0, 19.2, 16.9, 22.1, 25.1, 17.1, 65.2, 19.0, 224, 29.5, 116, 54.5, 17.5, 18.8, 17.7, 21.0, 18.3, 19.3, 18.3, 18.4, 17.0, 22.2, 17.3, 23.4, 17.3, 17.8, 18.6, 19.3, 17.2, 19.5, 17.5, 16.9, 18.3, 18.4, 20.7, 28.8, 17.1, 17.2, 21.0, 17.0, 17.7, 16.9, 18.7, 19.5, 17.8, 17.4, 17.6, 26.8, 74.5, 18.8, 18.2, 18.4, 17.4, 17.2, 18.4, 17.3],
@@ -24,7 +26,7 @@ for (let canvas = 0; canvas < pingLatencies.length; canvas++) {
     drawAxes(canvasLatencies[canvas]);
 }
 
-function drawGraph(canvas, values, color = "#000", start = 0, end = 60, scale = 1 / 2000, colorAxes = "#000", y = 300, width = 2) {
+function drawGraph(canvas, values, color = COLOR_FG, start = 0, end = 60, scale = 1 / 2000, colorAxes = "#000", y = 300, width = 2) {
     canvas.lineWidth = width;
     canvas.strokeStyle = color;
     canvas.beginPath();
@@ -35,7 +37,7 @@ function drawGraph(canvas, values, color = "#000", start = 0, end = 60, scale = 
     console.log(values, start, end);
 }
 
-function drawAxes(canvas, y = 300, color = "#000", width = 2) {
+function drawAxes(canvas, y = 300, color = COLOR_FG, width = 2) {
     canvas.lineWidth = width;
     canvas.strokeStyle = color;
     canvas.beginPath();
@@ -56,7 +58,7 @@ function initializeCanvas(canvasID, height, width = WIDTH) {
     return canvas;
 }
 
-function initializeCanvasText(canvas, color = "#000", horizontal = "center", vertical = "middle", font = "25px JetBrains Mono") {
+function initializeCanvasText(canvas, color = COLOR_FG, horizontal = "center", vertical = "middle", font = "25px JetBrains Mono") {
     canvas.font = font;
     canvas.textBaseline = vertical;
     canvas.textAlign = horizontal;

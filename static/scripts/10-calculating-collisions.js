@@ -1,6 +1,8 @@
 // quick ugly script
 // decetly performat, but code is ugly
 
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
+
 const maxIters = 100;
 const canvasCollisions = document.getElementById("canvasCollisions").getContext("2d");
 const textYCoord = document.getElementById("textYCoord");
@@ -10,11 +12,11 @@ const sliderYCoord = document.getElementById("sliderYCoord");
 const sliderRatio = document.getElementById("sliderRatio");
 const switchRatio43 = document.getElementById("switchRatio43");
 const switchRatio169 = document.getElementById("switchRatio169");
-var collisions = 0;
+let collisions = 0;
 
 canvasCollisions.canvas.width = 1296;
 canvasCollisions.canvas.height = 432;
-canvasCollisions.canvas.style.border = "0.0625rem solid #000"
+canvasCollisions.canvas.style.border = `1px solid ${COLOR_FG}`
 sliderYCoord.min = 0;
 sliderYCoord.max = canvasCollisions.canvas.height;
 sliderYCoord.step = 1;
@@ -67,7 +69,7 @@ function drawCircle(canvas, y, x = 0, radius = 15, color = "#aaa") {
     canvas.stroke();
 }
 
-function drawReflections(canvas, initialX, initialY, boundX, boundY, maxIter = 5, color = "#000", strokewidth = 2) {
+function drawReflections(canvas, initialX, initialY, boundX, boundY, maxIter = 5, color = COLOR_FG, strokewidth = 2) {
     let iter = 0;
     let x = initialX;
     let y = initialY;
