@@ -24,7 +24,10 @@ const GRID_SQUARES_X = 127;
 const GRID_SQUARES_Y = 32;
 const CELL_SIZE = 10;
 
+const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
+const COLOR_GRAY = getComputedStyle(document.documentElement).getPropertyValue("--gray3").trim();
+const COLOR_GRID = darkMode ? COLOR_GRAY : COLOR_FG;
 
 const canvasGOL = document.getElementById('canvasGOL').getContext('2d');
 canvasGOL.canvas.width = WIDTH;
@@ -72,7 +75,7 @@ function drawSquares(canvas, grid) {
 }
 
 function drawGrid(canvas, xOffset = 1, yOffset = 1) {
-    canvas.strokeStyle = COLOR_FG;
+    canvas.strokeStyle = COLOR_GRID;
     canvas.lineWidth = 2;
     canvas.beginPath();
     for (let i = 0; i <= GRID_SQUARES_X; i++) {
