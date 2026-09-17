@@ -131,7 +131,7 @@ function drawTop(svg, container, frequencies, words) {
     svg.setAttribute("viewBox", `0 0 ${WIDTH} 1050`);
     var normalizedFrequencies = getNormalizedFrequencies(frequencies, WIDTH);
     for (let i = 0; i < words.length; i++)
-        createRectangle(svg, 0, i * 70 + 10, normalizedFrequencies[i], 50, frequencies[i] + " → " + words[i]);
+        createRectangle(svg, 0, i * 70 + 10, normalizedFrequencies[i], 50, frequencies[i] + " → " + words[i], COLORS.GRAYL);
     container.appendChild(svg);
 }
 
@@ -188,7 +188,9 @@ function getColors() {
     const colors = {
         FG: styles.getPropertyValue("--fg").trim(),
         BG: styles.getPropertyValue("--bg").trim(),
-        GRAY: styles.getPropertyValue("--gray3").trim()
+        GRAY: styles.getPropertyValue("--gray2").trim(),
+        GRAYL: styles.getPropertyValue("--gray3").trim(),
+        HIGHLIGHT: styles.getPropertyValue("--yellow").trim()
     }
     return colors;
 }
