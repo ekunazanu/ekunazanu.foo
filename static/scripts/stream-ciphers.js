@@ -14,7 +14,7 @@ const CHACHAWORDPERMS = [[[0, 5, 10, 15], [1, 6, 11, 12], [2, 7, 8, 13], [3, 4, 
                          [[0, 4, 8, 12], [1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15]]];
 const CHACHASAT = new Array(16).fill(0xFFFFFFFF);
 const CHACHAZRO = new Array(16).fill(0x00000000);
-const DISTCOLORS = [COLORS.FG, COLORS.DIST_A1, COLORS.DIST_A2, COLORS.DIST_A3, COLORS.DIST_A4, COLORS.DIST_A5];
+const DISTCOLORS = [COLORS.DIST_A0, COLORS.DIST_A1, COLORS.DIST_A2, COLORS.DIST_A3, COLORS.DIST_A4, COLORS.DIST_A5];
 const PARTYLABELS = ["A", "B", "C", "D", "E"];
 const HEXCHECKER = 0xCCCC3333;
 const HEXVSTRIPE = 0xAAAAAAAA;
@@ -140,7 +140,7 @@ const arrayLetterFrequencyStaticMultipleColors = [[COLORS.DIST_B1], [COLORS.DIST
 const canvasLetterFrequencyStaticMultiple = initializeCanvas("canvasLetterFrequencyStaticMultiple", 850);
 arrayLetterFrequencyStaticMultipleDistributionC = getFrequencyDistributionFromKey(LETTERPROBDIST_SEPARATE, arrayLetterFrequencyStaticMultipleKeys.flat());
 drawCipherRects(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleColors);
-drawDistribution(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleDistributionC, 15, 155, LETTERS, 9, [COLORS.FG], 32, 140);
+drawDistribution(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleDistributionC, 15, 155, LETTERS, 9, [COLORS.GRAY], 32, 140);
 for (let i = 0; i < arrayLetterFrequencyStaticMultipleKeys.length; i++) {
     arrayLetterFrequencyStaticMultipleDistributions[i] = getFrequencyDistributionFromKey(LETTERPROBDIST_SEPARATE, arrayLetterFrequencyStaticMultipleKeys[i]);
     drawDistribution(canvasLetterFrequencyStaticMultiple, arrayLetterFrequencyStaticMultipleDistributions[i], 15, 330 + i * 170, LETTERS, 7, arrayLetterFrequencyStaticMultipleColors[i], 32, 140);
@@ -1628,11 +1628,11 @@ function getColors() {
     colors.GRAY7 = darkMode ? "#fff" : "#000";
     colors.DIFF = darkMode ? "#78e" : "#8bd";
     colors.HIGH = darkMode ? "#f08" : "#f08";
-    colors.DIST_A1 = darkMode ? "#ea7" : "#fc9";
+    colors.DIST_A1 = darkMode ? "#eb8" : "#fc9";
     colors.DIST_A2 = darkMode ? "#7ac" : "#9cf";
-    colors.DIST_A3 = darkMode ? "#dad" : "#eaf";
-    colors.DIST_A4 = darkMode ? "#7a9" : "#7a9";
-    colors.DIST_A5 = darkMode ? "#555" : "#bbb";
+    colors.DIST_A3 = darkMode ? "#fbe" : "#eaf";
+    colors.DIST_A4 = darkMode ? "#a68" : "#7a9";
+    colors.DIST_A5 = darkMode ? "#45f" : "#bbb";
     colors.DIST_B1 = "#9b8";
     colors.DIST_B2 = "#c9d";
     colors.DIST_B3 = "#7ce";
@@ -1641,6 +1641,7 @@ function getColors() {
     colors.HIGH3 = "#e9f";
     colors.HIGH4 = "#8d8";
     colors.GRID = darkMode ? colors.GRAYL : colors.FG;
+    colors.DIST_A0 = darkMode ? colors.GRAYL : colors.FG;
     return colors;
 }
 
