@@ -20,7 +20,7 @@ Also somewhat related, I want to thank [Tom MacWright](https://macwright.com). H
 
 Okay then, time for updates. The first half of the week I spent shooting a movie (sort of), and the latter half I spent admiring a different one (sort of). One of the things I learnt while making a movie is that there's a strict hierarchy in the movie set and you should not annoy those above you. I learnt it the hard way — I was demoted from cinematographer to a runner pretty quickly after I challenged the director's vision.
 
-![animated doodle of hierarchy in a movie set and showing arrows to denote the demotion from cinematographer to errand boy](/media/log/output.avif)
+{{ <picture src="/media/log/invertible.movie-set-hierarchy.avif" alt="animated doodle of hierarchy in a movie set and showing arrows to denote the demotion from cinematographer to errand boy" /> }}
 
 Regardless, that's hopefully still considered enough work — for me to pass the class. I really don't want an F grade in a filmmaking class on a Comp. Sci. degree.
 

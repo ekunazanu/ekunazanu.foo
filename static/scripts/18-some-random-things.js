@@ -1,7 +1,7 @@
+const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const WIDTH = 1280
-const COLORS = getColorPalette(0.2, -0.3, 0.7, 0.8, 0.12, 0.8);
+const COLORS = darkMode ? getColorPalette(0.2, -0.3, 0.7, 0.8, 0.12, 0.8) : getColorPalette(0.7, -0.6, 0.7, 0.9, 0.05, 0.95);
 const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
-// const COLORS = getColorPalette(2.6, 0.4, 0.7, 0.7, 0.1, 0.95);
 
 const altRandomFunctions = {
     "Random": () => Math.random(),
