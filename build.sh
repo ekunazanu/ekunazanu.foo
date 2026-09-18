@@ -17,7 +17,7 @@ for f in ./deploy/thumbnails/*.{svg,avif}; do magick "$f" "$f.png"; rm "$f"; don
 # for f in ./deploy/thumbnails/log.*.avif.png; do magick "$f" -resize 96x72 "$f.small.png"; done
 
 # Generate dark mode variants for invertible images
-for f in ./deploy/media/log/invertible.*.avif; do magick "$f" -fill "#dddddd" -opaque "black" "${f%.avif}.dark.avif"; done
+for f in ./deploy/media/log/invertible.*.avif; do magick "$f" -fill "#dddddd" -fuzz 5% -opaque "black" "${f%.avif}.dark.avif"; done
 
 # Move all files to root directory (for GH Pages)
 mv --force -t "." ./deploy/*
