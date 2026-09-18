@@ -478,7 +478,7 @@ hllButtonMainRandom.onclick = async() => {
     await HLLHelper(hllVarMainZerosMax, hllVarMainEstimates, hllSetMainSet, hllCanvasMain, "hllInputMainAdd", "hllOutputMainZeros", "hllOutputMainZerosMax", "hllOutputMainEstimates", "hllOutputMainCardinality", "hllOutputMainNumber", "hllOutputMainMean", "hllOutputMainScaled");
 }
 hllButtonMainRandomK.onclick = async() => {
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 100; i++) {
         const randomString = generateRandomString(10);
         hllSetMainSet.add(randomString);
         hllAdd(randomString, hllVarMainZerosMax, MAX_CELL_SUBS);

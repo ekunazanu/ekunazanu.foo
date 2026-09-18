@@ -320,7 +320,7 @@ Scaled estimate: <span id="hllOutputMainScaled">0</span><br>
 Actual cardinality: <span id="hllOutputMainCardinality">0</span><br>
 <input id="hllInputMainAdd" value="foo"><button id="hllButtonMainAdd">Add</button><br>
 <button id="hllButtonMainRandom">Add random</button><button id="hllButtonMainReset">Reset count</button><br>
-<button id="hllButtonMainRandomK">Add 500 random elements</button>
+<button id="hllButtonMainRandomK">Add 100 random elements</button>
 
 {% <tangent summary="Correction factor" open={true}> %}
 The correction factor ranges between 0.672 and 0.723, depending on the number of buckets. It is approximately equal to `0.723/(1+1.079/m)` where `m` is the number of buckets.
