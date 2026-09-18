@@ -12,11 +12,11 @@ thumbnailalt = "Doodle of a downward chart."
 
 The Plan™ is going horribly wrong. Remember the goals timeline I set out for myself? That was me at the peak of Mount Stupid. Now, I have hit the valley of despair. Turns out I am dumb and had *massively* overestimated my capabilities.
 
-![an arrow pointing at down but not bottom valley of the Dunning Kruger curve](/media/log/dunning-kruger-curve-down.avif)
+{{ <picture src="/media/log/invertible.dunning-kruger-curve-down.avif" alt="an arrow pointing at down but not bottom valley of the Dunning Kruger curve" /> }}
 
 Well, long story short I live in a capitalistic country and I need money. For that I need a job. For that I need to have skills. Skills that are visible to employers. And that requires me to have 'real' projects which is often some sort of kind of...
 
-![doodle of drum roll](/media/log/drum-roll.avif)
+{{ <picture src="/media/log/invertible.drum-roll.avif" alt="doodle of drum roll" /> }}
 
 A web project.
 

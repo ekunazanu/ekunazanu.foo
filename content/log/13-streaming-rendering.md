@@ -18,7 +18,7 @@ It would be fair to say that April was anime month for me. I dove deeper (relati
 
 Since I have been consuming a lot of art, I have been drawing a lot less this month. Nah it is actually because because I used to draw mostly during classes and classes are over for this semester. But I do want to get back to it soon, because I find it pretty relaxing and therapeutic. And it’s not like I have stopped completely, I have [started experimenting with digital art](https://bsky.app/profile/ekunazanu.foo/post/3lonhmojmrs2d) more. It is mostly pixel art for now, but it is pretty relaxing too.
 
-<img alt="a dithered pixel art image of a sunset" decoding=async loading=lazy src="/media/log/sunset-dither.avif" style="image-rendering: pixelated; width: 100%;">
+<img alt="a dithered pixel art image of a sunset" decoding=async loading=lazy src="/media/log/invertible.sunset-dither.avif" style="image-rendering: pixelated; width: 100%;">
 
 In other things, writing cool software is now on pause since it is endsem season right now. Because I have exams. Not because I am lazy. Nothing has changed about that. In fact I will stop procrastinating. From next week onwards, after my exams end. I did write some simple visualization code for a [new lab article](/lab/complex-rotations) though.
 

@@ -12,7 +12,7 @@ thumbnailalt = "Doodle of a checkered flag and a white flag."
 
 I am in my final year of college — so I need to start paying my bills and more importantly, start saving for a lambo. It is also currently job season. Add two and two, and it should be pretty clear I **need** to start prepping for interviews. 
 
-![a doodle of a person answering an interview question rather esoterically](/media/log/interview.avif)
+{{ <picture src="/media/log/invertible.interview.avif" alt="a doodle of a person answering an interview question rather esoterically" /> }}
 
 Yes. After seven months, it's time to finally start what I wanted to finish in the previous six months. The reason for the entire existence of this site — to log my progress of learning computer science. Clearly I have veered off course, but it's time to get back on track. You can expect the [notes site](http://notes.ekunazanu.foo/) to be (slightly) less empty now.
 

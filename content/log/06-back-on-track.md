@@ -12,7 +12,7 @@ thumbnailalt = "Doodle of a person running towards the right."
 
 Title is clickbait. When I say back on track, it is something closer to this:
 
-![doodle of a person strapped to a railway track](/media/log/on-track.avif)
+{{ <picture src="/media/log/invertible.on-track.avif" alt="doodle of a person strapped to a railway track" /> }}
 
 Thing is, everything was indeed going as planned. The server is up and running, and the frontend for it looks and works decent. The main roadblock turned out to be my college ISP. I was expecting a few issues, but nothing fundamentally unfix-able (or unhack-able). Turned out not to be the case.
 
@@ -30,7 +30,7 @@ So what now? Imagine you are in a race; you are the hare. You take a nap just be
 
 That's what I am doing as well.
 
-![doodle of cool person explaining the bug is actually a feature](/media/log/feature-not-bug.avif)
+{{ <picture src="/media/log/invertible.feature-not-bug.avif" alt="doodle of cool person explaining the bug is actually a feature" /> }}
 
 I am simply rebranding the project. Instead of allowing anyone to post, it is exclusively for the people in my college. Early Facebook style. Except the project is really basic, and serves no other purpose than being a fun little ~~social network~~ social experiment. It [should be up](/lab/free-speech) in a few hours.
 

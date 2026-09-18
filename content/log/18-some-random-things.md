@@ -24,13 +24,13 @@ For the comparator, the distribution is a [Bernoulli distribution](https://en.wi
 
 Anyhow, pretty interesting stuff. I explored [Littlewood polynomials](https://en.wikipedia.org/wiki/Littlewood_polynomial) a bit as well. Dragon curves showing up in the fractal pattern was interesting, and the reason they do is pretty neat. Also read about [helicopter money](https://en.wikipedia.org/wiki/Helicopter_money). Not as neat, but equally as interesting.
 
-![brief description of helicopter money explained using a doodles - a cartoonish central bank giving away free money](/media/log/free-money.avif)
+{{ <picture src="/media/log/invertible.free-money.avif" alt="brief description of helicopter money explained using a doodles - a cartoonish central bank giving away free money" /> }}
 
 I am thinking about writing less about journal-y posts in Log, and write about more about short, random, interesting topics. Maybe future Log posts will reflect this. Maybe this is the general direction Log is heading towards. I don't know; I might start doing more stuff and start writing about them more frequently once I'm done with college in a few weeks. Or maybe I will get even lesser time once I start working. We'll see.
 
 Speaking of work, I got a job offer that I **have** to accept — not because of a weak market for new grads (it is pretty bad out there though), but because of how the system works in my college. TLDR: Companies visit and offer jobs, and you have to accept the first offer that you receive. It is basically solving the assignment problem using FCFS. Not the most optimal, but it is what it is. Anyhow I got lucky, and got a job I'm satisfied with.
 
-![doodle of a person offering a job after a horrible interview answer](/media/log/hired.avif)
+{{ <picture src="/media/log/invertible.hired.avif" alt="doodle of a person offering a job after a horrible interview answer" /> }}
 
 Been a slow month otherwise. Cya next month.
 

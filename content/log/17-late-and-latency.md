@@ -40,7 +40,7 @@ So if I could just route all connections via a single connection — ie. set up 
 
 Sure enough, with a WireGuard instance on, the average latency was slightly higher but no more spikes. And the difference in browsing experience was night and day. Told the 'hack' to the person who led me down this rabbit hole — asking him to use a VPN — and he could feel the differences so much that he was impressed and asked me to make a post on it.
 
-![doodle of a person explaining to a surprised person that the solution was just using a vpn](/media/log/vpn-solution.avif)
+{{ <picture src="/media/log/invertible.vpn-solution.avif" alt="doodle of a person explaining to a surprised person that the solution was just using a vpn" /> }}
 
 In other news, the grind for jobs is going decent. Cleared the initial rounds for a couple of companies, but not good enough. Maybe I started a bit too late in my prep, but better late than never. The grind continues. The lambo dream lives on.
 
