@@ -317,8 +317,8 @@ for (let i = 0; i <= 8; i++) {
 canvasNotesAllOctaves.stroke();
 
 // intialize canvas itmes for scales canvas
-var selectedScaleNote = 0;
-var selectedScaleInterval = "major";
+let selectedScaleNote = 0;
+let selectedScaleInterval = "major";
 drawNotes(canvasScales, INTERVALS.chromatic, 0, NOTES.intervals, 121, 0, 13, 13);
 const playScaleButton = document.getElementById("playScaleButton");
 const selectScaleNote = document.getElementById("selectScaleNote");
@@ -353,7 +353,7 @@ selectScaleInterval.addEventListener("change", (event) => {
     drawCircles(canvasScales, INTERVALS[selectedScaleInterval]);
     drawNotes(canvasScales, INTERVALS[selectedScaleInterval], selectedScaleNote);
 });
-var isPlayingScale = false;
+let isPlayingScale = false;
 playScaleButton.addEventListener("click", async function() {
     if (!isPlayingScale) {
         isPlayingScale = true;
@@ -376,8 +376,8 @@ playScaleButton.addEventListener("click", async function() {
 });
 
 // intialize canvas itmes for chords canvas
-var selectedChordNote = 0;
-var selectedChordInterval = "major";
+let selectedChordNote = 0;
+let selectedChordInterval = "major";
 drawNotes(canvasChords, INTERVALS.chromatic, 0, NOTES.intervals, 121, 0, 13, 13);
 const selectChordNote = document.getElementById("selectChordNote");
 NOTES.letters.forEach((element, index) => {
@@ -397,8 +397,8 @@ selectChordNote.value = selectedChordNote;
 selectChordInterval.value = selectedChordInterval;
 drawCircles(canvasChords, CHORDS[selectedChordInterval]);
 drawNotes(canvasChords, CHORDS[selectedChordInterval], selectedChordNote);
-var chordOscillators = [];
-var frequenciesChord = getChord(selectedChordNote, CHORDS[selectedChordInterval], 3);
+const chordOscillators = [];
+let frequenciesChord = getChord(selectedChordNote, CHORDS[selectedChordInterval], 3);
 selectChordNote.addEventListener("change", async function() {
     canvasChords.clearRect(0, 0, WIDTH, 100);
     selectedChordNote = parseInt(selectChordNote.value);
@@ -423,7 +423,7 @@ selectChordInterval.addEventListener("change", async function() {
         gainNodeChord = await playChord(frequenciesChord, 0.8, chordOscillators);
     }
 });
-var isPlayingChord = false;
+let isPlayingChord = false;
 playChordButton.addEventListener("click", async function() {
     if (!isPlayingChord) {
         isPlayingChord = true;
@@ -439,8 +439,8 @@ playChordButton.addEventListener("click", async function() {
 
 // canvas for dynamics
 drawWave(canvasDynamics, 0, 0);
-var isPlayingDynamics = false;
-var isCrescendoDynamics = true;
+let isPlayingDynamics = false;
+let isCrescendoDynamics = true;
 playDynamicsButton.addEventListener("click", async function() {
     if (!isPlayingDynamics) {
         isPlayingDynamics = true;
@@ -485,7 +485,7 @@ playDynamicsButton.addEventListener("click", async function() {
     }
 });
 
-var isPlayingBeats = false;
+let isPlayingBeats = false;
 const beatsList = ["Beat A", "Beat B"];
 const beatsTimings = [[1, 0], [2, 0, 1, 0, 1, 0]];
 const selectBeat = document.getElementById("selectBeat");
@@ -517,7 +517,7 @@ playBeatsButton.addEventListener("click", async function() {
     }
 });
 
-var isPlayingTimeSignature = false;
+let isPlayingTimeSignature = false;
 const timeSignatureList = ["2/2", "2/4", "3/4", "4/4", "6/8", "8/8", "12/8"];
 const timeSignatureTimings = [[2, 0, 0, 0, 1, 0, 0, 0], [2, 0, 1, 0], [2, 0, 1, 0, 1, 0], [2, 0, 1, 0, 1, 0, 1, 0], [2, 1, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
 const selectTimeSignature = document.getElementById("selectTimeSignature");
@@ -549,8 +549,8 @@ playTimeSignatureButton.addEventListener("click", async function() {
     }
 });
 
-var isPlayingTempo = false;
-var tempo = 32
+let isPlayingTempo = false;
+let tempo = 32
 const tempoBeats = [2, 0, 1, 0, 1, 0, 1, 0];
 const sliderTempo = document.getElementById("sliderTempo");
 intializeSliders(sliderTempo, 10, 48, 1, 32);
@@ -703,15 +703,15 @@ for (let i = 1; i < 7; i++) canvasMarkovIntervals.fillText(nextNoteTransitionPro
 canvasMarkovIntervals.fillText(nextNoteTransitionProbability[0] * 100 + "%", 125, 215);
 
 // main sandbox
-var mainChordFrequencies = [];
-var mainChordOscillators = [];
-var mainScaleNotes = [];
-var mainScaleChords = [];
-var mainTunes = [];
-var mainSharp = [];
-var mainChords = [];
-var mainTunesDurations = [];
-var mainSharpDurations = [];
+let mainChordFrequencies = [];
+let mainScaleNotes = [];
+let mainScaleChords = [];
+const mainTunes = [];
+const mainSharp = [];
+const mainChords = [];
+const mainTunesDurations = [];
+const mainSharpDurations = [];
+const mainChordOscillators = [];
 const mainScaleTypes = ["major", "minor", "harmonic major", "harmonic minor"];
 const mainSharpOctaves = [4, 5, 6];
 const mainTunesOctaves = [3, 4, 5];
@@ -791,8 +791,8 @@ mainGenerate.addEventListener("click", function() {
     drawChord(canvasMain, mainChords, mainTotalBars, 399);
 });
 
-var mainTempo = 2.5 - mainTempoSlider.value;
-var mainTotalBars = 10;
+let mainTempo = 2.5 - mainTempoSlider.value;
+const mainTotalBars = 10;
 isTunesMain = true;
 isSharpMain = true;
 mainTime = 4;
@@ -812,8 +812,8 @@ drawSequence(canvasMain, mainTunesDurations, mainTunes, mainTotalBars, 255);
 drawSequence(canvasMain, mainSharpDurations, mainSharp, mainTotalBars, 111);
 drawChord(canvasMain, mainChords, mainTotalBars, 399);
 
-var counter = 0;
-var isPlayingMain = false;
+let counter = 0;
+let isPlayingMain = false;
 playMainButton.addEventListener("click", async function() {
     if (!isPlayingMain) {
         isPlayingMain = true;
@@ -976,8 +976,8 @@ function drawChord(canvas, chords, bars, yOffset, xOffset = 7, gap = 128, radius
 }
 
 async function playNote(frequency, amplitude, duration, durationSilent, durationFade) {
-    var gainNode = audioContext.createGain();
-    var oscillator = audioContext.createOscillator();
+    let gainNode = audioContext.createGain();
+    let oscillator = audioContext.createOscillator();
     oscillator.frequency.value = frequency;
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
@@ -1008,7 +1008,7 @@ async function playNotes(notes, durations, amplitude, notesFrequencies, tempo = 
 }
 
 function getNotes(note, intervals) {
-    var notes = [];
+    const notes = [];
     for (let i = 0; i < 12; i++) {
         if (intervals[i])
             notes.push((note + i) % 12);
@@ -1017,14 +1017,14 @@ function getNotes(note, intervals) {
 }
 
 function getFrequencies(notes, octave) {
-    var frequencies = [];
+    const frequencies = [];
     for (let i = 0; i < notes.length; i++)
         frequencies.push(FREQUENCIES[octave * 12 + notes[i]])
     return frequencies;
 }
 
 function getChord(rootNote, intervalArray, octave) {
-    chord = [];
+    const chord = [];
     for (let i = 0; i < 12; i++)
         if (intervalArray[i])
             chord.push(FREQUENCIES[rootNote + octave * 12 + i]);
@@ -1043,9 +1043,9 @@ function getChordProgression(scale) {
 }
 
 async function playChord(frequencyArray, amplitude, oscillators, durationFadeIn = 0.5) {
-    var gainNode = audioContext.createGain();
-    for (var i = 0; i < frequencyArray.length; i++) {
-        var oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    for (let i = 0; i < frequencyArray.length; i++) {
+        const oscillator = audioContext.createOscillator();
         oscillator.frequency.value = frequencyArray[i];
         oscillator.connect(gainNode);
         oscillator.start();
@@ -1116,8 +1116,8 @@ function getSequence(time, bars, tunes, sharps, chords, tunesDurations, sharpDur
     chords.length = 0;
     tunesDurations.length = 0;
     sharpDurations.length = 0;
-    var currentNote = 0;
-    var tunesDurationBar = [1000 * time];
+    let currentNote = 0;
+    let tunesDurationBar = [1000 * time];
     for (let i = 0; i < bars; i++) {
         currentNote = getNextNote(currentNote);
         mainChords.push(currentNote);
@@ -1137,7 +1137,6 @@ function getSequence(time, bars, tunes, sharps, chords, tunesDurations, sharpDur
         for (let j = 1; j < tunesDurationBar.length; j++)
             tunesTones.push(getNextNote(currentNote));
         tunes.push(tunesTones);
-//        console.log(currentNote, sharpTones, sharpDurationBar, tunesTones, tunesDurationBar);
     }
 }
 
@@ -1167,7 +1166,7 @@ function initializeCanvasText(canvas, horizontal = "center", font = "28px JetBra
 }
 
 function initializeCanvas(canvasID, height, width = WIDTH) {
-    var canvasObject = document.getElementById(canvasID).getContext("2d");
+    const canvasObject = document.getElementById(canvasID).getContext("2d");
     canvasObject.canvas.width = width;
     canvasObject.canvas.height = height;
     return canvasObject;
