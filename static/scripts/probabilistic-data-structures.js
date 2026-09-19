@@ -79,7 +79,7 @@ for (let i = 0; i < bfArrayCompareGridsYOffsets.length; i++) {
     bfCanvasCompare.fillText(bfArrayCompareNumbers[i], bfArrayCompareNumberXOffsets[i], 25);
     if (i === 2) bfCanvasCompare.font = "16px JetBrains Mono";
     for (let j = 0; j < 32; j++)
-        bfCanvasCompare.fillText(j + bfArrayCompareIndexOffsets[i], j * 38 + 24, bfArrayCompareGridsYOffsets[i] + 55);
+        bfCanvasCompare.fillText(j + bfArrayCompareIndexOffsets[i], j * 38 + 24, bfArrayCompareGridsYOffsets[i] + 56);
 }
 bfCanvasCompare.font = "28px JetBrains Mono";
 bfCanvasCompare.fillText("...", 630, 334);
@@ -152,7 +152,7 @@ const bfCanvasSaturated = initializeCanvas("bfCanvasSaturated", 320);
 const bfButtonSaturatedQuery = document.getElementById("bfButtonSaturatedQuery");
 bfButtonSaturatedQuery.onclick = async() => {
     await BFMSHelper(bfArraySaturated, bloomFilterQuery, "bfInputSaturatedQuery", "bfOutputSaturatedHash", "bfOutputSaturatedMessage", 3, "", true, bfCanvasSaturated);
-    document.getElementById("bfOutputMultipleMessage").innerHTML = "<b>Element found</b>.";
+    document.getElementById("bfOutputSaturatedMessage").innerHTML = "<b>Element found</b>.";
     drawGridBlocks(bfCanvasSaturated, bfArraySaturated);
 }
 drawGridBlocks(bfCanvasSaturated, bfArraySaturated);
@@ -184,11 +184,11 @@ const bfCanvasCounting = initializeCanvas("bfCanvasCounting", 320);
 const bfButtonCountingAdd = document.getElementById("bfButtonCountingAdd");
 const bfButtonCountingQuery = document.getElementById("bfButtonCountingQuery");
 bfButtonCountingAdd.onclick = async() => {
-    await BFMSHelper(bfArrayCounting, bloomFilterAdd, "bfInputCountingAdd", "bfOutputCountingHash", "bfOutputCountingMessage", 3);
+    await BFMSHelper(bfArrayCounting, bloomFilterAdd, "bfInputCounting", "bfOutputCountingHash", "bfOutputCountingMessage", 3);
     drawGridBlocks(bfCanvasCounting, bfArrayCounting);
 };
 bfButtonCountingQuery.onclick = async() => {
-    const varCountingFound = await BFMSHelper(bfArrayCounting, bloomFilterQuery, "bfInputCountingQuery", "bfOutputCountingHash", "bfOutputCountingMessage", 3, "", true, bfCanvasCounting);
+    const varCountingFound = await BFMSHelper(bfArrayCounting, bloomFilterQuery, "bfInputCounting", "bfOutputCountingHash", "bfOutputCountingMessage", 3, "", true, bfCanvasCounting);
     document.getElementById("bfOutputCountingMessage").innerHTML = varCountingFound ? "<b>Element found</b>." : "Element not found.";
     drawGridBlocks(bfCanvasCounting, bfArrayCounting);
 }
@@ -218,17 +218,17 @@ const cmsCanvasComparison = initializeCanvas("cmsCanvasComparison", 650);
 const cmsButtonComparisonAdd = document.getElementById("cmsButtonComparisonAdd");
 const cmsButtonComparisonQuery = document.getElementById("cmsButtonComparisonQuery");
 cmsButtonComparisonAdd.onclick = async() => {
-    await BFMSHelper(cmsArrayComparison, bloomFilterAdd, "cmsInputComparisonAdd", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3);
+    await BFMSHelper(cmsArrayComparison, bloomFilterAdd, "cmsInputComparison", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3);
     cmsCanvasComparison.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
     drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
     drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
 };
 cmsButtonComparisonQuery.onclick = async() => {
-    const varComparisonFound = await BFMSHelper(cmsArrayComparison, bloomFilterQuery, "cmsInputComparisonAdd", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison);
+    const varComparisonFound = await BFMSHelper(cmsArrayComparison, bloomFilterQuery, "cmsInputComparison", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison);
     drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
     drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
     document.getElementById("cmsOutputComparisonMessage").innerHTML = varComparisonFound ? "<b>Element found</b>." : "Element not found.";
-    const frequency = await BFMSHelper(cmsArrayComparison, bloomFilterCountQuery, "cmsInputComparisonAdd", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison, COLORS.BLUE, 341);
+    const frequency = await BFMSHelper(cmsArrayComparison, bloomFilterCountQuery, "cmsInputComparison", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison, COLORS.BLUE, 341);
     document.getElementById("cmsOutputComparisonMessage").innerHTML = varComparisonFound ? "<b>Element found</b>." : "Element not found.";
     document.getElementById("cmsOutputComparisonValues").innerHTML = frequency;
     cmsCanvasComparison.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
@@ -244,12 +244,12 @@ const cmsCanvasMain = initializeCanvas("cmsCanvasMain", 320);
 const cmsButtonMainAdd = document.getElementById("cmsButtonMainAdd");
 const cmsButtonMainQuery = document.getElementById("cmsButtonMainQuery");
 cmsButtonMainAdd.onclick = async() => {
-    await BFMSHelper(cmsArrayMain, bloomFilterAdd, "cmsInputMainAdd", "cmsOutputMainHash", "cmsOutputMainMessage", 3);
+    await BFMSHelper(cmsArrayMain, bloomFilterAdd, "cmsInputMain", "cmsOutputMainHash", "cmsOutputMainMessage", 3);
     cmsCanvasMain.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
     drawBitsAll(cmsCanvasMain, cmsArrayMain);
 };
 cmsButtonMainQuery.onclick = async() => {
-    const frequency = await BFMSHelper(cmsArrayMain, bloomFilterCountQuery, "cmsInputMainQuery", "cmsOutputMainHash", "cmsOutputMainMessage", 3, "", true, cmsCanvasMain);
+    const frequency = await BFMSHelper(cmsArrayMain, bloomFilterCountQuery, "cmsInputMain", "cmsOutputMainHash", "cmsOutputMainMessage", 3, "", true, cmsCanvasMain);
     document.getElementById("cmsOutputMainValues").innerHTML = frequency;
     document.getElementById("cmsOutputMainEstimate").innerHTML = Math.min(...frequency);
     cmsCanvasMain.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
@@ -268,7 +268,7 @@ cmsInputComparisonErrorsSlider.addEventListener("change", function() {
     cmsOutputComparisonErrorsHashDepth.innerHTML = cmsVarComparisonErrorsHashDepth;
 });
 cmsButtonComparisonErrorsAdd.onclick = async() => {
-    await BFMSHelper(cmsArrayComparisonErrors, bloomFilterAdd, "cmsInputComparisonErrorsAdd", "cmsOutputComparisonErrorsHash", "cmsOutputComparisonErrorsMessage", cmsVarComparisonErrorsHashDepth);
+    await BFMSHelper(cmsArrayComparisonErrors, bloomFilterAdd, "cmsInputComparisonErrors", "cmsOutputComparisonErrorsHash", "cmsOutputComparisonErrorsMessage", cmsVarComparisonErrorsHashDepth);
     cmsCanvasComparisonErrors.clearRect(0, 0, WIDTH, cmsCanvasComparisonErrors.canvas.height)
     drawGridBlocks(cmsCanvasComparisonErrors, cmsArrayComparisonErrors);
     drawBitsAll(cmsCanvasComparisonErrors, cmsArrayComparisonErrors, COLORS.FG, 341);
@@ -303,12 +303,12 @@ const cmsCanvasSketch = initializeCanvas("cmsCanvasSketch", 320);
 const cmsButtonSketchAdd = document.getElementById("cmsButtonSketchAdd");
 const cmsButtonSketchQuery = document.getElementById("cmsButtonSketchQuery");
 cmsButtonSketchAdd.onclick = async() => {
-    await BFMSHelper(cmsArraySketch, countSketchAdd, "cmsInputSketchAdd", "cmsOutputSketchHash", "cmsOutputSketchMessage", 8);
+    await BFMSHelper(cmsArraySketch, countSketchAdd, "cmsInputSketch", "cmsOutputSketchHash", "cmsOutputSketchMessage", 8);
     cmsCanvasSketch.clearRect(0, 0, WIDTH, cmsCanvasSketch.canvas.height);
     drawBitsAll(cmsCanvasSketch, cmsArraySketch);
 }
 cmsButtonSketchQuery.onclick = async() => {
-    const frequency = await BFMSHelper(cmsArraySketch, countSketchQuery, "cmsInputSketchQuery", "cmsOutputSketchHash", "cmsOutputSketchMessage", 8, "", true, cmsCanvasSketch);
+    const frequency = await BFMSHelper(cmsArraySketch, countSketchQuery, "cmsInputSketch", "cmsOutputSketchHash", "cmsOutputSketchMessage", 8, "", true, cmsCanvasSketch);
     document.getElementById("cmsOutputSketchValues").innerHTML = frequency;
     document.getElementById("cmsOutputSketchEstimate").innerHTML = Math.min(...frequency);
     cmsCanvasSketch.clearRect(0, 0, WIDTH, cmsCanvasSketch.canvas.height);
@@ -478,11 +478,13 @@ hllButtonMainRandom.onclick = async() => {
     await HLLHelper(hllVarMainZerosMax, hllVarMainEstimates, hllSetMainSet, hllCanvasMain, "hllInputMainAdd", "hllOutputMainZeros", "hllOutputMainZerosMax", "hllOutputMainEstimates", "hllOutputMainCardinality", "hllOutputMainNumber", "hllOutputMainMean", "hllOutputMainScaled");
 }
 hllButtonMainRandomK.onclick = async() => {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 99; i++) {
         const randomString = generateRandomString(10);
         hllSetMainSet.add(randomString);
         hllAdd(randomString, hllVarMainZerosMax, MAX_CELL_SUBS);
     }
+    const randomString = generateRandomString(10);
+    document.getElementById("hllInputMainAdd").value = randomString;
     await HLLHelper(hllVarMainZerosMax, hllVarMainEstimates, hllSetMainSet, hllCanvasMain, "hllInputMainAdd", "hllOutputMainZeros", "hllOutputMainZerosMax", "hllOutputMainEstimates", "hllOutputMainCardinality", "hllOutputMainNumber", "hllOutputMainMean", "hllOutputMainScaled");
 }
 hllButtonMainReset.onclick = function() {
@@ -612,7 +614,7 @@ function drawCoins(canvas, number, coins = 8, radius = 70, colorFG = COLORS.FG, 
     canvas.lineWidth = lineWidth;
     const y = height / 2;
     for (i = 0; i < coins; i++) {
-        var x = (i* width / coins) + (width / (2 * coins));
+        const x = (i* width / coins) + (width / (2 * coins));
         canvas.beginPath();
         canvas.arc(x, y, radius, 0, Math.PI * 2);
         if (((number >> i) & 1) === 0) {
@@ -674,7 +676,6 @@ async function HLLHelper(buckets, estimates, hllSet, canvas, inputElementID, out
     const bucketBits = Math.floor(Math.log2(buckets.length));
     const hash = await hllAdd(inputText, buckets, bucketBits)
     const bucket = getBucket(hash, bucketBits);
-    console.log(hash, bucket);
     const cardinality = hllQuery(buckets, estimates);
     document.getElementById(outputZerosID).innerHTML = countZeros(hash, 32, bucketBits);
     document.getElementById(outputZerosMaxID).innerHTML = buckets.join(", ");
@@ -832,9 +833,9 @@ function bloomFilterCountQuery(hash, bitArray, hashDepth = 1) {
 
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    var result = '';
+    let result = '';
     for (let i = 0; i < length; i++) {
-        var index = Math.floor(Math.random() * characters.length);
+        const index = Math.floor(Math.random() * characters.length);
         result += characters[index];
     }
     return result;
@@ -862,7 +863,7 @@ function initializeSliders(sliderID, minimum, maximum, step, value) {
 }
 
 function initializeCanvas(canvasID, height, width = WIDTH) {
-    var canvasObject = document.getElementById(canvasID).getContext("2d");
+    const canvasObject = document.getElementById(canvasID).getContext("2d");
     canvasObject.canvas.width = width;
     canvasObject.canvas.height = height;
     return canvasObject;
