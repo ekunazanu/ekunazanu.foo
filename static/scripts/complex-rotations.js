@@ -19,6 +19,7 @@ drawLine(canvasNumberlineMap, 571, 120, 435, 261);
 drawLine(canvasNumberlineMap, 501, 120, 301, 261);
 drawLine(canvasNumberlineMap, 711, 120, 711, 261);
 drawLine(canvasNumberlineMap, 781, 120, 841, 261);
+canvasNumberlineMap.stroke();
 canvasNumberlineMap.fillText("f(x)", 750, 200);
 
 
@@ -171,7 +172,7 @@ canvasNumberlineImaginary.fillText("Imaginary Number Line", 1270, 221);
 
 
 const canvasNumberlinesTransform = initializeCanvas("canvasNumberlinesTransform", 370);
-const sliderTransformAddR = initializeSliders("sliderTransformAddR", -8, 8, 0.05, 0);
+const sliderTransformAddR = initializeSliders("sliderTransformAddR", -8, 8, 0.05, 3);
 const sliderTransformAddI = initializeSliders("sliderTransformAddI", -8, 8, 0.05, 0);
 const sliderTransformMultiplyR = initializeSliders("sliderTransformMultiplyR", -2, 2, 0.05, 1);
 const buttonTransformMultiplyI = document.getElementById("buttonTransformMultiplyI");
@@ -322,7 +323,7 @@ async function updatePlaneComplexNegOneMultiplyImg() {
         sliderPlaneComplexNegOneR.value = sliderPlaneComplexNegOneI.value * -1;
         sliderPlaneComplexNegOneI.value = temp_X;
         updatePlaneComplexNegOne();
-        await new Promise(resolve => setTimeout(resolve, 700));
+        await new Promise(resolve => setTimeout(resolve, 300));
     }
 }
 updatePlaneComplexNegOne();

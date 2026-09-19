@@ -30,7 +30,7 @@ Consider addition: If a point or number is taken, and an addend `d` is added to 
 <input id="sliderAdd" type="range"> `d`: <span id="spanNumberlineAdd">0.00</span>
 
 {% <tangent summary="Transforming number lines" open={true}> %}
-The numbers on the transformed number line (below) is the result of the addition operation when `d` is added to the numbers on the old numbers line (above). A single point (zero) is highlighted to make it easier to keep track of how the new number line numbers above is transformed.
+The numbers on the transformed number line (below) is the result of the addition operation when `d` is added to the numbers on the old numbers line (above and below in gray). A single point (zero, in this case) is highlighted to make it easier to keep track of how the new number line numbers above is transformed.
 {% </tangent> %}
 
 Just as addition morphed the number line by shifting it, multiplication morphs the number by scaling, or **stretching** it — by the amount specified by the multiplier. Multiplication by a negative value stretches and also **flips** the number line around zero.
