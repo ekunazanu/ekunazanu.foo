@@ -15,6 +15,7 @@ Yes, updates are slowing shifting towards the end of the month, but I think it m
 One of those things is how a random uniform distribution changes when transformed by different operators. I made some simple visualizations to get a feel of how they transform the uniform distribution to something less uniform:
 
 <canvas id="canvasDistributions"></canvas>
+<button id="buttonDistributions"></button>
 
 The random numbers are sampled from a [uniform distribution](https://en.wikipedia.org/wiki/Continuous_uniform_distribution). They are equally likely to get small numbers, big numbers, and everything in between. The first square shows cells with just the random numbers — the uniform distribution. Adding random numbers to random numbers changes the uniform distribution to a one that approaches a [Gaussian distribution](https://en.wikipedia.org/wiki/Normal_distribution), because of [CLT](https://en.wikipedia.org/wiki/Central_limit_theorem) since the random numbers are [IID](https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables). For division, small denominators distort the distribution because probability for denominator P(X < x) scales linearly but quotients scales hyperbolically — so bigger numbers are disproportionately more unlikely. In multiplication too, the probability of the factors scale linearly, but products scale superlinearly, so the probability of products scales sublinearly. That is, bigger numbers are, again, disproportionately less likely.
 

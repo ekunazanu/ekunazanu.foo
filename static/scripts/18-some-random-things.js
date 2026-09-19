@@ -1,6 +1,6 @@
 const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const WIDTH = 1280
-const COLORS = darkMode ? getColorPalette(0.2, -0.3, 0.7, 0.8, 0.12, 0.8) : getColorPalette(0.7, -0.6, 0.7, 0.9, 0.05, 0.95);
+const COLORS = darkMode ? getColorPalette(0, 0, 0, 0.8, 0.08, 0.7) : getColorPalette(0.7, -0.6, 0.7, 0.9, 0.05, 0.95);
 const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
 
 const altRandomFunctions = {
@@ -15,11 +15,17 @@ const altRandomFunctions = {
     "Random % Random": () => Math.random() % Math.random(),
 };
 
-const canvasDistributions = initializeCanvas("canvasDistributions", 1530);
+const canvasDistributions = initializeCanvas("canvasDistributions", 1500);
+const buttomDistributions = document.getElementById("buttonDistributions");
 initializeCanvasText(canvasDistributions, COLOR_FG, "left");
 canvasDistributions.fillText("Normalized Values", 785, 25);
 drawColorBar(canvasDistributions);
 drawFunctionDistributions(canvasDistributions, altRandomFunctions);
+buttomDistributions.innerHTML = "Refresh Distribution";
+buttomDistributions.addEventListener("click", () => {
+    canvasDistributions.clearRect(0, 100, WIDTH, 1400);
+    drawFunctionDistributions(canvasDistributions, altRandomFunctions);
+});
 
 
 // functions
@@ -39,7 +45,7 @@ function drawFunctionDistributions(canvas, functions, x = 40, y = 40, size = 10,
         randomVals = Array.from({ length: y }, () => Array.from({ length: x }, funcFunction));
         normalizedVals = normalizeValues(randomVals);
         drawHeatmap(canvas, normalizedVals, x * size, y * size, xOffset, yOffset);
-        canvas.fillStyle = "#000";
+        canvas.fillStyle = COLOR_FG;
         canvas.fillText(funcName, xOffset, yOffset + y * size + 27);
     });
 }
