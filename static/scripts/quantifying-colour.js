@@ -902,7 +902,7 @@ updateChromaRGUndefined();
 const canvasChromaRGDefined = initializeCanvas("canvasChromaRGDefined", 600);
 function updateChromaRGDefined() {
     canvasChromaRGDefined.clearRect(0, 0, WIDTH, 600);
-    drawSpaceChromaFill(canvasChromaRGDefined, arrayCHRMATRGB, PROJRGBMAT, COLORS.CYAN);
+    drawSpaceChromaFill(canvasChromaRGDefined, arrayCHRMATRGB, PROJRGBMAT);
     drawSpaceTriangle(canvasChromaRGDefined, 1, PROJRGBMAT, COLORS.FG, 0, true);
     drawSpaceSlice(canvasChromaRGDefined, 1, PROJRGBMAT, 2.1);
     drawSpaceAxes(canvasChromaRGDefined, PROJRGBMAT);
@@ -1143,9 +1143,9 @@ function updateLocusGamutMultiple() {
 const canvasHexDeconstruction = initializeCanvas("canvasHexDeconstruction", 250);
 drawLabels(canvasHexDeconstruction, ["A49D2F"], [[641, 130]], COLORS.FG, "192px JetBrains Mono");
 drawLabels(canvasHexDeconstruction, ["#"], [[250, 86]], COLORS.FG, "96px JetBrains Mono");
-drawLabels(canvasHexDeconstruction, ["10100100"], [[406, 221]], "#a00", "36px JetBrains Mono");
-drawLabels(canvasHexDeconstruction, ["10011101"], [[641, 221]], "#080", "36px JetBrains Mono");
-drawLabels(canvasHexDeconstruction, ["00101111"], [[876, 221]], "#00e", "36px JetBrains Mono");
+drawLabels(canvasHexDeconstruction, ["10100100"], [[406, 221]], "#c52", "36px JetBrains Mono");
+drawLabels(canvasHexDeconstruction, ["10011101"], [[641, 221]], "#3a6", "36px JetBrains Mono");
+drawLabels(canvasHexDeconstruction, ["00101111"], [[876, 221]], "#07f", "36px JetBrains Mono");
 
 
 const canvasBlackbodyColorSPD = initializeCanvas("canvasBlackbodyColorSPD", 300);
@@ -1536,7 +1536,7 @@ function drawSpaceChroma(canvas, diagram = CHRDIAGRAM, locus = arrayCHRMATXYZ, p
     canvas.restore();
 }
 
-function drawSpaceChromaFill(canvas, locus = arrayCHRMATRGB, projection = PROJMAT, color = "#fff") {
+function drawSpaceChromaFill(canvas, locus = arrayCHRMATRGB, projection = PROJMAT, color = COLORS.CYAN) {
     canvas.fillStyle = color;
     canvas.beginPath();
     canvas.moveTo(locus[0][0] * projection[0][0] + projection[0][3], locus[1][0] * projection[1][1] + projection[1][3])
