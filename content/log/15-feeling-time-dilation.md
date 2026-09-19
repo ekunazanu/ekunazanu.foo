@@ -12,6 +12,6 @@ thumbnailalt = "Doodle of clock representing a clown face."
 
 Time is flying by too quickly, no time for updates.
 
-![a doodle of a person running from a plane with clock hands as its propellers](/media/log/running-clock-plane.avif)
+{{ <picture src="/media/log/invertible.running-clock-plane.avif" alt="a doodle of a person running from a plane with clock hands as its propellers" /> }}
 
 Cya next month, or next week for an even shorter update.

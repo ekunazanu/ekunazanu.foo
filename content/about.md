@@ -11,7 +11,7 @@ thumbnailalt = "A doodle of a person waving."
 
 Hi! I am just another nerd on the internet. I like experimenting with stuff — mostly with computers and electronics. I also like math, movies, progressive rock, hiking, and coding for money. One of them is a lie.
 
-![doodle of frustrated person looking at their computer](/media/other/doodle-frustrated-looking-at-computer.avif)
+{{ <picture src="/media/other/invertible.doodle-frustrated-looking-at-computer.avif" alt="doodle of frustrated person looking at their computer" /> }}
 
 I also like doodling I guess.
 
@@ -19,7 +19,7 @@ This site started out as a way to keep weekly [logs](/log) of my ~~laziness~~ Co
 
 But the main reason this site exists is to trick people into thinking I'm smart.
 
-![doodle of person wearing sunglasses with more confused smileys inside his head](/media/other/doodle-fake-it-make-it.avif)
+{{ <picture src="/media/other/invertible.doodle-fake-it-make-it.avif" alt="doodle of person wearing sunglasses with more confused smileys inside his head" /> }}
 
 There's not much [more](/more) to this site. Or is there?
 

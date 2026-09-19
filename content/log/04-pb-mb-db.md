@@ -14,7 +14,7 @@ I didn't get much work done this week; I was busy with my filmmaking classes. I 
 
 Okay, maybe I was.
 
-![doodle of a person saying tomorrow for a week](/media/log/doodle-procrastinating.avif)
+{{ <picture src="/media/log/invertible.doodle-procrastinating.avif" alt="doodle of a person saying tomorrow for a week" /> }}
 
 But just because I did not code much does not mean I did not get anything done.
 
@@ -34,7 +34,7 @@ Now, multiplicity estimation uses exactly one mebibyte. Goal achieved. But as me
 
 The cardinality estimation is done via [HyperLogLog](/lab/probabilistic-data-structures#HyperLogLog) with 97.7% accuracy. The top items are stored on a min-heap, using the count-min sketch and principles from [Misra–Gries summaries](https://en.wikipedia.org/wiki/Misra%E2%80%93Gries_summary) for selection of elements. I am estimating ranks using a custom data structure loosely based on t-digest. Elements are selected at random, and their multiplicities are sorted and stored to create a simple distribution sketch. The rank is then calculated using cardinality estimates from HyperLogLog and by interpolating between the values from the distribution sketch. I am not good at math to prove guarantees for error bounds, but I will try tweaking it to get at least 98% accuracy.
 
-![a distribution sketch estimated using hyperloglog, count-min sketch and arrays of random estimates](/media/log/hll-rank.avif)
+{{ <picture src="/media/log/invertible.hll-rank.avif" alt="a distribution sketch estimated using hyperloglog, count-min sketch and arrays of random estimates" /> }}
 
 This brings the total size of the 'database' to 1054720 bytes — 1.01MB. Sweet. Can I add more features? Yes. Will feature creep set in? Very likely. So no features. It is not because I am lazy. I am very much not. Really.
 

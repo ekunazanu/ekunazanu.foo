@@ -18,7 +18,7 @@ Except I did not get that much done.
 
 This week went by just as fast as the jets. My dorm is right behind the airbase — all I did was watch the F-35s and Su-57s perform a lot of insane maneuvers. As well as watch other planes fly in formation. The amount of precision required to pull it off — both for the pilots and the engineering team — it felt unreal at times.
 
-![doodle of jet planes flying in formation](/media/log/formation-flying.avif)
+{{ <picture src="/media/log/invertible.formation-flying.avif" alt="doodle of jet planes flying in formation" /> }}
 
 Anyway, I wrote simple implementations for HLL and CMS in Go yesterday. I ran some very basic tests and the accuracy was pretty much as expected. Now I need to write working implementations to store the distribution sketch the top-k elements as well, and then find a way to connect it to the internet.
 

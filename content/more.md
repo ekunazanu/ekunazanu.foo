@@ -40,7 +40,7 @@ Most of the content on [lab](/lab) is influenced by the content I consume. Not a
 
 I would recommend checking them out.
 
-![doodle of a person holding a gun and threatening someone by yelling at them to do it](/media/other/doodle-threaten-gun.avif)
+{{ <picture src="/media/other/invertible.doodle-threaten-gun.avif" alt="doodle of a person holding a gun and threatening someone by yelling at them to do it" /> }}
 
 ## Legal
 
@@ -66,6 +66,6 @@ Put another way, you can use the stuff I created anyway you like — just don't 
 
 I'm surprised you clicked on this page in the first place, and decided to read through the legal section. There is a real possibility you might be a nerd. Anyway, I don't think there is much more to add that is apt for this page. Even if there is, I've reached the end of my thinking capacity.
 
-![doodle of person shooing off someone away](/media/other/doodle-shoo.avif)
+{{ <picture src="/media/other/invertible.doodle-shoo.avif" alt="doodle of person shooing off someone away" /> }}
 
 Go on then, go away. Read some [interesting stuff](/lab) instead of this boring text.

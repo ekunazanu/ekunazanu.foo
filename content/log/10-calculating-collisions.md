@@ -12,7 +12,7 @@ thumbnailalt = "Doodle of the DVD square and its trajectory."
 
 I had my midterm exams this entire week, so naturally I ended up wasting a lot of time on YouTube. Something interesting happens during exams — I procrastinate more and do everything except study, even productive things. Human psychology I guess. And I know I am not the only one; I know full well that all of my friends share the exact same laissez faire attitude during exam season. Or maybe it's true that birds of a feather flock together.
 
-![doodle of friends agreeing to play cricket before exams](/media/log/exam-cricket.avif)
+{{ <picture src="/media/log/invertible.exam-cricket.avif" alt="doodle of friends agreeing to play cricket before exams" /> }}
 
 I was binge-watching clips of The Office, and came across the scene where [everyone is eagerly waiting for a DVD logo to hit a corner](https://www.youtube.com/watch?v=QOtuX0jL85Y). And that made me curious — how many collisions does it actually take? So I quickly wrote a basic function to count the number of collisions for some initial coordinates and some given aspect ratio for the bounding box. I added two more lines of code to visualize the collisions as well. And got this:
 
@@ -27,7 +27,7 @@ Designing the function for collisions made it obvious why it has to be that way:
 
 As for other things, The Plan™ got derailed. Of course, it did. But to be fair, I did have my midterms all week. And while I did procrastinate a lot, I did learn other things — mostly about rotary positional embeddings. This [post here](https://blog.eleuther.ai/rotary-embeddings/) explains it pretty well. Anyhow, I'll try to start The Plan™ this week. For real. <small>(If the lab exams don't ruin my schedule.)</small>
 
-![doodle of a person asking others to trust them](/media/log/trust-me-bro.avif)
+{{ <picture src="/media/log/invertible.trust-me-bro.avif" alt="doodle of a person asking others to trust them" /> }}
 
 Cya next week.
 

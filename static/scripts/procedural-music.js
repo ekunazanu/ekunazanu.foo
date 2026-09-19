@@ -1,6 +1,9 @@
 // primary audiocontext node
 const audioContext = new AudioContext();
 
+const WIDTH = 1280;
+const COLORS = getColors();
+
 // scale interval table to construct sequences
 const INTERVALS = {
     "chromatic": [true, true, true, true, true, true, true, true, true, true, true, true, true],
@@ -50,176 +53,30 @@ const FREQUENCIES = [55, 58.2, 61.7, 65.4, 69.2, 73.4, 77.7, 82.4, 87.3, 92.4, 9
 
 const nextNoteTransitionProbability = [0.15, 0.12, 0.13, 0.12, 0.20, 0.20, 0.08];
 
-// initlaize canvas objects and set dimensions
-const canvasWidth = 1280;
-const canvasWaveOne = document.getElementById("canvasWaveOne").getContext("2d");
-const canvasWaveTwo = document.getElementById("canvasWaveTwo").getContext("2d");
-const canvasIntervalRatioWaves = document.getElementById("canvasIntervalRatioWaves").getContext("2d");
-const canvasJustIntonation = document.getElementById("canvasJustIntonation").getContext("2d");
-const canvasJustIntonationAlt = document.getElementById("canvasJustIntonationAlt").getContext("2d");
-const canvasEqualTemperament = document.getElementById("canvasEqualTemperament").getContext("2d");
-const canvasNotesOneOctave = document.getElementById("canvasNotesOneOctave").getContext("2d");
-const canvasNotesAllOctaves = document.getElementById("canvasNotesAllOctaves").getContext("2d");
-const canvasScales = document.getElementById("canvasScales").getContext("2d");
-const canvasChords = document.getElementById("canvasChords").getContext("2d");
-const canvasDynamics = document.getElementById("canvasDynamics").getContext("2d");
-const canvasBeats = document.getElementById("canvasBeats").getContext("2d");
-const canvasTimeSignature = document.getElementById("canvasTimeSignature").getContext("2d");
-const canvasTempo = document.getElementById("canvasTempo").getContext("2d");
-const canvasTransitionRhythm = document.getElementById("canvasTransitionRhythm").getContext("2d");
-const canvasMarkovRhythm = document.getElementById("canvasMarkovRhythm").getContext("2d");
-const canvasMarkovIntervals = document.getElementById("canvasMarkovIntervals").getContext("2d");
-const canvasMain = document.getElementById("canvasMain").getContext("2d");
-canvasWaveOne.canvas.width = canvasWidth;
-canvasWaveOne.canvas.height = 200;
-canvasWaveTwo.canvas.width = canvasWidth;
-canvasWaveTwo.canvas.height = 200;
-canvasIntervalRatioWaves.canvas.width = canvasWidth;
-canvasIntervalRatioWaves.canvas.height = 640;
-canvasJustIntonation.canvas.width = canvasWidth;
-canvasJustIntonation.canvas.height = 350;
-canvasNotesOneOctave.canvas.width = canvasWidth;
-canvasNotesOneOctave.canvas.height = 360;
-canvasJustIntonationAlt.canvas.width = canvasWidth;
-canvasJustIntonationAlt.canvas.height = 490;
-canvasEqualTemperament.canvas.width = canvasWidth;
-canvasEqualTemperament.canvas.height = 490;
-canvasNotesAllOctaves.canvas.width = canvasWidth;
-canvasNotesAllOctaves.canvas.height = 410;
-canvasScales.canvas.width = canvasWidth;
-canvasScales.canvas.height = 160;
-canvasChords.canvas.width = canvasWidth;
-canvasChords.canvas.height = 135;
-canvasDynamics.canvas.width = canvasWidth;
-canvasDynamics.canvas.height = 200;
-canvasBeats.canvas.width = canvasWidth;
-canvasBeats.canvas.height = 100;
-canvasTimeSignature.canvas.width = canvasWidth;
-canvasTimeSignature.canvas.height = 100;
-canvasTempo.canvas.width = canvasWidth;
-canvasTempo.canvas.height = 100;
-canvasMain.canvas.width = canvasWidth;
-canvasMain.canvas.height = 414;
-canvasTransitionRhythm.canvas.width = canvasWidth;
-canvasTransitionRhythm.canvas.height = 140;
-canvasMarkovRhythm.canvas.width = canvasWidth;
-canvasMarkovRhythm.canvas.height = 250;
-canvasMarkovIntervals.canvas.width = canvasWidth;
-canvasMarkovIntervals.canvas.height = 440;
 
-// initialize, draw, and play sounds - first two canvases
-const playButtonWaveOne = document.getElementById("playButtonWaveOne");
+let isPlayingWaveOne = false;
+const canvasWaveOne = initializeCanvas("canvasWaveOne", 200);
 const frequencySliderWaveOne = document.getElementById("frequencySliderWaveOne");
 const amplitudeSliderWaveOne = document.getElementById("amplitudeSliderWaveOne");
-const playButtonWaveTwo = document.getElementById("playButtonWaveTwo");
-const frequencySliderWaveTwoA = document.getElementById("frequencySliderWaveTwoA");
-const amplitudeSliderWaveTwoA = document.getElementById("amplitudeSliderWaveTwoA");
-const frequencySliderWaveTwoB = document.getElementById("frequencySliderWaveTwoB");
-const amplitudeSliderWaveTwoB = document.getElementById("amplitudeSliderWaveTwoB");
-const switchFrequencyDouble = document.getElementById("switchFrequencyDouble");
-const switchFrequencyOneHalf = document.getElementById("switchFrequencyOneHalf");
-const switchFrequency21 = document.getElementById("switchFrequency21");
-const switchFrequency32 = document.getElementById("switchFrequency32");
-const switchFrequency43 = document.getElementById("switchFrequency43");
-const switchFrequency54 = document.getElementById("switchFrequency54");
-const switchFrequency1615 = document.getElementById("switchFrequency1615");
+const playButtonWaveOne = document.getElementById("playButtonWaveOne");
 intializeSliders(frequencySliderWaveOne, 50, 5000, 10, 440);
 intializeSliders(amplitudeSliderWaveOne, 0, 1, 0.01, 0.5);
-intializeSliders(frequencySliderWaveTwoA, 50, 5000, 10, 440);
-intializeSliders(amplitudeSliderWaveTwoA, 0, 1, 0.01, 0.5);
-intializeSliders(frequencySliderWaveTwoB, 50, 5000, 10, 1000);
-intializeSliders(amplitudeSliderWaveTwoB, 0, 1, 0.01, 0.5);
-var isPlayingWaveOne = false;
-var isPlayingWaveTwo = false;
 frequencySliderWaveOne.addEventListener("input", function() {
-    canvasWaveOne.clearRect(0, 0, canvasWidth, 200);
+    canvasWaveOne.clearRect(0, 0, WIDTH, 200);
     drawWave(canvasWaveOne, frequencySliderWaveOne.value, amplitudeSliderWaveOne.value);
     oscillatorNodeWaveOne.frequency.setValueAtTime(frequencySliderWaveOne.value, audioContext.currentTime);
 });
 amplitudeSliderWaveOne.addEventListener("input", function() {
-    canvasWaveOne.clearRect(0, 0, canvasWidth, 200);
+    canvasWaveOne.clearRect(0, 0, WIDTH, 200);
     drawWave(canvasWaveOne, frequencySliderWaveOne.value, amplitudeSliderWaveOne.value);
     gainNodeWaveOne.gain.setValueAtTime(amplitudeSliderWaveOne.value, audioContext.currentTime);
-});
-frequencySliderWaveTwoA.addEventListener("input", function() {
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoA.frequency.setValueAtTime(frequencySliderWaveTwoA.value, audioContext.currentTime);
-});
-amplitudeSliderWaveTwoA.addEventListener("input", function() {
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    gainNodeWaveTwoA.gain.setValueAtTime(amplitudeSliderWaveTwoA.value, audioContext.currentTime);
-});
-frequencySliderWaveTwoB.addEventListener("input", function() {
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
-});
-amplitudeSliderWaveTwoB.addEventListener("input", function() {
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    gainNodeWaveTwoB.gain.setValueAtTime(amplitudeSliderWaveTwoB.value, audioContext.currentTime);
-});
-switchFrequencyDouble.addEventListener("click", function() {
-    frequencySliderWaveTwoB.value = 2 * frequencySliderWaveTwoA.value;
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
-});
-switchFrequencyOneHalf.addEventListener("click", function() {
-    frequencySliderWaveTwoB.value = 1.5 * frequencySliderWaveTwoA.value;
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
-});
-switchFrequency21.addEventListener("click", function() {
-    frequencySliderWaveTwoB.value = 2 * frequencySliderWaveTwoA.value;
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
-});
-switchFrequency32.addEventListener("click", function() {
-    frequencySliderWaveTwoB.value = 1.5 * frequencySliderWaveTwoA.value;
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
-});
-switchFrequency43.addEventListener("click", function() {
-    frequencySliderWaveTwoB.value = 1.3333 * frequencySliderWaveTwoA.value;
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
-});
-switchFrequency54.addEventListener("click", function() {
-    frequencySliderWaveTwoB.value = 1.25 * frequencySliderWaveTwoA.value;
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
-});
-switchFrequency1615.addEventListener("click", function() {
-    frequencySliderWaveTwoB.value = 1.0666 * frequencySliderWaveTwoA.value;
-    canvasWaveTwo.clearRect(0, 0, canvasWidth, 200);
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
-    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
-    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
 });
 playButtonWaveOne.addEventListener("click", function() {
     if (!isPlayingWaveOne) {
         isPlayingWaveOne = true;
         playButtonWaveOne.innerHTML = "Stop sound";
-        oscillatorNodeWaveOne = audioContext.createOscillator();    // converting to a function saves some lines
-        oscillatorNodeWaveOne.type = "sine";                        // but the function is even even uglier using eval()
+        oscillatorNodeWaveOne = audioContext.createOscillator();
+        oscillatorNodeWaveOne.type = "sine";
         oscillatorNodeWaveOne.frequency.value = frequencySliderWaveOne.value;
         gainNodeWaveOne = audioContext.createGain();
         gainNodeWaveOne.gain.value = amplitudeSliderWaveOne.value;
@@ -234,6 +91,100 @@ playButtonWaveOne.addEventListener("click", function() {
         oscillatorNodeWaveOne.disconnect(gainNodeWaveOne);
         gainNodeWaveOne.disconnect(audioContext.destination);
     }
+});
+drawWave(canvasWaveOne, frequencySliderWaveOne.value, amplitudeSliderWaveOne.value);
+
+
+let isPlayingWaveTwo = false;
+const canvasWaveTwo = initializeCanvas("canvasWaveTwo", 200);
+const frequencySliderWaveTwoA = document.getElementById("frequencySliderWaveTwoA");
+const amplitudeSliderWaveTwoA = document.getElementById("amplitudeSliderWaveTwoA");
+const frequencySliderWaveTwoB = document.getElementById("frequencySliderWaveTwoB");
+const amplitudeSliderWaveTwoB = document.getElementById("amplitudeSliderWaveTwoB");
+const switchFrequencyDouble = document.getElementById("switchFrequencyDouble");
+const switchFrequencyOneHalf = document.getElementById("switchFrequencyOneHalf");
+const switchFrequency21 = document.getElementById("switchFrequency21");
+const switchFrequency32 = document.getElementById("switchFrequency32");
+const switchFrequency43 = document.getElementById("switchFrequency43");
+const switchFrequency54 = document.getElementById("switchFrequency54");
+const switchFrequency1615 = document.getElementById("switchFrequency1615");
+const playButtonWaveTwo = document.getElementById("playButtonWaveTwo");
+intializeSliders(frequencySliderWaveTwoA, 50, 5000, 10, 440);
+intializeSliders(amplitudeSliderWaveTwoA, 0, 1, 0.01, 0.5);
+intializeSliders(frequencySliderWaveTwoB, 50, 5000, 10, 1000);
+intializeSliders(amplitudeSliderWaveTwoB, 0, 1, 0.01, 0.5);
+frequencySliderWaveTwoA.addEventListener("input", function() {
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoA.frequency.setValueAtTime(frequencySliderWaveTwoA.value, audioContext.currentTime);
+});
+amplitudeSliderWaveTwoA.addEventListener("input", function() {
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    gainNodeWaveTwoA.gain.setValueAtTime(amplitudeSliderWaveTwoA.value, audioContext.currentTime);
+});
+frequencySliderWaveTwoB.addEventListener("input", function() {
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+amplitudeSliderWaveTwoB.addEventListener("input", function() {
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    gainNodeWaveTwoB.gain.setValueAtTime(amplitudeSliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequencyDouble.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 2 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequencyOneHalf.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.5 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency21.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 2 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency32.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.5 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency43.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.3333 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency54.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.25 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
+});
+switchFrequency1615.addEventListener("click", function() {
+    frequencySliderWaveTwoB.value = 1.0666 * frequencySliderWaveTwoA.value;
+    canvasWaveTwo.clearRect(0, 0, WIDTH, 200);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
+    drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
+    oscillatorNodeWaveTwoB.frequency.setValueAtTime(frequencySliderWaveTwoB.value, audioContext.currentTime);
 });
 playButtonWaveTwo.addEventListener("click", function() {
     if (!isPlayingWaveTwo) {
@@ -267,25 +218,41 @@ playButtonWaveTwo.addEventListener("click", function() {
         gainNodeWaveTwoB.disconnect(audioContext.destination);
     }
 });
-drawWave(canvasWaveOne, frequencySliderWaveOne.value, amplitudeSliderWaveOne.value);
-drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, "#999");
+drawWave(canvasWaveTwo, frequencySliderWaveTwoA.value, amplitudeSliderWaveTwoA.value, COLORS.GRAY);
 drawWave(canvasWaveTwo, frequencySliderWaveTwoB.value, amplitudeSliderWaveTwoB.value);
 
-// draw wave ratios
+
 const rowsWaveRatios = [81, 161, 241, 321, 401, 481, 561, 213, 427];
 const waveRatios = [1, 16/15, 9/8, 6/5, 5/4, 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8, 2/1];
-drawGrid(canvasIntervalRatioWaves, rowsWaveRatios, 98.46, 640, -49, "#ccc", "#ccc");
-for (let i = 0; i < 13; i++) {
-    drawWaveVertical(canvasIntervalRatioWaves, 600, 0.4, 49 + i * 98.46, "#999");
-    drawWaveVertical(canvasIntervalRatioWaves, 600 * waveRatios[i], 0.4, 49 + i * 98.46);
-}
+const canvasIntervalRatioWaves = initializeCanvas("canvasIntervalRatioWaves", 640);
+const canvasJustIntonation = initializeCanvas("canvasJustIntonation", 350);
+const canvasJustIntonationAlt = initializeCanvas("canvasJustIntonationAlt", 490);
+const canvasEqualTemperament = initializeCanvas("canvasEqualTemperament", 490);
+const canvasNotesOneOctave = initializeCanvas("canvasNotesOneOctave", 360);
+const canvasNotesAllOctaves = initializeCanvas("canvasNotesAllOctaves", 410);
+const canvasScales = initializeCanvas("canvasScales", 160);
+const canvasChords = initializeCanvas("canvasChords", 135);
+const canvasDynamics = initializeCanvas("canvasDynamics", 200);
+const canvasBeats = initializeCanvas("canvasBeats", 100);
+const canvasTimeSignature = initializeCanvas("canvasTimeSignature", 100);
+const canvasTempo = initializeCanvas("canvasTempo", 100);
+const canvasTransitionRhythm = initializeCanvas("canvasTransitionRhythm", 140);
+const canvasMarkovRhythm = initializeCanvas("canvasMarkovRhythm", 250);
+const canvasMarkovIntervals = initializeCanvas("canvasMarkovIntervals", 440);
+const canvasMain = initializeCanvas("canvasMain", 414);
+
 
 // draw just intonation canvas items
+drawGrid(canvasIntervalRatioWaves, rowsWaveRatios, 98.46, 640, -49, COLORS.GRAYL, COLORS.GRAYL);
+for (let i = 0; i < 13; i++) {
+    drawWaveVertical(canvasIntervalRatioWaves, 600, 0.4, 49 + i * 98.46, COLORS.GRAY);
+    drawWaveVertical(canvasIntervalRatioWaves, 600 * waveRatios[i], 0.4, 49 + i * 98.46);
+}
 drawCircles(canvasJustIntonation);
-canvasJustIntonation.strokeStyle = "#000";
+canvasJustIntonation.strokeStyle = COLORS.FG;
 canvasJustIntonation.lineWidth = 2;
 for (let i = 1; i <= 12; i++) {
-    let gap = canvasWidth / 13;
+    let gap = WIDTH / 13;
     canvasJustIntonation.moveTo(49, 101 + i * 12);
     canvasJustIntonation.lineTo(49, 175 + i * 12);
     canvasJustIntonation.lineTo(Math.floor(i * gap + 50), 175 + i * 12);
@@ -299,10 +266,10 @@ drawNotes(canvasJustIntonation, INTERVALS.chromatic, 0, NOTES.intervals, 51, 0, 
 
 // draw equal temperament canvas items - top half
 canvasJustIntonationAlt.drawImage(document.getElementById("canvasJustIntonation"), 0, 150);
-canvasJustIntonationAlt.strokeStyle = "#000";
+canvasJustIntonationAlt.strokeStyle = COLORS.FG;
 canvasJustIntonationAlt.lineWidth = 2;
 for (let i = 0; i < 4; i++) {
-    let gap = canvasWidth / 13;
+    let gap = WIDTH / 13;
     canvasJustIntonationAlt.moveTo(149, 145 - i * 12);
     canvasJustIntonationAlt.lineTo(149, 71 - i * 12);
     canvasJustIntonationAlt.lineTo(Math.floor(i * gap + 149), 71 - i * 12);
@@ -319,15 +286,9 @@ drawNotes(canvasJustIntonationAlt, INTERVALS.chromatic, 0, NOTES.ratiosJust, 301
 drawNotes(canvasJustIntonationAlt, INTERVALS.chromatic, 0, ["135:128", "9:8", "75:64"], 96, 200, 3);
 drawNotes(canvasEqualTemperament, INTERVALS.chromatic, 0, NOTES.ratiosEqual, 301, 100, 12, 12, "20px JetBrains Mono");
 drawNotes(canvasEqualTemperament, INTERVALS.chromatic, 0, ["2^1/12", "2^2/12", "2^3/12"], 95, 201, 3, 12, "20px JetBrains Mono");
-canvasJustIntonationAlt.textAlign = "right";
-canvasJustIntonationAlt.textBaseline = "middle";
-canvasJustIntonationAlt.fillStyle = "#000";
-canvasJustIntonationAlt.font = "24px JetBrains Mono";
+initializeCanvasText(canvasJustIntonationAlt, "right", "24px JetBrains Mono");
 canvasJustIntonationAlt.fillText("Just Intonation", 1250, 51);
-canvasEqualTemperament.textAlign = "right";
-canvasEqualTemperament.textBaseline = "middle";
-canvasEqualTemperament.fillStyle = "#000";
-canvasEqualTemperament.font = "24px JetBrains Mono";
+initializeCanvasText(canvasEqualTemperament, "right", "24px JetBrains Mono");
 canvasEqualTemperament.fillText("Equal Temperament", 1250, 51);
 
 // draw notes - one octave
@@ -337,14 +298,11 @@ drawNotes(canvasNotesOneOctave, INTERVALS.chromatic, 0, NOTES.frequencies, 15, 0
 
 // draw notes - all octaves
 drawCircles(canvasNotesAllOctaves, INTERVALS.chromatic, 80);
-drawCircles(canvasNotesAllOctaves, INTERVALS.chromatic, 301, 96, 5, 2, "#000", "#999", 1248, 15);
+drawCircles(canvasNotesAllOctaves, INTERVALS.chromatic, 301, 96, 5, 2, COLORS.FG, COLORS.GRAY, 1248, 15);
 drawNotes(canvasNotesAllOctaves, INTERVALS.chromatic, 0, NOTES.numbers, 81, 0, 13, 13);
 drawNotes(canvasNotesAllOctaves, INTERVALS.chromatic, 0, NOTES.frequencies, 15, 0, 13, 13);
-canvasJustIntonationAlt.textAlign = "center";
-canvasJustIntonationAlt.textBaseline = "middle";
-canvasJustIntonationAlt.fillStyle = "#000";
-canvasJustIntonationAlt.font = "24px JetBrains Mono";
-canvasNotesAllOctaves.strokeStyle = "#000";
+initializeCanvasText(canvasJustIntonationAlt, "center", "24px JetBrains Mono");
+canvasNotesAllOctaves.strokeStyle = COLORS.FG;
 canvasNotesAllOctaves.lineWidth = 2;
 for (let i = 0; i < 13; i++) {
     canvasNotesAllOctaves.moveTo(125 + i * 87, 145);
@@ -359,8 +317,8 @@ for (let i = 0; i <= 8; i++) {
 canvasNotesAllOctaves.stroke();
 
 // intialize canvas itmes for scales canvas
-var selectedScaleNote = 0;
-var selectedScaleInterval = "major";
+let selectedScaleNote = 0;
+let selectedScaleInterval = "major";
 drawNotes(canvasScales, INTERVALS.chromatic, 0, NOTES.intervals, 121, 0, 13, 13);
 const playScaleButton = document.getElementById("playScaleButton");
 const selectScaleNote = document.getElementById("selectScaleNote");
@@ -382,20 +340,20 @@ selectScaleInterval.value = selectedScaleInterval;
 drawCircles(canvasScales, INTERVALS[selectedScaleInterval]);
 drawNotes(canvasScales, INTERVALS[selectedScaleInterval], selectedScaleNote);
 selectScaleNote.addEventListener("change", (event) => {
-    canvasScales.clearRect(0, 0, canvasWidth, 100);
+    canvasScales.clearRect(0, 0, WIDTH, 100);
     selectedScaleNote = parseInt(selectScaleNote.value);
     selectedScaleInterval = selectScaleInterval.value;
     drawCircles(canvasScales, INTERVALS[selectedScaleInterval]);
     drawNotes(canvasScales, INTERVALS[selectedScaleInterval], selectedScaleNote);
 });
 selectScaleInterval.addEventListener("change", (event) => {
-    canvasScales.clearRect(0, 0, canvasWidth, 100);
+    canvasScales.clearRect(0, 0, WIDTH, 100);
     selectedScaleNote = parseInt(selectScaleNote.value);
     selectedScaleInterval = selectScaleInterval.value;
     drawCircles(canvasScales, INTERVALS[selectedScaleInterval]);
     drawNotes(canvasScales, INTERVALS[selectedScaleInterval], selectedScaleNote);
 });
-var isPlayingScale = false;
+let isPlayingScale = false;
 playScaleButton.addEventListener("click", async function() {
     if (!isPlayingScale) {
         isPlayingScale = true;
@@ -404,12 +362,12 @@ playScaleButton.addEventListener("click", async function() {
         playScaleButton.innerHTML = "Playing";
         for (let i = 0; i < 13; i++) {
             if (INTERVALS[selectedScaleInterval][i]) {
-                canvasScales.clearRect(0, 145, canvasWidth, 15);
+                canvasScales.clearRect(0, 145, WIDTH, 15);
                 drawTriangle(canvasScales, i * 98.46 + 49, 150);
                 await playNote(FREQUENCIES[selectedScaleNote + 36 + i], 0.5, 400, 400, 0.1);
             }
         }
-        canvasScales.clearRect(0, 145, canvasWidth, 25);
+        canvasScales.clearRect(0, 145, WIDTH, 25);
         isPlayingScale = false;
         playScaleButton.disabled = false;
         playScaleButton.style.pointerEvents = "auto"
@@ -418,8 +376,8 @@ playScaleButton.addEventListener("click", async function() {
 });
 
 // intialize canvas itmes for chords canvas
-var selectedChordNote = 0;
-var selectedChordInterval = "major";
+let selectedChordNote = 0;
+let selectedChordInterval = "major";
 drawNotes(canvasChords, INTERVALS.chromatic, 0, NOTES.intervals, 121, 0, 13, 13);
 const selectChordNote = document.getElementById("selectChordNote");
 NOTES.letters.forEach((element, index) => {
@@ -439,10 +397,10 @@ selectChordNote.value = selectedChordNote;
 selectChordInterval.value = selectedChordInterval;
 drawCircles(canvasChords, CHORDS[selectedChordInterval]);
 drawNotes(canvasChords, CHORDS[selectedChordInterval], selectedChordNote);
-var chordOscillators = [];
-var frequenciesChord = getChord(selectedChordNote, CHORDS[selectedChordInterval], 3);
+const chordOscillators = [];
+let frequenciesChord = getChord(selectedChordNote, CHORDS[selectedChordInterval], 3);
 selectChordNote.addEventListener("change", async function() {
-    canvasChords.clearRect(0, 0, canvasWidth, 100);
+    canvasChords.clearRect(0, 0, WIDTH, 100);
     selectedChordNote = parseInt(selectChordNote.value);
     selectedChordInterval = selectChordInterval.value;
     drawCircles(canvasChords, CHORDS[selectedChordInterval]);
@@ -454,7 +412,7 @@ selectChordNote.addEventListener("change", async function() {
     }
 });
 selectChordInterval.addEventListener("change", async function() {
-    canvasChords.clearRect(0, 0, canvasWidth, 100);
+    canvasChords.clearRect(0, 0, WIDTH, 100);
     selectedChordNote = parseInt(selectChordNote.value);
     selectedChordInterval = selectChordInterval.value;
     drawCircles(canvasChords, CHORDS[selectedChordInterval]);
@@ -465,7 +423,7 @@ selectChordInterval.addEventListener("change", async function() {
         gainNodeChord = await playChord(frequenciesChord, 0.8, chordOscillators);
     }
 });
-var isPlayingChord = false;
+let isPlayingChord = false;
 playChordButton.addEventListener("click", async function() {
     if (!isPlayingChord) {
         isPlayingChord = true;
@@ -481,8 +439,8 @@ playChordButton.addEventListener("click", async function() {
 
 // canvas for dynamics
 drawWave(canvasDynamics, 0, 0);
-var isPlayingDynamics = false;
-var isCrescendoDynamics = true;
+let isPlayingDynamics = false;
+let isCrescendoDynamics = true;
 playDynamicsButton.addEventListener("click", async function() {
     if (!isPlayingDynamics) {
         isPlayingDynamics = true;
@@ -497,7 +455,7 @@ playDynamicsButton.addEventListener("click", async function() {
             gainNodeDynamics.connect(audioContext.destination);
             oscillatorDynamics.start();
             for (let i = 0; i <= 1; i += 0.02) {
-                canvasDynamics.clearRect(0, 0, canvasWidth, 200);
+                canvasDynamics.clearRect(0, 0, WIDTH, 200);
                 drawWave(canvasDynamics, 440, i);
                 gainNodeDynamics.gain.value = i;
                 await new Promise(resolve => setTimeout(resolve, 50));
@@ -510,12 +468,12 @@ playDynamicsButton.addEventListener("click", async function() {
             playDynamicsButton.innerHTML = "Decreasing amplitude";
             playDynamicsButton.style.pointerEvents = "none"
             for (let i = 0.98; i >= 0; i -= 0.02) {           // because i does not go to 1 (floating point calc)
-                canvasDynamics.clearRect(0, 0, canvasWidth, 200);
+                canvasDynamics.clearRect(0, 0, WIDTH, 200);
                 drawWave(canvasDynamics, 440, i);
                 gainNodeDynamics.gain.value = i;
                 await new Promise(resolve => setTimeout(resolve, 50));
             }
-            canvasDynamics.clearRect(0, 0, canvasWidth, 200);
+            canvasDynamics.clearRect(0, 0, WIDTH, 200);
             drawWave(canvasDynamics, 440, 0);                 // because i does not go to 0 (floating point calc)
             oscillatorDynamics.disconnect(gainNodeDynamics);
             gainNodeDynamics.disconnect(audioContext.destination);
@@ -527,7 +485,7 @@ playDynamicsButton.addEventListener("click", async function() {
     }
 });
 
-var isPlayingBeats = false;
+let isPlayingBeats = false;
 const beatsList = ["Beat A", "Beat B"];
 const beatsTimings = [[1, 0], [2, 0, 1, 0, 1, 0]];
 const selectBeat = document.getElementById("selectBeat");
@@ -541,7 +499,7 @@ selectBeat.value = 0;
 drawGrid(canvasBeats);
 drawBeats(canvasBeats, beatsTimings[selectBeat.value]);
 selectBeat.addEventListener("change", (event) => {
-    canvasBeats.clearRect(0, 0, canvasWidth, 100);
+    canvasBeats.clearRect(0, 0, WIDTH, 100);
     drawGrid(canvasBeats);
     drawBeats(canvasBeats, beatsTimings[selectBeat.value]);
 });
@@ -559,7 +517,7 @@ playBeatsButton.addEventListener("click", async function() {
     }
 });
 
-var isPlayingTimeSignature = false;
+let isPlayingTimeSignature = false;
 const timeSignatureList = ["2/2", "2/4", "3/4", "4/4", "6/8", "8/8", "12/8"];
 const timeSignatureTimings = [[2, 0, 0, 0, 1, 0, 0, 0], [2, 0, 1, 0], [2, 0, 1, 0, 1, 0], [2, 0, 1, 0, 1, 0, 1, 0], [2, 1, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1, 1, 1], [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]];
 const selectTimeSignature = document.getElementById("selectTimeSignature");
@@ -573,7 +531,7 @@ selectTimeSignature.value = 3;
 drawGrid(canvasTimeSignature);
 drawBeats(canvasTimeSignature, timeSignatureTimings[selectTimeSignature.value]);
 selectTimeSignature.addEventListener("change", (event) => {
-    canvasTimeSignature.clearRect(0, 0, canvasWidth, 100);
+    canvasTimeSignature.clearRect(0, 0, WIDTH, 100);
     drawGrid(canvasTimeSignature);
     drawBeats(canvasTimeSignature, timeSignatureTimings[selectTimeSignature.value]);
 });
@@ -591,15 +549,15 @@ playTimeSignatureButton.addEventListener("click", async function() {
     }
 });
 
-var isPlayingTempo = false;
-var tempo = 32
+let isPlayingTempo = false;
+let tempo = 32
 const tempoBeats = [2, 0, 1, 0, 1, 0, 1, 0];
 const sliderTempo = document.getElementById("sliderTempo");
 intializeSliders(sliderTempo, 10, 48, 1, 32);
 drawGrid(canvasTempo);
 drawBeats(canvasTempo, tempoBeats);
 sliderTempo.addEventListener("input", (event) => {
-    canvasTempo.clearRect(0, 0, canvasWidth, 100);
+    canvasTempo.clearRect(0, 0, WIDTH, 100);
     tempo = 64 - parseInt(sliderTempo.value);
     drawGrid(canvasTempo, [51], tempo);
     drawBeats(canvasTempo, tempoBeats, tempo);
@@ -618,10 +576,10 @@ playTempoButton.addEventListener("click", async function() {
     }
 });
 
-drawGrid(canvasTransitionRhythm, [51], 32, 100, 1040, "#000", "#999", 2, 1280);
-drawGrid(canvasTransitionRhythm, [51], 32, 100, 528, "#000", "#999", 2, 754);
-drawGrid(canvasTransitionRhythm, [51], 32, 100, 16, "#000", "#999", 2, 242);
-canvasTransitionRhythm.strokeStyle = "#fff";
+drawGrid(canvasTransitionRhythm, [51], 32, 100, 1040, COLORS.FG, COLORS.GRAY, 2, 1280);
+drawGrid(canvasTransitionRhythm, [51], 32, 100, 528, COLORS.FG, COLORS.GRAY, 2, 754);
+drawGrid(canvasTransitionRhythm, [51], 32, 100, 16, COLORS.FG, COLORS.GRAY, 2, 242);
+canvasTransitionRhythm.strokeStyle = COLORS.BG;
 const canvasTransitionRhythmBlanks = [257, 333, 439, 505, 769, 839, 951, 1017];
 canvasTransitionRhythm.beginPath();
 for (let i = 0; i < canvasTransitionRhythmBlanks.length * 2; i += 2) {
@@ -630,18 +588,19 @@ for (let i = 0; i < canvasTransitionRhythmBlanks.length * 2; i += 2) {
 }
 canvasTransitionRhythm.closePath();
 canvasTransitionRhythm.stroke();
-canvasTransitionRhythm.strokeStyle = "#000";
+canvasTransitionRhythm.strokeStyle = COLORS.FG;
 canvasTransitionRhythm.beginPath();
 const canvasTransitionRhythmTrigs = [333, 439, 839, 951]
 for (let i = 0; i < canvasTransitionRhythmTrigs.length; i++) {
     canvasTransitionRhythm.moveTo(canvasTransitionRhythmTrigs[i], 41);
     if (i % 2 == 0) canvasTransitionRhythm.lineTo(canvasTransitionRhythmTrigs[i] - 10, 51);
-    else            canvasTransitionRhythm.lineTo(canvasTransitionRhythmTrigs[i] + 10, 51);
+    else canvasTransitionRhythm.lineTo(canvasTransitionRhythmTrigs[i] + 10, 51);
     canvasTransitionRhythm.lineTo(canvasTransitionRhythmTrigs[i], 61);
     canvasTransitionRhythm.lineTo(canvasTransitionRhythmTrigs[i], 41);
 }
 canvasTransitionRhythm.closePath();
 canvasTransitionRhythm.stroke();
+canvasTransitionRhythm.fillStyle = COLORS.FG;
 canvasTransitionRhythm.beginPath();
 for (let i = 16; i < 272; i += 64) canvasTransitionRhythm.arc(i, 50, 8, 0, Math.PI * 2);
 for (let i = 528; i < 784; i += 64) canvasTransitionRhythm.arc(i, 50, 8, 0, Math.PI * 2);
@@ -654,7 +613,6 @@ canvasTransitionRhythm.closePath();
 canvasTransitionRhythm.fill();
 canvasTransitionRhythm.textAlign = "center";
 canvasTransitionRhythm.textBaseline = "middle";
-canvasTransitionRhythm.fillStyle = "#000";
 canvasTransitionRhythm.font = "24px JetBrains Mono";
 for (let i = 16; i < 272; i += 64) canvasTransitionRhythm.fillText("1", i, 125);
 canvasTransitionRhythm.fillText("1", 528, 125);
@@ -668,15 +626,13 @@ canvasTransitionRhythm.fillText(".5", 688, 126);
 canvasTransitionRhythm.fillText(".5", 1168, 126);
 canvasTransitionRhythm.fillText(".5", 1200, 126);
 
+
 const canvasMarkovRhythmProbSame = [0.2, 0.2, 0.3, 0.5];
 const canvasMarkovRhythmProbNext = [0.8, 0.7, 0.5];
 const canvasMarkovRhythmProbPrev = [0.1, 0.2, 0.5];
-canvasMarkovRhythm.strokeStyle = "#000";
+canvasMarkovRhythm.strokeStyle = COLORS.FG;
 canvasMarkovRhythm.lineWidth = 2;
-canvasMarkovRhythm.textAlign = "center";
-canvasMarkovRhythm.textBaseline = "middle";
-canvasMarkovRhythm.fillStyle = "#000";
-canvasMarkovRhythm.font = "32px JetBrains Mono";
+initializeCanvasText(canvasMarkovRhythm, "center", "32px JetBrains Mono");
 const canvasMarkovRhythmTimes = ["4", "2", "1", ".5"];
 for (let i = 0; i < 4; i++) {
     canvasMarkovRhythm.fillText(canvasMarkovRhythmTimes[i], i * 320 + 160, 155);
@@ -708,11 +664,8 @@ for (let i = 0; i < 4; i++) canvasMarkovRhythm.fillText(canvasMarkovRhythmProbSa
 canvasMarkovRhythm.stroke();
 
 const canvasMarkovIntervalsLetters = ["P1", "M2", "M3", "P4", "P5", "M6", "M7"];
-canvasMarkovIntervals.textAlign = "center";
-canvasMarkovIntervals.textBaseline = "middle";
-canvasMarkovIntervals.fillStyle = "#000";
-canvasMarkovIntervals.font = "24px JetBrains Mono";
-canvasMarkovIntervals.strokeStyle = "#000";
+initializeCanvasText(canvasMarkovIntervals, "center", "24px JetBrains Mono");
+canvasMarkovIntervals.strokeStyle = COLORS.FG;
 canvasMarkovIntervals.lineWidth = 2;
 canvasMarkovIntervals.beginPath();
 for (let i = 15; i < 127; i += 16) {
@@ -721,7 +674,7 @@ for (let i = 15; i < 127; i += 16) {
 }
 for (let i = 287; i < 399; i += 16) {
     canvasMarkovIntervals.moveTo(0, i);
-    canvasMarkovIntervals.lineTo(canvasWidth, i);
+    canvasMarkovIntervals.lineTo(WIDTH, i);
 }
 canvasMarkovIntervals.closePath();
 for (let i = 99; i < 1280; i += 180) {
@@ -750,15 +703,15 @@ for (let i = 1; i < 7; i++) canvasMarkovIntervals.fillText(nextNoteTransitionPro
 canvasMarkovIntervals.fillText(nextNoteTransitionProbability[0] * 100 + "%", 125, 215);
 
 // main sandbox
-var mainChordFrequencies = [];
-var mainChordOscillators = [];
-var mainScaleNotes = [];
-var mainScaleChords = [];
-var mainTunes = [];
-var mainSharp = [];
-var mainChords = [];
-var mainTunesDurations = [];
-var mainSharpDurations = [];
+let mainChordFrequencies = [];
+let mainScaleNotes = [];
+let mainScaleChords = [];
+const mainTunes = [];
+const mainSharp = [];
+const mainChords = [];
+const mainTunesDurations = [];
+const mainSharpDurations = [];
+const mainChordOscillators = [];
 const mainScaleTypes = ["major", "minor", "harmonic major", "harmonic minor"];
 const mainSharpOctaves = [4, 5, 6];
 const mainTunesOctaves = [3, 4, 5];
@@ -830,16 +783,16 @@ mainTempoSlider.addEventListener("change", function() {
 });
 mainGenerate.addEventListener("click", function() {
     getSequence(mainTime, mainTotalBars, mainTunes, mainSharp, mainChords, mainTunesDurations, mainSharpDurations);
-    canvasMain.clearRect(0, 0, canvasWidth, 414);
-    drawGrid(canvasMain, mainCanvasRows, 16, 414, 6, "#000", "#aaa");
-    drawGrid(canvasMain, false, 32 * mainTime, 414, 6, "#000", "#000");
+    canvasMain.clearRect(0, 0, WIDTH, 414);
+    drawGrid(canvasMain, mainCanvasRows, 16, 414, 6, COLORS.FG, COLORS.GRAYL);
+    drawGrid(canvasMain, false, 32 * mainTime, 414, 6, COLORS.FG, COLORS.FG);
     drawSequence(canvasMain, mainTunesDurations, mainTunes, mainTotalBars, 255);
     drawSequence(canvasMain, mainSharpDurations, mainSharp, mainTotalBars, 111);
     drawChord(canvasMain, mainChords, mainTotalBars, 399);
 });
 
-var mainTempo = 2.5 - mainTempoSlider.value;
-var mainTotalBars = 10;
+let mainTempo = 2.5 - mainTempoSlider.value;
+const mainTotalBars = 10;
 isTunesMain = true;
 isSharpMain = true;
 mainTime = 4;
@@ -852,15 +805,15 @@ mainScaleNotes = getNotes(mainScaleRoot.value, INTERVALS[mainScaleType.value]);
 mainScaleChords = getChordProgression(mainScaleType.value);
 mainTunesFrequencies = getFrequencies(mainScaleNotes, mainTunesOctave.value);
 mainSharpFrequencies = getFrequencies(mainScaleNotes, mainSharpOctave.value);
-drawGrid(canvasMain, mainCanvasRows, 16, 414, 6, "#000", "#aaa");
-drawGrid(canvasMain, false, 32 * mainTime, 414, 6, "#000", "#000");
+drawGrid(canvasMain, mainCanvasRows, 16, 414, 6, COLORS.FG, COLORS.GRAYL);
+drawGrid(canvasMain, false, 32 * mainTime, 414, 6, COLORS.FG, COLORS.FG);
 getSequence(mainTime, mainTotalBars, mainTunes, mainSharp, mainChords, mainTunesDurations, mainSharpDurations);
 drawSequence(canvasMain, mainTunesDurations, mainTunes, mainTotalBars, 255);
 drawSequence(canvasMain, mainSharpDurations, mainSharp, mainTotalBars, 111);
 drawChord(canvasMain, mainChords, mainTotalBars, 399);
 
-var counter = 0;
-var isPlayingMain = false;
+let counter = 0;
+let isPlayingMain = false;
 playMainButton.addEventListener("click", async function() {
     if (!isPlayingMain) {
         isPlayingMain = true;
@@ -892,7 +845,7 @@ playMainButton.addEventListener("click", async function() {
     }
 });
 
-function drawCircles(canvas, intervalsArray = INTERVALS["chromatic"], height = 50, circles = 13, radius = 40, strokewidth = 2, strokeFG = "#000", strokeBG = "#bbb", width = canvasWidth, xOffset = 0) {
+function drawCircles(canvas, intervalsArray = INTERVALS["chromatic"], height = 50, circles = 13, radius = 40, strokewidth = 2, strokeFG = COLORS.FG, strokeBG = COLORS.GRAYL, width = WIDTH, xOffset = 0) {
     canvas.lineWidth = strokewidth;
     const gap = width / circles;
     const gapHalf = width / (2 * circles);
@@ -907,7 +860,7 @@ function drawCircles(canvas, intervalsArray = INTERVALS["chromatic"], height = 5
     }
 }
 
-function drawNotes(canvas, intervalsArray = INTERVALS["chromatic"], start = 0, notesArray = NOTES.letters, height = 51, xOffset = 0, length = 13, modulo = 12, font = "24px JetBrains Mono", colorFG = "#000", colorBG = "#bbb", width = canvasWidth) {
+function drawNotes(canvas, intervalsArray = INTERVALS["chromatic"], start = 0, notesArray = NOTES.letters, height = 51, xOffset = 0, length = 13, modulo = 12, font = "24px JetBrains Mono", colorFG = COLORS.FG, colorBG = COLORS.GRAYL, width = WIDTH) {
     const gap = width / 13;
     const gapHalf = width / 26;
     canvas.textAlign = "center";
@@ -922,7 +875,7 @@ function drawNotes(canvas, intervalsArray = INTERVALS["chromatic"], start = 0, n
     }
 }
 
-function drawWave(canvas, frequency, amplitude, stroke = "#000", height = 101, width = canvasWidth, strokewidth = 2) {
+function drawWave(canvas, frequency, amplitude, stroke = COLORS.FG, height = 101, width = WIDTH, strokewidth = 2) {
     canvas.beginPath();
     canvas.moveTo(0, height);
     for (let x = 0; x < width; x++) {
@@ -934,7 +887,7 @@ function drawWave(canvas, frequency, amplitude, stroke = "#000", height = 101, w
     canvas.stroke();
 }
 
-function drawWaveVertical(canvas, frequency, amplitude, xOffset = 101, stroke = "#000", height = 640, strokewidth = 2) {
+function drawWaveVertical(canvas, frequency, amplitude, xOffset = 101, stroke = COLORS.FG, height = 640, strokewidth = 2) {
     canvas.beginPath();
     canvas.moveTo(xOffset + amplitude * 90, height);
     for (let y = height; y > 0; y--) {
@@ -946,7 +899,7 @@ function drawWaveVertical(canvas, frequency, amplitude, xOffset = 101, stroke = 
     canvas.stroke();
 }
 
-function drawTriangle(canvas, xOffset, yOffset, size = 10, color = "#000") {
+function drawTriangle(canvas, xOffset, yOffset, size = 10, color = COLORS.FG) {
     canvas.beginPath();
     canvas.moveTo(xOffset, yOffset);
     canvas.lineTo(xOffset - size, yOffset + size);
@@ -956,7 +909,7 @@ function drawTriangle(canvas, xOffset, yOffset, size = 10, color = "#000") {
     canvas.fill();
 }
 
-function drawGrid(canvas, rows = [51], gap = 32, height = 100, xOffset = 16, strokeFG = "#000", strokeBG = "#999", strokewidth = 2, width = canvasWidth) {
+function drawGrid(canvas, rows = [51], gap = 32, height = 100, xOffset = 16, strokeFG = COLORS.FG, strokeBG = COLORS.GRAY, strokewidth = 2, width = WIDTH) {
     canvas.lineWidth = strokewidth;
     canvas.strokeStyle = strokeBG;
     canvas.beginPath();
@@ -976,7 +929,7 @@ function drawGrid(canvas, rows = [51], gap = 32, height = 100, xOffset = 16, str
     canvas.stroke();
 }
 
-function drawBeats(canvas, beats, gap = 32, height = 51, width = canvasWidth, colorFG = "#000", colorBG = "#fff", radius = 10, strokewidth = 2, xOffset = 16) {
+function drawBeats(canvas, beats, gap = 32, height = 51, width = WIDTH, colorFG = COLORS.FG, colorBG = COLORS.BG, radius = 10, strokewidth = 2, xOffset = 16) {
     let x = xOffset + 1;
     let bars = width / (beats.length * gap);
     canvas.strokeStyle = colorFG;
@@ -992,7 +945,7 @@ function drawBeats(canvas, beats, gap = 32, height = 51, width = canvasWidth, co
     }
 }
 
-function drawSequence(canvas, durations, notes, bars, yOffset, xOffset = 7, radius = 5, color = "#000") {
+function drawSequence(canvas, durations, notes, bars, yOffset, xOffset = 7, radius = 5, color = COLORS.FG) {
     let x = xOffset;
     let y = yOffset;
     canvas.fillStyle = color;
@@ -1008,7 +961,7 @@ function drawSequence(canvas, durations, notes, bars, yOffset, xOffset = 7, radi
     canvas.fill();
 }
 
-function drawChord(canvas, chords, bars, yOffset, xOffset = 7, gap = 128, radius = 5, color = "#000") {
+function drawChord(canvas, chords, bars, yOffset, xOffset = 7, gap = 128, radius = 5, color = COLORS.FG) {
     let x = xOffset;
     let y = yOffset;
     canvas.fillStyle = color;
@@ -1022,16 +975,9 @@ function drawChord(canvas, chords, bars, yOffset, xOffset = 7, gap = 128, radius
     canvas.fill();
 }
 
-function intializeSliders(slider, minimum, maximum, step, value) {
-    slider.min = minimum;
-    slider.max = maximum;
-    slider.step = step;
-    slider.value = value;
-}
-
 async function playNote(frequency, amplitude, duration, durationSilent, durationFade) {
-    var gainNode = audioContext.createGain();
-    var oscillator = audioContext.createOscillator();
+    let gainNode = audioContext.createGain();
+    let oscillator = audioContext.createOscillator();
     oscillator.frequency.value = frequency;
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
@@ -1062,7 +1008,7 @@ async function playNotes(notes, durations, amplitude, notesFrequencies, tempo = 
 }
 
 function getNotes(note, intervals) {
-    var notes = [];
+    const notes = [];
     for (let i = 0; i < 12; i++) {
         if (intervals[i])
             notes.push((note + i) % 12);
@@ -1071,14 +1017,14 @@ function getNotes(note, intervals) {
 }
 
 function getFrequencies(notes, octave) {
-    var frequencies = [];
+    const frequencies = [];
     for (let i = 0; i < notes.length; i++)
         frequencies.push(FREQUENCIES[octave * 12 + notes[i]])
     return frequencies;
 }
 
 function getChord(rootNote, intervalArray, octave) {
-    chord = [];
+    const chord = [];
     for (let i = 0; i < 12; i++)
         if (intervalArray[i])
             chord.push(FREQUENCIES[rootNote + octave * 12 + i]);
@@ -1097,9 +1043,9 @@ function getChordProgression(scale) {
 }
 
 async function playChord(frequencyArray, amplitude, oscillators, durationFadeIn = 0.5) {
-    var gainNode = audioContext.createGain();
-    for (var i = 0; i < frequencyArray.length; i++) {
-        var oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    for (let i = 0; i < frequencyArray.length; i++) {
+        const oscillator = audioContext.createOscillator();
         oscillator.frequency.value = frequencyArray[i];
         oscillator.connect(gainNode);
         oscillator.start();
@@ -1170,8 +1116,8 @@ function getSequence(time, bars, tunes, sharps, chords, tunesDurations, sharpDur
     chords.length = 0;
     tunesDurations.length = 0;
     sharpDurations.length = 0;
-    var currentNote = 0;
-    var tunesDurationBar = [1000 * time];
+    let currentNote = 0;
+    let tunesDurationBar = [1000 * time];
     for (let i = 0; i < bars; i++) {
         currentNote = getNextNote(currentNote);
         mainChords.push(currentNote);
@@ -1191,6 +1137,37 @@ function getSequence(time, bars, tunes, sharps, chords, tunesDurations, sharpDur
         for (let j = 1; j < tunesDurationBar.length; j++)
             tunesTones.push(getNextNote(currentNote));
         tunes.push(tunesTones);
-//        console.log(currentNote, sharpTones, sharpDurationBar, tunesTones, tunesDurationBar);
     }
+}
+
+function getColors() {
+    const styles = getComputedStyle(document.documentElement);
+    const colors = {
+        FG: styles.getPropertyValue("--fg").trim(),
+        BG: styles.getPropertyValue("--bg").trim(),
+        GRAY: styles.getPropertyValue("--gray2").trim(),
+        GRAYL: styles.getPropertyValue("--gray4").trim(),
+    }
+    return colors;
+}
+
+function intializeSliders(slider, minimum, maximum, step, value) {
+    slider.min = minimum;
+    slider.max = maximum;
+    slider.step = step;
+    slider.value = value;
+}
+
+function initializeCanvasText(canvas, horizontal = "center", font = "28px JetBrains Mono", vertical = "middle", color = COLORS.FG) {
+    canvas.font = font;
+    canvas.textBaseline = vertical;
+    canvas.textAlign = horizontal;
+    canvas.fillStyle = color;
+}
+
+function initializeCanvas(canvasID, height, width = WIDTH) {
+    const canvasObject = document.getElementById(canvasID).getContext("2d");
+    canvasObject.canvas.width = width;
+    canvasObject.canvas.height = height;
+    return canvasObject;
 }

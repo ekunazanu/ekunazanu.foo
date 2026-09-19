@@ -1,0 +1,6 @@
+{% component picture(src: string, alt: string, dark: string = "", style="") %}
+<picture>
+<source srcset={% if dark %}"{{ dark }}"{% else %}"{{ src | replace(from='.avif', to='.dark.avif') }}"{% endif %} media="(prefers-color-scheme: dark)">
+<img src="{{ src }}" alt="{{ alt }}" decoding="async" loading="lazy" {% if style %}style="{{ style }}"{% endif %}>
+</picture>
+{% endcomponent %}

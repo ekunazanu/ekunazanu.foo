@@ -1,7 +1,9 @@
-const WIDTH = 1280; 
-const COLORS_BLUES = getColorPalette(0.3, -0.2, 0.7, 0.8, 0.2, 1, 64);
-const COLORS_REDS  = getColorPalette(0, 0.4, 0.8, 0.9, 0.3, 1, 64);
-const COLORS = COLORS_REDS.concat([...COLORS_BLUES].reverse());
+const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
+const WIDTH = 1280;
+const COLORS_BLUES = darkMode ? getColorPalette(0.3, -0.2, 0.7, 0.5, 0.2, 1, 1.2, 64) : getColorPalette(0.3, -0.2, 0.7, 0.8, 0.2, 1, 0, 64);
+const COLORS_REDS = darkMode ? getColorPalette(0, 0.4, 0.8, 0.6, 0.3, 1, 1.2, 64) : getColorPalette(0, 0.4, 0.8, 0.9, 0.3, 1, 0, 64);
+const COLORS = COLORS_REDS.concat(COLORS_BLUES.reverse());
 const IMAGE = setImage(60, 40);
 const PIXEL_SIZE = 10;
 
@@ -143,18 +145,17 @@ function getColor(rgbArray) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-function getColorPalette(start, rotation, hue = 1, gamma = 1, dark = 0, light = 1, stops = 128) {
+function getColorPalette(start, rotation, hue = 1, gamma = 1, dark = 0, light = 1, offset = 0, stops = 128) {
     const colors = [];
-    let phi = 0;
-    let stop = 0;
     for (let i = dark; i < light; i += (light - dark) / stops) {
-        phi = 2 * Math.PI * (start / 3 + rotation * stop);
-        stop = Math.pow(i, gamma);
-        amplitude = hue * stop * (1 - stop) / 2;
+        const stop = Math.pow(i, gamma);
+        const phi = 2 * Math.PI * (start / 3 + rotation * stop);
+        const amplitude = hue * stop * (1 - stop) / 2;
+        const base = offset > 0 ? offset - stop : stop;
         colors.push([
-            stop + amplitude * (-0.14861 * Math.cos(phi) + 1.78277 * Math.sin(phi)),
-            stop + amplitude * (-0.29227 * Math.cos(phi) - 0.90649 * Math.sin(phi)),
-            stop + amplitude * (+1.97294 * Math.cos(phi))
+            base + amplitude * (-0.14861 * Math.cos(phi) + 1.78277 * Math.sin(phi)),
+            base + amplitude * (-0.29227 * Math.cos(phi) - 0.90649 * Math.sin(phi)),
+            base + amplitude * (+1.97294 * Math.cos(phi))
         ]);
     }
     return colors;
@@ -168,7 +169,7 @@ function initializeCanvas(canvasID, height, width = WIDTH) {
     return canvas;
 }
 
-function initializeCanvasText(canvas, horizontal = "center", color = "#000", vertical = "middle", font = "25px JetBrains Mono") {
+function initializeCanvasText(canvas, horizontal = "center", color = COLOR_FG, vertical = "middle", font = "25px JetBrains Mono") {
     canvas.font = font;
     canvas.textBaseline = vertical;
     canvas.textAlign = horizontal;

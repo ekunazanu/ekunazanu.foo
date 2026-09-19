@@ -122,15 +122,10 @@ However using too many hashing functions can also increase the false positive ra
 In the extreme case when all the bits in a bloom filter are set to one, the bloom filter would **always** report positive for membership — regardless of whether the element actually exists in the set.
 
 <canvas id="bfCanvasSaturated"></canvas>
-<input id="bfInputSaturatedQuery" value="foo"><button id="bfButtonSaturatedQuery">Search</button><br>
-Hash: <code id="bfOutputSaturatedHash">44, 38, 180</code> <span id="bfOutputSaturatedMessage"></span>
+<input id="bfInputSaturatedQuery" value="confusion"><button id="bfButtonSaturatedQuery">Search</button><br>
+Hash: <code id="bfOutputSaturatedHash">50, 200, 112</code> <span id="bfOutputSaturatedMessage"></span>
 
 Other than using a large number of hashing functions, a bloom filter can also be quickly saturated if the number elements to be hashed (added) is huge. The only solution to decreasing the number of false positives then, is by increasing the size of the bloom filter itself. Increasing the size of the bloom filter bit-array equates to a larger output space for the hash functions, reducing the probability for collisions.
-
-<canvas id="bfCanvasBigger"></canvas>
-<input id="bfInputBiggerAdd" value="hello"><button id="bfButtonBiggerAdd">Add</button><button id="bfButtonBiggerAddRandom">Add Random</button><br>
-<span style="display: none" id="bfOutputBiggerMessage"></span>
-<code style="display:none" id="bfOutputBiggerHash"></code> <!-- acts as /dev/null -->
 
 In effect, the false positive rate is also dependent on the **size of the bloom filter** and the **number of (unique) elements** to be added.
 
@@ -161,8 +156,7 @@ A count-min sketch is a probabilistic data structure that calculates the multipl
 Count-min sketches are very similar to bloom filters, so it's helpful to start off with a bloom filter.
 
 <canvas id="bfCanvasCounting"></canvas>
-<input id="bfInputCountingAdd" value="hello"><button id="bfButtonCountingAdd">Add</button><br>
-<input id="bfInputCountingQuery" value="hello"><button id="bfButtonCountingQuery">Search</button><br>
+<input id="bfInputCounting" value="hello"><button id="bfButtonCountingAdd">Add</button><button id="bfButtonCountingQuery">Search</button><br>
 Hash: <code id="bfOutputCountingHash">44, 242, 77</code> <span id="bfOutputCountingMessage"></span><br>
 
 Now, instead of using one bit per hash, what if a few more bits (per hash) were used?
@@ -172,8 +166,7 @@ Now, instead of using one bit per hash, what if a few more bits (per hash) were 
 A way to utilize the extra bits is by using them as 'counters' to store information about frequency — the bit-counter can be incremented by one whenever a hash (an element) is added. This expands the ability of the array from being able to only store information about the **existence** of an element to store information about its **frequency** as well.
 
 <canvas id="cmsCanvasComparison"></canvas>
-<input id="cmsInputComparisonAdd" value="hello"><button id="cmsButtonComparisonAdd">Add</button><br>
-<input id="cmsInputComparisonQuery" value="hello"><button id="cmsButtonComparisonQuery">Search</button><br>
+<input id="cmsInputComparison" value="hello"><button id="cmsButtonComparisonAdd">Add</button><button id="cmsButtonComparisonQuery">Search</button><br>
 Hash: <code id="cmsOutputComparisonHash">44, 242, 77</code><br>
 Bloom Filter: <span id="cmsOutputComparisonMessage">-</span><br>
 Counting Bloom Filter: <span id="cmsOutputComparisonValues">-</span><br>
@@ -185,8 +178,7 @@ Hash collisions are again possible in counting bloom filters, which increase the
 As an example, try adding both `hello` and `foo` and notice how the 44th counter is affected. The counter increases to two. If the 44th counter is the only counter used for calculating the estimate, it would over-count the frequency of both elements. However, using more hashes and counters can decrease the probability of over-counting — but only when the minimum of the counters is used for estimation.
 
 <canvas id="cmsCanvasMain"></canvas>
-<input id="cmsInputMainAdd" value="hello"><button id="cmsButtonMainAdd">Add</button><br>
-<input id="cmsInputMainQuery" value="hello"><button id="cmsButtonMainQuery">Search</button><br>
+<input id="cmsInputMain" value="hello"><button id="cmsButtonMainAdd">Add</button><button id="cmsButtonMainQuery">Search</button><br>
 Hash: <code id="cmsOutputMainHash">44, 242, 77</code><br>
 Counters: <span id="cmsOutputMainValues">0, 0, 0</span><br>
 Frequency estimate: <span id="cmsOutputMainEstimate">0</span>
@@ -207,7 +199,7 @@ Compare that to a counting bloom filter, where every collision increases the val
 Notice how collisions do not affect the bits that are already set in the bloom filter, but affects the bits of the counting bloom filter:
 
 <canvas id="cmsCanvasComparisonErrors"></canvas>
-<input id="cmsInputComparisonErrorsAdd" value="hello"><button id="cmsButtonComparisonErrorsAdd">Add</button><br>
+<input id="cmsInputComparisonErrors" value="foo"><button id="cmsButtonComparisonErrorsAdd">Add</button><br>
 <code style="display: none" id="cmsOutputComparisonErrorsHash">44, 242, 77</code>
 <span style="display: none" id="cmsOutputComparisonErrorsMessage">&nbsp;</span>
 <span style="display: none" id="cmsOutputComparisonErrorsValues">0, 0, 0</span>
@@ -229,8 +221,7 @@ The resulting data structure is a count-min sketch. It can also be thought of as
 Here, the count-min sketch is thirty two counters wide and eight hashes deep.
 
 <canvas id="cmsCanvasSketch"></canvas>
-<input id="cmsInputSketchAdd" value="hello"><button id="cmsButtonSketchAdd">Add</button><br>
-<input id="cmsInputSketchQuery" value="hello"><button id="cmsButtonSketchQuery">Search</button><br>
+<input id="cmsInputSketch" value="hello"><button id="cmsButtonSketchAdd">Add</button><button id="cmsButtonSketchQuery">Search</button><br>
 Hash: <code id="cmsOutputSketchHash">12, 50, 77, 122, 159, 176, 195, 238</code><br>
 Counters: <span id="cmsOutputSketchValues">0, 0, 0, 0, 0, 0, 0, 0</span><br>
 Frequency estimate: <span id="cmsOutputSketchEstimate">0</span><br>
@@ -296,10 +287,9 @@ A multiset is segregated into different subsets using '[buckets](https://en.wiki
 Here, the bucket is chosen from the first four bits of the hash.
 
 <canvas id="hllCanvasBucket"></canvas>
-<canvas id="hllCanvasBucketCounters"></canvas>
 Bucket: <span id="hllOutputBucketNumber">0</span><br>
 Leading zeros: <span id="hllOutputBucketZeros">0</span><br>
-Max. leading zeros: <span id="hllOutputBucketZerosMax">0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br>
+Buckets (max. leading zeros): <span id="hllOutputBucketZerosMax">0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br>
 Estimated cardinalities: <span id="hllOutputBucketEstimates">1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1</span><br>
 Average estimate: <span id="hllOutputBucketMean">0</span><br>
 Actual cardinality: <span id="hllOutputBucketCardinality">0</span><br>
@@ -314,20 +304,19 @@ The harmonic mean is used for averaging because it reduces the influence of larg
 
 However, even with the corrective measures, there is a [predictable bias](https://www.moderndescartes.com/essays/hyperloglog/#loglog) towards larger estimates. Scaling the average by a correction factor counteracts this bias. This brings down the [error](https://en.wikipedia.org/wiki/Standard_error) to 1.04/√m, where m is the number of buckets.
 
-Thirty two buckets are used here, and so the standard error is approximately 0.18.
+Sixteen buckets are used here, and so the standard error is approximately 0.26.
 
 <canvas id="hllCanvasMain"></canvas>
-<canvas id="hllCanvasMainCounters"></canvas>
 Bucket: <span id="hllOutputMainNumber">0</span><br>
 Leading zeros: <span id="hllOutputMainZeros">0</span><br>
-<span style="display: none;" id="hllOutputMainZerosMax"></span>
-<span style="display: none;" id="hllOutputMainEstimates"></span>
+Buckets: <span id="hllOutputMainZerosMax">0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br>
+Estimated cardinalities: <span id="hllOutputMainEstimates">1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1</span><br>
 Average estimate: <span id="hllOutputMainMean">0</span><br>
 Scaled estimate: <span id="hllOutputMainScaled">0</span><br>
 Actual cardinality: <span id="hllOutputMainCardinality">0</span><br>
 <input id="hllInputMainAdd" value="foo"><button id="hllButtonMainAdd">Add</button><br>
 <button id="hllButtonMainRandom">Add random</button><button id="hllButtonMainReset">Reset count</button><br>
-<button id="hllButtonMainRandomK">Add 500 random elements</button>
+<button id="hllButtonMainRandomK">Add 100 random elements</button>
 
 {% <tangent summary="Correction factor" open={true}> %}
 The correction factor ranges between 0.672 and 0.723, depending on the number of buckets. It is approximately equal to `0.723/(1+1.079/m)` where `m` is the number of buckets.
@@ -365,5 +354,5 @@ There are other probabilistic data structures too, each with their own advantage
 <style>
 .setContainer {font: normal 0.875rem var(--monospace); line-height: 1.25rem; overflow: auto; padding: 1rem; margin: 1rem 0rem; border: 0.0625rem solid var(--fg);}
 .highlight {font-weight: 800;}
-.found {font-weight: 800; background-color: var(--green);
+.found {font-weight: 800; background-color: var(--yellow);
 </style>

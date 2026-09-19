@@ -16,7 +16,7 @@ I think diffusion models are the most convincing arguments for the [manifold hyp
 
 Okay, the theory behind diffusion models is 'simple' if you already know some statistics and probability theory. From a high level, diffusion models simply denoise data — by predicting the mean of the distribution to get structured data. The encoder part gradually adds random noise to the data and the decoder is trained to remove this noise.
 
-![a distribution transformed to a Gaussian distribution and then back to a similar distribution](/media/log/diffusion-distribution.avif)
+{{ <picture src="/media/log/invertible.diffusion-distribution.avif" alt="a distribution transformed to a Gaussian distribution and then back to a similar distribution" /> }}
 
 Assume x is some structured data with some distribution. This is gradually corrupted by shifting its mean and adding noise: z = (1-β)x + β·ϵ, where ϵ is a random variable sampled from a standard normal distribution N(0, 1). In other words, z ~ N((1-β)x, β). This is done iteratively, adding small noise over multiple steps — well, the forward encoding process is actually done in a single step as the normal distribution is simply reparameterized. The decoding process however *does* use multiple iterations.
 

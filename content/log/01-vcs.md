@@ -16,7 +16,7 @@ This is the goal: Speedrun the fundamentals of computer science.
 
 First things first, I need a plan. Fortunately I have one. Unfortunately I don't have enough braincells to pull it off quickly enough. BUT fortunately my braincell count is exactly at the point where I *think* I can do it — right the top of the Dunning-Kruger curve.
 
-![cartoonish representation of a Dunning Kruger curve](/media/log/dunning-kruger-curve.avif)
+{{ <picture src="/media/log/invertible.dunning-kruger-curve.avif" alt="cartoonish representation of a Dunning Kruger curve" /> }}
 
 ## The Plan™
 
@@ -24,7 +24,7 @@ Okay, so The Plan™ is ridiculously simple: Just study. Okay to be slightly mor
 
 If all those links seemed familiar, it is because it's from [teachyourselfcs.com](https://teachyourselfcs.com/). By the next quarter I am hoping to finish [operating systems](https://teachyourselfcs.com/#operating-systems) and [networking](https://teachyourselfcs.com/#networking) and a little bit about [databases](https://teachyourselfcs.com/#databases). I probably don't *need* to learn about compilers too, so it's pretty far down the list of things I need to get done immediately — but it's a nice topic I definitely I want to learn more about after graduation.
 
-![text that says important followed by an arrow pointing down](/media/log/important.avif)
+{{ <picture src="/media/log/invertible.important.avif" alt="text that says important followed by an arrow pointing down" /> }}
 
 And now, the most important part of The Plan™ — I know my ADHD brain will try its best to get distracted by the most random of things, so the aim here is to post a log every week about the things I learned to keep me in check. Similar to how tracking expenses make people more deliberate about their spending, hopefully writing these logs will knock some sense into me and make me aware of how much time I waste every week. These will be short summaries; the actual notes will on a [separate repository](https://notes.ekunazanu.foo).
 

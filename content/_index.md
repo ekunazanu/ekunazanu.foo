@@ -18,27 +18,37 @@ This is yet another blog on the internet. Nothing much here, just some [normal p
 That's pretty much it, but here's more [about](/about) me and this site.
 
 <script>
-const canvasGOL = document.getElementById('canvasGOL').getContext('2d');
-canvasGOL.canvas.width = 1280;
-canvasGOL.canvas.height = 322;
-const gridSizeX = 127;
-const gridSizeY = 32;
-const cellSize = 10;
-let grid = [];
-let nextGrid = [];
+const WIDTH = 1280
+const HEIGHT = 322;
+const GRID_SQUARES_X = 127;
+const GRID_SQUARES_Y = 32;
+const CELL_SIZE = 10;
 
-function initializeGrid() {
-    for (let i = 0; i < gridSizeY; i++) {
+const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
+const COLOR_GRAY = getComputedStyle(document.documentElement).getPropertyValue("--gray3").trim();
+const COLOR_GRID = darkMode ? COLOR_GRAY : COLOR_FG;
+
+const canvasGOL = document.getElementById('canvasGOL').getContext('2d');
+canvasGOL.canvas.width = WIDTH;
+canvasGOL.canvas.height = HEIGHT;
+
+
+let GRID = [];
+let GRID_NEXT = [];
+
+function initializeGrid(grid, nextGrid) {
+    for (let i = 0; i < GRID_SQUARES_Y; i++) {
         grid[i] = [];
         nextGrid[i] = [];
-        for (let j = 0; j < gridSizeX; j++) {
+        for (let j = 0; j < GRID_SQUARES_X; j++) {
             grid[i][j] = Math.random() < 0.2 ? 1 : 0;
             nextGrid[i][j] = 0;
         }
     }
 }
 
-function initializeLogo(xOffset = 4, yOffset = 4, scale = 2) {
+function initializeLogo(grid, xOffset = 4, yOffset = 4, scale = 2) {
     for (let i = yOffset; i < 12 * scale + yOffset; i++)
         for (let j = xOffset; j < 12 * scale + xOffset; j++)
             grid[i][j] = 1;
@@ -56,35 +66,46 @@ function initializeLogo(xOffset = 4, yOffset = 4, scale = 2) {
     }
 }
 
-function drawGrid() {
-    for (let i = 0; i < gridSizeY; i++) {
-        for (let j = 0; j < gridSizeX; j++) {
-            canvasGOL.fillStyle = grid[i][j] == 1 ? "#000" : "#fff";
-            canvasGOL.fillRect(j * cellSize, i * cellSize, cellSize, cellSize);
-            canvasGOL.strokeStyle = "#000";
-            canvasGOL.lineWidth = 2;
-            canvasGOL.strokeRect(j * cellSize + 1, i * cellSize + 1, cellSize, cellSize);
-        }
-    }
+function drawSquares(canvas, grid) {
+    canvas.fillStyle = COLOR_FG;
+    for (let y = 0; y < GRID_SQUARES_Y; y++)
+        for (let x = 0; x < GRID_SQUARES_X; x++)
+            if (grid[y][x] === 1)
+                canvas.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
-function countNeighbors(x, y) {
+function drawGrid(canvas, xOffset = 1, yOffset = 1) {
+    canvas.strokeStyle = COLOR_GRID;
+    canvas.lineWidth = 2;
+    canvas.beginPath();
+    for (let i = 0; i <= GRID_SQUARES_X; i++) {
+        canvas.moveTo(xOffset + i * CELL_SIZE, yOffset);
+        canvas.lineTo(xOffset + i * CELL_SIZE, yOffset + GRID_SQUARES_Y * CELL_SIZE);
+    }
+    for (let i = 0; i <= GRID_SQUARES_Y; i++) {
+        canvas.moveTo(xOffset, yOffset + i * CELL_SIZE);
+        canvas.lineTo(xOffset + GRID_SQUARES_X * CELL_SIZE, yOffset + i * CELL_SIZE);
+    }
+    canvas.stroke();
+}
+
+function countNeighbors(grid, x, y) {
     let count = 0;
     for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
             if (i == 0 && j == 0) continue;
-            let ni = (x + i + gridSizeY) % gridSizeY;
-            let nj = (y + j + gridSizeX) % gridSizeX;
+            let ni = (x + i + GRID_SQUARES_Y) % GRID_SQUARES_Y;
+            let nj = (y + j + GRID_SQUARES_X) % GRID_SQUARES_X;
             count += grid[ni][nj];
         }
     }
     return count;
 }
 
-function updateGrid() {
-    for (let i = 0; i < gridSizeY; i++) {
-        for (let j = 0; j < gridSizeX; j++) {
-            let neighbors = countNeighbors(i, j);
+function updateGrid(grid, nextGrid) {
+    for (let i = 0; i < GRID_SQUARES_Y; i++) {
+        for (let j = 0; j < GRID_SQUARES_X; j++) {
+            let neighbors = countNeighbors(grid, i, j);
             if (grid[i][j] == 1 && (neighbors < 2 || neighbors > 3)) {
                 nextGrid[i][j] = 0;
             } else if (grid[i][j] == 0 && neighbors == 3) {
@@ -94,16 +115,18 @@ function updateGrid() {
             }
         }
     }
-    [grid, nextGrid] = [nextGrid, grid];
+    return [nextGrid, grid];
 }
 
 function gameLoop() {
-    initializeLogo()
-    drawGrid();
-    updateGrid();
+    initializeLogo(GRID);
+    canvasGOL.clearRect(0, 0, WIDTH, HEIGHT);
+    drawSquares(canvasGOL, GRID);
+    drawGrid(canvasGOL);
+    [GRID, GRID_NEXT] = updateGrid(GRID, GRID_NEXT);
 }
 
-initializeGrid();
+initializeGrid(GRID, GRID_NEXT);
 setInterval(gameLoop, 500);
 </script>
 
