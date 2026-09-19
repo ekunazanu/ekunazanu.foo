@@ -781,8 +781,8 @@ function updatePrimeField() {
     arrayPrimeFieldDist = getModuloDistribution(varPrimeFieldModulus, varPrimeFieldMultiplier);
     arrayPrimeFieldUDist = getModuloDistribution(varPrimeFieldModulus, 1);
     canvasPrimeField.clearRect(0, 0, WIDTH, 430);
-    drawDistribution(canvasPrimeField, [arrayPrimeFieldUDist], 15, 15, arrayPrimeFieldLabels, 1, DISTCOLORS, 32, 130);
-    drawDistribution(canvasPrimeField, [arrayPrimeFieldDist], 15, 255, arrayPrimeFieldLabels, 1, DISTCOLORS, 32, 130);
+    drawDistribution(canvasPrimeField, [arrayPrimeFieldUDist], 15, 15, arrayPrimeFieldLabels, 1, [COLORS.FG], 32, 130);
+    drawDistribution(canvasPrimeField, [arrayPrimeFieldDist], 15, 255, arrayPrimeFieldLabels, 1, [COLORS.FG], 32, 130);
     drawMultiplyModuloMap(canvasPrimeField, varPrimeFieldModulus, varPrimeFieldMultiplier);
     spanPrimeFieldModulus.innerHTML = varPrimeFieldModulus;
     spanPrimeFieldMultiplier.innerHTML =  varPrimeFieldMultiplier;
