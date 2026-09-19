@@ -78,13 +78,13 @@ There are more functions but I found these the most pretty.
 
 I also experimented with hardware a bit. I bought a small TFT display but it did not come with pins attached. I had a few pins laying around so I decided to solder it, but ended up causing chaos: I inhaled the lead-tin fumes, my friend ingested it. I burnt my fingers, and as a reflex threw the solder on my friend — he dodged it, but burnt his fingers later anyway. I was holding the solder ~~near~~ on top of some cup noodles and managed to get its plastic melted and stuck on the gun. Tried to sand it off with paper and the paper burnt. Also right as I threw the solder gun, it melted the solder wire itself exposing the copper inside. Another guy came to help us and got a mild shock from it. It was chaotic but also quite comical to say the least.
 
-![doodle of a person soldering and lighting things on fire and another person with a burnt finger looking and another person in the background horrified](/media/log/solder-chaos.avif)
+{{ <picture src="/media/log/invertible.solder-chaos.avif" alt="doodle of a person soldering and lighting things on fire and another person with a burnt finger looking and another person in the background horrified" /> }}
 
 Watching a tutorial on how to use a solder properly seems like the saner (and obvious) approach in retrospect.
 
 Anyway that is all for this week. Cya next week.
 
 <script>
-{{ <loadData path="/scripts/8-pretty-pixel-patterns.js" /> }}
+{{ <loadData path="/scripts/08-pretty-pixel-patterns.js" /> }}
 </script>
 <style>canvas {image-rendering: pixelated;}</style>

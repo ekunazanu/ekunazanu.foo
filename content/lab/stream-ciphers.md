@@ -748,9 +748,9 @@ ChaCha20-Poly1305, therefore is generally [considered secure](https://www.cryptr
 
 ## Other Ciphers
 
-Although [other stream ciphers](https://en.wikipedia.org/wiki/Stream_cipher#Comparison) exist, ChaCha20 is the most widely used cipher currently. Other types of symmetric encryption, such as [block ciphers](https://en.wikipedia.org/wiki/Block_cipher) are also widely used for encryption and decryption. These generally use [substitution](https://en.wikipedia.org/wiki/S-box) and [permutation](https://en.wikipedia.org/wiki/Permutation_box) boxes to diffuse the data blocks in place, instead of generating a keystream.
+Although [other stream ciphers](https://en.wikipedia.org/wiki/Stream_cipher#Comparison) exist, ChaCha20 is one of the more widely used ciphers currently, alongside [AES-GCM](https://en.wikipedia.org/wiki/Galois/Counter_Mode). This is a type of [block cipher](https://en.wikipedia.org/wiki/Block_cipher) which uses [substitution](https://en.wikipedia.org/wiki/S-box) and [permutation](https://en.wikipedia.org/wiki/Permutation_box) boxes for diffusion instead of ARX operations.
 
-Another detail that was glossed over was the secure exchange of the 256-bit keys. This entire cryptosystem relies on the secure distribution of the shared keys. It is achieved using [asymmetric key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography). This field of cryptography is quite different from the ciphers mentioned above — usually relying on the properties of [number theory](https://en.wikipedia.org/wiki/Number_theory) and [group theory](https://en.wikipedia.org/wiki/Group_theory) instead — but is equally interesting.
+A key detail that was glossed over earlier was the secure exchange of the 256-bit keys. The entirety of the cryptosystem relies on the secure distribution of the shared keys. One way this can be done is via [asymmetric key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography). This field of cryptography is quite different from the stream ciphers mentioned above — and relies more on properties of [number theory](https://en.wikipedia.org/wiki/Number_theory) and [group theory](https://en.wikipedia.org/wiki/Group_theory) instead.
 
 ---
 

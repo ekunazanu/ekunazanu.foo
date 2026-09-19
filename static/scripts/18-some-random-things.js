@@ -1,6 +1,7 @@
+const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const WIDTH = 1280
-const COLORS = getColorPalette(0.7, -0.6, 0.7, 0.9, 0.05, 0.95);
-// const COLORS = getColorPalette(2.6, 0.4, 0.7, 0.9, 0.05, 0.95);
+const COLORS = darkMode ? getColorPalette(0, 0, 0, 0.8, 0.08, 0.7) : getColorPalette(0.7, -0.6, 0.7, 0.9, 0.05, 0.95);
+const COLOR_FG = getComputedStyle(document.documentElement).getPropertyValue("--fg").trim();
 
 const altRandomFunctions = {
     "Random": () => Math.random(),
@@ -14,11 +15,14 @@ const altRandomFunctions = {
     "Random % Random": () => Math.random() % Math.random(),
 };
 
-const canvasDistributions = initializeCanvas("canvasDistributions", 1530);
-initializeCanvasText(canvasDistributions, "#000", "left");
+const canvasDistributions = initializeCanvas("canvasDistributions", 1500);
+const buttomDistributions = document.getElementById("buttonDistributions");
+initializeCanvasText(canvasDistributions, COLOR_FG, "left");
 canvasDistributions.fillText("Normalized Values", 785, 25);
 drawColorBar(canvasDistributions);
 drawFunctionDistributions(canvasDistributions, altRandomFunctions);
+buttomDistributions.innerHTML = "Refresh Distribution";
+buttomDistributions.addEventListener("click", () => { drawFunctionDistributions(canvasDistributions, altRandomFunctions); });
 
 
 // functions
@@ -38,7 +42,7 @@ function drawFunctionDistributions(canvas, functions, x = 40, y = 40, size = 10,
         randomVals = Array.from({ length: y }, () => Array.from({ length: x }, funcFunction));
         normalizedVals = normalizeValues(randomVals);
         drawHeatmap(canvas, normalizedVals, x * size, y * size, xOffset, yOffset);
-        canvas.fillStyle = "#000";
+        canvas.fillStyle = COLOR_FG;
         canvas.fillText(funcName, xOffset, yOffset + y * size + 27);
     });
 }
@@ -87,23 +91,21 @@ function getColor(rgbArray) {
     return `rgb(${r}, ${g}, ${b})`;
 }
 
-function getColorPalette(start, rotation, hue = 1, gamma = 1, dark = 0, light = 1, stops = 128) {
+function getColorPalette(start, rotation, hue = 1, gamma = 1, dark = 0, light = 1, offset = 0, stops = 128) {
     const colors = [];
-    let phi = 0;
-    let stop = 0;
     for (let i = dark; i < light; i += (light - dark) / stops) {
-        phi = 2 * Math.PI * (start / 3 + rotation * stop);
-        stop = Math.pow(i, gamma);
-        amplitude = hue * stop * (1 - stop) / 2;
+        const stop = Math.pow(i, gamma);
+        const phi = 2 * Math.PI * (start / 3 + rotation * stop);
+        const amplitude = hue * stop * (1 - stop) / 2;
+        const base = offset > 0 ? offset - stop : stop;
         colors.push([
-            stop + amplitude * (-0.14861 * Math.cos(phi) + 1.78277 * Math.sin(phi)),
-            stop + amplitude * (-0.29227 * Math.cos(phi) - 0.90649 * Math.sin(phi)),
-            stop + amplitude * (+1.97294 * Math.cos(phi))
+            base + amplitude * (-0.14861 * Math.cos(phi) + 1.78277 * Math.sin(phi)),
+            base + amplitude * (-0.29227 * Math.cos(phi) - 0.90649 * Math.sin(phi)),
+            base + amplitude * (+1.97294 * Math.cos(phi))
         ]);
     }
     return colors;
 }
-
 
 function initializeCanvas(canvasID, height, width = WIDTH) {
     const canvas = document.getElementById(canvasID).getContext("2d");

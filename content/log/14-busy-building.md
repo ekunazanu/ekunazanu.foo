@@ -12,7 +12,7 @@ thumbnailalt = "Doodle of an Among Us dead body."
 
 Endsems are over, I am back in hometown, and I am doing a little internship. Needless to say, I've been busy trying to dodge invitations and get some work done. So there's not a lot of internet-related log-apt updates for this month.
 
-![doodle of a person lying on their bed, pretending to be busy on a phone call](/media/log/sleeping-calling.avif)
+{{ <picture src="/media/log/sleeping-calling.avif" alt="doodle of a person lying on their bed, pretending to be busy on a phone call" dark="/media/log/sleeping-calling.dark.avif" /> }}
 
 But not a lot != none. First, I've decided to make an article for [SoME4](https://some.3b1b.co/). I've always enjoyed the content people made for SoME, and I feel like this year I might be able to contribute too. Would I have written an article anyway? Probably. But I think the fact that at least one person will be reading/reviewing it is making me want to elevate its quality — more than the other lab articles. Unless laziness kicks in; we'll see.
 
