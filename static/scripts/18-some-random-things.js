@@ -22,10 +22,7 @@ canvasDistributions.fillText("Normalized Values", 785, 25);
 drawColorBar(canvasDistributions);
 drawFunctionDistributions(canvasDistributions, altRandomFunctions);
 buttomDistributions.innerHTML = "Refresh Distribution";
-buttomDistributions.addEventListener("click", () => {
-    canvasDistributions.clearRect(0, 100, WIDTH, 1400);
-    drawFunctionDistributions(canvasDistributions, altRandomFunctions);
-});
+buttomDistributions.addEventListener("click", () => { drawFunctionDistributions(canvasDistributions, altRandomFunctions); });
 
 
 // functions
