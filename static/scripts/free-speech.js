@@ -4,6 +4,7 @@
 
 const WIDTH = 1280;
 const COLORS = getColors();
+const HOST = "https://words.ekunazanu.foo";
 
 const svgContainerTop = document.getElementById("svgContainerTop")
 const svgContainerDistribution = document.getElementById("svgContainerDistribution")
@@ -22,21 +23,21 @@ var topElements = [];
 var countDistribution = {};
 var currentItem = {rank: 1, count: 0, rawRank: 0};
 
-getDistribution("https://words.ekunazanu.foo/dist");
-syncChart("https://words.ekunazanu.foo", 16);
+getDistribution(`${HOST}/dist`);
+syncChart(HOST, 16);
 
 buttonRefreshTop.addEventListener('click', async function() {
-    syncChart("https://words.ekunazanu.foo", 16);
+    syncChart(HOST, 16);
 });
 
 buttonRefreshDist.addEventListener('click', async function() {
-    getDistribution("https://words.ekunazanu.foo/dist");
+    getDistribution(`${HOST}/dist`);
 });
 
 buttonAdd.addEventListener('click', async function() {
     var inputData = inputWords.value
     if (inputData == "") return;
-    postWord(inputWords.value, "https://words.ekunazanu.foo/item");
+    postWord(inputWords.value, `${HOST}/item`);
 });
 
 async function syncChart(url, n = 16) {
@@ -107,9 +108,7 @@ function sortCounts(itemsObject, n = 16) {
 function getArrays(itemsObject, countArray, elementArray, n = 16) {
     for (let i = 0; i < n; i++) {
         countArray[i] = itemsObject.top16[n - 1 - i].count
-        var byteVal = itemsObject.top16[n - 1 - i].element
-        var strgVal = new TextDecoder().decode(Uint8Array.from(byteVal));
-        elementArray[i] = strgVal
+        elementArray[i] = itemsObject.top16[n - 1 - i].element
     }
 }
 
