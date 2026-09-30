@@ -78,7 +78,8 @@ async function postWord(word, url) {
         drawDistribution(svgDistribution, svgContainerDistribution, countDistribution.distribution, countDistribution.cardinality);
         createRectangle(svgDistribution, currentItem.rawRank * 5, 0, 5, 600, null, COLORS.HIGHLIGHT);
         createRectangle(svgDistribution, currentItem.rawRank * 5, 600 - currentItem.count * 600 / countDistribution.distribution[0], 5, currentItem.count * 600 / countDistribution.distribution[0], null, COLORS.FG);
-        infoDistribution.innerHTML = `Added <mark>${word}</mark>. It appears roughly <strong>${data} times</strong>, at about the <strong>${Math.round(currentItem.rank / 255 * 100)}th percentile</strong>, with an approximate <strong>rank of ${Math.round(currentItem.rank / 255 * countDistribution.cardinality + 1)}</strong>.`;
+        infoDistribution.innerHTML = `Added <mark></mark>. It appears roughly <strong>${data} times</strong>, at about the <strong>${Math.round(currentItem.rank / 255 * 100)}th percentile</strong>, with an approximate <strong>rank of ${Math.round(currentItem.rank / 255 * countDistribution.cardinality + 1)}</strong>.`;
+        infoDistribution.querySelector("mark").textContent = word;
     })
     .catch(error => { handleServerDisconnect(); });
 }

@@ -542,7 +542,7 @@ drawOrthoArrow(canvasBitFlip, [[675, 847], [911, 847], [911, 941]]);
 drawOrthoArrow(canvasBitFlip, [[291, 847], [335, 847], [335, 705], [379, 705]]);
 
 
-let arrayChecksumPointers = [0, 0, 0, 0, 1, 0, 0];
+const arrayChecksumPointers = [0, 0, 0, 0, 1, 0, 0];
 arrayChecksumPointers[6] = calculateHash(AUTH_CIPHERSTREAM_ORIG_SHORT);
 const canvasChecksum = initializeCanvas("canvasChecksum", 460);
 const spanChecksumByte = document.getElementById("spanChecksumByte");
@@ -595,7 +595,7 @@ drawOrthoArrow(canvasMalhash, [[913, 887], [1189, 887], [1189, 933]]);
 drawArrow(canvasMalhash, true, 1, 815, 637, 769);
 
 
-let arrayKeyedhashPointers = [0, 0, 0, 0, 1, 0, 0];
+const arrayKeyedhashPointers = [0, 0, 0, 0, 1, 0, 0];
 arrayKeyedhashPointers[4] = Math.floor(Math.random() * 0xFFFFFFFF);
 arrayKeyedhashPointers[6] = calculateHash(AUTH_CIPHERSTREAM_ORIG_SHORT, arrayKeyedhashPointers[4]);
 const canvasKeyedhash = initializeCanvas("canvasKeyedhash", 460);
@@ -675,7 +675,7 @@ canvasFailhash.clearRect(1066, 393, 6, 620);
 canvasFailhash.clearRect(1074, 393, 6, 620);
 
 
-let arrayMachashPointers = [0, 0, 0, 0, 1, 0, 0];
+const arrayMachashPointers = [0, 0, 0, 0, 1, 0, 0];
 arrayMachashPointers[4] = Math.floor(Math.random() * 0xFFFFFFFF) >>> 0;
 arrayMachashPointers[5] = Math.floor(Math.random() * 0xFFFFFFFF) >>> 0;
 arrayMachashPointers[6] = calculateHash(AUTH_CIPHERSTREAM_ORIG_SHORT, arrayMachashPointers[4], arrayMachashPointers[5]);
@@ -1355,7 +1355,7 @@ function drawLetterShift(canvas, key, text, spanKey, direction = 1, secondChain 
     drawLetterChain(canvas, text, y);
     if (secondChain) drawLetterChain(canvas, ciphertext, y + 260);
     drawShiftArrows(canvas, key, Math.min(text.length, LETTERBOXLENGTH), sign(direction), y + 120);
-    if (spanKey) spanKey.innerHTML = key;
+    if (spanKey) spanKey.textContent = key;
     return ciphertext;
 }
 
