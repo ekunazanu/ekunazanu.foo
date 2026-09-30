@@ -1,0 +1,877 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1" name=viewport><meta content=ekunazanu name=author><meta content="A primer on Bloom Filters, Count-min Sketch, and HyperLogLog." name=description><meta content="Probabilistic Data Structures" property=og:title><meta content=article property=og:type><meta content="A primer on Bloom Filters, Count-min Sketch, and HyperLogLog." property=og:description><meta content=https://ekunazanu.foo/lab/probabilistic-data-structures/ property=og:url><meta content=https://ekunazanu.foo/thumbnails/lab.die.svg.png property=og:image><meta content="A die showing the face with five dots." property=og:image:alt><meta content=image/png property=og:image:type><meta content=1200 property=og:image:width><meta content=900 property=og:image:height><meta content=en_US property=og:locale><meta content=ekunazanu.foo property=og:site_name><title>Probabilistic Data Structures ~ ekunazanu.foo</title><link href=https://ekunazanu.foo/lab/probabilistic-data-structures/ rel=cannonical><link href=https://ekunazanu.foo/atom.xml rel=alternate type=application/atom+xml><link href=https://ekunazanu.foo/misc/main.css rel=stylesheet><link href=https://ekunazanu.foo/misc/favicon.png rel=icon><meta content=Zola name=generator><body><nav><ul><li><h2><a href=https://ekunazanu.foo>ekunazanu.foo</a></h2><li><a href=https://ekunazanu.foo/log>Log</a><li><a href=https://ekunazanu.foo/lab>Lab</a> ⟵</ul></nav><div class=print>https://ekunazanu.foo</div><main><article><h1>Probabilistic Data Structures</h1><p>Probabilistic data structures are what their names suggest — these are <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Data_structure target=_blank>data structures</a> that give probabilistic answers to queries. What is lost in <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Accuracy_and_precision#/media/File:Accuracy_and_precision.svg target=_blank>precision</a> however, is more than made up for in extremely efficient use of memory and/or computational resources.<h2 id=Hashing>Hashing</h2><p>A hash function is simply a mathematical function that maps an input to an output. In practice however, the output of hash functions have certain properties:<ul><li><strong>Deterministic</strong> — Hash functions produce the same output for the same input.<li><strong>Fixed Length</strong> — For any input, most hash functions produce a fixed length output.<li><strong>Pseudorandom</strong> — Most hash functions produce a hash that is <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Pseudorandomness target=_blank>pseudorandom</a>; hash outputs appear and behave random, but are ultimately deterministic.<li><strong>One-Way</strong> — For most hash functions, it is difficult to determine the input just from the output. This is useful for <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Cryptographic_hash_function target=_blank>cryptographic applications</a>; this is not necessarily useful for probabilistic data structures.<li><strong>Collision Resistant</strong> — Despite having fixed length outputs, hash functions are designed to minimize cases where two inputs output the same hash. Collisions are not impossible however, because of the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Pigeonhole_principle target=_blank>limited output space</a>.</ul><p><input id=hashBoxInput value=hello><button id=hashBoxButton>Hash</button><br> Hash: <code id=hashBoxOutput>44</code><p>Some of these properties form the basis for most probabilistic data structures.<h2 id=Bloom_Filters>Bloom Filters</h2><p>Bloom filters are one of the most popular probabilistic data structures. These are used to check for membership in sets or multisets — or in simpler words, they are used to check if an element is present in a set or not. Bloom filters cannot predict the membership of an element with absolute certainty, but it can report with certainty if it does <strong>not</strong> exist in a set. And it does it for big datasets using very little space.<h3 id=Approaches>Approaches</h3><p>Rather than outright disclosing how bloom filters work, it is much more effective to discuss possible solutions first. It will help build a natural intuition as to why bloom filters are a better approach — at least when accuracy is not a big priority.<p>Consider these elements:<div class=setContainer id=setContainerStatic></div><p>We need to know if <code>hello</code> is in the multiset. One possible solution is to store the entire multiset, and then performing a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Linear_search target=_blank>linear search</a> — going through each element one-by-one and checking if it exists.<div class=setContainer id=setContainerLinear></div><input id=setInputLinear value=hello><button id=setButtonLinear>Search</button><br><span id=setOutputLinear>Element state unknown.</span><p>Or if you’ve studied computer science, the multiset can be stored in <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Lexicographic_order target=_blank>lexicographic order</a> and then a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Binary_search_algorithm target=_blank>binary search</a> can be performed.<div class=setContainer id=setContainerBinary></div><input id=setInputBinary value=hello><button id=setButtonBinary>Search</button><br><span id=setOutputBinary>Element state unknown.</span><p>That makes querying faster, but the space required to store the elements remains the same. One way to reduce the space used could be by storing only the unique values and purging all the duplicates. Rephrased formally, the multiset can be made into a set:<div class=setContainer id=setContainerUnique></div><input id=setInputUnique value=hello><button id=setButtonUnique>Search</button><br><span id=setOutputUnique>Element state unknown.</span><p>While this is a decent solution, it can be made better. The space required is roughly dependent on the number of elements, and the size of each element. What if, instead of storing all the individual elements, only the hashes of the elements are stored instead? In this case, we will need to search for <code>44</code> — the hash for <code>hello</code>.<div class=setContainer id=setContainerHashes></div><input id=setInputHashes value=hello><button id=setButtonHashes>Search</button><br> Hash: <code id=setOutputHashesHash>44</code> <span id=setOutputHashes>Element state unknown.</span><p>Using hashes is arguably better than storing individual long variable-length elements. But it can be optimized even further. Since most hashing functions always produce a fixed length output for any input, it can be exploited to decrease the amount of space needed to store the hashes even more.<p>The above hash function produces an output between <code>0</code> and <code>255</code>. Instead of allocating arrays to store all the individual hashes, a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Bit_array target=_blank>bit-array</a> of size of 256-bits can be created to represent the existing hashes. All the bits are initially set to zero. A bit is set to one only if its corresponding hash is in the set.<p><canvas id=bfCanvasCompare></canvas><p>For example if the output hash is <code>44</code>, the 44th bit is flipped to one.<p><canvas id=bfCanvasAdd></canvas> <input id=bfInputAdd value=hello><button id=bfButtonAdd>Add</button><br> Hash: <code id=bfOutputAddHash>44</code> <span id=bfOutputAddMessage></span><details><summary>Bit ordinality</summary> <p>The n-th bit is in reference to a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Zero-based_numbering target=_blank>zero based indexing</a> system. Because the range of the hash is from 0 to 255, instead of from 1 to 256, the ‘first’ bit is considered as the 0-th bit and the ordinality of all the bits are considered as one lesser than their ‘actual’ ordinality.</p></details><p>It should be obvious that using a bit-array is analogous to storing the hash itself. But while in the previous approach multiple bits were needed to store the individual hashes, the new bit-array approach requires only one bit per hash.<p>This is what a bloom filter is. It is fundamentally a bit-array, where a bit corresponds to an individual hash output — and that hash output corresponds to an element (or more) in the set. But in ‘real’ bloom filters, multiple hash functions are used. More about why that is, is discussed later.<h3 id=Queries>Queries</h3><p>It is apparent that checking for membership of an element simply involves verifying if the hash exists — checking if the corresponding bit in the bit-array is set to one. So to query an element: It is first hashed, and then the bit corresponding to its hash is checked to see if it is set (to one).<p><canvas id=bfCanvasQuery></canvas> <input id=bfInputQuery value=hello><button id=bfButtonQuery>Search</button><br> Hash: <code id=bfOutputQueryHash>44</code> <span id=bfOutputQueryMessage></span><h3 id=Hash_Collisions>Hash Collisions</h3><p>While hash functions are designed to be collision resistant, they are not collision proof. Sometimes two elements may have the same hash. In such cases, an element that was added may have the same hash as a different element being queried, leading to a false positive.<p>For example, <code>hello</code> having the hash <code>44</code> is added in the bloom filter. Another word, <code>foo</code> might have the same hash <code>44</code>. If the bloom filter is queried for <code>foo</code>, it would wrongly report that <code>foo</code> exists in the set since the 44th bit in the bit-array is already set to one by a different word — <code>hello</code>.<p><canvas id=bfCanvasCollision></canvas> <input id=bfInputCollisionAdd value=hello><button id=bfButtonCollisionAdd>Add</button><br> <input id=bfInputCollisionQuery value=foo><button id=bfButtonCollisionQuery>Search</button><br> Hash: <code id=bfOutputCollisionHash>44</code> <span id=bfOutputCollisionMessage></span><p>To reduce the probability of collisions, multiple hash functions can be used for each element. In that case, querying an element will return true only if <strong>all</strong> bits corresponding to the hashes are one.<p><canvas id=bfCanvasMultiple></canvas> <input id=bfInputMultipleAdd value=hello><button id=bfButtonMultipleAdd>Add</button><br> <input id=bfInputMultipleQuery value=foo><button id=bfButtonMutlipleQuery>Search</button><br> <input id=bfInputMultipleSlider type=range><br> Hash depth: <span id=bfOutputMultipleHashDepth>3</span><br> Hash: <code id=bfOutputMultipleHash>44, 242, 77</code> <span id=bfOutputMultipleMessage></span><details><summary>Universal hashing</summary> <p>The hash depth refers to the number of hash functions used. The output of the hash functions should be randomly distributed and should not be correlated to each other. Formally, the hash functions should be selected from a <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Universal_hashing target=_blank>universal family</a>, and should ideally be <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Pairwise_independence target=_blank>pairwise independent</a>. These assumptions are used when calculating the probability of collisions when using multiple hash functions.</p></details><p>The probability of two elements having the same hash outputs is <code>1/m</code> where <code>m</code> is the size of the bloom filter. However, if two hash functions are used for every element, the probability of two elements having the same hash outputs is roughly <code>1/m * 1/m</code>. In general, using more hashing functions exponentially decreases the probability that <strong>all</strong> the hash outputs of two elements will collide.<p>However using too many hashing functions can also increase the false positive rate. It might feel counter-intuitive, especially right after showing it <em>decreases</em> false positives, but consider this: The bloom filter is finite. The more the number of hash functions, the higher the probability that it fills up quickly and most bits are set to one. When querying from a bloom filter where most bits are set to one, the higher the probability that <em>any</em> query results in a positive — even if the element is not in the set.<p>In the extreme case when all the bits in a bloom filter are set to one, the bloom filter would <strong>always</strong> report positive for membership — regardless of whether the element actually exists in the set.<p><canvas id=bfCanvasSaturated></canvas> <input id=bfInputSaturatedQuery value=confusion><button id=bfButtonSaturatedQuery>Search</button><br> Hash: <code id=bfOutputSaturatedHash>50, 200, 112</code> <span id=bfOutputSaturatedMessage></span><p>Other than using a large number of hashing functions, a bloom filter can also be quickly saturated if the number elements to be hashed (added) is huge. The only solution to decreasing the number of false positives then, is by increasing the size of the bloom filter itself. Increasing the size of the bloom filter bit-array equates to a larger output space for the hash functions, reducing the probability for collisions.<p>In effect, the false positive rate is also dependent on the <strong>size of the bloom filter</strong> and the <strong>number of (unique) elements</strong> to be added.<h3 id=Space_Efficiency>Space Efficiency</h3><p>The false positive rate depends on the number of hash functions used per element, the number of elements hashed/added, and the size of the bloom filter. Conversely, the size of the bloom filter and the ideal number of hash functions depends on the tolerance for false positives and the number elements to be added.<p>More precisely, the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Bloom_filter#Optimal_number_of_hash_functions target=_blank>optimal size for a bloom filter</a> is <code>-2.08·ln(p)·n</code> bits, where <code>p</code> is the tolerance for the false positive rate and <code>n</code> is the number of unique elements one expects to observe. The <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Bloom_filter#Optimal_number_of_hash_functions target=_blank>optimal number of hash functions</a> is <code>ln(2)·(m/n)</code>, where <code>m</code> is the size of the bloom filter and <code>n</code> is the number of expected elements. Thomas Hurst visualizes how the factors affect each other in his <a rel="noopener nofollow noreferrer external" href=https://hur.st/bloomfilter/ target=_blank>bloom filter calculator</a>.<h3 id=Deletion>Deletion</h3><p>Deletions can be achieved by unsetting the bits corresponding to the hash of the element to be deleted, to zero. But if one of the bits was previously set by some different element, then checking membership for that element would lead to a false negative.<p><canvas id=bfCanvasDeletion></canvas> <input id=bfInputDeletionAdd value=hello><button id=bfButtonDeletionAdd>Add</button><br> <input id=bfInputDeletionRemove value=foo><button id=bfButtonDeletionRemove>Remove</button><br> <input id=bfInputDeletionQuery value=hello><button id=bfButtonDeletionQuery>Search</button><br> Hash: <code id=bfOutputDeletionHash>44, 242, 77</code> <span id=bfOutputDeletionMessage></span><br><p>The general consensus is to forbid deletions in bloom filters to remove the possibility of getting false negatives.<h2 id=Count-Min_Sketch>Count-Min Sketch</h2><p>A count-min sketch is a probabilistic data structure that calculates the multiplicity (the number of occurrences) of elements in a multiset. It is what a bloom filter would have been if it was a frequency table instead.<h3 id=Counting_Bloom_Filter>Counting Bloom Filter</h3><p>Count-min sketches are very similar to bloom filters, so it’s helpful to start off with a bloom filter.<p><canvas id=bfCanvasCounting></canvas> <input id=bfInputCounting value=hello><button id=bfButtonCountingAdd>Add</button><button id=bfButtonCountingQuery>Search</button><br> Hash: <code id=bfOutputCountingHash>44, 242, 77</code> <span id=bfOutputCountingMessage></span><br><p>Now, instead of using one bit per hash, what if a few more bits (per hash) were used?<p><canvas id=cmsCanvasComparisonStatic></canvas><p>A way to utilize the extra bits is by using them as ‘counters’ to store information about frequency — the bit-counter can be incremented by one whenever a hash (an element) is added. This expands the ability of the array from being able to only store information about the <strong>existence</strong> of an element to store information about its <strong>frequency</strong> as well.<p><canvas id=cmsCanvasComparison></canvas> <input id=cmsInputComparison value=hello><button id=cmsButtonComparisonAdd>Add</button><button id=cmsButtonComparisonQuery>Search</button><br> Hash: <code id=cmsOutputComparisonHash>44, 242, 77</code><br> Bloom Filter: <span id=cmsOutputComparisonMessage>-</span><br> Counting Bloom Filter: <span id=cmsOutputComparisonValues>-</span><br><p>The array on top is a bloom filter, which only only be used for binary queries — that is, whether it exists or not. The array below the bloom filter is a counting bloom filter which can give slightly richer information in the form of frequency estimates.<p>Hash collisions are again possible in counting bloom filters, which increase the counters of other elements. The frequency of an element is calculated by taking the minimum of the values in the hash counters to minimize the overestimation. However, as there is no way to under-count, the minimum of the values is the necessarily the upper bound of the estimate — the true frequency is guaranteed to be equal or lower than the estimate.<p>As an example, try adding both <code>hello</code> and <code>foo</code> and notice how the 44th counter is affected. The counter increases to two. If the 44th counter is the only counter used for calculating the estimate, it would over-count the frequency of both elements. However, using more hashes and counters can decrease the probability of over-counting — but only when the minimum of the counters is used for estimation.<p><canvas id=cmsCanvasMain></canvas> <input id=cmsInputMain value=hello><button id=cmsButtonMainAdd>Add</button><button id=cmsButtonMainQuery>Search</button><br> Hash: <code id=cmsOutputMainHash>44, 242, 77</code><br> Counters: <span id=cmsOutputMainValues>0, 0, 0</span><br> Frequency estimate: <span id=cmsOutputMainEstimate>0</span> <span id=cmsOutputMainMessage style=display:none></span><p>The only possible way counters can under-count is when they <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Integer_overflow target=_blank>overflow</a> and reset back to zero. Here, four bits are used per hash so the counter will overflow when the count exceeds fifteen. This is not a big issue however, since the number of bits per counter can easily be increased a little — even thirty-two bits for each counter is enough for storing frequency estimates up to more than four billion.<h3 id=Hash_Collisions-1>Hash Collisions</h3><p>To reduce over-counting, hash collisions should be reduced. Two approaches used in bloom filters can be applied: By increasing the size of the array, and using multiple hash functions. The solutions might look plausible on the surface because of the counting bloom filter’s similarities to a bloom filter, but that is not the case — or at least, it is not that simple.<p>The first solution is easy to verify and is intuitive to follow. Increasing the size of the array increases the range of the hash functions, reducing collisions. Just like bloom filters, discussed above. The second approach however, does reduce errors. In fact it leads to <em>slightly</em> higher errors.<p>It’s important to mention that in both bloom filters and counting bloom filters, increasing the number of hash functions per element increases the probability of a collision. But in the case of bloom filters, any hash collision did not change the value of a bit in the bloom filter itself — it would be set to one regardless. In fact hash collisions <a rel="noopener nofollow noreferrer external" href=https://stackoverflow.com/a/72509014 target=_blank>decrease overall error</a> by preventing the bloom filter from getting saturated too quickly.<p>Compare that to a counting bloom filter, where every collision increases the value of the counter by one. Having more hashing function increases the probability of collisions, and therefore, over-counting. The probability of over-counting an element only increases as the number of hash functions per element increases.<p>Notice how collisions do not affect the bits that are already set in the bloom filter, but affects the bits of the counting bloom filter:<p><canvas id=cmsCanvasComparisonErrors></canvas> <input id=cmsInputComparisonErrors value=foo><button id=cmsButtonComparisonErrorsAdd>Add</button><br> <code id=cmsOutputComparisonErrorsHash style=display:none>44, 242, 77</code> <span id=cmsOutputComparisonErrorsMessage style=display:none> </span> <span id=cmsOutputComparisonErrorsValues style=display:none>0, 0, 0</span> <input id=cmsInputComparisonErrorsSlider type=range><br> Hash depth: <span id=cmsOutputComparisonErrorsHashDepth>32</span><br><p>The solution to reducing errors then would be to increase the size of the array and to minimize the number hash functions. And while that is acceptable, there are better ways to go about it.<h3 id=Disjoint_Hash_Ranges>Disjoint Hash Ranges</h3><p>There is an upside in using multiple hash functions — while querying the frequency of an element, it gets exponentially less probable that the <strong>all</strong> hashes of <strong>one</strong> element will collide. The downside to using more hash functions is that it increases <strong>overall</strong> collisions, which leads to over-counting and less precise estimates.<p>A simple way to resolve the downside is by assigning the output of each hash function to separate output spaces. This prevents from collisions between hash functions. That is, while collisions from different elements having the same hashes are possible, collisions between different hash functions are now impossible.<p><canvas id=cmsCanvasDifferentRange></canvas><p>The resulting data structure is a count-min sketch. It can also be thought of as a two dimensional array with <code>w</code> columns and <code>d</code> rows — where <code>d</code> is the total number of hash functions and <code>w</code> is the range for the hash outputs. Each hash function outputs to their respective row, and the hash functions are again assumed to be pairwise independent.<p>Here, the count-min sketch is thirty two counters wide and eight hashes deep.<p><canvas id=cmsCanvasSketch></canvas> <input id=cmsInputSketch value=hello><button id=cmsButtonSketchAdd>Add</button><button id=cmsButtonSketchQuery>Search</button><br> Hash: <code id=cmsOutputSketchHash>12, 50, 77, 122, 159, 176, 195, 238</code><br> Counters: <span id=cmsOutputSketchValues>0, 0, 0, 0, 0, 0, 0, 0</span><br> Frequency estimate: <span id=cmsOutputSketchEstimate>0</span><br> <span id=cmsOutputSketchMessage style=display:none></span><p>The count-min sketch is capable of answering more than simple frequency queries. It can also respond to <a href="https://cs.stanford.edu/~rishig/courses/ref/l12b.pdf#page=5" rel="noopener nofollow noreferrer external" target=_blank>range and inner-product queries</a>.<h3 id=Space_Efficiency-1>Space Efficiency</h3><p>Similar to bloom filters, the space required by a count-min sketch depends on <a href="http://dimacs.rutgers.edu/~graham/pubs/papers/cmsoft.pdf#page=4" rel="noopener nofollow noreferrer external" target=_blank>the tolerance for error and the number of expected elements</a>. The optimal width of the array <code>w</code> is <code>2n/ε</code> and depth <code>d</code> is <code>log(δ)/log(1/2)</code> — where <code>n</code> is the number of total elements, <code>ε</code> defines the bounds for collisions, and <code>δ</code> is the probability the estimates exceeds those bounds.<h2 id=HyperLogLog>HyperLogLog</h2><p>HyperLogLog is another probabilistic data structure, used to approximate the cardinality (or total number of distinct elements) of a multiset. It is different from a bloom filter and a count-min sketch, and relies on the pseudorandomness of hash functions to estimate cardinalities.<h3 id=Probability>Probability</h3><p>Consider this thought experiment: Take a few coins where each coin has an equal probability of landing on heads or tails, and toss them all at once. The probability that the first coin is heads is half, or 1/2. The probability that both the first and second coin are heads is 1/4. The probability that all the first three first coins are heads is 1/8. In general, the probability that the first n coins are heads is one in 2^n.<p><canvas id=hllCanvasCoinProbability></canvas><p>Phrased alternatively, roughly 2^n total tosses are required to observe a maximum of n consecutive leading heads at the beginning of the coin array.<p><canvas id=hllCanvasCoinObservation></canvas> Leading heads: <span id=hllOutputCoinObservationZeros>0</span><br> Max. leading heads: <span id=hllOutputCoinObservationZerosMax>0</span><br> Total tosses: <span id=hllOutputCoinObservationTosses>0</span><br> <button id=hllButtonCoinObservationToss>Toss coins</button><button id=hllButtonCoinObservationReset>Reset count</button><p>Conversely, if shown n consecutive heads at the beginning of the sequence, it can be estimated that the coins were tossed roughly 2^n times.<p><canvas id=hllCanvasCoinEstimation></canvas> Leading heads: <span id=hllOutputCoinEstimationZeros>0</span><br> Max. leading heads: <span id=hllOutputCoinEstimationZerosMax>0</span><br> Estimated tosses: <span id=hllOutputCoinEstimationEstimate>0</span><br> Total tosses: <span id=hllOutputCoinEstimationTosses>0</span><br> <button id=hllButtonCoinEstimationToss>Toss coins</button><button id=hllButtonCoinEstimationReset>Reset count</button><p>The maximum number of consecutive leading heads provides a rough estimate for the number of times the coins were tossed.<p>This is the fundamental principle behind HyperLogLog. Coins are replaced with bits — a hash function is chosen such that output is pseudorandom. Then each bit of the hash acts as an unbiased coin, having an equal probability of being 0 or 1. Analogous to the total number of tosses, the total number of elements can be estimated using the longest run of consecutive leading zeroes of their hashes.<p><canvas id=hllCanvasBits></canvas> Leading zeros: <span id=hllOutputBitsZeros>0</span><br> Max. leading zeros: <span id=hllOutputBitsZerosMax>0</span><br> Estimated cardinality: <span id=hllOutputBitsEstimate>0</span><br> Actual cardinality: <span id=hllOutputBitsCardinality>0</span><br> <input id=hllInputBitsAdd value=hello><button id=hllButtonBitsAdd>Add</button><br> <button id=hllButtonBitsRandom>Add random</button><button id=hllButtonBitsReset>Reset count</button><p>Since hashes are deterministic, duplicate elements will yield the same hashes and would not affect the cardinality calculation. So HyperLogLog estimates the number of <strong>distinct</strong> elements in a multiset.<h3 id=Limitations>Limitations</h3><p>There is a glaring flaw in this approach however. The gaps between the approximations double every time an extra consecutive zero is observed — it can only provide estimates that are powers of two, and nothing in between. Second, a hash output may have a lot of consecutive zeros at the beginning simply owing to chance, skewing the estimate.<p>To mitigate these problems, multiple counters that store the longest run of zeroes for different subsets of the multiset can be used — instead of storing one counter that stores the longest run of zeroes for the entire multiset. The values can then be averaged to find a more precise cardinality estimate.<h3 id=Buckets>Buckets</h3><p>A multiset is segregated into different subsets using ‘<a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Hash_table#/media/File:Hash_table_3_1_1_0_1_0_0_SP.svg target=_blank>buckets</a>’. In HyperLogLog, a bucket is just a counter for storing the length of the longest run of zeroes of hashes for some particular subset of elements. The first <code>b</code> bits of the hash of an element are reserved for selecting the bucket, and the remaining bits are used for finding the leading zeros. The number of leading zeroes are then used to compute the cardinality estimate for that subset. Cardinality for the entire multiset can be calculated by finding the average of the individual estimates using the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Harmonic_mean target=_blank>harmonic mean</a>.<p>Here, the bucket is chosen from the first four bits of the hash.<p><canvas id=hllCanvasBucket></canvas> Bucket: <span id=hllOutputBucketNumber>0</span><br> Leading zeros: <span id=hllOutputBucketZeros>0</span><br> Buckets (max. leading zeros): <span id=hllOutputBucketZerosMax>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br> Estimated cardinalities: <span id=hllOutputBucketEstimates>1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1</span><br> Average estimate: <span id=hllOutputBucketMean>0</span><br> Actual cardinality: <span id=hllOutputBucketCardinality>0</span><br> <input id=hllInputBucketAdd value=foo><button id=hllButtonBucketAdd>Add</button><br> <button id=hllButtonBucketRandom>Add random</button><button id=hllButtonBucketReset>Reset count</button><details open><summary>Averaging estimates</summary> <p>The addition of new buckets ‘spreads’ the cardinality over all the buckets. However, the bucket quantity information is lost during averaging, and the estimates gets scaled down by the number of buckets. To counteract this, the harmonic mean is scaled by the number of buckets. That is, if there are <code>m</code> buckets, the estimate is <code>m * mean</code>.</p> <p>The harmonic mean is used for averaging because it reduces the influence of large outliers and has shown to be more accurate.</p></details><p>However, even with the corrective measures, there is a <a rel="noopener nofollow noreferrer external" href=https://www.moderndescartes.com/essays/hyperloglog/#loglog target=_blank>predictable bias</a> towards larger estimates. Scaling the average by a correction factor counteracts this bias. This brings down the <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Standard_error target=_blank>error</a> to 1.04/√m, where m is the number of buckets.<p>Sixteen buckets are used here, and so the standard error is approximately 0.26.<p><canvas id=hllCanvasMain></canvas> Bucket: <span id=hllOutputMainNumber>0</span><br> Leading zeros: <span id=hllOutputMainZeros>0</span><br> Buckets: <span id=hllOutputMainZerosMax>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br> Estimated cardinalities: <span id=hllOutputMainEstimates>1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1</span><br> Average estimate: <span id=hllOutputMainMean>0</span><br> Scaled estimate: <span id=hllOutputMainScaled>0</span><br> Actual cardinality: <span id=hllOutputMainCardinality>0</span><br> <input id=hllInputMainAdd value=foo><button id=hllButtonMainAdd>Add</button><br> <button id=hllButtonMainRandom>Add random</button><button id=hllButtonMainReset>Reset count</button><br> <button id=hllButtonMainRandomK>Add 100 random elements</button><details open><summary>Correction factor</summary> <p>The correction factor ranges between 0.672 and 0.723, depending on the number of buckets. It is approximately equal to <code>0.723/(1+1.079/m)</code> where <code>m</code> is the number of buckets.</p></details><p>This is HyperLogLog. A very simple and elegant data structure that is also ridiculously efficient. Adding elements involves hashing them and storing their longest run of leading zeroes in buckets. Estimating the cardinality involves finding the harmonic mean of the estimates, scaled by the number of buckets and a correction factor.<h3 id=Space_Efficiency-2>Space Efficiency</h3><p>The only thing needed (to store) for calculating the cardinality are the buckets. So the total amount of space required is the number of buckets times the size of each bucket. The number of buckets depends on the degree of accuracy required — the error rate is inversely proportional to the square root of the number of buckets. More buckets lead to more accurate estimates and vice versa.<p>The size of each bucket depends on the largest number that must be stored in the bucket (before it overflows). A five-bit bucket can store numbers from zero to thirty-one. A hash with thirty-one leading zeroes in a hash suggests roughly two billion unique elements were hashed. So to store cardinalities of up to two billion unique elements, the size of each bucket only needs to be five bits. In general, to store cardinality of <code>n</code> unique elements, the size of each bucket needs to be <code>log(log(n))</code> bits. That is also where its name comes from.<p><canvas id=hllCanvasLogSpace></canvas><p>For example, HyperLogLog is able to estimate cardinalities of more than a billion unique elements with an an error of 2% using 2500 five-bit buckets — only 1.5 kB of memory. Or alternatively, just 0.25 kB for an error of 5% using 400 buckets.<h2 id=Other_Data_Structures>Other Data Structures</h2><p>There are lots of other probabilistic data structures that trade accuracy for efficiency. <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Cuckoo_filter target=_blank>Cuckoo filters</a> and <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Quotient_filter target=_blank>quotient filers</a> are probabilistic data structures used for membership queries, in addition to bloom filters. Estimating distinct elements can be done via <a rel="noopener nofollow noreferrer external" href=https://doi.org/10.1145/78922.78925 target=_blank>linear counting</a> — like HyperLogLog — but the underlying principle is similar to bloom filters. Rank can be approximated using <a rel="noopener nofollow noreferrer external" href=https://doi.org/10.48550/arXiv.1902.04023 target=_blank>t-digests</a>, or <a rel="noopener nofollow noreferrer external" href=https://doi.org/10.48550/arXiv.1603.05346 target=_blank>KLL sketches</a>. Similarities can be estimated using <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/Locality-sensitive_hashing target=_blank>LSH</a>, <a rel="noopener nofollow noreferrer external" href=https://en.wikipedia.org/wiki/MinHash target=_blank>MinHash</a>, and <a rel="noopener nofollow noreferrer external" href=https://doi.org/10.1145/509907.509965 target=_blank>SimHash</a>.<p>There are other probabilistic data structures too, each with their own advantages and disadvantages. But the trade off is similar in all cases — precision for efficiency.<hr><h2 id=References>References</h2><ul><li>Florian Hartmann: <a rel="noopener nofollow noreferrer external" href=https://florian.github.io/bloom-filters/ target=_blank>Bloom Filters</a><li>Eric Crahen: <a rel="noopener nofollow noreferrer external" href=https://crahen.github.io/algorithm/stream/count-min-sketch-point-query.html target=_blank>Count-Min Sketching, Configuration & Point-Queries</a><li>Engineering at Meta: <a rel="noopener nofollow noreferrer external" href=https://engineering.fb.com/2018/12/13/data-infrastructure/hyperloglog/ target=_blank>HyperLogLog in Presto: A significantly faster way to handle cardinality estimation</a></ul><script>// A lot of this code can be refactored to follow the DRY principles
+// But this is the first time I am writing JS and learning as I go
+// So this code might look very ugly; if you think it is the case
+// send PRs, since I am too lazy to return back to refactor it myself
+
+const WIDTH = 1280;
+const LINEWIDTH = 2;
+const ARROW_SIZE = 10;
+const GRID_CELL_SIZE = 38;
+const GRID_CELL_PADDING = 2;
+const GRID_SUB_CELL_LENGTH = 2;
+const GRID_SUB_CELL_SIZE = GRID_CELL_SIZE / GRID_SUB_CELL_LENGTH;
+const GRID_ROWS = 8;
+const GRID_COLS = 32;
+const GRID_X_OFFSET = 5;
+const GRID_Y_OFFSET = 5;
+const MAX_CELL_SUBS = GRID_SUB_CELL_LENGTH ** 2;
+const MAX_COUNT = 2 ** (GRID_SUB_CELL_LENGTH ** 2);
+
+const COLORS = getColors();
+
+
+const encoder = new TextEncoder();
+
+
+// first hash box
+const hashBoxButton = document.getElementById("hashBoxButton");
+hashBoxButton.onclick = async() => {
+    const hashBoxInput = document.getElementById("hashBoxInput").value;
+    const hash = await getHash(hashBoxInput);
+    document.getElementById("hashBoxOutput").innerHTML = hash[0];
+}
+
+// search sets
+const setArrayMain = ["world", "firm", "bat", "if", "glance", "analysis", "reasonable", "resident", "verdict", "world", "snub", "greet", "snub", "half", "speed", "exception", "speed", "helmet", "theorist", "please", "operational", "hello", "nursery", "background", "appreciate", "congress", "verdict", "dictionary", "current", "nursery", "snub", "piece", "dilute", "elapse", "congress", "verdict", "confusion", "fan", "breast", "sting", "disagreement", "helmet", "tape"];
+const setArrayHashes = [4, 17, 23, 32, 33, 35, 44, 47, 50, 52, 56, 61, 72, 77, 83, 86, 93, 117, 132, 137, 139, 147, 151, 161, 162, 187, 202, 213, 226, 231, 243, 244];
+const setArraySorted = setArrayMain.toSorted();
+const setArrayUnique = [... new Set(setArraySorted)];
+
+setHTML("setContainerStatic", setArrayMain.join(" "));
+setHTML("setContainerLinear", renderSpans(setArrayMain, "setSpanLinear"));
+setHTML("setContainerBinary", renderSpans(setArraySorted, "setSpanBinary"));
+setHTML("setContainerUnique", renderSpans(setArrayUnique, "setSpanUnique"));
+setHTML("setContainerHashes", renderSpans(setArrayHashes, "setSpanHashes"));
+
+setupSearchButton("setButtonLinear", "setInputLinear", (target, button) =>
+    linearSearch("setContainerLinear", target, setArrayMain, "setOutputLinear", button)
+);
+setupSearchButton("setButtonBinary", "setInputBinary", (target, button) =>
+    binarySearch("setContainerBinary", target, setArraySorted, "setOutputBinary", "Binary", button)
+);
+setupSearchButton("setButtonUnique", "setInputUnique", (target, button) =>
+    binarySearch("setContainerUnique", target, setArrayUnique, "setOutputUnique", "Unique", button)
+);
+setupSearchButton("setButtonHashes", "setInputHashes", async(target, button) => {
+    const hash = await getHash(target);
+    document.getElementById("setOutputHashesHash").innerHTML = hash[0];
+    await binarySearch("setContainerHashes", hash[0], setArrayHashes, "setOutputHashes", "Hashes", button);
+});
+
+
+// bloom filter static expanded
+const bfArrayCompareBlocksBF = new Array(32).fill(0);
+const bfCanvasCompare = initializeCanvas("bfCanvasCompare", 460);
+const bfArrayCompareGridsYOffsets = [145, 235, 385];
+const bfArrayCompareIndexOffsets = [0, 32, 224];
+const bfArrayCompareNumbers = [4, 17, 23];
+const bfArrayCompareGridsXOffsets = [5, 499, 841];
+const bfArrayCompareNumberXOffsets = [330, 474, 1170];
+const bfArrayCompareBlocks = [[4, 17, 23], [0, 1, 3, 12, 15, 18, 20, 24, 29], [2, 7, 19, 20]];
+initializeCanvasText(bfCanvasCompare, "center", "20px JetBrains Mono");
+for (let i = 0; i < bfArrayCompareGridsYOffsets.length; i++) {
+    bfArrayCompareBlocksBF.fill(0);
+    bfArrayCompareBlocks[i].forEach(i => { bfArrayCompareBlocksBF[i] = 1; });
+    const binaryString = bfArrayCompareNumbers[i].toString(2).padStart(8, '0');
+    const binaryArray = [...binaryString].map(Number);
+    drawGridBlocks(bfCanvasCompare, bfArrayCompareBlocksBF, COLORS.FG, bfArrayCompareGridsYOffsets[i], GRID_X_OFFSET, 1);
+    drawGridBlocks(bfCanvasCompare, binaryArray, COLORS.FG, 5, bfArrayCompareGridsXOffsets[i], 1, 8);
+    bfCanvasCompare.fillText(bfArrayCompareNumbers[i], bfArrayCompareNumberXOffsets[i], 25);
+    if (i === 2) bfCanvasCompare.font = "16px JetBrains Mono";
+    for (let j = 0; j < 32; j++)
+        bfCanvasCompare.fillText(j + bfArrayCompareIndexOffsets[i], j * 38 + 24, bfArrayCompareGridsYOffsets[i] + 56);
+}
+bfCanvasCompare.font = "28px JetBrains Mono";
+bfCanvasCompare.fillText("...", 630, 334);
+drawArrowBracket(bfCanvasCompare, 5, 309, 175, 55, 115);
+drawArrowBracket(bfCanvasCompare, 499, 803, 671, 55, 115);
+drawArrowBracket(bfCanvasCompare, 841, 1145, 899, 55, 115);
+
+
+// bloom filter add/query
+const bfArrayAddQuery = new Array(256).fill(0);
+const bfCanvasAdd = initializeCanvas("bfCanvasAdd", 320);
+const bfCanvasQuery = initializeCanvas("bfCanvasQuery", 320);
+const bfButtonAdd = document.getElementById("bfButtonAdd");
+const bfButtonQuery = document.getElementById("bfButtonQuery");
+bfButtonAdd.onclick = async() => {
+    await BFMSHelper(bfArrayAddQuery, bloomFilterAdd, "bfInputAdd", "bfOutputAddHash", "bfOutputAddMessage", 1);
+    drawGridBlocks(bfCanvasAdd, bfArrayAddQuery);
+    drawGridBlocks(bfCanvasQuery, bfArrayAddQuery);
+};
+bfButtonQuery.onclick = async() => {
+    const varBfAddQueryFound = await BFMSHelper(bfArrayAddQuery, bloomFilterQuery, "bfInputQuery", "bfOutputQueryHash", "bfOutputQueryMessage", 1, "", true, bfCanvasQuery);
+    document.getElementById("bfOutputQueryMessage").innerHTML = varBfAddQueryFound ? "<b>Element found</b>." : "Element not found.";
+    drawGridBlocks(bfCanvasQuery, bfArrayAddQuery);
+}
+drawGridBlocks(bfCanvasAdd, bfArrayAddQuery);
+drawGridBlocks(bfCanvasQuery, bfArrayAddQuery);
+
+
+const bfArrayCollision = new Array(256).fill(0);
+const bfCanvasCollision = initializeCanvas("bfCanvasCollision", 320);
+const bfButtonCollisionAdd = document.getElementById("bfButtonCollisionAdd");
+const bfButtonCollisionQuery = document.getElementById("bfButtonCollisionQuery");
+bfButtonCollisionAdd.onclick = async() => {
+    await BFMSHelper(bfArrayCollision, bloomFilterAdd, "bfInputCollisionAdd", "bfOutputCollisionHash", "bfOutputCollisionMessage", 1);
+    drawGridBlocks(bfCanvasCollision, bfArrayCollision);
+};
+bfButtonCollisionQuery.onclick = async() => {
+    const varCollisionFound = await BFMSHelper(bfArrayCollision, bloomFilterQuery, "bfInputCollisionQuery", "bfOutputCollisionHash", "bfOutputCollisionMessage", 1, "", true, bfCanvasCollision);
+    document.getElementById("bfOutputCollisionMessage").innerHTML = varCollisionFound ? "<b>Element found</b>." : "Element not found.";
+    drawGridBlocks(bfCanvasCollision, bfArrayCollision);
+}
+drawGridBlocks(bfCanvasCollision, bfArrayCollision);
+
+
+let bfHashDepth = 3;
+const bfArrayMultiple = new Array(256).fill(0);
+const bfCanvasMultiple = initializeCanvas("bfCanvasMultiple", 320);
+const bfInputMultipleSlider = initializeSliders("bfInputMultipleSlider", 1, 10, 1, bfHashDepth);
+const bfOutputMultipleHashDepth = document.getElementById("bfOutputMultipleHashDepth");
+const bfButtonMultipleQuery = document.getElementById("bfButtonMutlipleQuery");
+const bfButtonMultipleAdd = document.getElementById("bfButtonMultipleAdd");
+bfInputMultipleSlider.addEventListener("change", function() {
+    bfHashDepth = bfInputMultipleSlider.value;
+    bfOutputMultipleHashDepth.innerHTML = bfInputMultipleSlider.value
+});
+bfButtonMultipleAdd.onclick = async() => {
+    await BFMSHelper(bfArrayMultiple, bloomFilterAdd, "bfInputMultipleAdd", "bfOutputMultipleHash", "bfOutputMultipleMessage", bfHashDepth);
+    drawGridBlocks(bfCanvasMultiple, bfArrayMultiple);
+};
+bfButtonMultipleQuery.onclick = async() => {
+    const varMultipleFound = await BFMSHelper(bfArrayMultiple, bloomFilterQuery, "bfInputMultipleQuery", "bfOutputMultipleHash", "bfOutputMultipleMessage", bfHashDepth, "", true, bfCanvasMultiple);
+    document.getElementById("bfOutputMultipleMessage").innerHTML = varMultipleFound ? "<b>Element found</b>." : "Element not found.";
+    drawGridBlocks(bfCanvasMultiple, bfArrayMultiple);
+}
+drawGridBlocks(bfCanvasMultiple, bfArrayMultiple);
+
+
+const bfArraySaturated = new Array(256).fill(1);
+const bfCanvasSaturated = initializeCanvas("bfCanvasSaturated", 320);
+const bfButtonSaturatedQuery = document.getElementById("bfButtonSaturatedQuery");
+bfButtonSaturatedQuery.onclick = async() => {
+    await BFMSHelper(bfArraySaturated, bloomFilterQuery, "bfInputSaturatedQuery", "bfOutputSaturatedHash", "bfOutputSaturatedMessage", 3, "", true, bfCanvasSaturated);
+    document.getElementById("bfOutputSaturatedMessage").innerHTML = "<b>Element found</b>.";
+    drawGridBlocks(bfCanvasSaturated, bfArraySaturated);
+}
+drawGridBlocks(bfCanvasSaturated, bfArraySaturated);
+
+
+const bfArrayDeletion = new Array(256).fill(0);
+const bfCanvasDeletion = initializeCanvas("bfCanvasDeletion", 320);
+const bfButtonDeletionAdd = document.getElementById("bfButtonDeletionAdd");
+const bfButtonDeletionQuery = document.getElementById("bfButtonDeletionQuery");
+const bfButtonDeletionRemove = document.getElementById("bfButtonDeletionRemove");
+bfButtonDeletionAdd.onclick = async() => {
+    await BFMSHelper(bfArrayDeletion, bloomFilterAdd, "bfInputDeletionAdd", "bfOutputDeletionHash", "bfOutputDeletionMessage", 3);
+    drawGridBlocks(bfCanvasDeletion, bfArrayDeletion);
+};
+bfButtonDeletionRemove.onclick = async() => {
+    await BFMSHelper(bfArrayDeletion, bloomFilterRemove, "bfInputDeletionRemove", "bfOutputDeletionHash", "bfOutputDeletionMessage", 3, "Element removed.", true, bfCanvasDeletion, COLORS.RED);
+    drawGridBlocks(bfCanvasDeletion, bfArrayDeletion);
+}
+bfButtonDeletionQuery.onclick = async() => {
+    const varDeletionFound = await BFMSHelper(bfArrayDeletion, bloomFilterQuery, "bfInputDeletionQuery", "bfOutputDeletionHash", "bfOutputDeletionMessage", 3, "", true, bfCanvasDeletion);
+    document.getElementById("bfOutputDeletionMessage").innerHTML = varDeletionFound ? "<b>Element found</b>." : "Element not found.";
+    drawGridBlocks(bfCanvasDeletion, bfArrayDeletion);
+}
+drawGridBlocks(bfCanvasDeletion, bfArrayDeletion);
+
+
+const bfArrayCounting = new Array(256).fill(0);
+const bfCanvasCounting = initializeCanvas("bfCanvasCounting", 320);
+const bfButtonCountingAdd = document.getElementById("bfButtonCountingAdd");
+const bfButtonCountingQuery = document.getElementById("bfButtonCountingQuery");
+bfButtonCountingAdd.onclick = async() => {
+    await BFMSHelper(bfArrayCounting, bloomFilterAdd, "bfInputCounting", "bfOutputCountingHash", "bfOutputCountingMessage", 3);
+    drawGridBlocks(bfCanvasCounting, bfArrayCounting);
+};
+bfButtonCountingQuery.onclick = async() => {
+    const varCountingFound = await BFMSHelper(bfArrayCounting, bloomFilterQuery, "bfInputCounting", "bfOutputCountingHash", "bfOutputCountingMessage", 3, "", true, bfCanvasCounting);
+    document.getElementById("bfOutputCountingMessage").innerHTML = varCountingFound ? "<b>Element found</b>." : "Element not found.";
+    drawGridBlocks(bfCanvasCounting, bfArrayCounting);
+}
+drawGridBlocks(bfCanvasCounting, bfArrayCounting);
+
+
+const cmsCanvasComparisonStatic = initializeCanvas("cmsCanvasComparisonStatic", 320);
+initializeCanvasText(cmsCanvasComparisonStatic);
+cmsCanvasComparisonStatic.fillText("...", 1040, 240);
+cmsCanvasComparisonStatic.fillText("15", 1140, 310);
+cmsCanvasComparisonStatic.fillText("0", 220, 75);
+cmsCanvasComparisonStatic.fillText("1", 280, 75);
+drawBitsAll(cmsCanvasComparisonStatic, [0], COLORS.FG, 5, 25, 1, 1, 40, 1);
+drawBitsAll(cmsCanvasComparisonStatic, [0], COLORS.FG, 5, 201, 1, 1, 40, 1);
+drawBitsAll(cmsCanvasComparisonStatic, [1], COLORS.FG, 5, 261, 1, 1, 40, 1);
+drawBitsAll(cmsCanvasComparisonStatic, [0], COLORS.FG, 201, 5, 1, 1, 80);
+drawBitsAll(cmsCanvasComparisonStatic, [15], COLORS.FG, 201, 1101, 1, 1, 80);
+for (let i = 0; i < 8; i++) {
+    drawBitsAll(cmsCanvasComparisonStatic, [i], COLORS.FG, 201, 201 + i * 100, 1, 1, 80);
+    cmsCanvasComparisonStatic.fillText(i, i * 100 + 240, 310);
+}
+drawArrowBracket(cmsCanvasComparisonStatic, 45, 45, 45, 74, 156);
+
+
+const cmsArrayComparison = new Array(256).fill(0);
+const cmsCanvasComparison = initializeCanvas("cmsCanvasComparison", 650);
+const cmsButtonComparisonAdd = document.getElementById("cmsButtonComparisonAdd");
+const cmsButtonComparisonQuery = document.getElementById("cmsButtonComparisonQuery");
+cmsButtonComparisonAdd.onclick = async() => {
+    await BFMSHelper(cmsArrayComparison, bloomFilterAdd, "cmsInputComparison", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3);
+    cmsCanvasComparison.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
+    drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
+    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
+};
+cmsButtonComparisonQuery.onclick = async() => {
+    const varComparisonFound = await BFMSHelper(cmsArrayComparison, bloomFilterQuery, "cmsInputComparison", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison);
+    drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
+    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
+    document.getElementById("cmsOutputComparisonMessage").innerHTML = varComparisonFound ? "<b>Element found</b>." : "Element not found.";
+    const frequency = await BFMSHelper(cmsArrayComparison, bloomFilterCountQuery, "cmsInputComparison", "cmsOutputComparisonHash", "cmsOutputComparisonMessage", 3, "", true, cmsCanvasComparison, COLORS.BLUE, 341);
+    document.getElementById("cmsOutputComparisonMessage").innerHTML = varComparisonFound ? "<b>Element found</b>." : "Element not found.";
+    document.getElementById("cmsOutputComparisonValues").innerHTML = frequency;
+    cmsCanvasComparison.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
+    drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
+    drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
+}
+drawGridBlocks(cmsCanvasComparison, cmsArrayComparison);
+drawBitsAll(cmsCanvasComparison, cmsArrayComparison, COLORS.FG, 341);
+
+
+const cmsArrayMain = new Array(256).fill(0);
+const cmsCanvasMain = initializeCanvas("cmsCanvasMain", 320);
+const cmsButtonMainAdd = document.getElementById("cmsButtonMainAdd");
+const cmsButtonMainQuery = document.getElementById("cmsButtonMainQuery");
+cmsButtonMainAdd.onclick = async() => {
+    await BFMSHelper(cmsArrayMain, bloomFilterAdd, "cmsInputMain", "cmsOutputMainHash", "cmsOutputMainMessage", 3);
+    cmsCanvasMain.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
+    drawBitsAll(cmsCanvasMain, cmsArrayMain);
+};
+cmsButtonMainQuery.onclick = async() => {
+    const frequency = await BFMSHelper(cmsArrayMain, bloomFilterCountQuery, "cmsInputMain", "cmsOutputMainHash", "cmsOutputMainMessage", 3, "", true, cmsCanvasMain);
+    document.getElementById("cmsOutputMainValues").innerHTML = frequency;
+    document.getElementById("cmsOutputMainEstimate").innerHTML = Math.min(...frequency);
+    cmsCanvasMain.clearRect(0, 0, WIDTH, cmsCanvasComparison.canvas.height);
+    drawBitsAll(cmsCanvasMain, cmsArrayMain);
+}
+drawBitsAll(cmsCanvasMain, cmsArrayMain);
+
+
+let cmsVarComparisonErrorsHashDepth = 32;
+const cmsArrayComparisonErrors = new Array(256).fill(0);
+const cmsCanvasComparisonErrors = initializeCanvas("cmsCanvasComparisonErrors", 650);
+const cmsInputComparisonErrorsSlider = initializeSliders("cmsInputComparisonErrorsSlider", 1, 32, 1, cmsVarComparisonErrorsHashDepth);
+const cmsButtonComparisonErrorsAdd = document.getElementById("cmsButtonComparisonErrorsAdd");
+cmsInputComparisonErrorsSlider.addEventListener("change", function() {
+    cmsVarComparisonErrorsHashDepth = cmsInputComparisonErrorsSlider.value;
+    cmsOutputComparisonErrorsHashDepth.innerHTML = cmsVarComparisonErrorsHashDepth;
+});
+cmsButtonComparisonErrorsAdd.onclick = async() => {
+    await BFMSHelper(cmsArrayComparisonErrors, bloomFilterAdd, "cmsInputComparisonErrors", "cmsOutputComparisonErrorsHash", "cmsOutputComparisonErrorsMessage", cmsVarComparisonErrorsHashDepth);
+    cmsCanvasComparisonErrors.clearRect(0, 0, WIDTH, cmsCanvasComparisonErrors.canvas.height)
+    drawGridBlocks(cmsCanvasComparisonErrors, cmsArrayComparisonErrors);
+    drawBitsAll(cmsCanvasComparisonErrors, cmsArrayComparisonErrors, COLORS.FG, 341);
+};
+drawGridBlocks(cmsCanvasComparisonErrors, cmsArrayComparisonErrors);
+drawBitsAll(cmsCanvasComparisonErrors, cmsArrayComparisonErrors, COLORS.FG, 341);
+
+
+const cmsCanvasDifferentRange = initializeCanvas("cmsCanvasDifferentRange", 710);
+drawBitsAll(cmsCanvasDifferentRange, [], COLORS.FG, 5, 613);
+drawBitsAll(cmsCanvasDifferentRange, [], COLORS.FG, 405, 613);
+cmsCanvasDifferentRange.beginPath();
+initializeCanvasText(cmsCanvasDifferentRange, "left");
+for (let i = 0; i < 2; i++)
+    cmsCanvasDifferentRange.fillText("...", 5, 185 + i * 400);
+for (let i = 0; i < 4; i++) {
+    cmsCanvasDifferentRange.fillText(`hash${i}(x)`, 5, 25 + i * 40);
+    cmsCanvasDifferentRange.fillText(`hash${i}(x)`, 5, 425 + i * 40);
+    cmsCanvasDifferentRange.moveTo(150, 423 + i * 40); cmsCanvasDifferentRange.lineTo(591, 423 + i * 40);
+    cmsCanvasDifferentRange.moveTo(150, 23 + i * 40); cmsCanvasDifferentRange.lineTo(521 + i * 20, 23 + i * 40);
+    cmsCanvasDifferentRange.moveTo(531 + i * 20, 5); cmsCanvasDifferentRange.lineTo(521 + i * 20, 5);
+    cmsCanvasDifferentRange.lineTo(521 + i * 20, 309); cmsCanvasDifferentRange.lineTo(531 + i * 20, 309);
+}
+cmsCanvasDifferentRange.stroke();
+cmsCanvasDifferentRange.font = "24px JetBrains Mono";
+cmsCanvasDifferentRange.fillText("Same hash range", 5, 295);
+cmsCanvasDifferentRange.fillText("Separate hash ranges", 5, 695);
+
+
+const cmsArraySketch = new Array(256).fill(0);
+const cmsCanvasSketch = initializeCanvas("cmsCanvasSketch", 320);
+const cmsButtonSketchAdd = document.getElementById("cmsButtonSketchAdd");
+const cmsButtonSketchQuery = document.getElementById("cmsButtonSketchQuery");
+cmsButtonSketchAdd.onclick = async() => {
+    await BFMSHelper(cmsArraySketch, countSketchAdd, "cmsInputSketch", "cmsOutputSketchHash", "cmsOutputSketchMessage", 8);
+    cmsCanvasSketch.clearRect(0, 0, WIDTH, cmsCanvasSketch.canvas.height);
+    drawBitsAll(cmsCanvasSketch, cmsArraySketch);
+}
+cmsButtonSketchQuery.onclick = async() => {
+    const frequency = await BFMSHelper(cmsArraySketch, countSketchQuery, "cmsInputSketch", "cmsOutputSketchHash", "cmsOutputSketchMessage", 8, "", true, cmsCanvasSketch);
+    document.getElementById("cmsOutputSketchValues").innerHTML = frequency;
+    document.getElementById("cmsOutputSketchEstimate").innerHTML = Math.min(...frequency);
+    cmsCanvasSketch.clearRect(0, 0, WIDTH, cmsCanvasSketch.canvas.height);
+    drawBitsAll(cmsCanvasSketch, cmsArraySketch);
+}
+drawBitsAll(cmsCanvasSketch, cmsArraySketch);
+
+
+const hllCanvasCoinProbability = initializeCanvas("hllCanvasCoinProbability", 400);
+drawCoins(hllCanvasCoinProbability, 176);
+initializeCanvasText(hllCanvasCoinProbability, "center", "22px JetBrains Mono");
+for (let i = 80; i < 1280; i += 160)
+    hllCanvasCoinProbability.fillText("1/2", i, 196);
+hllCanvasCoinProbability.beginPath();
+for (let i = 0; i < 3; i ++) {
+    hllCanvasCoinProbability.fillText(`1/${2 << (i + 1)}`, i * 80 + 161, 260 + i * 50);
+    hllCanvasCoinProbability.moveTo(11, 231 + i * 50); hllCanvasCoinProbability.lineTo(11, 241 + i * 50);
+    hllCanvasCoinProbability.lineTo(311 + i * 160, 241 + i * 50); hllCanvasCoinProbability.lineTo(311 + i * 160, 231 + i * 50);
+}
+hllCanvasCoinProbability.stroke();
+
+
+let hllVarCoinObservationTosses = 0;
+let hllVarCoinObservationZerosMax = 0;
+const hllCanvasCoinObservation = initializeCanvas("hllCanvasCoinObservation", 200);
+const hllButtonCoinObservationToss = document.getElementById("hllButtonCoinObservationToss");
+const hllButtonCoinObservationReset = document.getElementById("hllButtonCoinObservationReset");
+hllButtonCoinObservationToss.onclick = function() {
+    hllVarCoinObservationTosses += 1;
+    const hllVarCoinObservationRandom = Math.random() * 256;
+    const hllVarCoinObservationZeros = countZeros(hllVarCoinObservationRandom, 8);
+    if (hllVarCoinObservationZeros > hllVarCoinObservationZerosMax) {
+        hllVarCoinObservationZerosMax = hllVarCoinObservationZeros;
+        document.getElementById("hllOutputCoinObservationZerosMax").innerHTML = hllVarCoinObservationZerosMax;
+    }
+    hllCanvasCoinObservation.clearRect(0, 0, WIDTH, hllCanvasCoinObservation.canvas.height);
+    drawCoins(hllCanvasCoinObservation, hllVarCoinObservationRandom);
+    document.getElementById("hllOutputCoinObservationZeros").innerHTML = hllVarCoinObservationZeros;
+    document.getElementById("hllOutputCoinObservationTosses").innerHTML = hllVarCoinObservationTosses;
+}
+hllButtonCoinObservationReset.onclick = function() {
+    hllVarCoinObservationTosses = 0;
+    hllVarCoinObservationZerosMax = 0;
+    document.getElementById("hllOutputCoinObservationZeros").innerHTML = 0;
+    document.getElementById("hllOutputCoinObservationZerosMax").innerHTML = 0;
+    document.getElementById("hllOutputCoinObservationTosses").innerHTML = 0;
+    hllCanvasCoinObservation.clearRect(0, 0, WIDTH, hllCanvasCoinObservation.canvas.height);
+    drawCoins(hllCanvasCoinObservation, 0xFF);
+}
+drawCoins(hllCanvasCoinObservation, 0xFF);
+
+
+let hllVarCoinEstimationTosses = 0;
+let hllVarCoinEstimationZerosMax = 0;
+const hllCanvasCoinEstimation = initializeCanvas("hllCanvasCoinEstimation", 200);
+const hllButtonCoinEstimationToss = document.getElementById("hllButtonCoinEstimationToss");
+const hllButtonCoinEstimationReset = document.getElementById("hllButtonCoinEstimationReset");
+hllButtonCoinEstimationToss.onclick = function() {
+    hllVarCoinEstimationTosses += 1;
+    const hllVarCoinEstimationRandom = Math.random() * 256;
+    const hllVarCoinEstimationZeros = countZeros(hllVarCoinEstimationRandom, 8);
+    if (hllVarCoinEstimationZeros > hllVarCoinEstimationZerosMax) {
+        hllVarCoinEstimationZerosMax = hllVarCoinEstimationZeros;
+        document.getElementById("hllOutputCoinEstimationZerosMax").innerHTML = hllVarCoinEstimationZerosMax;
+        document.getElementById("hllOutputCoinEstimationEstimate").innerHTML = 2 << (hllVarCoinEstimationZerosMax - 1);
+    }
+    hllCanvasCoinEstimation.clearRect(0, 0, WIDTH, hllCanvasCoinEstimation.canvas.height);
+    drawCoins(hllCanvasCoinEstimation, hllVarCoinEstimationRandom);
+    document.getElementById("hllOutputCoinEstimationZeros").innerHTML = hllVarCoinEstimationZeros;
+    document.getElementById("hllOutputCoinEstimationTosses").innerHTML = hllVarCoinEstimationTosses;
+}
+hllButtonCoinEstimationReset.onclick = function() {
+    hllVarCoinEstimationTosses = 0;
+    hllVarCoinEstimationZerosMax = 0;
+    document.getElementById("hllOutputCoinEstimationZeros").innerHTML = 0;
+    document.getElementById("hllOutputCoinEstimationZerosMax").innerHTML = 0;
+    document.getElementById("hllOutputCoinEstimationEstimate").innerHTML = 0;
+    document.getElementById("hllOutputCoinEstimationTosses").innerHTML = 0;
+    hllCanvasCoinEstimation.clearRect(0, 0, WIDTH, hllCanvasCoinEstimation.canvas.height);
+    drawCoins(hllCanvasCoinEstimation, 0xFF);
+}
+drawCoins(hllCanvasCoinEstimation, 0xFF);
+
+
+const hllSetBitsSet = new Set();
+const hllVarBitsZerosMax = [0];
+const hllVarBitsEstimates = [0];
+const hllCanvasBits = initializeCanvas("hllCanvasBits", 48);
+const hllButtonBitsAdd = document.getElementById("hllButtonBitsAdd");
+const hllButtonBitsRandom = document.getElementById("hllButtonBitsRandom");
+const hllButtonBitsReset = document.getElementById("hllButtonBitsReset");
+hllButtonBitsAdd.onclick = async() => {
+    hllCanvasBits.clearRect(0, 0, WIDTH, hllCanvasBits.canvas.height);
+    await HLLHelper(hllVarBitsZerosMax, hllVarBitsEstimates, hllSetBitsSet, hllCanvasBits, "hllInputBitsAdd", "hllOutputBitsZeros", "hllOutputBitsZerosMax", "hllOutputBitsEstimate", "hllOutputBitsCardinality");
+}
+hllButtonBitsRandom.onclick = async() => {
+    const randomString = generateRandomString(10);
+    document.getElementById("hllInputBitsAdd").value = randomString;
+    hllCanvasBits.clearRect(0, 0, WIDTH, hllCanvasBits.canvas.height);
+    await HLLHelper(hllVarBitsZerosMax, hllVarBitsEstimates, hllSetBitsSet, hllCanvasBits, "hllInputBitsAdd", "hllOutputBitsZeros", "hllOutputBitsZerosMax", "hllOutputBitsEstimate", "hllOutputBitsCardinality");
+}
+hllButtonBitsReset.onclick = function() {
+    hllSetBitsSet.clear();
+    hllVarBitsZerosMax.fill(0);
+    hllVarBitsEstimates.fill(1);
+    document.getElementById("hllOutputBitsZeros").innerHTML = 0;
+    document.getElementById("hllOutputBitsZerosMax").innerHTML = 0;
+    document.getElementById("hllOutputBitsEstimate").innerHTML = 0;
+    document.getElementById("hllOutputBitsCardinality").innerHTML = 0;
+    hllCanvasBits.clearRect(0, 0, WIDTH, hllCanvasBits.canvas.height);
+    drawBitArray(hllCanvasBits, 0xFFFFFFFF);
+}
+drawBitArray(hllCanvasBits, 0xFFFFFFFF);
+
+
+const hllSetBucketSet = new Set();
+const hllVarBucketZerosMax = new Array(MAX_COUNT).fill(0);
+const hllVarBucketEstimates = new Array(MAX_COUNT).fill(1);
+const hllCanvasBucket = initializeCanvas("hllCanvasBucket", 210);
+const hllButtonBucketAdd = document.getElementById("hllButtonBucketAdd");
+const hllButtonBucketRandom = document.getElementById("hllButtonBucketRandom");
+const hllButtonBucketReset = document.getElementById("hllButtonBucketReset");
+hllButtonBucketAdd.onclick = async() => {
+    hllCanvasBucket.clearRect(0, 0, WIDTH, hllCanvasBucket.canvas.height);
+    await HLLHelper(hllVarBucketZerosMax, hllVarBucketEstimates, hllSetBucketSet, hllCanvasBucket, "hllInputBucketAdd", "hllOutputBucketZeros", "hllOutputBucketZerosMax", "hllOutputBucketEstimates", "hllOutputBucketCardinality", "hllOutputBucketNumber", "hllOutputBucketMean");
+}
+hllButtonBucketRandom.onclick = async() => {
+    const randomString = generateRandomString(10);
+    document.getElementById("hllInputBucketAdd").value = randomString;
+    hllCanvasBucket.clearRect(0, 0, WIDTH, hllCanvasBucket.canvas.height);
+    await HLLHelper(hllVarBucketZerosMax, hllVarBucketEstimates, hllSetBucketSet, hllCanvasBucket, "hllInputBucketAdd", "hllOutputBucketZeros", "hllOutputBucketZerosMax", "hllOutputBucketEstimates", "hllOutputBucketCardinality", "hllOutputBucketNumber", "hllOutputBucketMean");
+}
+hllButtonBucketReset.onclick = function() {
+    hllSetBucketSet.clear();
+    hllVarBucketZerosMax.fill(0);
+    hllVarBucketEstimates.fill(1);
+    document.getElementById("hllOutputBucketNumber").innerHTML = 0;
+    document.getElementById("hllOutputBucketZeros").innerHTML = 0;
+    document.getElementById("hllOutputBucketZerosMax").innerHTML = hllVarBucketZerosMax.join(", ");
+    document.getElementById("hllOutputBucketEstimates").innerHTML = hllVarBucketEstimates.join(", ");
+    document.getElementById("hllOutputBucketMean").innerHTML = 0;
+    document.getElementById("hllOutputBucketCardinality").innerHTML = 0;
+    hllCanvasBucket.clearRect(0, 0, WIDTH, hllCanvasBucket.canvas.height);
+    drawBitArray(hllCanvasBucket, 0xFFFFFFFF);
+    drawBitBuckets(hllCanvasBucket, hllVarBucketZerosMax, 0, MAX_CELL_SUBS, GRID_Y_OFFSET, GRID_Y_OFFSET + 100, GRID_CELL_SIZE, GRID_CELL_SIZE * 2);
+}
+drawBitArray(hllCanvasBucket, 0xFFFFFFFF);
+drawBitBuckets(hllCanvasBucket, hllVarBucketZerosMax, 0, MAX_CELL_SUBS, GRID_Y_OFFSET, GRID_Y_OFFSET + 100, GRID_CELL_SIZE, GRID_CELL_SIZE * 2);
+
+
+const hllSetMainSet = new Set();
+const hllVarMainZerosMax = new Array(16).fill(0);
+const hllVarMainEstimates = new Array(16).fill(1);
+const hllCanvasMain = initializeCanvas("hllCanvasMain", 210);
+const hllButtonMainAdd = document.getElementById("hllButtonMainAdd");
+const hllButtonMainRandom = document.getElementById("hllButtonMainRandom");
+const hllButtonMainRandomK = document.getElementById("hllButtonMainRandomK");
+const hllButtonMainReset = document.getElementById("hllButtonMainReset");
+hllButtonMainAdd.onclick = async() => {
+    hllCanvasMain.clearRect(0, 0, WIDTH, hllCanvasMain.canvas.height);
+    await HLLHelper(hllVarMainZerosMax, hllVarMainEstimates, hllSetMainSet, hllCanvasMain, "hllInputMainAdd", "hllOutputMainZeros", "hllOutputMainZerosMax", "hllOutputMainEstimates", "hllOutputMainCardinality", "hllOutputMainNumber", "hllOutputMainMean", "hllOutputMainScaled");
+}
+hllButtonMainRandom.onclick = async() => {
+    const randomString = generateRandomString(10);
+    document.getElementById("hllInputMainAdd").value = randomString;
+    hllCanvasMain.clearRect(0, 0, WIDTH, hllCanvasMain.canvas.height);
+    await HLLHelper(hllVarMainZerosMax, hllVarMainEstimates, hllSetMainSet, hllCanvasMain, "hllInputMainAdd", "hllOutputMainZeros", "hllOutputMainZerosMax", "hllOutputMainEstimates", "hllOutputMainCardinality", "hllOutputMainNumber", "hllOutputMainMean", "hllOutputMainScaled");
+}
+hllButtonMainRandomK.onclick = async() => {
+    for (let i = 0; i < 99; i++) {
+        const randomString = generateRandomString(10);
+        hllSetMainSet.add(randomString);
+        hllAdd(randomString, hllVarMainZerosMax, MAX_CELL_SUBS);
+    }
+    const randomString = generateRandomString(10);
+    document.getElementById("hllInputMainAdd").value = randomString;
+    await HLLHelper(hllVarMainZerosMax, hllVarMainEstimates, hllSetMainSet, hllCanvasMain, "hllInputMainAdd", "hllOutputMainZeros", "hllOutputMainZerosMax", "hllOutputMainEstimates", "hllOutputMainCardinality", "hllOutputMainNumber", "hllOutputMainMean", "hllOutputMainScaled");
+}
+hllButtonMainReset.onclick = function() {
+    hllSetMainSet.clear();
+    hllVarMainZerosMax.fill(0);
+    hllVarMainEstimates.fill(1);
+    document.getElementById("hllOutputMainNumber").innerHTML = 0;
+    document.getElementById("hllOutputMainZeros").innerHTML = 0;
+    document.getElementById("hllOutputMainZerosMax").innerHTML = hllVarMainZerosMax.join(", ");
+    document.getElementById("hllOutputMainEstimates").innerHTML = hllVarMainEstimates.join(", ");
+    document.getElementById("hllOutputMainMean").innerHTML = 0;
+    document.getElementById("hllOutputMainScaled").innerHTML = 0;
+    document.getElementById("hllOutputMainCardinality").innerHTML = 0;
+    hllCanvasMain.clearRect(0, 0, WIDTH, hllCanvasMain.canvas.height);
+    drawBitArray(hllCanvasMain, 0xFFFFFFFF);
+    drawBitBuckets(hllCanvasMain, hllVarMainZerosMax, 0, MAX_CELL_SUBS, GRID_Y_OFFSET, GRID_Y_OFFSET + 100, GRID_CELL_SIZE, GRID_CELL_SIZE * 2);
+}
+drawBitArray(hllCanvasMain, 0xFFFFFFFF);
+drawBitBuckets(hllCanvasMain, hllVarMainZerosMax, 0, MAX_CELL_SUBS, GRID_Y_OFFSET, GRID_Y_OFFSET + 100, GRID_CELL_SIZE, GRID_CELL_SIZE * 2);
+
+
+const hllCanvasLogSpace = initializeCanvas("hllCanvasLogSpace", 300);
+const hllLabelsLogSpace = ["65000 elements", "16 zeros", "4 bits"];
+const hllRandomLogSpace = ["nKbwCzEjzSq", "xlMOWJanPAA", "GuwQVkfmqsl"];
+initializeCanvasText(hllCanvasLogSpace, "center", "24px JetBrains Mono");
+for (let i = 0; i < 3; i++) {
+    hllCanvasLogSpace.fillText(hllLabelsLogSpace[i], 160 + i * 480, 251);
+    hllCanvasLogSpace.font = "28px JetBrains Mono"; 
+    hllCanvasLogSpace.fillText(hllRandomLogSpace[i], 160, 85 + i * 40);
+}
+hllCanvasLogSpace.font = "50px JetBrains Mono";
+hllCanvasLogSpace.fillText("0000000", 641, 125);
+drawBitsAll(hllCanvasLogSpace, [0], COLORS.FG, 71, 1071, 1, 1, 100);
+hllCanvasLogSpace.beginPath();
+hllCanvasLogSpace.moveTo(290, 121); hllCanvasLogSpace.lineTo(500, 121);
+hllCanvasLogSpace.moveTo(780, 121); hllCanvasLogSpace.lineTo(1000, 121);
+hllCanvasLogSpace.stroke();
+
+
+
+// functions
+
+async function getHash(str) {
+    const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(str));
+    const hashArray = new Uint8Array(hashBuffer);
+    return hashArray;
+}
+
+function setHTML(id, content) {
+    document.getElementById(id).innerHTML = content;
+}
+
+function renderSpans(array, prefix) {
+    return array.map((word, index) => `<span id="${prefix}-${index}">${word}</span>`).join(" ");
+}
+
+function setButtonStatus(button, enabled) {
+    if (enabled) {
+        button.innerHTML = "Searching";
+        button.disabled = true;
+        button.style.pointerEvents = "none"
+    } else {
+        button.innerHTML = "Search";
+        button.disabled = false;
+        button.style.pointerEvents = "auto"
+    }
+}
+
+function setupSearchButton(buttonId, inputId, searchFn) {
+    const button = document.getElementById(buttonId);
+    button.onclick = async() => {
+        const inputText = document.getElementById(inputId).value.trim();
+        if (!inputText) return;
+        await searchFn(inputText, button);
+    };
+}
+
+async function flashHighlight(element, delay) {
+    element.classList.add("highlight");
+    await new Promise(resolve => setTimeout(resolve, delay));
+    element.classList.remove("highlight");
+}
+
+function clearHighlights(setContainer) {
+    for (let child of document.getElementById(setContainer).children)
+        child.classList.remove("highlight", "found");
+}
+
+function reportResult(found, setOutput, button, foundElement = null) {
+    document.getElementById(setOutput).innerHTML = found ? "<b>Element found.</b>" : "Element not found.";
+    if (foundElement) foundElement.classList.add("found");
+    setButtonStatus(button, false);
+    return found;
+}
+
+async function linearSearch(setContainer, inputText, setArray, setOutput, button) {
+    setButtonStatus(button, true);
+    clearHighlights(setContainer);
+    for (let i = 0; i < setArray.length; i++) {
+        const currentWord = document.getElementById(`setSpanLinear-${i}`);
+        await flashHighlight(currentWord, 200);
+        if (setArray[i] === inputText)
+            return reportResult(true, setOutput, button, currentWord);
+    }
+    return reportResult(false, setOutput, button);
+}
+
+async function binarySearch(setContainer, inputText, setArray, setOutput, setFunctionType, button) {
+    setButtonStatus(button, true);
+    clearHighlights(setContainer);
+    let left = 0;
+    let right = setArray.length - 1;
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        const currentWord = document.getElementById(`setSpan${setFunctionType}-${mid}`);
+        await flashHighlight(currentWord, 500);
+        if (setArray[mid] === inputText)
+            return reportResult(true, setOutput, button, currentWord);
+        if (setArray[mid] < inputText) left = mid + 1;
+        else right = mid - 1;
+    }
+    return reportResult(false, setOutput, button);
+}
+
+function drawCoins(canvas, number, coins = 8, radius = 70, colorFG = COLORS.FG, stroke = COLORS.FG, lineWidth = LINEWIDTH, width = WIDTH, height = 200) {
+    canvas.strokeStyle = stroke;
+    canvas.lineWidth = lineWidth;
+    const y = height / 2;
+    for (i = 0; i < coins; i++) {
+        const x = (i* width / coins) + (width / (2 * coins));
+        canvas.beginPath();
+        canvas.arc(x, y, radius, 0, Math.PI * 2);
+        if (((number >> i) & 1) === 0) {
+            canvas.fillStyle = colorFG;
+            canvas.fill()
+        }
+        canvas.stroke();
+    }
+}
+
+function drawBitArray(canvas, number, xOffset = 5, yOffset = 5, color = COLORS.FG, length = GRID_COLS, cellSize = GRID_CELL_SIZE, cellPadding = GRID_CELL_PADDING, stroke = COLORS.FG, lineWidth = LINEWIDTH) {
+    const bits = new Array(length).fill(0);
+    for (let i = 0; i < length; i++)
+        if (((number >> i) & 1) == 0)
+            bits[i] = 1;
+    drawGridBlocks(canvas, bits, color, yOffset, xOffset, 1, length, cellSize, cellPadding, stroke, lineWidth);
+}
+
+function countZeros(number, size, start = 0) {
+    for (let i = start; i < size; i++)
+        if ((number >> i) & 1 === 1)
+            return i - start;
+    return size;
+}
+
+function getBucket(hash, bucketBits) {
+    const buckets = 1 << bucketBits;
+    let masked = (hash & (buckets - 1));
+    let bucket = 0;
+    for (let i = 0; i < bucketBits; i++) {
+        bucket = (bucket << 1) | (masked & 1);
+        masked = masked >> 1;
+    }
+    return bucket;
+}
+
+async function hllAdd(element, buckets, bucketBits = MAX_CELL_SUBS, maxFrequency = MAX_COUNT) {
+    const hashArray = await getHash(element);
+    const hash = ((hashArray[0] << 24) | (hashArray[1] << 16) | (hashArray[2] << 8) | hashArray[3]);
+    const bucket = getBucket(hash, bucketBits);
+    const zeros = countZeros(hash, 32, bucketBits);
+    if (zeros > buckets[bucket]) buckets[bucket] = zeros % maxFrequency;
+    return hash;
+}
+
+function hllQuery(buckets, estimates) {
+    for (let bucket = 0; bucket < buckets.length; bucket++)
+        estimates[bucket] = 1 << (buckets[bucket]);
+    let sum = 0;
+    for (let i = 0; i < buckets.length; i++)
+        sum += 1/estimates[i];
+    return Math.floor(buckets.length * buckets.length * 2 / sum); // x2 cuz bitshift prob is off-by-one
+}
+
+async function HLLHelper(buckets, estimates, hllSet, canvas, inputElementID, outputZerosID, outputZerosMaxID, outputEstimatesID, outputCardinalityID, outputBucketID, outputMeanID, outputScaledID, cellSize = GRID_CELL_SIZE) {
+    const inputText = document.getElementById(inputElementID).value.trim();
+    if (!inputText) return;
+    hllSet.add(inputText);
+    const bucketBits = Math.floor(Math.log2(buckets.length));
+    const hash = await hllAdd(inputText, buckets, bucketBits)
+    const bucket = getBucket(hash, bucketBits);
+    const cardinality = hllQuery(buckets, estimates);
+    document.getElementById(outputZerosID).innerHTML = countZeros(hash, 32, bucketBits);
+    document.getElementById(outputZerosMaxID).innerHTML = buckets.join(", ");
+    document.getElementById(outputEstimatesID).innerHTML = estimates.join(", ");
+    document.getElementById(outputCardinalityID).innerHTML = hllSet.size;
+    if (outputMeanID) document.getElementById(outputMeanID).innerHTML = cardinality;
+    if (outputBucketID) document.getElementById(outputBucketID).innerHTML = bucket;
+    if (outputScaledID) document.getElementById(outputScaledID).innerHTML = Math.floor(cardinality * 0.7213 / (1 + 1.079 / buckets.length));
+    if (outputBucketID) drawBitBuckets(canvas, buckets, bucket, bucketBits, GRID_Y_OFFSET, GRID_Y_OFFSET + 100, cellSize, cellSize * 2);
+    drawBitArray(canvas, hash);
+}
+
+function drawBitBuckets(canvas, buckets, bucket, bucketBits, yOffsetBits, yOffsetBuckets, cellSizeBits, cellSizeBuckets, trianglePad = 10, xOffset = GRID_X_OFFSET) {
+    drawBitsAll(canvas, buckets, COLORS.FG, yOffsetBuckets, xOffset, 1, MAX_COUNT, cellSizeBuckets);
+    drawTriangle(canvas, xOffset + cellSizeBuckets / 2 + cellSizeBuckets * bucket, yOffsetBuckets + cellSizeBuckets + trianglePad);
+    for (let i = 0; i < bucketBits; i++)
+        drawTriangle(canvas, xOffset + cellSizeBits / 2 + cellSizeBits * i, yOffsetBits + cellSizeBits + trianglePad);
+}
+
+function drawTriangle(canvas, xOffset = 10, yOffset = 10, color = COLORS.FG, size = ARROW_SIZE) {
+    canvas.beginPath();
+    canvas.moveTo(xOffset, yOffset);
+    canvas.lineTo(xOffset - size, yOffset + size);
+    canvas.lineTo(xOffset + size, yOffset + size);
+    canvas.closePath(); 
+    canvas.fillStyle = color;
+    canvas.fill();
+}
+
+function drawArrowBracket(canvas, x1, x2, shaftX, lineY, shaftY, size = ARROW_SIZE) {
+    canvas.beginPath();
+    canvas.moveTo(x1, lineY);
+    canvas.lineTo(x2, lineY);
+    canvas.moveTo(shaftX, lineY);
+    canvas.lineTo(shaftX, shaftY);
+    canvas.moveTo(shaftX, shaftY + size);
+    canvas.lineTo(shaftX - size, shaftY);
+    canvas.lineTo(shaftX + size, shaftY);
+    canvas.closePath();
+    canvas.stroke();
+}
+
+function drawGrid(canvas, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, color = COLORS.FG, lineWidth = LINEWIDTH) {
+    canvas.strokeStyle = color;
+    canvas.lineWidth = lineWidth;
+    canvas.beginPath();
+    for (let row = 0; row <= gridRows; row++) {
+        canvas.moveTo(xOffset, yOffset + row * cellSize);
+        canvas.lineTo(xOffset + cellSize * gridCols, yOffset + row * cellSize);
+    }
+    for (let col = 0; col <= gridCols; col++) {
+        canvas.moveTo(xOffset + col * cellSize, yOffset);
+        canvas.lineTo(xOffset + col * cellSize, yOffset + gridRows * cellSize);
+    }
+    canvas.closePath();
+    canvas.stroke();
+
+}
+
+function drawGridBlocks(canvas, blocks, color = COLORS.FG, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellPadding = GRID_CELL_PADDING, gridColor = COLORS.FG, lineWidth = LINEWIDTH) {
+    canvas.fillStyle = color;
+    for (let block = 0; block < blocks.length; block++) {
+        if (blocks[block] === 0) continue;
+        const x = (block % gridCols) * cellSize + xOffset;
+        const y = Math.floor(block / gridCols) * cellSize + yOffset;
+        canvas.fillRect(x + cellPadding, y + cellPadding, cellSize - cellPadding * 2, cellSize - cellPadding * 2);
+    }
+    drawGrid(canvas, yOffset, xOffset, gridRows, gridCols, cellSize, gridColor, lineWidth);
+}
+
+function drawBits(canvas, number, xOffset, yOffset, color = COLORS.FG, cellLength = GRID_SUB_CELL_LENGTH, cellSize = GRID_SUB_CELL_SIZE) {
+    const binaryArraySize = cellLength * cellLength;
+    const binaryString = number.toString(2).padStart(binaryArraySize, '0');
+    const binaryArray = [...binaryString].map(Number);
+    drawGridBlocks(canvas, binaryArray, color, yOffset, xOffset, cellLength, cellLength, cellSize);
+}
+
+function drawBitsGrid(canvas, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellLength = GRID_SUB_CELL_LENGTH, cellPadding = GRID_CELL_PADDING, colorMain = COLORS.FG, colorSub = COLORS.GRAY, lineWidth = LINEWIDTH) {
+    drawGrid(canvas, yOffset, xOffset, gridRows * cellLength, gridCols * cellLength, cellSize / cellLength, colorSub, lineWidth);
+    drawGrid(canvas, yOffset, xOffset, gridRows, gridCols, cellSize, colorMain, lineWidth);
+}
+
+function drawBitsAll(canvas, counters, color = COLORS.FG, yOffset = GRID_Y_OFFSET, xOffset = GRID_X_OFFSET, gridRows = GRID_ROWS, gridCols = GRID_COLS, cellSize = GRID_CELL_SIZE, cellLength = GRID_SUB_CELL_LENGTH, cellPadding = GRID_CELL_PADDING, gridColor = COLORS.FG, gridColorSub = COLORS.GRAY, lineWidth = LINEWIDTH) {
+    for (let counter = 0; counter < counters.length; counter++) {
+        if (counters[counter] == 0) continue;
+        const x = (counter % gridCols) * cellSize + xOffset;
+        const y = Math.floor(counter / gridCols) * cellSize + yOffset;
+        drawBits(canvas, counters[counter], x, y, color, cellLength, cellSize / cellLength);
+    }
+    drawBitsGrid(canvas, yOffset, xOffset, gridRows, gridCols, cellSize, cellLength, cellPadding, gridColor, gridColorSub, lineWidth);
+}
+
+async function BFMSHelper(bitArray, mainFunction, inputElementID, hashOutputElementID, messageOutputElementID, hashDepth, message = "Element added.", gridFlash = false, canvas, flashColor = COLORS.BLUE, yOffset = GRID_Y_OFFSET) {
+    const inputText = document.getElementById(inputElementID).value.trim();
+    if (!inputText) return;
+    const hashes = (await getHash(inputText)).slice(0, hashDepth);
+    const result = mainFunction(hashes, bitArray, hashDepth);
+    if (gridFlash) await flashGrid(canvas, hashes, bitArray, flashColor, yOffset);
+    document.getElementById(hashOutputElementID).innerHTML = hashes.slice(0, hashDepth).join(", ");
+    document.getElementById(messageOutputElementID).innerHTML = message;
+    return result;
+}
+
+async function flashGrid(canvas, hashes, bitArray, flashColor, yOffset) {
+    const blocks = new Array(bitArray.length).fill(0);
+    hashes.forEach(i => { blocks[i] = 1; });
+    drawGridBlocks(canvas, blocks, flashColor, yOffset);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    canvas.clearRect(0, 0, WIDTH, canvas.canvas.height);
+}
+
+function bloomFilterAdd(hash, bitArray, hashDepth = 1, maxFrequency = MAX_COUNT) {
+    for (i = 0; i < hashDepth; i++)
+        bitArray[(hash[i])] = (bitArray[(hash[i])] + 1) % maxFrequency;
+    return hash;
+}
+
+function bloomFilterRemove(hash, bitArray, hashDepth = 1) {
+    for (let i = 0; i < hashDepth; i++)
+        bitArray[hash[i]] = 0;
+    return hash;
+}
+
+function countSketchAdd(hash, bitArray, hashDepth = 1, cmsWidth = GRID_COLS, maxFrequency = MAX_COUNT) {
+    for (i = 0; i < hashDepth; i++) {
+        hash[i] = (i * cmsWidth) + (hash[i] % cmsWidth);
+        bitArray[hash[i]] = (bitArray[hash[i]] + 1) % maxFrequency;
+    }
+    return hash;
+}
+
+function countSketchQuery(hash, bitArray, hashDepth = 1, cmsWidth = GRID_COLS) {
+    const frequency = new Array(hashDepth).fill(0);
+    for (let i = 0; i < hashDepth; i++) {
+        hash[i] = (i * cmsWidth) + (hash[i] % cmsWidth);
+        frequency[i] = bitArray[hash[i]];
+    }
+    return frequency;
+}
+
+function bloomFilterQuery(hash, bitArray, hashDepth = 1) {
+    let exists = true;
+    for (let i = 0; i < hashDepth; i++)
+        if (bitArray[hash[i]] === 0)
+            exists = false;
+    return exists;
+}
+
+function bloomFilterCountQuery(hash, bitArray, hashDepth = 1) {
+    const frequency = new Array(hashDepth).fill(0);
+    for (let i = 0; i < hashDepth; i++)
+        frequency[i] = bitArray[hash[i]];
+    return frequency;
+}
+
+function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        const index = Math.floor(Math.random() * characters.length);
+        result += characters[index];
+    }
+    return result;
+}
+
+function getColors() {
+    const styles = getComputedStyle(document.documentElement);
+    const colors = {
+        FG: styles.getPropertyValue("--fg").trim(),
+        BG: styles.getPropertyValue("--bg").trim(),
+        GRAY: styles.getPropertyValue("--gray2").trim(),
+        BLUE: styles.getPropertyValue("--blue").trim(),
+        RED: styles.getPropertyValue("--red").trim(),
+    }
+    return colors;
+}
+
+function initializeSliders(sliderID, minimum, maximum, step, value) {
+    const slider = document.getElementById(sliderID);
+    slider.min = minimum;
+    slider.max = maximum;
+    slider.step = step;
+    slider.value = value;
+    return slider;
+}
+
+function initializeCanvas(canvasID, height, width = WIDTH) {
+    const canvasObject = document.getElementById(canvasID).getContext("2d");
+    canvasObject.canvas.width = width;
+    canvasObject.canvas.height = height;
+    return canvasObject;
+}
+
+function initializeCanvasText(canvas, horizontal = "center", font = "28px JetBrains Mono", vertical = "middle", color = COLORS.FG) {
+    canvas.font = font;
+    canvas.textBaseline = vertical;
+    canvas.textAlign = horizontal;
+    canvas.fillStyle = color;
+}</script><style>.setContainer{font:normal .875rem var(--monospace);border:.0625rem solid var(--fg);margin:1rem 0;padding:1rem;line-height:1.25rem;overflow:auto}.highlight{font-weight:800}.found{background-color:var(--yellow);font-weight:800}</style></article></main><footer><a href=https://ekunazanu.foo/more#Terms_of_Use>© 2026</a> <a href=https://ekunazanu.foo/about>ekunazanu</a> · <a rel="noopener nofollow noreferrer" href=https://creativecommons.org/licenses/by/4.0/ target=_blank>CC BY 4.0</a> · <a rel="noopener nofollow noreferrer" href=https://github.com/ekunazanu/ekunazanu.foo target=_blank>Source</a> · <a rel="noopener nofollow noreferrer" href=https://ko-fi.com/ekunazanu target=_blank>Support</a></footer>
