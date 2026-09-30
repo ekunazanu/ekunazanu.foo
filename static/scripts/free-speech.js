@@ -5,6 +5,7 @@
 const WIDTH = 1280;
 const COLORS = getColors();
 const HOST = "https://words.ekunazanu.foo";
+const ERROR_MESSAGE = 'Nevermind, you cannot. See <a href="https://bsky.app/profile/ekunazanu.foo/post/3mwqfqpcy3k2u" rel="noopener nofollow noreferrer external" target="_blank">why</a>.'
 
 const svgContainerTop = document.getElementById("svgContainerTop")
 const svgContainerDistribution = document.getElementById("svgContainerDistribution")
@@ -88,7 +89,7 @@ function handleServerDisconnect() {
     inputWords.style.display = "none";
     buttonAdd.style.display = "none";
     buttonRefreshDist.style.display = "none";
-    infoDistribution.innerHTML = 'Nevermind, you cannot. See <a href="/log/6-back-on-track">why</a>.'
+    infoDistribution.innerHTML = ERROR_MESSAGE;
 }
 
 function sortCounts(itemsObject, n = 16) {

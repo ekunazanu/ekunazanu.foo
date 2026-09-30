@@ -23,7 +23,7 @@ Anyway, you can add to the dataset too.
 <div id="svgContainerDistribution"></div>
 <div id="infoDistribution"></div>
 
-The entire database is only a single mebibyte big and so it uses a few [nice tricks](/log/4-pb-mb-db) to store the data. This however means the data is 'only' around 98% accurate.
+The entire database is only a single mebibyte big and so it uses a few [nice tricks](/log/04-pb-mb-db) to store the data. This however means the data is 'only' around 98% accurate.
 
 <script>
 {{ <loadData path="/scripts/free-speech.js" /> }}
