@@ -483,6 +483,7 @@ hllButtonMainRandomK.onclick = async() => {
         hllSetMainSet.add(randomString);
         hllAdd(randomString, hllVarMainZerosMax, MAX_CELL_SUBS);
     }
+    hllCanvasMain.clearRect(0, 0, WIDTH, hllCanvasMain.canvas.height);
     const randomString = generateRandomString(10);
     document.getElementById("hllInputMainAdd").value = randomString;
     await HLLHelper(hllVarMainZerosMax, hllVarMainEstimates, hllSetMainSet, hllCanvasMain, "hllInputMainAdd", "hllOutputMainZeros", "hllOutputMainZerosMax", "hllOutputMainEstimates", "hllOutputMainCardinality", "hllOutputMainNumber", "hllOutputMainMean", "hllOutputMainScaled");
